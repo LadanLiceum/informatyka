@@ -1188,20 +1188,20 @@ function startGame(o){o.gaming=true;var el=o.el,cat=o.cat,a=document.getElementB
  function exit(){cleanup();var par=el.parentNode;if(par)par.removeChild(el);var ap=document.getElementById("app");if(ap)mount(ap)}
  function clearObs(){obs.forEach(function(b){if(b.e.parentNode)b.e.parentNode.removeChild(b.e)});obs=[]}
  function setHud(){hud.textContent="🏁 "+Math.floor(dist/12)+"  ·  🏆 "+best}
- var buf=0;function run(){buf=0;W=el.clientWidth;H=el.clientHeight;y=0;v=0;sp=140;dist=0;obs=[];nx=.9;over=false;last=performance.now();
+ var buf=0;function run(){buf=0;W=el.clientWidth;H=el.clientHeight;y=0;v=0;sp=150;dist=0;obs=[];nx=.9;over=false;last=performance.now();
   if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);ov=null;cat.style.transition="none";cat.style.left="26px";cat.style.bottom="13px";DIR=1;face(o);pose(o,"walk");setHud();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame)}
  function jump(){if(over)return;if(y>8){buf=.18;return}v=Math.sqrt(2*1300*Math.min(120,H-13-62-8))}
  function kd(e){if(e.key===" "||e.key==="ArrowUp"||e.code==="Space"){e.preventDefault();jump()}}
  function pd(e){if(e.target.closest&&e.target.closest("button"))return;jump()}
  document.addEventListener("keydown",kd);el.addEventListener("pointerdown",pd);
- function spawn(){var T=[["🌵",28,24],["🪨",26,20],["🌵",28,24],["🌵🌵",54,24]],t=T[Math.floor(Math.random()*T.length)],e=document.createElement("div");e.className="ob";e.textContent=t[0];e.style.left=W+"px";el.appendChild(e);obs.push({e:e,x:W,w:t[1],h:t[2]})}
+ function spawn(){var T=[["🌵",28,24],["🪨",26,20],["🌵",28,24],["🌵🌵",54,24]];if(dist>2500)T.push(["🌵🪨",52,26]);if(dist>5000)T.push(["🌵🌵",54,28]);var t=T[Math.floor(Math.random()*T.length)],e=document.createElement("div");e.className="ob";e.textContent=t[0];e.style.left=W+"px";el.appendChild(e);obs.push({e:e,x:W,w:t[1],h:t[2]})}
  function end(){over=true;pose(o,"walk");var sc=Math.floor(dist/12);if(sc>best){best=sc;bestSet(best)}setHud();
   ov=document.createElement("div");ov.className="gm";ov.innerHTML="<b>Гра закінчена</b><span>Рахунок "+sc+" · Рекорд "+best+"</span><div><button class='pri' id='gm1'>Ще раз</button><button id='gm2'>Вийти</button></div>";el.appendChild(ov);
   ov.querySelector("#gm1").onclick=function(e){e.stopPropagation();clearObs();run()};ov.querySelector("#gm2").onclick=function(e){e.stopPropagation();exit()}}
  function frame(t){if(!document.body.contains(el)){cleanup();return}if(over)return;
-  var dt=Math.min(.05,(t-last)/1000);last=t;if(buf>0)buf-=dt;sp=Math.min(260,sp+2*dt);dist+=sp*dt;
+  var dt=Math.min(.05,(t-last)/1000);last=t;if(buf>0)buf-=dt;sp=Math.min(400,sp+4*dt);dist+=sp*dt;
   if(y>0||v>0){v-=1300*dt;y+=v*dt;if(y<=0){y=0;v=0;pose(o,"walk");if(buf>0){buf=0;jump()}}else pose(o,"")}cat.style.bottom=(13+y)+"px";
-  nx-=dt;if(nx<=0){spawn();nx=rnd(1.3,2.2)*(300/sp)+.6}
+  nx-=dt;if(nx<=0){spawn();nx=rnd(1.1,2.0)*(300/sp)+.55}
   for(var i=obs.length-1;i>=0;i--){var b=obs[i];b.x-=sp*dt;b.e.style.left=Math.round(b.x)+"px";
    if(b.x<-70){b.e.parentNode.removeChild(b.e);obs.splice(i,1);continue}
    if(86<b.x+b.w-12&&98>b.x+12&&y<b.h-12){end();break}}
