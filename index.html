@@ -4667,7 +4667,7 @@ GX.wkey=function(n){var T=n>600?TP6:TP5,k=n%100,w="cave";T.forEach(function(t){i
 GI5.adv=["🌌","Пригода"];GI5.dig=["⛏️","Шахта"];GI5.def=["🏰","Оборона"];GI5.boss=["🐉","Бій з босом"];GI5.bld=["🔺","Будівництво"];
 GX.AM={cave:["dig","Шахта: копай до діамантів"],ocean:["def","Оборона маяка від потоплеників"],end:["boss","Бій з Ендер-драконом"],nether:["adv","Пригода: шлях до порталу"],desert:["bld","Будівництво піраміди"],snow:["def","Оборона сніжного форту"]};
 Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"||g.type=="dig"||g.type=="def"||g.type=="boss"||g.type=="bld"}))return;
- L.g.forEach(function(g){if(g.type=="sort")g.hide=true});var m=GX.AM[GX.wkey(n)]||GX.AM.nether;if(GX.pool(n).length>=8)L.g.push({type:m[0],title:m[1],items:[]})});
+ L.g.forEach(function(g){if(g.type=="sort")g.hide=true});var m=GX.AM[GX.wkey(n)]||GX.AM.nether;var TT=n>600?TP6:TP5,kk=n%100,last=TT.some(function(t){return t.b==kk});if(last&&GX.pool(n).length>=8)L.g.push({type:m[0],title:m[1],items:[]})});
 /* підсумкові уроки всіх класів: лишається лише великий тест */
 Object.keys(LES).forEach(function(k){var L=LES[k];if(L.big&&L.q)L.noq=true});
 
