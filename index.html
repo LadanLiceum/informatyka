@@ -8597,7 +8597,8 @@ var ALL=["dig","mcart","def","chick","adv","bow","bld","elytra","whack","ender"]
 /* одна велика гра на урок, але різноманітніша: замінюємо стару «майнкрафтівську» на вибір із 10 */
 Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g._mix)return;L.g._mix=1;
  var idx=-1;L.g.forEach(function(g,i){if(OLD[g.type])idx=i});if(idx<0)return;
- var ty=ALL[((n%100)-1)%ALL.length];L.g[idx]={type:ty,title:OLD[ty]?GX.gtitle(ty,n):TT[ty],items:[]}});
+ var ty=ALL[((n%100)-1)%ALL.length];L.g[idx]={type:ty,title:OLD[ty]?GX.gtitle(ty,n):TT[ty],items:[]};
+ if(((n%100)%3)==0&&ty!="adv"&&ty!="boss"&&L.g[idx].type!="boss"&&!L.g.some(function(g){return g.type=="adv"})&&GX.pool(n).length>=8)L.g.push({type:"adv",title:GX.gtitle("adv",n),items:[]})});
 })();
 
 /* 9 клас: ретро-аркада */
