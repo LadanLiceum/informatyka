@@ -1148,7 +1148,7 @@ var SVG="<svg viewBox='0 0 84 62' aria-hidden='true'>"+
 
 var X=60,DIR=1,CUR=null,SAY=["Мяв!","Мур-р-р","Няв 🐟","Пограємо?","Ще раз!","Мррр…","Ловлю м’ячик!"];
 function rnd(a,b){return a+Math.random()*(b-a)}
-function alive(o){return o===CUR&&document.body.contains(o.el)}
+function alive(o){return o===CUR&&!o.gaming&&document.body.contains(o.el)}
 function wantCat(a){return !!(a.querySelector(".hero.home")||a.querySelector(".fb"))}
 
 function fit(o){if(o.gaming)return;var el=o.el,top=el.getBoundingClientRect().top,h=window.innerHeight-top-14;el.style.height=Math.max(130,Math.min(h,430))+"px";
