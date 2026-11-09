@@ -8342,7 +8342,7 @@ function getQs(n,N){var seen={},out=[];function add(a){a.forEach(function(q){if(
  var L=LES[n]||{};if(out.length<N){add(shuffle((L.q||[]).slice()));add(shuffle((L.big||[]).slice()))}
  for(var d=1;out.length<N&&d<6;d++){[n-d,n+d].forEach(function(m){if(out.length<N&&LES[m]){try{add(shuffle(GX.pool(m)))}catch(e){}}})}
  return out.slice(0,N)}
-function head(title,hint,lr){var fo=lr=="f",nf=lr=="lr0";fr9(title,hint,"<div id='ap' class='arp'></div><canvas id='arc' class='arc'></canvas><div id='adp' class='adp"+(lr?" lr":"")+(fo?" fo":"")+"'>"+(fo?"":"<button class='l' data-d='l'>◀</button>")+(lr?"":"<button class='u' data-d='u'>▲</button><button class='d' data-d='d'>▼</button>")+(fo?"":"<button class='r' data-d='r'>▶</button>")+(lr&&!nf?"<button class='f' data-d='f'>🔥</button>":"")+"</div>");return document.getElementById("arc")}
+function head(title,hint,lr){var fo=lr=="f",nf=lr=="lr0",ud=lr=="ud";if(ud)lr=true;fr9(title,hint,"<div id='ap' class='arp'></div><canvas id='arc' class='arc'></canvas><div id='adp' class='adp"+(lr?" lr":"")+(fo?" fo":"")+"'>"+(ud?"<button class='l' data-d='u'>▲</button><button class='r' data-d='d'>▼</button>":"")+(fo||ud?"":"<button class='l' data-d='l'>◀</button>")+(lr?"":"<button class='u' data-d='u'>▲</button><button class='d' data-d='d'>▼</button>")+(fo||ud?"":"<button class='r' data-d='r'>▶</button>")+(lr&&!nf&&!ud?"<button class='f' data-d='f'>🔥</button>":"")+"</div>");return document.getElementById("arc")}
 function panel(q){var ops=shuffle(q.a.map(function(t,k){return {t:t,ok:k===0}})),h="<div class='aq'>"+esc9(q.q)+"</div>";
  ops.forEach(function(o,k){o.k=k;h+="<div class='ao' style='--c:"+COL[k]+"'><b>"+LET[k]+"</b><span>"+esc9(o.t)+"</span></div>"});document.getElementById("ap").innerHTML=h;return ops}
 var DIR={l:[-1,0],r:[1,0],u:[0,-1],d:[0,1]};
@@ -8351,8 +8351,8 @@ function ctl(cv,set,hold){var KM={ArrowLeft:"l",ArrowRight:"r",ArrowUp:"u",Arrow
  function ku(e){if(hold&&KM[e.key])set(null,KM[e.key])}
  document.addEventListener("keydown",kd);document.addEventListener("keyup",ku);
  Array.prototype.forEach.call(document.querySelectorAll("#adp button"),function(b){var d=b.getAttribute("data-d");b.addEventListener("pointerdown",function(e){e.preventDefault();set(d)});if(hold){b.addEventListener("pointerup",function(){set(null,d)});b.addEventListener("pointerleave",function(){set(null,d)});b.addEventListener("pointercancel",function(){set(null,d)})}});
- var sx=0,sy=0;cv.addEventListener("touchstart",function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;if(hold&&cv._pos)cv._pos(t.clientX);e.preventDefault()},{passive:false});
- cv.addEventListener("touchmove",function(e){var t=e.touches[0];if(hold){if(cv._pos)cv._pos(t.clientX)}else{var dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)>16||Math.abs(dy)>16){set(Math.abs(dx)>Math.abs(dy)?(dx>0?"r":"l"):(dy>0?"d":"u"));sx=t.clientX;sy=t.clientY}}e.preventDefault()},{passive:false})}
+ var sx=0,sy=0;cv.addEventListener("touchstart",function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;if(hold&&cv._pos)cv._pos(t.clientX,t.clientY);e.preventDefault()},{passive:false});
+ cv.addEventListener("touchmove",function(e){var t=e.touches[0];if(hold){if(cv._pos)cv._pos(t.clientX,t.clientY)}else{var dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)>16||Math.abs(dy)>16){set(Math.abs(dx)>Math.abs(dy)?(dx>0?"r":"l"):(dy>0?"d":"u"));sx=t.clientX;sy=t.clientY}}e.preventDefault()},{passive:false})}
 function loop(cv,upd,draw){var last=performance.now(),on=true;(function f(t){if(!on)return;if(!document.body.contains(cv)){on=false;return}var dt=Math.min(.05,(t-last)/1000);last=t;upd(dt);draw();requestAnimationFrame(f)})(last);return function(){on=false}}
 function snd(k){try{GX.snd(k)}catch(e){}}
 function fx(){try{GX.flash();GX.shake(document.getElementById("arc"))}catch(e){}}
@@ -8439,17 +8439,15 @@ GI.inv=["🚀","Захисник: збий правильну відповідь
 
 /* ---------- Флаппі-ракета ---------- */
 GM.flap=function(g){var N=6,qs=getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
- var W=312,H=380,cv=head(g.title,"Тисни 🔥 (або пробіл, або торкнись поля) — ракета підстрибує. Пролети крізь отвір з ПРАВИЛЬНОЮ літерою!","f");cv.width=W;cv.height=H;var ctx=cv.getContext("2d");
- var by,vy,gx,ops,qi=0,sc=0,lives=3,wrong=false,done=false,go=false,T=0,passed=false,YC=[78,190,302],OH=40,BR=11;
- function ready(){by=H/2;vy=0;gx=W+30;passed=false;go=false}
+ var W=312,H=380,cv=head(g.title,"Тримай ▲ ▼ (або тягни пальцем по полю): ракета летить вгору-вниз. Пролети крізь отвір з ПРАВИЛЬНОЮ літерою!","ud");cv.width=W;cv.height=H;var ctx=cv.getContext("2d");
+ var by,vy=0,mvy=0,gx,ops,qi=0,sc=0,lives=3,wrong=false,done=false,go=false,T=0,passed=false,YC=[78,190,302],OH=40,BR=11;
+ function ready(){by=H/2;vy=0;mvy=0;gx=W+30;passed=false;go=false}
  function newQ(){ops=panel(qs[qi]);wrong=false;ready();hud(qi,N,sc,lives)}
  newQ();
- function flap(){if(done)return;go=true;vy=-250;snd("click")}
- cv.addEventListener("touchstart",function(e){flap();e.preventDefault()},{passive:false});cv.addEventListener("mousedown",flap);
- ctl(cv,function(d){if(d=="f"||d=="u")flap()},true);
+ cv._pos=function(cx,cy){var r=cv.getBoundingClientRect();go=true;by=Math.max(BR,Math.min(H-BR,(cy-r.top)/r.height*H))};
+ ctl(cv,function(d,rel){if(d=="u"){mvy=-1;go=true}else if(d=="d"){mvy=1;go=true}else if(rel=="u"&&mvy<0||rel=="d"&&mvy>0)mvy=0},true);
  function lose(){lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}ready()}
- function upd(dt){if(done)return;T+=dt;if(!go)return;vy+=620*dt;by+=vy*dt;gx-=70*dt;
-  if(by<BR||by>H-BR)return lose();
+ function upd(dt){if(done)return;T+=dt;if(!go)return;by=Math.max(BR,Math.min(H-BR,by+mvy*190*dt));vy=mvy*200;gx-=70*dt;
   if(!passed&&gx<70+BR+22&&gx>70-BR-22){var k=-1;for(var i=0;i<3&&i<ops.length;i++)if(Math.abs(by-YC[i])<OH-BR+4)k=i;if(k<0)return lose();
    if(gx<70){passed=true;var o=ops[k];if(o.ok){if(!wrong)sc++;snd("ok");qi++;if(qi>=N){done=true;over(cv,"LEVEL CLEAR!");hud(N-1,N,sc,lives);setTimeout(function(){fin9(sc,N)},1000);return}newQ()}else{wrong=true;lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}gx=W+30;passed=false;go=false;by=H/2;vy=0}}}}
  function draw(){if(done)return;ctx.fillStyle="#070720";ctx.fillRect(0,0,W,H);ctx.fillStyle="#fff";for(var i=0;i<30;i++)ctx.fillRect((i*97+T*20*(1+i%3))%W*1,(i*53)%H,1.5,1.5);
