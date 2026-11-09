@@ -8637,7 +8637,7 @@ var _e=endScr;endScr=function(a,b,c,d){_e(a,b,c,d);try{var card=$.querySelector(
 var t=p>=.8?"Чудова робота, "+nm+"! 🎉":p>=.5?"Гарний результат, "+nm+"! 👍":"Не здавайся, "+nm+"! 💪";
 var m=p>=.8?"Ти справжній майстер інформатики. Так тримати!":p>=.5?"Ще трохи практики — і буде ідеально. Спробуй ще раз!":"Помилки — це частина навчання. Прочитай урок ще раз і повтори — вийде краще!";
 var cols=["#ff5d73","#ffd24a","#4ade80","#38bdf8","#c084fc"],cf="";if(p>=.5)for(var i=0;i<22;i++)cf+="<i style='left:"+(Math.random()*100)+"%;background:"+cols[i%5]+";animation-delay:"+(Math.random()*3)+"s'></i>";
-var d1=document.createElement("div");d1.className="endx";d1.innerHTML=cf+CAT+"<h3 class='exs'>"+t+"</h3><p class='exm'>"+m+"</p><p class='exm'>Дякуємо за гру! Мяу 🐾</p>";card.insertBefore(d1,card.firstChild);var big=card.querySelector(".big");if(big)big.style.display="none";
+var d1=document.createElement("div");d1.className="endx";d1.innerHTML=cf+"<h3 class='exs'>"+t+"</h3><p class='exm'>"+m+"</p><p class='exm'>Дякуємо за гру! Мяу 🐾</p>";card.insertBefore(d1,card.firstChild);
 var bs=$.querySelectorAll("button"),lb=bs[bs.length-1];if(lb){var mb=document.createElement("button");mb.className="pri";mb.style.margin="8px 0 2px";mb.textContent="← В меню";var oc=lb.getAttribute("onclick");mb.onclick=oc?new Function(oc):lb.onclick;d1.appendChild(mb)}window.scrollTo(0,0)}catch(e){}};
 })();
 /* підсвітка правильних/неправильних відповідей у тестах і іграх 9–11 класів */
