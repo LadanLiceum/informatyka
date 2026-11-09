@@ -1742,6 +1742,169 @@ function deco(x){var d=WD.dec;
 
 (function(){var _f=fr9;fr9=function(t,h,b){_f(t,h,b);if(GX.on()){var top=document.querySelector(".top");if(top){var m=document.createElement("button");m.className="sm";m.textContent=GX.mute?"🔇":"🔊";m.onclick=function(){GX.mute=!GX.mute;try{localStorage.setItem("infmute",GX.mute?"1":"0")}catch(e){}m.textContent=GX.mute?"🔇":"🔊";if(!GX.mute)GX.snd("ok")};top.appendChild(m)}}}})();
 
+/* ===== gx3.js · ще 4 ігри в стилі Minecraft для 5–6 класів: шахта, оборона, бій з босом, будівництво ===== */
+GX.R=function(ctx,c,x,y,w,h){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h)};
+GX.hs=function(i){return Math.abs(Math.sin(i*12.9898)*43758.5453)%1};
+GX.MAT=[null,["#a0622d","#6e4020","#c98a50"],["#8e8e96","#5e5e66","#c0c0c8"],["#d8d8d8","#9a9a9a","#ffffff"],["#ffd24a","#c8941a","#fff2a0"],["#4fe6d6","#1fa89a","#b9fff6"],["#4a3f45","#2a2226","#7a6a72"]];
+GX.ARMS=[[0,0,0,0],[0,0,0,1],[0,0,1,1],[0,2,1,1],[2,2,2,1],[3,3,2,3],[4,4,3,3],[5,5,5,3],[5,5,5,5],[6,6,6,6]];
+GX.SLN=["шолом","нагрудник","штани","черевики"];GX.AJM=["","шкіряний","кольчужний","залізний","золотий","діамантовий","незеритовий"];GX.AJP=["","шкіряні","кольчужні","залізні","золоті","діамантові","незеритові"];
+GX.armIdx=function(i,N,win){return win?9:(i<=0?0:Math.max(1,Math.min(8,Math.round(i*8/N))))};
+GX.armMsg=function(pi,ni){var d=[],mx=0,q,A=GX.ARMS;for(q=0;q<4;q++)if(A[ni][q]!=A[pi][q]){d.push((q>1?GX.AJP:GX.AJM)[A[ni][q]]+" "+GX.SLN[q]);mx=Math.max(mx,A[ni][q])}return d.length?{t:"🛡️ Нове спорядження: "+d.join(", "),m:mx}:null};
+GX.plate=function(ctx,m,x,y,w,h){if(!m)return;var c=GX.MAT[m],R=GX.R;R(ctx,c[0],x,y,w,h);R(ctx,c[1],x,y+h-2,w,2);R(ctx,c[2],x,y,w,1);if(m==2){for(var a=0;a<w;a+=3)for(var b=1;b<h-2;b+=3)R(ctx,c[1],x+a,y+b,1,1)}};
+GX.steve=function(ctx,t,x,y,o){var A=GX.ARMS[o.ai||0],P=GX.plate,Z=function(c,xx,yy,w,h){GX.R(ctx,c,xx,yy,w,h)},sw=o.walking?Math.sin(t*11)*5:0,tl=o.tool;
+ ctx.save();ctx.translate(Math.round(x),Math.round(y));if(o.flip)ctx.scale(-1,1);if(o.dead)ctx.rotate(-Math.min(1.5,(o.endT||0)*3));
+ ctx.save();ctx.translate(0,-28);ctx.rotate(o.walking?-Math.sin(t*11)*.5:.15);Z("#a87650",-2,0,5,13);Z("#1d8aa8",-2,0,5,5);ctx.restore();
+ Z("#3b3f9e",-7+sw,-14,7,14);Z("#2b2f7e",0-sw,-14,7,14);Z("#666",-7+sw,-3,8,3);Z("#4a4a4a",-sw,-3,8,3);
+ Z("#2aa5c8",-7,-30,14,16);Z("#1f88a8",-7,-30,3,16);Z("#25516e",-7,-16,14,2);Z("#ffd24a",-1,-16,3,2);
+ Z("#c8956b",-7,-44,14,14);Z("#3b2a1a",-7,-44,14,4);Z("#3b2a1a",-7,-44,3,9);Z("#fff",1,-37,4,3);Z("#4a2d9e",3,-37,2,3);Z("#3b2a1a",1,-39,5,1);Z("#7a4a2a",1,-32,5,2);Z("#b07a55",4,-35,2,2);
+ P(ctx,A[3],-8+sw,-6,9,6);P(ctx,A[3],-1-sw,-6,9,6);P(ctx,A[2],-8+sw,-15,8,9);P(ctx,A[2],-1-sw,-15,8,9);P(ctx,A[1],-8,-31,16,17);P(ctx,A[0],-8,-46,16,7);P(ctx,A[0],-8,-46,4,16);if(A[0])Z(GX.MAT[A[0]][1],5,-40,3,2);
+ ctx.save();ctx.translate(0,-28);ctx.rotate(o.arm||0);Z("#c8956b",-2,0,5,13);Z("#2aa5c8",-2,0,5,5);if(A[1])P(ctx,A[1],-3,-1,6,7);
+ if(tl=="pick"){Z("#6b4a2a",0,9,3,14);Z("#9ad7e8",-6,19,16,4)}else if(tl=="sword"){Z("#6b4a2a",0,10,3,5);Z("#d8d8d8",0,-4,3,15)}else if(tl=="block"){Z("#e8d58f",-3,12,10,10);Z("#d8c27a",-3,16,10,1)}
+ else if(tl=="bow"){Z("#8b5a2b",-8,11,3,2);Z("#8b5a2b",-5,13,3,2);Z("#8b5a2b",-2,14,4,2);Z("#8b5a2b",2,13,3,2);Z("#8b5a2b",5,11,3,2);Z("#ddd",-8,10,17,1)}ctx.restore();
+ if(A[1]>=5)Z("#fff",-4+Math.round(Math.sin(t*5)*5),-26+Math.round(Math.cos(t*4)*5),2,2);
+ if(o.hurt){ctx.globalAlpha=.5;Z("#ff2a1a",-8,-46,16,46);ctx.globalAlpha=1}ctx.restore()};
+GX.zombie=function(ctx,t,x,y,o){var Z=function(c,xx,yy,w,h){GX.R(ctx,c,xx,yy,w,h)},sw=o.walk?Math.sin(t*9+x)*4:0;ctx.save();ctx.translate(Math.round(x),Math.round(y));if(o.rot)ctx.rotate(o.rot);if(o.a!=null)ctx.globalAlpha=o.a;
+ Z(o.pants,-7+sw,-14,7,14);Z(o.pants,0-sw,-14,7,14);Z(o.shirt,-7,-30,14,16);Z(o.skin,-7,-44,14,14);Z("#111",1,-39,3,3);Z("#111",-5,-39,3,3);Z("#2a4a2a",-2,-33,5,2);Z(o.skin,5,-30,12,5);Z(o.shirt,5,-30,5,5);
+ if(o.fl){ctx.globalAlpha=.6;Z("#fff",-8,-45,16,45);ctx.globalAlpha=1}ctx.restore()};
+GX.pool2=null;
+
+/* ---------- спільний каркас: питання → дія → наступний етап ---------- */
+GX.run=function(g,cfg){var E={WD:GX.world(CUR9),W:360,H:200,sc:0,hp:3,i:0,tried:false,state:"anim",t:0,parts:[],hurtT:0,endT:0,tm:[],note:"",hx:70,hy:130,g:{}};
+ var pool=shuffle(GX.pool(CUR9));E.qs=pool.slice(0,8);E.N=E.qs.length;
+ fr9(g.title,cfg.hint,"<canvas id='gxcv' width='360' height='200' class='gxcv'></canvas><div id='gxq' class='gxq'></div>");
+ var cv=document.getElementById("gxcv"),ctx=cv.getContext("2d"),qb=document.getElementById("gxq"),done=false;E.ctx=ctx;
+ E.R=function(c,x,y,w,h){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h)};
+ E.say=function(h){qb.innerHTML=h};E.after=function(s,f){E.tm.push([s,f])};E.ai=function(){return GX.armIdx(E.i,E.N,E.state=="win")};
+ E.boom=function(x,y,cols,n){for(var k=0;k<(n||16);k++)E.parts.push({x:x,y:y,vx:(Math.random()-.5)*170,vy:-Math.random()*150-20,l:.8+Math.random()*.5,c:cols[k%cols.length],s:3+Math.random()*3})};
+ E.hud=function(){gs9(new Array(E.hp+1).join("❤️")+(E.hp<3?new Array(4-E.hp).join("🖤"):"")+" · "+cfg.unit+": "+E.i+"/"+E.N)};E.hud();
+ E.ask=function(pre){var q=E.qs[E.i];E.state="ask";E.tried=false;qb.innerHTML="";
+  if(E.note){var n=document.createElement("p");n.className="mut";n.textContent=E.note;qb.appendChild(n);E.note=""}
+  var b=document.createElement("b");b.textContent=(pre?pre+"\n":"")+q.q;b.style.whiteSpace="pre-line";qb.appendChild(b);
+  shuffle(q.a.slice()).forEach(function(a){var bt=document.createElement("button");bt.className="blk";bt.textContent=a;if(window.GXT&&a===q.a[0])bt.dataset.ok="1";
+   bt.onclick=function(){if(E.state!="ask"||bt.disabled)return;
+    if(a===q.a[0]){if(!E.tried)E.sc++;E.state="anim";E.say("<p class='mut'>"+(cfg.rightMsg||"")+"</p>");cfg.right(E)}
+    else{E.tried=true;bt.disabled=true;bt.classList.add("bad");E.hp--;E.hurtT=.5;GX.flash();GX.snd("bad");GX.shake(cv);E.hud();if(cfg.wrong)cfg.wrong(E);if(E.hp<=0){E.state="dead";E.endT=0;E.say("<p class='mut'>💀 Стів загинув…</p>")}}};qb.appendChild(bt)})};
+ E.advance=function(){var pi=GX.armIdx(E.i,E.N,0);E.i++;E.hud();var ni=GX.armIdx(E.i,E.N,0),m=pi!=ni?GX.armMsg(pi,ni):null;
+  if(m){E.note=m.t;E.boom(E.hx,E.hy-24,[GX.MAT[m.m][0],GX.MAT[m.m][2],"#fff"],22);GX.snd("ok")}
+  if(E.i>=E.N){E.state="win";E.endT=0;GX.snd("portal");GX.flash("rgba(255,230,120,.3)");E.say("<p class='mut'>"+(E.note?E.note+" · ":"")+cfg.winMsg+"</p>");E.note="";if(cfg.win)cfg.win(E)}
+  else{E.state="anim";E.say("<p class='mut'>"+(E.note||cfg.walkMsg||"…")+"</p>");cfg.stage(E)}};
+ E.hero=function(x,y,o){o.ai=E.ai();o.hurt=E.hurtT>0;o.dead=E.state=="dead";o.endT=E.endT;GX.steve(ctx,E.t,x,y,o)};
+ function hud2(){var k,x;for(k=0;k<E.N;k++){x=8+k*12;E.R("#000",x,6,10,10);E.R(k<E.i?"#2fe07a":(k==E.i&&E.state!="win"?(Math.floor(E.t*4)%2?"#ffe45e":"#fff"):"#555"),x+1,7,8,8)}
+  var A=GX.ARMS[E.ai()];for(k=0;k<4;k++){x=8+k*14;E.R("#000",x,20,12,12);E.R(A[k]?GX.MAT[A[k]][0]:"#333",x+1,21,10,10);if(A[k])E.R(GX.MAT[A[k]][2],x+1,21,10,2)}
+  ctx.font="bold 9px monospace";ctx.fillStyle="#000";ctx.fillText("БРОНЯ",69,30);ctx.fillStyle="#fff";ctx.fillText("БРОНЯ",68,29)}
+ var last=0;function loop(ts){if(!document.body.contains(cv))return;var dt=Math.min(.05,((ts||0)-last)/1000);last=ts||0;E.t+=dt;if(E.hurtT>0)E.hurtT-=dt;
+  E.parts.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=380*dt;p.l-=dt});E.parts=E.parts.filter(function(p){return p.l>0});
+  var due=[];E.tm=E.tm.filter(function(m){m[0]-=dt;if(m[0]<=0){due.push(m[1]);return false}return true});due.forEach(function(f){f()});
+  if(E.state=="win"||E.state=="dead"){E.endT+=dt;if(E.endT>2.2&&!done){done=true;setTimeout(function(){fin9(E.sc,E.N)},50)}}
+  cfg.update(E,dt);cfg.draw(E);E.parts.forEach(function(p){E.R(p.c,p.x,p.y,p.s,p.s)});hud2();requestAnimationFrame(loop)}
+ cfg.init(E);E.say("<p class='mut'>…</p>");cfg.stage(E);requestAnimationFrame(function(ts){last=ts;loop(ts)})};
+
+/* ---------- ШАХТА: копай до діамантів ---------- */
+GM.dig=function(g){var T=["dirt","dirt","stone","coal","stone","iron","gold","diamond"],NM={dirt:"земля",stone:"камінь",coal:"вугілля",iron:"залізна руда",gold:"золота руда",diamond:"діамантова руда"},
+ BASE={dirt:["#8b5a2b","#7a4d23"],stone:["#7c7c7c","#6a6a6a"],coal:["#7c7c7c","#222"],iron:["#7c7c7c","#d8a77a"],gold:["#7c7c7c","#ffd24a"],diamond:["#7c7c7c","#5fe6ff"]},B=24;
+ GX.run(g,{hint:"Копай углиб: правильна відповідь — Стів розбиває блок і спускається нижче. Помилка — з-під блока б’є лава!",unit:"глибина",walkMsg:"⬇️ Стів спускається…",rightMsg:"⛏️ Копаю!",winMsg:"💎 Скарб знайдено!",
+ init:function(E){E.g={sy:0,cam:-110,mode:"idle",ph:0,tgt:0,res:{coal:0,iron:0,gold:0,diamond:0},broke:false};E.hx=180;E.hy=120;E.tp=function(r){return T[Math.min(7,Math.floor(r*8/E.N))]}},
+ stage:function(E){E.g.mode="idle";E.after(.5,function(){var tp=E.tp(E.i);E.ask("⛏️ Під ногами: "+NM[tp]+"!")})},
+ right:function(E){E.g.mode="dig";E.g.ph=0;E.g.broke=false},
+ wrong:function(E){E.boom(180,E.g.sy+24-E.g.cam,["#ff6a00","#ffb52e","#e03c00"],22);GX.snd("boom")},
+ win:function(E){},
+ update:function(E,dt){var G=E.g,N=E.N;G.cam+=(G.sy-120-G.cam)*Math.min(1,dt*5);
+  if(G.mode=="dig"){G.ph+=dt;if(G.ph>.4&&!G.broke){G.broke=true;var tp=E.tp(E.i),c=BASE[tp];E.boom(180,G.sy+12-G.cam,[c[0],c[1],"#fff"],18);GX.snd("break");if(G.res[tp]!=null)G.res[tp]++}
+   if(G.ph>.65){G.mode="fall";G.tgt=(E.i==N-1?N+2:E.i+1)*B}}
+  else if(G.mode=="fall"){G.sy+=130*dt;if(G.sy>=G.tgt){G.sy=G.tgt;G.mode="idle";E.advance()}}
+  if(E.state=="win"&&Math.random()<dt*6)E.boom(214,(N+2)*B-G.cam-20,["#fff","#ffe45e","#5fe6ff"],3)},
+ draw:function(E){var G=E.g,N=E.N,ctx=E.ctx,R=E.R,cam=G.cam,sy0=-cam,r,c,x,y,gr=ctx.createLinearGradient(0,0,0,Math.max(40,sy0));gr.addColorStop(0,"#6ec1ff");gr.addColorStop(1,"#cfeeff");ctx.fillStyle=gr;ctx.fillRect(0,0,360,200);
+  if(sy0>-20){R("#ffe45e",300,Math.max(6,sy0-130),22,22);for(var k=0;k<3;k++)R("#fff",30+k*120,Math.max(0,sy0-120)+k*8,46,10)}
+  for(r=Math.floor(cam/B)-1;r<Math.floor((cam+200)/B)+1;r++){if(r<0)continue;y=r*B-cam;
+   for(c=0;c<15;c++){x=c*B;var shaft=c==7;
+    if(r>=N&&r<N+2){if(c>=5&&c<=9){R("#2a2a33",x,y,B,B);continue}}
+    if(shaft&&r<N){if(r<E.i||(r==E.i&&G.mode!="idle"&&G.broke)){R("#26262e",x,y,B,B);if(r%3==1){R("#6b4a2a",x+4,y+6,3,12);R("#ffd24a",x+3,y+2+Math.round(Math.sin(E.t*12+r)),5,5)}continue}}
+    var tp=shaft?E.tp(r):(r==0?"dirt":(GX.hs(r*31+c)<.14?"coal":GX.hs(r*17+c*3)<.07?"iron":GX.hs(r*13+c*7)<.035?"gold":GX.hs(r*29+c*5)<.018&&r>4?"diamond":(r<2?"dirt":"stone")));
+    var b=BASE[tp];R(b[0],x,y,B,B);R(r<2?"#7a4d23":"#6a6a6a",x+3,y+5,5,5);R(r<2?"#6b4220":"#5a5a5a",x+14,y+14,5,5);
+    if(tp=="coal"||tp=="iron"||tp=="gold"||tp=="diamond"){R(b[1],x+3,y+3,6,6);R(b[1],x+13,y+9,6,6);R(b[1],x+6,y+15,5,5)}
+    if(r==0){R("#5cb85c",x,y,B,5)}R("rgba(0,0,0,.2)",x+B-1,y,1,B);R("rgba(0,0,0,.2)",x,y+B-1,B,1);
+    if(shaft&&r==E.i&&G.mode=="dig"){ctx.globalAlpha=Math.min(.8,G.ph*2);R("#000",x+4,y+3,2,B-8);R("#000",x+10,y+8,2,B-10);ctx.globalAlpha=1}}}
+  if(sy0>-60){for(c=0;c<2;c++){var tx=c?300:50;R("#6b4a2a",tx-4,sy0-34,8,34);R("#2e8b3a",tx-16,sy0-60,32,28);R("#3aa84a",tx-10,sy0-70,20,12)}}
+  var cy=(N+2)*B-cam;R("#ffd24a",200,cy-16,22,16);R("#b8864b",200,cy-16,22,6);R("#6b4a2a",200,cy-16,22,2);R("#fff",208,cy-9,6,5);if(E.state=="win"){ctx.globalAlpha=.3;R("#ffe45e",170,cy-60,90,60);ctx.globalAlpha=1}
+  var arm=G.mode=="dig"?-.7*Math.abs(Math.sin(G.ph*9)):.1;E.hero(180,G.sy-cam,{walking:false,arm:arm,tool:"pick"});
+  var dp=Math.max(0,Math.round(G.sy/B*3));ctx.font="bold 10px monospace";ctx.fillStyle="#000";ctx.fillText("Глибина: "+dp+" м",251,17);ctx.fillStyle="#fff";ctx.fillText("Глибина: "+dp+" м",250,16);
+  [["#222","coal"],["#d8a77a","iron"],["#ffd24a","gold"],["#5fe6ff","diamond"]].forEach(function(o,k){var rx=250+k*27;R("#000",rx,22,12,12);R(o[0],rx+1,23,10,10);ctx.fillStyle="#000";ctx.fillText(G.res[o[1]],rx+13,32);ctx.fillStyle="#fff";ctx.fillText(G.res[o[1]],rx+12,31)});
+  var dk=Math.min(.45,G.sy/B*.05);ctx.globalAlpha=dk;R("#000",0,0,360,200);ctx.globalAlpha=1}})};
+
+/* ---------- БІЙ З БОСОМ: Ендер-дракон ---------- */
+GM.boss=function(g){var GY=165;
+ GX.run(g,{hint:"Стріляй із лука! Правильна відповідь — стріла влучає в дракона, помилка — дракон випльовує вогняну кулю.",unit:"життя дракона",walkMsg:"🏹 Стів натягує тятиву…",rightMsg:"🏹 Стріляю!",winMsg:"🐉 Ендер-дракон переможений!",
+ init:function(E){E.g={arrows:[],balls:[],hits:0,flash:0,dead:0,dx:250,dy:62};E.hx=60;E.hy=GY},
+ stage:function(E){E.after(.5,function(){E.ask("🐉 Ендер-дракон кружляє над островом!")})},
+ right:function(E){var G=E.g;G.arrows.push({x:76,y:GY-30,a:0});GX.snd("hit")},
+ wrong:function(E){var G=E.g;G.balls.push({x:G.dx-30,y:G.dy+8});GX.snd("boom")},
+ win:function(E){E.g.dead=.01},
+ update:function(E,dt){var G=E.g;G.dx=250+Math.sin(E.t*.7)*50;G.dy=62+Math.sin(E.t*1.4)*12+(G.dead?G.dead*60:0);if(G.flash>0)G.flash-=dt;if(G.dead){G.dead+=dt;if(Math.random()<dt*8)E.boom(G.dx+(Math.random()-.5)*60,G.dy,["#c58bff","#7b2fbf","#fff","#ff9bf0"],6)}
+  G.arrows.forEach(function(a){var tx=G.dx-6,ty=G.dy+6,d=Math.hypot(tx-a.x,ty-a.y),sp=300*dt;if(d<=sp+14){a.hit=1;G.flash=.3;G.hits++;GX.snd("break");E.boom(tx,ty,["#ff4a8a","#c58bff","#fff"],20);E.after(.35,function(){E.advance()})}else{a.x+=(tx-a.x)/d*sp;a.y+=(ty-a.y)/d*sp;a.a=Math.atan2(ty-a.y,tx-a.x)}});G.arrows=G.arrows.filter(function(a){return!a.hit});
+  G.balls.forEach(function(b){var tx=66,ty=GY-30,d=Math.hypot(tx-b.x,ty-b.y),sp=210*dt;if(d<=sp+10){b.hit=1;E.boom(66,GY-26,["#c58bff","#7b2fbf","#fff"],20)}else{b.x+=(tx-b.x)/d*sp;b.y+=(ty-b.y)/d*sp}});G.balls=G.balls.filter(function(b){return!b.hit})},
+ draw:function(E){var G=E.g,ctx=E.ctx,R=E.R,gr=ctx.createLinearGradient(0,0,0,GY);gr.addColorStop(0,"#0d0820");gr.addColorStop(1,"#2a1450");ctx.fillStyle=gr;ctx.fillRect(0,0,360,200);
+  for(var q=0;q<36;q++)R(Math.sin(E.t*2+q)>.85?"#fff":"#b9a8ff",(q*97)%360,(q*53)%140,2,2);
+  [[120,60],[180,85],[240,50],[310,75]].forEach(function(p,k){R("#1a0f2b",p[0]-9,GY-p[1],18,p[1]);R("#2a1a47",p[0]-5,GY-p[1]+10,5,8);var by=GY-p[1]-14+Math.round(Math.sin(E.t*3+k)*2);R("#ff6ad5",p[0]-6,by,12,12);R("#ffd0f4",p[0]-3,by+3,4,4)});
+  R("#d3cf85",0,GY,360,40);R("#e8e5a6",0,GY,360,6);for(q=0;q<18;q++)R("#b8b46a",q*20+6,GY+14+(q%3)*6,5,4);
+  var px=190;if(E.state=="win"){for(q=0;q<5;q++)R(Math.sin(E.t*4+q)>0?"#c58bff":"#8a3fd8",px-14+q*6,GY-30,6,30);R("#1a0f2b",px-18,GY-34,36,4);R("#1a0f2b",px-18,GY-4,36,4)}
+  var dx=G.dx,dy=G.dy;if(!(G.dead&&G.dead>1.6)){var fl=G.flash>0,wf=Math.sin(E.t*5)*14;ctx.save();ctx.translate(dx,dy);ctx.globalAlpha=G.dead?Math.max(0,1-G.dead/1.8):1;
+   var C1=fl?"#fff":"#14141c",C2=fl?"#ddd":"#2a2a38";
+   ctx.fillStyle=C2;ctx.beginPath();ctx.moveTo(-10,-6);ctx.lineTo(10,-6);ctx.lineTo(34,-40+wf);ctx.lineTo(6,-6);ctx.fill();ctx.beginPath();ctx.moveTo(10,-6);ctx.lineTo(30,-6);ctx.lineTo(66,-34+wf);ctx.lineTo(30,-4);ctx.fill();
+   R2(C1,-20,-6,56,18);R2(C1,36,-2,22,8);R2(C1,58,0,18,6);R2(C1,-34,-10,16,16);R2("#3a3a4c",-34,-10,16,3);R2("#d98cff",-30,-6,5,4);R2("#d98cff",-22,-6,4,4);R2(C1,-40,-2,8,8);R2("#d98cff",-38,3,6,1);ctx.restore()}
+  function R2(c,x,y,w,h){ctx.fillStyle=c;ctx.fillRect(x,y,w,h)}
+  var rem=Math.max(0,1-G.hits/E.N);R("#000",110,6,142,12);R("#3a0a2a",111,7,140,10);R("#d33",111,7,Math.round(140*rem),10);ctx.font="bold 9px monospace";ctx.fillStyle="#000";ctx.fillText("ЕНДЕР-ДРАКОН",255,16);ctx.fillStyle="#fff";ctx.fillText("ЕНДЕР-ДРАКОН",254,15);
+  G.arrows.forEach(function(a){ctx.save();ctx.translate(a.x,a.y);ctx.rotate(a.a);R2("#c8a060",-8,-1,14,2);R2("#fff",4,-2,4,4);R2("#ddd",-9,-2,3,4);ctx.restore()});
+  G.balls.forEach(function(b){R("#7b2fbf",b.x-6,b.y-6,12,12);R("#d98cff",b.x-3,b.y-3,6,6);R("#fff",b.x-1,b.y-1,2,2)});
+  E.hero(60,GY,{walking:false,arm:E.state=="ask"?-1.2:-1.45,tool:"bow"})}})};
+
+/* ---------- ОБОРОНА: маяк / сніжний форт ---------- */
+GM.def=function(g){var GY=165,TX=300;
+ GX.run(g,{hint:"Захищай вежу! Правильна відповідь — Стів збиває ворога стрілою та добудовує вежу. Помилка — ворог б’є по вежі.",unit:"вежа",walkMsg:"🏹 Наступний ворог наближається…",rightMsg:"🏹 Стріляю!",winMsg:"🏰 Вежу захищено!",
+ init:function(E){var D=E.WD.dec,sk=D=="palm"?{skin:"#4aa89a",shirt:"#2a7a8a",pants:"#3a5a9a"}:D=="spruce"?{skin:"#c8dde8",shirt:"#6a8aa8",pants:"#3a4a6a"}:{skin:"#5a9a4a",shirt:"#2a6a9a",pants:"#3b3f9e"};
+  E.g={en:[],sk:sk,arrows:[],shake:0,lunge:0,rows:4};for(var k=0;k<E.N;k++)E.g.en.push({x:-30-k*36,dead:0,fl:0,hit:0});E.hx=TX+10;E.hy=GY-60},
+ stage:function(E){E.after(.9,function(){E.ask("🧟 Ворог підступає до вежі!")})},
+ right:function(E){var G=E.g,e=G.en[E.i];G.arrows.push({x:TX-6,y:GY-G.rows*12-30,tx:e.x+6,ty:GY-24,k:E.i,t0:0});GX.snd("hit")},
+ wrong:function(E){E.g.lunge=.45;E.g.shake=.4;GX.snd("boom")},
+ win:function(E){E.boom(TX+10,GY-130,["#ffe45e","#ff4a4a","#5fe6ff","#fff"],30)},
+ update:function(E,dt){var G=E.g;G.rows=Math.min(10,4+E.i);if(G.shake>0)G.shake-=dt;if(G.lunge>0)G.lunge-=dt;
+  G.en.forEach(function(e,k){var tx=262-36*(k-E.i);if(k<E.i){e.dead+=dt;return}e.x+=(tx-e.x)*Math.min(1,dt*3);if(e.fl>0)e.fl-=dt});
+  G.arrows.forEach(function(a){a.t0+=dt;var p=Math.min(1,a.t0/.45),e=G.en[a.k];a.px=a.x+(a.tx-a.x)*p;a.py=a.y+(a.ty-a.y)*p-Math.sin(p*3.14)*26;if(p>=1&&!a.hit){a.hit=1;e.dead=.01;E.boom(e.x,GY-24,["#4a8a4a","#2a6a9a","#fff"],20);GX.snd("break");E.after(.5,function(){E.advance()})}});G.arrows=G.arrows.filter(function(a){return!a.hit})},
+ draw:function(E){var G=E.g,ctx=E.ctx,R=E.R,W=E.WD,D=W.dec,gr=ctx.createLinearGradient(0,0,0,GY);gr.addColorStop(0,W.s0);gr.addColorStop(1,W.s1);ctx.fillStyle=gr;ctx.fillRect(0,0,360,200);
+  if(W.sun)R("#ffe45e",40,22,24,24);if(W.cl)for(var c=0;c<3;c++){var cx=((c*150+E.t*6)%480)-60;R("#fff",cx,26+c*16,50,12);R("#fff",cx+10,18+c*16,30,10)}
+  ctx.fillStyle="rgba(0,0,0,.1)";for(var hx=0;hx<360;hx+=6){var hy=GY-40-12*Math.sin(hx/50)-7*Math.sin(hx/17);ctx.fillRect(hx,Math.round(hy),6,GY-hy)}
+  for(var i2=0;i2<360;i2+=20){R(W.d,i2,GY,20,40);R(W.dd,i2+4,GY+10,5,5);R(W.top,i2,GY,20,6)}
+  if(D=="palm"){for(i2=0;i2<70;i2+=20){R(W.p[0],i2,GY,20,40);R(W.p[1],i2+3+Math.round(Math.sin(E.t*3+i2)*2),GY+3,8,3)}}
+  var sh=G.shake>0?Math.round(Math.sin(E.t*60)*3):0,rows=G.rows,top=GY-rows*12;
+  for(var r=0;r<rows;r++){var y=GY-(r+1)*12;if(D=="palm"){R(r%2?"#d33":"#f0f0f0",TX+sh,y,28,12);R("#000",TX+sh+27,y,1,12)}else{R(r%2?"#8b5a2b":"#b8864b",TX+sh,y,28,12);R("#6b4220",TX+sh+13,y+3,3,6);R("rgba(0,0,0,.2)",TX+sh,y+11,28,1)}}
+  R(D=="spruce"?"#fff":"#6b4a2a",TX-3+sh,top-4,34,5);if(D=="palm"){R("#ffe45e",TX+6+sh,top-16,16,12);R("#fff7b0",TX+10+sh,top-12,8,6);ctx.save();ctx.globalAlpha=.18;ctx.fillStyle="#ffe45e";ctx.beginPath();var ang=E.t*1.5;ctx.moveTo(TX+14,top-10);ctx.lineTo(TX+14+Math.cos(ang)*220,top-10+Math.sin(ang)*60-20);ctx.lineTo(TX+14+Math.cos(ang)*220,top-10+Math.sin(ang)*60+30);ctx.fill();ctx.restore()}
+  for(var k=E.i;k<G.en.length;k++){var e=G.en[k];if(e.x<-30)continue;var lg=(k==E.i&&G.lunge>0)?Math.sin((G.lunge/.45)*3.14)*14:0;GX.zombie(ctx,E.t,e.x+lg,GY,{skin:G.sk.skin,shirt:G.sk.shirt,pants:G.sk.pants,walk:Math.abs(262-36*(k-E.i)-e.x)>2})}
+  for(k=0;k<E.i;k++){var d=G.en[k];if(d.dead<.5)GX.zombie(ctx,E.t,d.x,GY,{skin:G.sk.skin,shirt:G.sk.shirt,pants:G.sk.pants,rot:d.dead*3,a:1-d.dead*2,fl:d.dead<.15})}
+  E.hero(TX+14+sh,top-4,{flip:true,walking:false,arm:E.state=="anim"?-1.4:-1.2,tool:"bow"});
+  G.arrows.forEach(function(a){ctx.save();ctx.translate(a.px||a.x,a.py||a.y);ctx.rotate(Math.PI+.4);R("#c8a060",-8,-1,14,2);R("#fff",4,-2,4,4);ctx.restore()});
+  if(E.state=="win"&&Math.random()<.05)E.boom(TX+14,top-30,["#ffe45e","#ff4a4a","#5fe6ff"],12)}})};
+
+/* ---------- БУДІВНИЦТВО: піраміда ---------- */
+GM.bld=function(g){var GY=172,CX=238,BW=16;
+ GX.run(g,{hint:"Будуємо піраміду! Правильна відповідь — Стів кладе новий ряд блоків. Помилка — піщана буря.",unit:"ряди",walkMsg:"🧱 Стів бере блоки…",rightMsg:"🧱 Будую!",winMsg:"🔺 Піраміда збудована!",
+ init:function(E){E.g={fly:[],placed:[],sand:[],arm:0,done:0,chest:0,t0:0};E.hx=70;E.hy=GY},
+ stage:function(E){E.after(.7,function(){E.ask("🔺 Наступний ряд піраміди!")})},
+ right:function(E){var G=E.g,r=E.i,N=E.N,w=2*(N-r)-1,x0=CX-w*BW/2,y=GY-(r+1)*BW;G.arm=.6;G.row=r;G.left=w;for(var k=0;k<w;k++)G.fly.push({sx:84,sy:GY-28,tx:x0+k*BW,ty:y,t0:-k*.05,r:r,gold:r==N-1});GX.snd("place")},
+ wrong:function(E){var G=E.g;for(var k=0;k<46;k++)G.sand.push({x:370+Math.random()*60,y:60+Math.random()*110,vx:-260-Math.random()*120,l:1.2});GX.snd("boom")},
+ win:function(E){E.g.chest=1},
+ update:function(E,dt){var G=E.g;if(G.arm>0)G.arm-=dt*.8;G.sand.forEach(function(s){s.x+=s.vx*dt;s.l-=dt});G.sand=G.sand.filter(function(s){return s.l>0});
+  G.fly.forEach(function(b){b.t0+=dt;var p=Math.min(1,Math.max(0,b.t0/.5));b.p=p;if(p>=1&&!b.land){b.land=1;G.placed.push({x:b.tx,y:b.ty,gold:b.gold});E.boom(b.tx+8,b.ty+14,["#e8d58f","#d8c27a","#fff"],4);if(Math.random()<.4)GX.snd("place");G.left--;if(G.left<=0&&b.r===E.i)E.after(.25,function(){E.advance()})}});G.fly=G.fly.filter(function(b){return!b.land});
+  if(E.state=="win"&&Math.random()<dt*7)E.boom(CX+(Math.random()-.5)*40,GY-E.N*BW-6,["#ffe45e","#fff","#ff9b2f"],4)},
+ draw:function(E){var G=E.g,ctx=E.ctx,R=E.R,W=E.WD,fr=E.i/E.N,gr=ctx.createLinearGradient(0,0,0,GY);gr.addColorStop(0,W.s0);gr.addColorStop(1,W.s1);ctx.fillStyle=gr;ctx.fillRect(0,0,360,200);
+  R("#fff2a8",310-fr*200,30+Math.abs(fr-.5)*60,30,30);
+  [[.25,.1,46,60,23],[.55,.14,26,45,17]].forEach(function(L){ctx.fillStyle="rgba(120,70,0,"+L[1]+")";for(var hx=0;hx<360;hx+=6){var hy=GY-L[2]-12*Math.sin((hx+E.t*3*L[0])/L[3])-7*Math.sin(hx/L[4]);ctx.fillRect(hx,Math.round(hy),6,GY-hy)}});
+  for(var i2=0;i2<360;i2+=20){R(W.d,i2,GY,20,30);R(W.dd,i2+4,GY+9,5,5);R(W.top,i2,GY,20,6)}
+  for(var r=0;r<E.N;r++){var w=2*(E.N-r)-1,x0=CX-w*BW/2,y=GY-(r+1)*BW;ctx.globalAlpha=.14;for(var k=0;k<w;k++)R("#fff",x0+k*BW+1,y+1,BW-2,BW-2);ctx.globalAlpha=1}
+  G.placed.forEach(function(b){R(b.gold?"#ffd24a":"#e8d58f",b.x,b.y,BW,BW);R(b.gold?"#c8941a":"#d8c27a",b.x,b.y+BW-3,BW,3);R(b.gold?"#fff2a0":"#f4e8b0",b.x,b.y,BW,2);R("rgba(0,0,0,.15)",b.x+BW-1,b.y,1,BW)});
+  G.fly.forEach(function(b){if(b.t0<0)return;var p=b.p||0,x=b.sx+(b.tx-b.sx)*p,y=b.sy+(b.ty-b.sy)*p-Math.sin(p*3.14)*50;R(b.gold?"#ffd24a":"#e8d58f",x,y,BW,BW);R("#d8c27a",x,y+BW-3,BW,3)});
+  if(G.chest){R("#6b4a2a",CX-60,GY-18,24,18);R("#ffd24a",CX-60,GY-18,24,6);R("#fff",CX-50,GY-10,4,5);ctx.globalAlpha=.25;R("#ffe45e",CX-76,GY-40,56,40);ctx.globalAlpha=1}
+  E.hero(70,GY,{walking:false,arm:G.arm>0?-.5-1*Math.abs(Math.sin(G.arm*10)):-.2,tool:"block"});
+  ctx.globalAlpha=.55;G.sand.forEach(function(s){R("#e8c070",s.x,s.y,10,3)});ctx.globalAlpha=1;if(G.sand.length){ctx.globalAlpha=.2;R("#e8c070",0,0,360,200);ctx.globalAlpha=1}}})};
+
 /* ===== Тема 1. Програмне забезпечення (уроки 1–6) · за підручником Ривкінда та ін., 9 кл. ===== */
 function QQ(q,a,b,c){return {q:q,a:c===undefined?[a,b]:[a,b,c]}}
 
@@ -4499,12 +4662,14 @@ QQ("Яка вкладка з’являється після вибору фіг
 QQ("Якої якості має бути схема в документі?","Читабельної й лаконічної","Дуже дрібної","Без тексту")
 ]};
 
-/* додаємо «Пригоду» в кінець кожного уроку 5–6 класів (після всіх LES) */
-GI5.adv=["🌌","Пригода: шлях до порталу"];
-Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"}))return;L.g.forEach(function(g){if(g.type=="sort")g.hide=true});if(GX.pool(n).length>=6)L.g.push({type:"adv",title:"Пригода: шлях до порталу",items:[]})});
-
-/* підсумкові уроки 5–6 класів: лишається лише великий тест (24 питання) */
-Object.keys(LES).forEach(function(k){var n=+k;if(n>500&&n<700&&LES[n].big&&LES[n].q)LES[n].noq=true});
+/* після всіх LES: по одній ігровій пригоді в уроці 5–6 класів — вид залежить від теми (світу) */
+GX.wkey=function(n){var T=n>600?TP6:TP5,k=n%100,w="cave";T.forEach(function(t){if(k>=t.a&&k<=t.b)w=t.w});return w};
+GI5.adv=["🌌","Пригода"];GI5.dig=["⛏️","Шахта"];GI5.def=["🏰","Оборона"];GI5.boss=["🐉","Бій з босом"];GI5.bld=["🔺","Будівництво"];
+GX.AM={cave:["dig","Шахта: копай до діамантів"],ocean:["def","Оборона маяка від потоплеників"],end:["boss","Бій з Ендер-драконом"],nether:["adv","Пригода: шлях до порталу"],desert:["bld","Будівництво піраміди"],snow:["def","Оборона сніжного форту"]};
+Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"||g.type=="dig"||g.type=="def"||g.type=="boss"||g.type=="bld"}))return;
+ L.g.forEach(function(g){if(g.type=="sort")g.hide=true});var m=GX.AM[GX.wkey(n)]||GX.AM.nether;if(GX.pool(n).length>=8)L.g.push({type:m[0],title:m[1],items:[]})});
+/* підсумкові уроки всіх класів: лишається лише великий тест */
+Object.keys(LES).forEach(function(k){var L=LES[k];if(L.big&&L.q)L.noq=true});
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
