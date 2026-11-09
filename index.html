@@ -8564,7 +8564,8 @@ var SK={
   fly:function(ctx,go,T){var f=Math.sin(T*10)*(go?3:0);ctx.fillStyle="#7a6a8a";ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(-18,-14+f);ctx.lineTo(-24,6);ctx.lineTo(0,8);ctx.fill();ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(-16,16-f);ctx.lineTo(-22,2);ctx.fill();ctx.fillStyle="#2aa5a5";ctx.fillRect(-8,-5,14,10);head(ctx,10,0,14)},let:blk},
  ender:{bg:"#140a22",grid:"rgba(180,100,255,.15)",snk:function(ctx,s,i,C,d){var x=s[0]*C,y=s[1]*C;ctx.fillStyle=i%2?"#7a2fd0":"#9b4dff";ctx.fillRect(x+1,y+1,C-2,C-2);ctx.fillStyle="#2a0f4a";ctx.fillRect(x+3,y+3,4,4);ctx.fillRect(x+C-8,y+C-8,4,4);if(!i){ctx.fillStyle="#ff5bf0";ctx.fillRect(x+C*.25+d[0]*3,y+C*.3+d[1]*3,4,4);ctx.fillRect(x+C*.6+d[0]*3,y+C*.3+d[1]*3,4,4)}},let:blk}
 };
-function sk(n){return function(g){GX.sk=SK[n];return GM["_"+n](g)}}
+var HINT={mcart:"Міняй рейку ◀ ▶ (або свайп). Об’їжджай TNT і заїдь на рейку з ПРАВИЛЬНОЮ літерою.",chick:"Тисни стрілки (або свайп): курка робить крок. Перейди колії з вагонетками й стрибни на ділянку з ПРАВИЛЬНОЮ літерою.",bow:"Рухай Стіва ◀ ▶ (або тягни пальцем), стань під потрібним кріпером і тисни 🔥 (або пробіл). Збий ПРАВИЛЬНУ літеру!",elytra:"▲ (або пробіл, або торкнись поля) — Стів злітає, ▼ — пікірує. Пролети крізь отвір між скелями з ПРАВИЛЬНОЮ літерою!",ender:"Змійка: свайп або кнопки. З’їж блок з ПРАВИЛЬНОЮ літерою. Стіни й власний хвіст — мінус ❤️."};
+function sk(n){return function(g){GX.sk=SK[n];var r=GM["_"+n](g);var p=document.querySelector(".card p.mut");if(p&&HINT[n])p.textContent=HINT[n];return r}}
 ["mcart:race","chick:frog","bow:inv","elytra:flap","ender:snake"].forEach(function(p){var a=p.split(":");GM["_"+a[0]]=GM[a[1]];GM[a[0]]=sk(a[0])});
 
 /* ---------- Крот-бам ---------- */
@@ -8584,6 +8585,11 @@ GM.whack=function(g){var N=6,qs=A.getQs(CUR9,N);if(qs.length<2)return fin9(0,1);
   var bw=cv.width-20;ctx.fillStyle="#000";ctx.fillRect(10,cv.height-12,bw,6);ctx.fillStyle="#fbbf24";ctx.fillRect(10,cv.height-12,Math.max(0,bw*tl/MAXT),6)}
  A.loop(cv,upd,draw)};
 
+var st=document.createElement("style");var G="body.g5 ";
+st.textContent=G+".arp{background:#c6c6c6!important;border:3px solid #373737!important;border-radius:0!important;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #8b8b8b}"+G+".aq{color:#222!important}"+G+".ao{color:#222!important}"+G+".ao b{border-radius:0!important;border:2px solid #000;color:#111!important;box-shadow:inset 2px 2px 0 rgba(255,255,255,.45),inset -2px -2px 0 rgba(0,0,0,.25)}"+
+G+".arc{border:4px solid #373737!important;border-radius:0!important;box-shadow:0 0 0 3px #1a1a1a!important;image-rendering:pixelated}"+
+G+".adp button{background:#8b8b8b!important;border:3px solid #373737!important;border-radius:0!important;color:#fff!important;box-shadow:inset 3px 3px 0 #c6c6c6,inset -3px -3px 0 #555!important;text-shadow:2px 2px 0 #3a3a3a}"+G+".adp button:active{background:#6e6e6e!important}"+G+".adp .f{background:#5aa02c!important;box-shadow:inset 3px 3px 0 #8fd25a,inset -3px -3px 0 #2f6a14!important}";
+document.head.appendChild(st);
 /* ---------- інфо, іконки, розкладка по уроках ---------- */
 GI5.mcart=["🚃","Мінекарт: обери рейку"];GI5.chick=["🐔","Курка: перейди дорогу"];GI5.bow=["🏹","Лучник: стрільба по кріперах"];GI5.elytra=["🪂","Елітра: політ крізь скелі"];GI5.ender=["🐍","Ендер-змія"];GI5.whack=["🔨","Крот-бам: торкнись правильного"];
 var TT={mcart:"Мінекарт: гонка рейками",chick:"Курка на дорозі",bow:"Лучник проти кріперів",elytra:"Політ на елітрах",whack:"Крот-бам: правильна істота",ender:"Ендер-змія"};
