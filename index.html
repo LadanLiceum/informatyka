@@ -2192,6 +2192,175 @@ GM.bld=function(g){var GY=172,CX=238,BW=16;
   E.hero(70,GY,{walking:false,arm:G.arm>0?-.5-1*Math.abs(Math.sin(G.arm*10)):-.2,tool:"block"});
   ctx.globalAlpha=.55;G.sand.forEach(function(s){R("#e8c070",s.x,s.y,10,3)});ctx.globalAlpha=1;if(G.sand.length){ctx.globalAlpha=.2;R("#e8c070",0,0,360,200);ctx.globalAlpha=1}}})};
 
+/* ===== gx11.js · великі ігри 11 класу: Біг, Свайп, Слово, Злам, Піксель-розкриття ===== */
+var GX11={};
+GX11.esc=function(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML};
+GX11.el=function(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+GX11.alive=function(id){return !!document.getElementById(id)};
+/* терміни для «Слова»: окремі кириличні слова з пар «поняття — значення» */
+GX11.terms=function(n){var L=LES[n],o=[],seen={};((L&&L.g)||[]).forEach(function(g){if(g.type!="pairs")return;g.items.forEach(function(x){var w=String(x[0]).trim().toLowerCase();if(/^[а-щьюяіїєґ’'-]{4,12}$/.test(w)&&!seen[w]){seen[w]=1;o.push({w:w,d:x[1]})}})});return o};
+
+/* ---------- стилі ---------- */
+(function(){var s=document.createElement("style");s.textContent=
+".r11q,.s11q{font-weight:700;margin:6px 0 8px;white-space:pre-line;line-height:1.35}"+
+".r11cv{width:100%;max-width:380px;display:block;margin:0 auto;border-radius:16px;background:#0a0618;touch-action:none}"+
+".r11b{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:380px;margin:8px auto 0}"+
+".r11b button{min-height:84px;padding:8px 6px;border-radius:14px;font-size:12.5px;line-height:1.25;font-weight:700;border:2px solid var(--ln)!important;background:#161622!important;color:var(--tx)!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;word-break:break-word}"+
+".r11b button b{font-size:16px;opacity:.9}.r11b button.on{border-color:var(--c)!important;box-shadow:0 0 14px var(--c)}"+
+".r11b button.ok{background:#0f3d2a!important;border-color:#3ddc84!important}.r11b button.no{background:#4a1220!important;border-color:#ff4d6d!important}"+
+".s11tm{height:6px;border-radius:99px;background:#0c0c12;overflow:hidden;margin:4px 0 12px}.s11tm i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--a1),var(--a2));transform-origin:left}"+
+".s11k{position:relative;height:250px;margin:0 auto;max-width:360px;touch-action:pan-y;user-select:none}"+
+".s11card{position:absolute;inset:0;border-radius:22px;padding:22px 18px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;font-weight:700;line-height:1.35;background:linear-gradient(160deg,#23233a,#14141f);border:2px solid var(--ln);box-shadow:0 14px 36px rgba(0,0,0,.5);cursor:grab;white-space:pre-line;transition:transform .25s,border-color .2s}"+
+".s11card.drag{transition:none;cursor:grabbing}.s11card.ok{border-color:#3ddc84}.s11card.no{border-color:#ff4d6d}"+
+".s11card .stp{position:absolute;top:16px;font-size:20px;font-weight:900;letter-spacing:2px;border:3px solid;border-radius:10px;padding:2px 10px;opacity:0;transform:rotate(-12deg)}"+
+".s11card .stp.y{right:16px;color:#3ddc84;transform:rotate(12deg)}.s11card .stp.n{left:16px;color:#ff4d6d}"+
+".s11b{display:flex;gap:10px;max-width:360px;margin:14px auto 0}.s11b button{flex:1;min-height:52px;font-weight:800;font-size:16px;border-radius:16px}"+
+".s11fb{min-height:40px;text-align:center;font-size:13px;color:var(--mt);margin-top:8px;white-space:pre-line}"+
+".w11g{display:flex;flex-direction:column;gap:6px;align-items:center;margin:10px 0}.w11r{display:flex;gap:5px}"+
+".w11c{width:34px;height:40px;display:flex;align-items:center;justify-content:center;border:2px solid var(--ln);border-radius:8px;font-weight:800;font-size:18px;text-transform:uppercase;background:#101018}"+
+".w11c.g{background:#1f7a4a;border-color:#3ddc84}.w11c.y{background:#8a6a12;border-color:#ffc83d}.w11c.x{background:#26262f;color:var(--mt)}"+
+".w11f{display:flex;gap:8px;max-width:380px;margin:6px auto}.w11f input{flex:1 1 0;min-width:0;width:auto;font-size:18px;text-transform:uppercase;letter-spacing:2px;padding:10px}.w11f button{min-width:96px}"+
+".w11d{background:#101018;border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin:6px 0;font-size:14px}"+
+".h11{background:#020a04;border:1px solid #14532d;border-radius:14px;padding:10px;font-family:'Courier New',monospace;color:#4ade80}"+
+".h11 canvas{display:block;width:100%;height:70px;border-radius:8px;background:#000}"+
+".h11hd{display:flex;justify-content:space-between;font-size:12px;margin:8px 0 4px;letter-spacing:1px}.h11hd b{color:#fff}.h11hd .t b{color:#ff4d6d}"+
+".h11bar{height:6px;background:#06240f;border-radius:4px;overflow:hidden;margin-bottom:4px}.h11bar i{display:block;height:100%;width:0;background:#4ade80;transition:width .5s}.h11bar.t i{background:#ff4d6d}"+
+".h11l{min-height:74px;font-size:13px;line-height:1.45;white-space:pre-line;margin:8px 0;color:#86efac}.h11l em{color:#fff;font-style:normal}.h11l .e{color:#ff4d6d}"+
+".h11o button{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:8px!important;background:#03170a!important;color:#86efac!important;border:1px solid #14532d!important;font-family:inherit;font-size:13px;line-height:1.35}"+
+".h11o button:active{background:#0a3a1c!important}.h11o button.ok{background:#14532d!important;color:#fff!important}.h11o button.no{background:#4a1220!important;color:#fff!important;border-color:#ff4d6d!important}"+
+".p11cv{width:100%;max-width:340px;display:block;margin:0 auto 10px;border-radius:14px;image-rendering:pixelated;border:2px solid var(--ln)}"+
+".p11o button{display:block;width:100%;margin:6px 0;min-height:46px;text-align:left;padding:10px 14px;border-radius:14px}.p11o button.ok{background:#0f3d2a!important;border-color:#3ddc84!important}.p11o button.no{background:#4a1220!important;border-color:#ff4d6d!important}";
+document.head.appendChild(s)})();
+(function(){var s=document.createElement("style");s.textContent=
+"body.g11 .mb .ic{display:none}"+
+"body.g11 .fun{background:var(--cd)!important;color:var(--tx)!important;border:1px solid var(--ln)!important;border-radius:16px!important;box-shadow:none!important;padding:14px!important;margin:8px 0}body.g11 .fun b,body.g11 .fun *{color:var(--tx)!important}"+
+"body.g11 .blk{background:#1d1d29!important;color:var(--tx)!important;border:1px solid var(--ln)!important;border-radius:14px!important;box-shadow:none!important;text-shadow:none!important;font-weight:700}"+
+"body.g11 .blk:hover,body.g11 .blk:active{border-color:var(--a1)!important}body.g11 .blk.ok,body.g11 .blk.good{background:#0f3d2a!important;border-color:#3ddc84!important}body.g11 .blk.bad,body.g11 .blk.no{background:#4a1220!important;border-color:#ff4d6d!important}";
+document.head.appendChild(s)})();
+
+/* ---------- 1. БІГ ---------- */
+GM.run=function(g){var pool=shuffle(GX.pool(CUR9)),N=Math.min(g.boss?12:9,pool.length),qs=pool.slice(0,N),i=0,sc=0,hp=3,combo=0,W=340,H=250,T=9,
+ lane=1,px=1,gy=0,state="run",hold=0,off=0,fin=false,stars=[],parts=[],shk=0,opts=[],cor=0,choice=-1;
+ var COL=["#ff3d81","#22d3ee","#ffc83d"];
+ fr9(g.title,"Торкайся колонок із відповідями — біжи в правильну. Коли ворота долетять до тебе, вибір буде зараховано.","<div class='r11q' id='r11q'></div><canvas id='r11' width='"+W+"' height='"+H+"' class='r11cv'></canvas><div class='r11b' id='r11b'></div>");
+ var cv=document.getElementById("r11"),cx=cv.getContext("2d"),qb=document.getElementById("r11q"),bb=document.getElementById("r11b"),last=0;
+ for(var k=0;k<40;k++)stars.push({x:Math.random()*W,y:Math.random()*H*.45,r:Math.random()*1.3+.3});
+ function hud(){gs9("Життя: "+hp+" · серія ×"+combo+" · "+Math.min(i+1,N)+"/"+N)}
+ function laneX(l,y){var sp=34+(y/H)*74;return W/2+(l-1)*sp}
+ function setLane(l){if(state!="run")return;lane=l;Array.prototype.forEach.call(bb.children,function(b,j){b.classList.toggle("on",j==l)})}
+ function load(){var q=qs[i];opts=shuffle(q.a.slice(0,3));if(opts.length<3)opts.push("Жодне з наведеного");cor=opts.indexOf(q.a[0]);gy=0;state="run";choice=-1;hud();
+  qb.textContent=q.q;bb.innerHTML="";opts.forEach(function(a,j){var b=GX11.el("button","",null);b.style.setProperty("--c",COL[j]);var l=GX11.el("b","","ABC".charAt(j));b.appendChild(l);b.appendChild(document.createTextNode(a));b.onclick=function(){setLane(j)};bb.appendChild(b)});setLane(1)}
+ function end(){if(fin)return;fin=true;setTimeout(function(){if(GX11.alive("r11"))fin9(sc,N)},900)}
+ function resolve(){var ok=lane==cor;state="hit";hold=1;choice=lane;
+  Array.prototype.forEach.call(bb.children,function(b,j){b.classList.remove("on");if(j==cor)b.classList.add("ok");else if(j==lane)b.classList.add("no")});
+  if(ok){sc++;combo++;GX.snd("ok");for(var k=0;k<22;k++)parts.push({x:laneX(lane,H-40),y:H-50,vx:(Math.random()-.5)*160,vy:-Math.random()*140,l:.9,c:COL[k%3]})}
+  else{hp--;combo=0;GX.snd("bad");shk=.4;GX.flash()}hud()}
+ function draw(dt){cx.save();if(shk>0){shk-=dt;cx.translate((Math.random()-.5)*8,(Math.random()-.5)*8)}
+  var g1=cx.createLinearGradient(0,0,0,H);g1.addColorStop(0,"#1a0b3d");g1.addColorStop(.5,"#3b0f5c");g1.addColorStop(1,"#0a0618");cx.fillStyle=g1;cx.fillRect(-10,-10,W+20,H+20);
+  stars.forEach(function(s){cx.fillStyle="rgba(255,255,255,.7)";cx.fillRect(s.x,s.y,s.r,s.r)});
+  var hy=H*.3;cx.fillStyle="#ff3d81";cx.beginPath();cx.arc(W/2,hy,32,Math.PI,0);cx.fill();cx.fillStyle="#1a0b3d";for(var k=0;k<4;k++)cx.fillRect(W/2-34,hy-22+k*7,68,2+k);
+  cx.fillStyle="#120826";cx.beginPath();cx.moveTo(laneX(0,0)-17,0);cx.lineTo(laneX(2,0)+17,0);cx.lineTo(laneX(2,H)+57,H);cx.lineTo(laneX(0,H)-57,H);cx.closePath();cx.save();cx.translate(0,hy);cx.scale(1,1);cx.restore();cx.fill();
+  cx.strokeStyle="rgba(255,255,255,.18)";cx.lineWidth=2;for(var l=0;l<4;l++){var a=l-.5;cx.beginPath();cx.moveTo(W/2+(a-1)*34,0);cx.lineTo(W/2+(a-1)*108,H);cx.stroke()}
+  cx.strokeStyle="rgba(34,211,238,.35)";cx.lineWidth=1;for(var m=0;m<9;m++){var yy=((m*32+off)%288);var ph=yy/288;var y2=hy+ph*ph*(H-hy);cx.beginPath();cx.moveTo(laneX(0,y2)-60*ph-8,y2);cx.lineTo(laneX(2,y2)+60*ph+8,y2);cx.stroke()}
+  if(state=="run"||state=="hit"){for(var j=0;j<3;j++){var y=Math.min(gy,H-40),sc2=.35+y/H*.65,x=laneX(j,y),w=34*sc2*1.9,h=44*sc2,col=COL[j];
+    cx.globalAlpha=state=="hit"?(j==cor?1:(j==choice?1:.3)):1;
+    cx.fillStyle=state=="hit"?(j==cor?"#3ddc84":(j==choice?"#ff4d6d":col)):col;cx.shadowColor=cx.fillStyle;cx.shadowBlur=14;
+    cx.fillRect(x-w/2,y-h,6*sc2,h);cx.fillRect(x+w/2-6*sc2,y-h,6*sc2,h);cx.fillRect(x-w/2,y-h,w,7*sc2);cx.shadowBlur=0;
+    cx.fillStyle="#fff";cx.font="800 "+Math.round(20*sc2)+"px sans-serif";cx.textAlign="center";cx.fillText("ABC".charAt(j),x,y-h*.35);cx.globalAlpha=1}}
+  var py=H-34,x2=laneX(px,py);cx.shadowColor="#ff3d81";cx.shadowBlur=18;
+  cx.fillStyle="rgba(255,61,129,.35)";cx.fillRect(x2-6,py+10,12,26+Math.sin(off/4)*3);cx.shadowBlur=0;
+  cx.fillStyle="#fff";cx.beginPath();cx.arc(x2,py-14,8,0,7);cx.fill();cx.fillStyle="#ff3d81";cx.fillRect(x2-9,py-5,18,20);
+  cx.fillStyle="#22d3ee";var sw=Math.sin(off/3)*6;cx.fillRect(x2-8+sw,py+15,6,12);cx.fillRect(x2+2-sw,py+15,6,12);
+  parts.forEach(function(p){cx.globalAlpha=Math.max(0,p.l);cx.fillStyle=p.c;cx.fillRect(p.x,p.y,4,4)});cx.globalAlpha=1;cx.restore()}
+ function tick(ts){if(!GX11.alive("r11"))return;var dt=Math.min(.05,(ts-last)/1000||0);last=ts;off+=dt*140;px+=(lane-px)*Math.min(1,dt*12);
+  parts.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=300*dt;p.l-=dt});parts=parts.filter(function(p){return p.l>0});
+  if(state=="run"){gy+=(H-40)/T*dt;if(gy>=H-40){gy=H-40;resolve()}}
+  else if(state=="hit"){hold-=dt;if(hold<=0&&!fin){if(hp<=0){state="over";qb.textContent="Забіг завершено. Рахунок: "+sc+" з "+N;end()}else{i++;if(i>=N){state="over";qb.textContent="Фініш! Рахунок: "+sc+" з "+N;end()}else load()}}}
+  draw(dt);requestAnimationFrame(tick)}
+ var sx=null;cv.addEventListener("pointerdown",function(e){sx=e.clientX});cv.addEventListener("pointerup",function(e){if(sx==null)return;var d=e.clientX-sx;sx=null;if(d>25)setLane(Math.min(2,lane+1));else if(d<-25)setLane(Math.max(0,lane-1))});
+ var kd=function(e){if(!GX11.alive("r11")){document.removeEventListener("keydown",kd);return}if(e.key=="ArrowLeft")setLane(Math.max(0,lane-1));if(e.key=="ArrowRight")setLane(Math.min(2,lane+1))};document.addEventListener("keydown",kd);
+ load();requestAnimationFrame(tick)};
+
+/* ---------- 2. СВАЙП ---------- */
+GM.swp=function(g){var pool=shuffle(GX.pool(CUR9)),N=Math.min(g.boss?14:10,pool.length),cards=[],i=0,sc=0,fin=false,busy=false,tm=null,TL=10;
+ pool.slice(0,N).forEach(function(q){var c=q.a[0],r=Math.random()<.5,txt,tr;
+  if(/^Правда чи хибно\?/.test(q.q)){txt=q.q.replace(/^Правда чи хибно\?\n?/,"");tr=c=="Правда";cards.push({t:txt,tr:tr,ans:tr?"Це правда":"Це хибне твердження",full:null});return}
+  var cand=r?c:q.a[1+Math.floor(Math.random()*(q.a.length-1))],ok=cand===c;
+  txt=q.q.indexOf("▁▁▁")>=0?q.q.replace("▁▁▁","«"+cand+"»"):q.q+"\n→ «"+cand+"»";
+  cards.push({t:txt,tr:ok,ans:ok?"Це факт":"Це міф. Правильно: «"+c+"»"})});
+ N=cards.length;
+ fr9(g.title,"Факт чи міф? Тягни картку праворуч (факт) або ліворуч (міф). На кожну картку — 10 секунд.","<div class='s11tm'><i id='s11i'></i></div><div class='s11k' id='s11k'></div><div class='s11b'><button id='s11n'>← Міф</button><button class='pri' id='s11y'>Факт →</button></div><div class='s11fb' id='s11f'></div>");
+ var box=document.getElementById("s11k"),fb=document.getElementById("s11f"),bar=document.getElementById("s11i"),cur=null,t0=0;
+ function hud(){gs9((i+1)+" / "+N+" · вірно: "+sc)}
+ function show(){if(i>=N)return finish();hud();busy=false;fb.textContent="";box.innerHTML="";var c=cards[i],d=GX11.el("div","s11card","");d.appendChild(document.createTextNode(c.t));var sy=GX11.el("span","stp y","ФАКТ"),sn=GX11.el("span","stp n","МІФ");d.appendChild(sy);d.appendChild(sn);box.appendChild(d);cur=d;
+  var sx=null,dx=0;d.addEventListener("pointerdown",function(e){if(busy)return;sx=e.clientX;d.classList.add("drag");try{d.setPointerCapture(e.pointerId)}catch(_){}});
+  d.addEventListener("pointermove",function(e){if(sx==null)return;dx=e.clientX-sx;d.style.transform="translateX("+dx+"px) rotate("+dx/14+"deg)";sy.style.opacity=Math.max(0,Math.min(1,dx/90));sn.style.opacity=Math.max(0,Math.min(1,-dx/90))});
+  d.addEventListener("pointerup",function(){if(sx==null)return;sx=null;d.classList.remove("drag");if(dx>90)answer(true);else if(dx<-90)answer(false);else{d.style.transform="";sy.style.opacity=0;sn.style.opacity=0}dx=0});
+  t0=Date.now();bar.style.transition="none";bar.style.transform="scaleX(1)";void bar.offsetWidth;bar.style.transition="transform "+TL+"s linear";bar.style.transform="scaleX(0)";clearTimeout(tm);tm=setTimeout(function(){answer(null)},TL*1000)}
+ function answer(v){if(busy||fin)return;busy=true;clearTimeout(tm);bar.style.transition="none";var c=cards[i],ok=v===c.tr;
+  if(v!==null){cur.style.transform="translateX("+(v?260:-260)+"px) rotate("+(v?18:-18)+"deg)";cur.style.opacity=".0";cur.style.transition="transform .3s,opacity .3s"}
+  if(ok){sc++;GX.snd("ok");cur.classList.add("ok")}else{GX.snd("bad");if(v===null){cur.classList.add("no")}}
+  fb.textContent=(v===null?"Час вийшов. ":ok?"Вірно! ":"Ні. ")+c.ans;hud();
+  setTimeout(function(){i++;show()},ok?650:1700)}
+ function finish(){if(fin)return;fin=true;box.innerHTML="";fb.textContent="Готово: "+sc+" з "+N;setTimeout(function(){fin9(sc,N)},700)}
+ document.getElementById("s11n").onclick=function(){answer(false)};document.getElementById("s11y").onclick=function(){answer(true)};
+ show()};
+
+/* ---------- 3. СЛОВО ---------- */
+GM.wrd=function(g){var T=shuffle(GX11.terms(CUR9)),R=Math.min(4,T.length),r=0,sc=0,MAX=6,fin=false,row=0,w,words=T.slice(0,R);
+ fr9(g.title,"Відгадай термін за описом. У кожній спробі літери підсвічуються: зелена — на місці, жовта — є в слові, сіра — немає. Перша літера вже відкрита.","<div class='w11d' id='w11d'></div><div class='w11g' id='w11g'></div><div class='w11f'><input id='w11i' autocomplete='off' autocapitalize='off' spellcheck='false'><button class='pri' id='w11b'>Перевірити</button></div><p class='mut' id='w11m'></p>");
+ var gr=document.getElementById("w11g"),inp=document.getElementById("w11i"),msg=document.getElementById("w11m");
+ function hud(){gs9("Слово "+(r+1)+" / "+R+" · вірно: "+sc)}
+ function load(){hud();w=words[r];row=0;gr.innerHTML="";document.getElementById("w11d").textContent="Опис: "+w.d;inp.value="";inp.maxLength=w.w.length;inp.placeholder=w.w.charAt(0).toUpperCase()+" … ("+w.w.length+" літер)";msg.textContent="";
+  for(var k=0;k<MAX;k++){var rw=GX11.el("div","w11r","");for(var j=0;j<w.w.length;j++)rw.appendChild(GX11.el("div","w11c",k==0&&j==0?w.w.charAt(0):""));gr.appendChild(rw)}inp.disabled=false;inp.focus()}
+ function paint(guess){var res=[],left={},k;for(k=0;k<w.w.length;k++)if(guess.charAt(k)!=w.w.charAt(k))left[w.w.charAt(k)]=(left[w.w.charAt(k)]||0)+1;
+  for(k=0;k<w.w.length;k++){if(guess.charAt(k)==w.w.charAt(k))res.push("g");else if(left[guess.charAt(k)]>0){res.push("y");left[guess.charAt(k)]--}else res.push("x")}
+  var rw=gr.children[row];for(k=0;k<w.w.length;k++){var c=rw.children[k];c.textContent=guess.charAt(k);c.className="w11c "+res[k]}}
+ function next(win){inp.disabled=true;if(win){sc++;GX.snd("ok");msg.textContent="Вірно! "+w.w.toUpperCase()}else{GX.snd("bad");msg.textContent="Не вдалося. Це було: "+w.w.toUpperCase()}hud();
+  setTimeout(function(){r++;if(r>=R){if(!fin){fin=true;fin9(sc,R)}}else load()},1500)}
+ function go(){if(inp.disabled)return;var gs=inp.value.trim().toLowerCase();if(gs.length!=w.w.length){msg.textContent="Потрібно літер: "+w.w.length;GX.shake(inp);return}msg.textContent="";paint(gs);inp.value="";if(gs==w.w)return next(true);row++;if(row>=MAX)next(false);else inp.focus()}
+ document.getElementById("w11b").onclick=go;inp.addEventListener("keydown",function(e){if(e.key=="Enter")go()});load()};
+
+/* ---------- 4. ЗЛАМ ---------- */
+GM.hck=function(g){var pool=shuffle(GX.pool(CUR9)),N=Math.min(g.boss?12:9,pool.length),qs=pool.slice(0,N),i=0,sc=0,tr=0,fin=false,busy=false,TR=26;
+ fr9(g.title,"Пройди шари захисту: правильна відповідь відкриває доступ, помилка підвищує рівень відстеження. Дійдеш до 100 % — тебе виявлено.","<div class='h11'><canvas id='h11c' width='340' height='70'></canvas><div class='h11hd'><span>ДОСТУП <b id='h11p'>0%</b></span><span class='t'>ВІДСТЕЖЕННЯ <b id='h11t'>0%</b></span></div><div class='h11bar'><i id='h11pb'></i></div><div class='h11bar t'><i id='h11tb'></i></div><div class='h11l' id='h11l'></div><div class='h11o' id='h11o'></div></div>");
+ var cv=document.getElementById("h11c"),cx=cv.getContext("2d"),lg=document.getElementById("h11l"),oo=document.getElementById("h11o"),cols=[],last=0,CH="01アイウエオカキクケコサシスセソ#$%";
+ for(var k=0;k<28;k++)cols.push({y:Math.random()*70,v:30+Math.random()*60});
+ function rain(ts){if(!GX11.alive("h11c"))return;var dt=Math.min(.06,(ts-last)/1000||0);last=ts;cx.fillStyle="rgba(0,0,0,.18)";cx.fillRect(0,0,340,70);cx.font="12px monospace";
+  cols.forEach(function(c,k){c.y+=c.v*dt;if(c.y>80){c.y=-10;c.v=30+Math.random()*60}cx.fillStyle=tr>=68?"#ff4d6d":"#4ade80";cx.fillText(CH.charAt(Math.floor(Math.random()*CH.length)),k*12,c.y)});requestAnimationFrame(rain)}
+ requestAnimationFrame(rain);
+ function hud(){document.getElementById("h11p").textContent=Math.round(sc/N*100)+"%";document.getElementById("h11t").textContent=Math.min(100,tr)+"%";document.getElementById("h11pb").style.width=(sc/N*100)+"%";document.getElementById("h11tb").style.width=Math.min(100,tr)+"%";gs9("Шар "+Math.min(i+1,N)+" / "+N)}
+ function type(t,cb){var k=0;lg.textContent="";var tm=setInterval(function(){if(!GX11.alive("h11l")){clearInterval(tm);return}k+=3;lg.textContent=t.slice(0,k);if(k>=t.length){clearInterval(tm);cb&&cb()}},14)}
+ function show(){if(i>=N||tr>=100)return end();hud();busy=false;oo.innerHTML="";var q=qs[i];var opts=shuffle(q.a.slice(0,3));
+  type("> ШАР ЗАХИСТУ "+(i+1)+"/"+N+"\n> "+q.q+"\n> оберіть команду:",function(){opts.forEach(function(a,j){var b=GX11.el("button","","["+(j+1)+"] "+a);b.onclick=function(){pick(b,a===q.a[0],q)};oo.appendChild(b)})})}
+ function pick(b,ok,q){if(busy)return;busy=true;Array.prototype.forEach.call(oo.children,function(x){x.disabled=true});
+  if(ok){sc++;b.classList.add("ok");GX.snd("ok");lg.textContent="> ДОСТУП ДОЗВОЛЕНО. Шар пройдено."}
+  else{tr+=TR;b.classList.add("no");GX.snd("bad");GX.shake(cv);Array.prototype.forEach.call(oo.children,function(x){if(x.textContent.slice(4)===q.a[0])x.classList.add("ok")});lg.innerHTML="";var sp=GX11.el("span","e","> ПОМИЛКА. Сигнал відстежено. Правильно: "+q.a[0]);lg.appendChild(sp)}
+  hud();setTimeout(function(){i++;show()},ok?800:1900)}
+ function end(){if(fin)return;fin=true;hud();var win=tr<100;lg.textContent=win?"> СИСТЕМУ ВЗЛАМАНО. Доступ отримано: "+sc+" з "+N+".":"> ЗВ’ЯЗОК ВТРАЧЕНО. Тебе виявили. Пройдено шарів: "+sc+" з "+N+".";oo.innerHTML="";setTimeout(function(){fin9(sc,N)},1600)}
+ show()};
+
+/* ---------- 5. ПІКСЕЛЬ-РОЗКРИТТЯ ---------- */
+GX11.scene=function(c,k){var x=c.getContext("2d"),W=c.width,H=c.height,i,g;
+ if(k==0){g=x.createLinearGradient(0,0,0,H*.6);g.addColorStop(0,"#2b1055");g.addColorStop(.5,"#d4418e");g.addColorStop(1,"#ffb347");x.fillStyle=g;x.fillRect(0,0,W,H);x.fillStyle="#fff2b0";x.beginPath();x.arc(W*.5,H*.55,H*.17,0,7);x.fill();x.fillStyle="#0b3d6b";x.fillRect(0,H*.6,W,H*.4);for(i=0;i<9;i++){x.fillStyle="rgba(255,225,150,"+(.7-i*.07)+")";x.fillRect(W*.5-(H*.15-i*3),H*.62+i*6,(H*.3-i*6),3)}}
+ else if(k==1){g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#05071a");g.addColorStop(1,"#1d2a6b");x.fillStyle=g;x.fillRect(0,0,W,H);for(i=0;i<40;i++){x.fillStyle="#fff";x.fillRect(Math.random()*W,Math.random()*H*.5,1.5,1.5)}x.fillStyle="#f5f1c8";x.beginPath();x.arc(W*.8,H*.2,H*.09,0,7);x.fill();
+  for(i=0;i<9;i++){var bw=W/9,bh=H*(.25+Math.random()*.4);x.fillStyle="#0b0f2e";x.fillRect(i*bw,H-bh,bw-2,bh);for(var j=0;j<14;j++){if(Math.random()<.5){x.fillStyle="#ffd36b";x.fillRect(i*bw+4+(j%3)*7,H-bh+6+Math.floor(j/3)*12,4,6)}}}}
+ else if(k==2){g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#7ec8ff");g.addColorStop(1,"#e6f7ff");x.fillStyle=g;x.fillRect(0,0,W,H);var cl=["#6c7fa8","#44587f","#2a3a5e"];for(i=0;i<3;i++){x.fillStyle=cl[i];x.beginPath();x.moveTo(0,H);var px=-W*.1;while(px<W*1.1){x.lineTo(px,H*(.5+i*.14)-Math.random()*H*.18);px+=W*.12}x.lineTo(W,H);x.closePath();x.fill()}x.fillStyle="#fff";x.beginPath();x.arc(W*.8,H*.2,H*.08,0,7);x.fill()}
+ else{g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,"#0d0221");g.addColorStop(1,"#541388");x.fillStyle=g;x.fillRect(0,0,W,H);g=x.createLinearGradient(0,H*.2,0,H*.6);g.addColorStop(0,"#ffe600");g.addColorStop(1,"#ff2a6d");x.fillStyle=g;x.beginPath();x.arc(W/2,H*.5,H*.28,Math.PI,0);x.arc(W/2,H*.5,H*.28,0,Math.PI);x.fill();x.fillStyle="#0d0221";for(i=0;i<6;i++)x.fillRect(W/2-H*.3,H*.4+i*9,H*.6,1+i);x.fillStyle="#0d0221";x.fillRect(0,H*.6,W,H*.4);x.strokeStyle="#22d3ee";x.lineWidth=1;for(i=0;i<8;i++){x.beginPath();x.moveTo(W/2+(i-3.5)*6,H*.6);x.lineTo(W/2+(i-3.5)*W*.14,H);x.stroke();x.beginPath();x.moveTo(0,H*.6+i*i*1.2);x.lineTo(W,H*.6+i*i*1.2);x.stroke()}}};
+GM.pxl=function(g){var pool=shuffle(GX.pool(CUR9)),N=Math.min(g.boss?12:9,pool.length),qs=pool.slice(0,N),i=0,sc=0,fin=false,busy=false,K0=32,k=K0,sk=Math.floor(Math.random()*4),NM=["Захід сонця над морем","Нічне місто","Гори","Синтвейв"];
+ fr9(g.title,"З кожною правильною відповіддю картинка стає чіткішою — менше пікселів, більша роздільна здатність. Розкрий її повністю!","<canvas id='p11c' width='320' height='240' class='p11cv'></canvas><div class='r11q' id='p11q'></div><div class='p11o' id='p11o'></div>");
+ var cv=document.getElementById("p11c"),cx=cv.getContext("2d"),src=document.createElement("canvas");src.width=160;src.height=120;GX11.scene(src,sk);
+ var qb=document.getElementById("p11q"),oo=document.getElementById("p11o"),sm=document.createElement("canvas");
+ function draw(kk){kk=Math.max(1,kk);var w=Math.max(1,Math.round(320/kk)),h=Math.max(1,Math.round(240/kk));sm.width=w;sm.height=h;var s=sm.getContext("2d");s.imageSmoothingEnabled=true;s.drawImage(src,0,0,w,h);cx.imageSmoothingEnabled=false;cx.drawImage(sm,0,0,320,240)}
+ function anim(from,to){var t=0,id=setInterval(function(){t+=1;var kk=from+(to-from)*(t/10);draw(kk);if(t>=10||!GX11.alive("p11c"))clearInterval(id)},40)}
+ function hud(){var px=Math.round(320/k)*Math.round(240/k);gs9("Питання "+Math.min(i+1,N)+" / "+N+" · вірно: "+sc+" · блоків: "+px)}
+ function show(){if(i>=N)return end();busy=false;hud();var q=qs[i];qb.textContent=q.q;oo.innerHTML="";shuffle(q.a.slice(0,3)).forEach(function(a){var b=GX11.el("button","blk",a);b.onclick=function(){pick(b,a===q.a[0],q)};oo.appendChild(b)})}
+ function pick(b,ok,q){if(busy)return;busy=true;Array.prototype.forEach.call(oo.children,function(x){x.disabled=true;if(x.textContent===q.a[0])x.classList.add("ok")});
+  if(ok){sc++;GX.snd("ok");var nk=sc>=N?1:Math.max(1,Math.round(K0*Math.pow(1/K0,sc/N)));anim(k,nk);k=nk}else{b.classList.add("no");GX.snd("bad");GX.shake(cv)}
+  hud();setTimeout(function(){i++;show()},ok?900:1500)}
+ function end(){if(fin)return;fin=true;oo.innerHTML="";qb.textContent="Картинка: «"+NM[sk]+"». Розкрито на "+Math.round(sc/N*100)+" %.";if(sc>=N)draw(1);setTimeout(function(){fin9(sc,N)},1800)}
+ draw(K0);show()};
+
 /* ===== Тема 1. Програмне забезпечення (уроки 1–6) · за підручником Ривкінда та ін., 9 кл. ===== */
 function QQ(q,a,b,c){return {q:q,a:c===undefined?[a,b]:[a,b,c]}}
 
@@ -7177,7 +7346,7 @@ GI5.adv=["🌌","Пригода"];GI5.dig=["⛏️","Шахта"];GI5.def=["🏰
 GX.ORD=["dig","def","adv","bld"];
 GX.TT={dig:"Шахта: копай до діамантів",boss:"Бій з Ендер-драконом",adv:"Пригода: шлях до порталу",bld:"Будівництво піраміди"};
 GX.gtitle=function(ty,n){if(ty=="def"){var d=GX.world(n).dec;return d=="palm"?"Оборона маяка від потоплеників":d=="spruce"?"Оборона сніжного форту":"Оборона вежі від зомбі"}return GX.TT[ty]};
-Object.keys(LES).forEach(function(k){var n=+k;if(!((n>500&&n<700)||(n>1100&&n<1200)))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"||g.type=="dig"||g.type=="def"||g.type=="boss"||g.type=="bld"}))return;
+Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"||g.type=="dig"||g.type=="def"||g.type=="boss"||g.type=="bld"}))return;
  L.g.forEach(function(g){if(g.type=="sort")g.hide=true});var ty=L.big?"boss":GX.ORD[((n%100)-1)%4];if(GX.pool(n).length>=8)L.g.push({type:ty,title:GX.gtitle(ty,n),items:[]})});
 /* підсумкові уроки всіх класів: лишається лише великий тест */
 Object.keys(LES).forEach(function(k){var L=LES[k];if(L.big&&L.q)L.noq=true});
@@ -7187,6 +7356,15 @@ Object.keys(LES).forEach(function(k){var L=LES[k];if(L.big&&L.q)L.noq=true});
 
 /* 11 клас: світи пригод за темами */
 (function(){var _w=GX.world;GX.world=function(n){if(n>1100){var k=n-1100,w=k<=6?"ocean":k<=16?"end":k<=21?"snow":k<=27?"desert":k<=35?"nether":"cave";return GX.W[w]}return _w(n)}})();
+
+/* 11 клас: власні великі ігри замість «майнкрафтівських» */
+GI5.run=["","Біг: обери доріжку"];GI5.swp=["","Свайп: факт чи міф"];GI5.wrd=["","Слово: відгадай термін"];GI5.hck=["","Злам: пройди захист"];GI5.pxl=["","Піксель-розкриття"];
+GX.TT11={run:"Біг: обери доріжку",swp:"Свайп: факт чи міф",wrd:"Слово: відгадай термін",hck:"Злам: пройди захист",pxl:"Піксель-розкриття"};
+(function(){var ORD=["run","swp","hck","pxl","wrd"];
+ Object.keys(LES).forEach(function(k){var n=+k;if(!(n>1100&&n<1200))return;var L=LES[n];if(!L.g||L.g.some(function(g){return ORD.indexOf(g.type)>=0}))return;
+  L.g.forEach(function(g){if(g.type=="adv"||g.type=="dig"||g.type=="def"||g.type=="boss"||g.type=="bld")g.hide=true});
+  var ty=L.big?"hck":ORD[((n-1100)-1)%ORD.length];if(ty=="wrd"&&GX11.terms(n).length<3)ty="run";
+  if(GX.pool(n).length>=8)L.g.push({type:ty,title:GX.TT11[ty],items:[],boss:!!L.big})})})();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
