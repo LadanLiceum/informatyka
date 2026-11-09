@@ -8278,6 +8278,62 @@ G+".gbn{position:relative;overflow:hidden;height:86px;border-radius:14px;margin:
 "@media (prefers-reduced-motion:reduce){body.g10it *{animation:none!important}}";
 var s=document.createElement("style");s.textContent=c;document.head.appendChild(s)})();
 
+/* 10-ІТ: власні ігри про код — «Термінал», «Збери програму», «Бліц-інтерпретатор» */
+(function(){
+function nz(s){return String(s).replace(/\s+/g," ").trim()}
+function nxt(i,n,sc,show){nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show(i):fin9(sc,n)})}
+GM.term=function(g){var sn=shuffle(g.items),i=0,sc=0,n=sn.length;
+ function show(){var s=sn[i],done=false;fr9(g.title,g.hint||"Ти — інтерпретатор. Введи в термінал точний вивід програми.","<div class='pyb'><div class='pyh'><i></i><i></i><i></i> main.py</div><pre class='py'>"+pyHL(s[0])+"</pre></div><div class='tmx'><span>&gt;&gt;&gt;</span><input id='ti' type='text' autocomplete='off' autocapitalize='off' autocorrect='off' spellcheck='false' placeholder='вивід...'></div><button class='pri' id='tb'>Виконати ⏎</button><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
+  var inp=document.getElementById("ti"),fb=document.getElementById("fb");
+  function go(){if(done)return;if(!nz(inp.value))return;done=true;var ok=nz(inp.value)===nz(s[1][0]);if(ok)sc++;inp.disabled=true;inp.className=ok?"tok":"tbad";document.getElementById("tb").style.display="none";
+   fb.textContent=(ok?"✔ Вірно! ":"✖ Ні. Правильний вивід: "+s[1][0]+". ")+(s[2]||"");gs9((i+1)+" / "+n+" · ✅ "+sc);if(window.GX&&GX.snd)GX.snd(ok?"ok":"bad");nxt(i,n,sc,function(k){i=k;show()})}
+  document.getElementById("tb").onclick=go;inp.onkeydown=function(e){if(e.key=="Enter")go()}}
+ show()};
+GI.term=["⌨️","Термінал: введи вивід"];
+GM.parsons=function(g){var sn=shuffle(g.items),i=0,sc=0,n=sn.length;
+ function show(){var src=sn[i],done=false,pool=[],placed=[];
+  src.forEach(function(t,k){pool.push({t:t,k:k})});pool=shuffle(pool);
+  fr9(g.title,g.hint||"Торкай рядки по черзі — склади робочу програму. Торкни рядок у програмі, щоб прибрати його.","<div class='pyb'><div class='pyh'><i></i><i></i><i></i> main.py</div><div id='pa' class='pcode'></div></div><div id='pp' class='ppool'></div><button class='pri' id='pc' style='display:none'>Запустити ▶</button><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
+  function draw(){var pa=document.getElementById("pa"),pp=document.getElementById("pp");pa.innerHTML="";pp.innerHTML="";
+   if(!placed.length){var h=document.createElement("div");h.className="pempty";h.textContent="… порожньо";pa.appendChild(h)}
+   placed.forEach(function(o,idx){var b=document.createElement("button");b.className="pl"+(o.bad?" pbad":o.good?" pgood":"");b.innerHTML="<span class='pn'>"+(idx+1)+"</span><pre class='py'>"+pyHL(o.t)+"</pre>";b.onclick=function(){if(done)return;placed.splice(idx,1);pool.push(o);draw()};pa.appendChild(b)});
+   pool.forEach(function(o){var b=document.createElement("button");b.className="pl pp";b.innerHTML="<pre class='py'>"+pyHL(o.t)+"</pre>";b.onclick=function(){if(done)return;pool.splice(pool.indexOf(o),1);placed.push(o);draw()};pp.appendChild(b)});
+   document.getElementById("pc").style.display=(!done&&!pool.length)?"":"none"}
+  draw();
+  document.getElementById("pc").onclick=function(){if(done)return;done=true;var ok=true;placed.forEach(function(o,idx){if(o.t!==src[idx]){ok=false;o.bad=1}else o.good=1});if(ok)sc++;
+   document.getElementById("pc").style.display="none";draw();var fb=document.getElementById("fb");fb.textContent=ok?"✔ Програма працює! Порядок рядків правильний.":"✖ Порядок порушено — червоні рядки стоять не на своїх місцях. Правильна програма:";if(!ok){var d=document.createElement("div");d.innerHTML="<div class='pyb'><pre class='py'>"+pyHL(src.join("\n"))+"</pre></div>";fb.parentNode.insertBefore(d,fb.nextSibling)}
+   if(window.GX&&GX.snd)GX.snd(ok?"ok":"bad");gs9((i+1)+" / "+n+" · ✅ "+sc);nxt(i,n,sc,function(k){i=k;show()})}}
+ show()};
+GI.parsons=["🧩","Збери програму з рядків"];
+GM.blitz=function(g){var sn=shuffle(g.items),i=0,sc=0,n=sn.length,T=g.sec||12,tm=null;
+ function show(){var s=sn[i],done=false,t0=Date.now();clearInterval(tm);fr9(g.title,g.hint||"Бліц! Відповідай швидко — час біжить.","<div class='tbar'><i id='tbi'></i></div><div class='pyb'><pre class='py'>"+pyHL(s[0])+"</pre></div><div id='o'></div><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
+  var bi=document.getElementById("tbi");
+  function fin(ok,b){if(done)return;done=true;clearInterval(tm);if(ok)sc++;Array.prototype.forEach.call(document.querySelectorAll("#o button"),function(x){if(x.textContent===s[1][0])x.className="ok"});if(b&&!ok)b.className="bad";document.getElementById("fb").textContent=(ok?"Вірно! ":b?"Ні. ":"⏱ Час вийшов. ")+(s[2]||"");gs9((i+1)+" / "+n+" · ✅ "+sc);nxt(i,n,sc,function(k){i=k;show()})}
+  shuffle(s[1].slice()).forEach(function(a){var b=document.createElement("button");b.textContent=a;b.onclick=function(){fin(a===s[1][0],b)};document.getElementById("o").appendChild(b)});
+  tm=setInterval(function(){if(!document.getElementById("tbi")){clearInterval(tm);return}var p=(Date.now()-t0)/(T*1000);bi.style.width=Math.max(0,100-p*100)+"%";if(p>=1)fin(false)},100)}
+ show()};
+GI.blitz=["⚡","Бліц-інтерпретатор"];
+
+GV11.meta.term=["Термінал","#3dffa2","#064e3b"];GV11.meta.parsons=["Збери код","#a78bfa","#22d3ee"];GV11.meta.blitz=["Бліц","#fbbf24","#ff5d73"];
+GV11.art.term="<rect x='46' y='12' width='128' height='56' rx='8' fill='#0d1117' opacity='.85'/><circle cx='58' cy='22' r='3' fill='#ff5d73'/><circle cx='68' cy='22' r='3' fill='#fbbf24'/><circle cx='78' cy='22' r='3' fill='#3dffa2'/><text x='56' y='46' font-family='monospace' font-size='15' font-weight='700' fill='#3dffa2'>&gt;&gt;&gt; _</text>";
+GV11.art.parsons="<g fill='#fff'><rect x='52' y='12' width='90' height='14' rx='5' opacity='.9'/><rect x='66' y='32' width='78' height='14' rx='5' opacity='.6'/><rect x='80' y='52' width='60' height='14' rx='5' opacity='.9'/></g><path d='M160 20 v36 m-7 -8 l7 8 l7 -8' stroke='#fff' stroke-width='4' fill='none' stroke-linecap='round'/>";
+GV11.art.blitz="<path d='M118 6 L84 44 H108 L98 74 L138 32 H112Z' fill='#fff' opacity='.95'/>";
+["term","parsons","blitz"].forEach(function(k){var f=GM[k];GM[k]=function(g){GV11.t=k;return f(g)}});
+var st=document.createElement("style");st.textContent=".tmx{display:flex;align-items:center;gap:8px;background:#0d1117;border:1px solid #3dffa2;border-radius:10px;padding:8px 12px;margin:8px 0;box-shadow:0 0 14px rgba(61,255,162,.25)}.tmx span{color:#3dffa2;font:bold 15px ui-monospace,Consolas,monospace}.tmx input{flex:1;min-width:0;background:transparent!important;border:0!important;outline:0;color:#e6edf3!important;font:15px ui-monospace,Consolas,monospace;padding:4px 0;box-shadow:none!important}.tmx input.tok{color:#3dffa2!important}.tmx input.tbad{color:#ff5d73!important}.pcode{min-height:44px;padding:6px}.pcode .pl,.ppool .pl{display:flex;align-items:center;width:100%;text-align:left;margin:3px 0;padding:2px 8px;background:#161b22!important;border:1px solid #30363d!important;border-radius:8px;color:#e6edf3!important;box-shadow:none!important}.pcode .pl .pn{color:#6b7686;font:11px monospace;width:18px;flex:none}.ppool{margin:8px 0}.ppool .pl{border-style:dashed!important;border-color:#22d3ee!important}.pl pre.py{padding:6px 4px!important;overflow-x:auto}.pl.pbad{border-color:#ff5d73!important;background:rgba(255,93,115,.15)!important}.pl.pgood{border-color:#3dffa2!important;background:rgba(61,255,162,.1)!important}.pempty{color:#6b7686;font:13px monospace;padding:8px}.tbar{height:8px;border-radius:6px;background:#161b22;margin:4px 0 8px;overflow:hidden}.tbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#3dffa2,#22d3ee,#fbbf24)}";document.head.appendChild(st);
+/* заміна складних ігор у 10-ІТ */
+Object.keys(LES).forEach(function(k){var n=+k;if(!(n>1000&&n<1100))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="term"}))return;
+ var tr=L.g.filter(function(g){return g.type=="trace"})[0];if(!tr)return;var out=[];
+ var T=tr.title.replace(/^Що виведе код\?\s*/,"");
+ out.push({type:"term",title:"Термінал: "+(T||"введи вивід"),items:tr.items});
+ var progs=tr.items.map(function(x){return x[0].split("\n")}).filter(function(a){return a.length>=3&&a.length<=7});
+ if(progs.length>=2)out.push({type:"parsons",title:"Збери програму: "+(T||""),items:progs.slice(0,5)});
+ out.push({type:"blitz",title:"Бліц-інтерпретатор: "+(T||""),items:tr.items,sec:12});
+ out.push(tr);
+ L.g.forEach(function(g){if(g.type=="bug"||g.type=="cloze"||g.type=="tf"||g.type=="ladder")out.push(g)});
+ L.g=out;
+ var pc=progs.length;console.log&&0;L._pc=pc});
+})();
+
 /* фінальне вікно + прокрутка вгору при запуску гри */
 (function(){
 var _f=fr9;fr9=function(t,h,b){_f(t,h,b);try{window.scrollTo(0,0);if($)$.scrollTop=0;document.documentElement.scrollTop=0;document.body.scrollTop=0;setTimeout(function(){window.scrollTo(0,0)},60)}catch(e){}};
