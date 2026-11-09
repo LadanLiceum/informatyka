@@ -1220,6 +1220,33 @@ window.addEventListener("resize",function(){if(CUR&&document.body.contains(CUR.e
 setTimeout(function(){check()},200);
 })();
 
+/* 5 клас: майнкрафтівські «світи» для різних тем (фон, пейзаж, котик) */
+(function(){
+var W={cave:["⛏️ Світ: Печера","#4b4b4b","linear-gradient(#2e2e2e 0 14px,#232323 14px 22px,transparent 22px),repeating-conic-gradient(#8a8a8a 0 25%,#7c7c7c 0 50%)","#bfc7d1","linear-gradient(#27272f,#3b3b46)","#555","#d33"],
+ nether:["🔥 Світ: Незер","#5a1f1f","linear-gradient(#ffa02e 0 10px,#e25a00 10px 18px,transparent 18px),repeating-conic-gradient(#7d2b2b 0 25%,#6b2222 0 50%)","#f0c3b0","linear-gradient(#3b0d0d,#7a1f12)","#5b2020","#e25a00"],
+ end:["🌌 Світ: Енд","#d9d68f","linear-gradient(#1b1030 0 14px,#2c1a4d 14px 22px,transparent 22px),repeating-conic-gradient(#e3e09b 0 25%,#d3cf85 0 50%)","#e6dcff","linear-gradient(#0d0820,#2a1450)","#d3cf85","#8a5cff"],
+ snow:["❄️ Світ: Сніжна рівнина","#dfeaf5","linear-gradient(#ffffff 0 14px,#cfe0f0 14px 22px,transparent 22px),repeating-conic-gradient(#7a5733 0 25%,#6f4e2d 0 50%)","#223","linear-gradient(#b9dcff,#e8f4ff)","#fff","#8ec5ff"],
+ ocean:["🌊 Світ: Океан","#2a5fb0","linear-gradient(#8fdcff 0 10px,#4aa8e8 10px 18px,transparent 18px),repeating-conic-gradient(#3272c8 0 25%,#2860b0 0 50%)","#d5ecff","linear-gradient(#1f4f9a,#2a6fd0)","#e3d28a","#4aa8e8"],
+ desert:["🏜️ Світ: Пустеля","#e0cf8a","linear-gradient(#f0e3a4 0 14px,#ddc980 14px 22px,transparent 22px),repeating-conic-gradient(#e6d595 0 25%,#d9c680 0 50%)","#3a2e10","linear-gradient(#ffe9a8,#ffd27a)","#e6d595","#e0a030"]};
+var css="";
+Object.keys(W).forEach(function(k){var w=W[k],s="body.g5.w-"+k;
+ css+=s+"{background-color:"+w[1]+";background-image:"+w[2]+";background-size:100% 100%,32px 32px;background-attachment:fixed,scroll}"+
+ s+" .mut{color:"+w[3]+"}"+s+" .card .mut,"+s+" .lv .mut{color:#555}"+
+ s+" .cp{background:"+w[4]+"}"+s+" .cp .gr{background:"+w[5]+"}"+
+ s+" .wpill{border-color:#000;background:"+w[6]+"}";
+});
+css+=".wpill{display:inline-block;margin:6px 0 2px;padding:4px 10px;font:800 12px system-ui,sans-serif;background:#555;color:#fff;border:3px solid #000;border-radius:0;box-shadow:inset 2px 2px 0 rgba(255,255,255,.35),inset -2px -2px 0 rgba(0,0,0,.35);text-shadow:2px 2px 0 #000}";
+css+="body.g5.w-snow h1,body.g5.w-desert h1{color:#fff}";
+var st=document.createElement("style");st.textContent=css;try{document.head.appendChild(st)}catch(e){}
+function wrap(name,world){var f=window[name];if(typeof f!=="function")return;
+ window[name]=function(){var r=f.apply(this,arguments);var b=document.body;
+  if(b.classList.contains("g5")){Object.keys(W).forEach(function(k){b.classList.remove("w-"+k)});if(world){b.classList.add("w-"+world);
+   var h=document.querySelector("#app .hero");if(h&&!h.querySelector(".wpill")){var p=document.createElement("div");p.className="wpill";p.textContent=W[world][0];h.appendChild(p)}}}
+  return r}}
+wrap("menu","cave");wrap("menuA","nether");
+window.WORLDS5=W;
+})();
+
 /* ===== 10-ІТ: рушій (окремий прогрес inf10, тема g10it, Python-блоки, гра «Що виведе код?») ===== */
 var B9=B,B10={read:0,quiz:0,g1:0,g2:0};
 try{var b10=JSON.parse(localStorage.getItem("inf10"));if(b10)B10=b10}catch(e){}
