@@ -1118,6 +1118,14 @@ var css=
 "body.g5 .cp{background:linear-gradient(#8ec5ff,#b9dcff);border:4px solid #000;border-radius:0}body.g5 .cp .gr{background:#5b8c32;border-top:4px solid #3a5a1e;height:20px}body.g5 .cp .sun{border-radius:0;background:#ffe14d;box-shadow:none}body.g5 .cp .cl{border-radius:0}"+
 "body.g9 .cp{background:linear-gradient(#25407a,#1d2c57);border:2px solid #3a4150;border-bottom:6px solid #12151b}body.g9 .cp .gr{background:#3a4152;border-top:3px solid #12151b}body.g9 .cp .sun{background:#ffd166;box-shadow:0 0 0 6px rgba(255,209,102,.25)}body.g9 .cp .cl{background:rgba(255,255,255,.18)}"+
 "body.g10it .cp{background:#0d1117;border:1px solid #30363d;border-radius:10px}body.g10it .cp .gr{background:#161b22;border-top:1px solid #3fb950}body.g10it .cp .sun{background:#3fb950;box-shadow:0 0 0 6px rgba(63,185,80,.18);width:18px;height:18px}body.g10it .cp .cl{background:rgba(88,166,255,.18);height:10px}"+
+".cp .hint{position:absolute;left:8px;top:8px;background:rgba(255,255,255,.82);color:#2b2f55;border:2px solid #2b2f55;border-radius:10px;padding:2px 8px;font:800 11px system-ui,sans-serif;max-width:60%;line-height:1.25;pointer-events:none;z-index:2}"+
+".cp .hud{position:absolute;right:10px;top:8px;background:rgba(255,255,255,.9);color:#2b2f55;border:2px solid #2b2f55;border-radius:10px;padding:2px 9px;font:800 13px system-ui,sans-serif;z-index:3;display:none}"+
+".cp.playing .hud{display:block}.cp.playing .hint,.cp.playing .sun{display:none}"+
+".cp .ob{position:absolute;bottom:15px;font-size:27px;line-height:1;pointer-events:none;white-space:nowrap}"+
+".cp .gm{position:absolute;left:0;right:0;top:0;bottom:19px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:rgba(20,24,40,.55);color:#fff;font:800 16px system-ui,sans-serif;text-align:center;z-index:4;padding:8px}"+
+".cp .gm span{font-size:14px;font-weight:700;opacity:.95}.cp .gm div{display:flex;gap:8px;margin-top:4px}"+
+".cp .gm button{width:auto!important;display:inline-block;margin:2px 0!important;padding:7px 16px;min-width:0}"+
+"body.g10it .cp .hint,body.g10it .cp .hud{background:#161b22;color:#e6edf3;border:1px solid #30363d}body.g9 .cp .hint,body.g9 .cp .hud{background:#12151b;color:#fff;border:2px solid #3a4150}body.g5 .cp .hint,body.g5 .cp .hud{border-radius:0;border:3px solid #000}"+
 "@media (prefers-reduced-motion:reduce){.cp *{animation:none!important}}";
 var st=document.createElement("style");st.textContent=css;try{document.head.appendChild(st)}catch(e){}
 
@@ -1138,7 +1146,7 @@ function rnd(a,b){return a+Math.random()*(b-a)}
 function alive(o){return o===CUR&&document.body.contains(o.el)}
 function wantCat(a){return !!(a.querySelector(".hero.home")||a.querySelector(".fb"))}
 
-function fit(o){var el=o.el,top=el.getBoundingClientRect().top,h=window.innerHeight-top-14;el.style.height=Math.max(130,Math.min(h,430))+"px";
+function fit(o){if(o.gaming)return;var el=o.el,top=el.getBoundingClientRect().top,h=window.innerHeight-top-14;el.style.height=Math.max(130,Math.min(h,430))+"px";
  var W=el.clientWidth-84;if(X>W)X=Math.max(0,W);o.cat.style.left=X+"px"}
 function say(o,t){var b=o.bub;b.textContent=t;b.style.left=Math.max(4,Math.min(o.el.clientWidth-b.offsetWidth-4,X-6))+"px";b.className="bub on";clearTimeout(o._b);o._b=setTimeout(function(){b.className="bub"},1300)}
 function pose(o,c){o.cat.firstChild.className.baseVal=c}
@@ -1159,11 +1167,41 @@ function next(o){if(!alive(o))return;var r=Math.random(),W=o.el.clientWidth-84;
  else{say(o,"z z z");wait(o,rnd(4000,6000),"sleep",function(){next(o)})}}
 
 function mount(a){var o={el:document.createElement("div")};o.el.className="cp";
- o.el.innerHTML="<div class='sun'></div><div class='cl'></div><div class='cl b'></div><div class='gr'></div><div class='ball'></div><div class='bub'></div><div class='cc'>"+SVG+"</div>";
+ o.el.innerHTML="<div class='sun'></div><div class='hint'>Торкнись котика тричі — почнеться гра 🎮</div><div class='hud'></div><div class='cl'></div><div class='cl b'></div><div class='gr'></div><div class='ball'></div><div class='bub'></div><div class='cc'>"+SVG+"</div>";
  o.cat=o.el.querySelector(".cc");o.ball=o.el.querySelector(".ball");o.bub=o.el.querySelector(".bub");CUR=o;a.appendChild(o.el);fit(o);face(o);
- o.cat.onclick=function(){if(!alive(o))return;o.cat.classList.remove("jump");void o.cat.offsetWidth;o.cat.classList.add("jump");say(o,SAY[Math.floor(Math.random()*SAY.length)])};
+ o.cat.onclick=function(){if(!alive(o))return;var tn=Date.now();o.taps=(o.taps||[]).filter(function(x){return tn-x<1700});o.taps.push(tn);if(o.taps.length>=3){o.taps=[];return startGame(o)}o.cat.classList.remove("jump");void o.cat.offsetWidth;o.cat.classList.add("jump");say(o,SAY[Math.floor(Math.random()*SAY.length)])};
  var tk=setInterval(function(){if(!alive(o)){clearInterval(tk);return}var c=o.cat.getBoundingClientRect().left-o.el.getBoundingClientRect().left;if(!isNaN(c))X=c},150);
  setTimeout(function(){next(o)},400)}
+
+
+/* ---------- міні-гра «котик-бігун» (як динозаврик у Chrome): стрибай через перешкоди ---------- */
+function bestGet(){try{return +localStorage.getItem("catbest")||0}catch(e){return 0}}
+function bestSet(v){try{localStorage.setItem("catbest",String(v))}catch(e){}}
+function startGame(o){o.gaming=true;var el=o.el,cat=o.cat,a=document.getElementById("app"),W,H,y,v,sp,dist,obs,nx,last,over,hud=el.querySelector(".hud"),best=bestGet(),ov=null,raf=0;
+ el.classList.add("playing");el.style.height=Math.max(210,el.offsetHeight)+"px";o.ball.className="ball";o.bub.className="bub";
+ function cleanup(){document.removeEventListener("keydown",kd);el.removeEventListener("pointerdown",pd);cancelAnimationFrame(raf)}
+ function exit(){cleanup();var par=el.parentNode;if(par)par.removeChild(el);var ap=document.getElementById("app");if(ap)mount(ap)}
+ function clearObs(){obs.forEach(function(b){if(b.e.parentNode)b.e.parentNode.removeChild(b.e)});obs=[]}
+ function setHud(){hud.textContent="🏁 "+Math.floor(dist/12)+"  ·  🏆 "+best}
+ function run(){W=el.clientWidth;H=el.clientHeight;y=0;v=0;sp=210;dist=0;obs=[];nx=.9;over=false;last=performance.now();
+  if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);ov=null;cat.style.transition="none";cat.style.left="26px";cat.style.bottom="13px";DIR=1;face(o);pose(o,"walk");setHud();cancelAnimationFrame(raf);raf=requestAnimationFrame(frame)}
+ function jump(){if(over||y>1)return;v=Math.sqrt(2*1750*Math.min(98,H-13-62-8))}
+ function kd(e){if(e.key===" "||e.key==="ArrowUp"||e.code==="Space"){e.preventDefault();jump()}}
+ function pd(e){if(e.target.closest&&e.target.closest("button"))return;jump()}
+ document.addEventListener("keydown",kd);el.addEventListener("pointerdown",pd);
+ function spawn(){var T=[["🌵",28,30],["🌵🌵",54,30],["🪨",26,24],["🌵🪨",52,30]],t=T[Math.floor(Math.random()*T.length)],e=document.createElement("div");e.className="ob";e.textContent=t[0];e.style.left=W+"px";el.appendChild(e);obs.push({e:e,x:W,w:t[1],h:t[2]})}
+ function end(){over=true;pose(o,"sit");var sc=Math.floor(dist/12);if(sc>best){best=sc;bestSet(best)}setHud();
+  ov=document.createElement("div");ov.className="gm";ov.innerHTML="<b>Гра закінчена</b><span>Рахунок "+sc+" · Рекорд "+best+"</span><div><button class='pri' id='gm1'>Ще раз</button><button id='gm2'>Вийти</button></div>";el.appendChild(ov);
+  ov.querySelector("#gm1").onclick=function(e){e.stopPropagation();clearObs();run()};ov.querySelector("#gm2").onclick=function(e){e.stopPropagation();exit()}}
+ function frame(t){if(!document.body.contains(el)){cleanup();return}if(over)return;
+  var dt=Math.min(.05,(t-last)/1000);last=t;sp=Math.min(520,sp+8*dt);dist+=sp*dt;
+  if(y>0||v>0){v-=1750*dt;y+=v*dt;if(y<=0){y=0;v=0;pose(o,"walk")}else pose(o,"")}cat.style.bottom=(13+y)+"px";
+  nx-=dt;if(nx<=0){spawn();nx=rnd(.85,1.6)*(300/sp)+.45}
+  for(var i=obs.length-1;i>=0;i--){var b=obs[i];b.x-=sp*dt;b.e.style.left=Math.round(b.x)+"px";
+   if(b.x<-70){b.e.parentNode.removeChild(b.e);obs.splice(i,1);continue}
+   if(46<b.x+b.w-5&&86>b.x+5&&y<b.h-4){end();break}}
+  if(!over){setHud();raf=requestAnimationFrame(frame)}}
+ run()}
 
 var pend=0;
 function check(muts){var a=document.getElementById("app");if(!a)return;
