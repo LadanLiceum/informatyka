@@ -732,7 +732,8 @@ function playG(n,i){var g=LES[n].g[i];CUR9=n;CG="g"+i;LAST9=function(){GM[g.type
 function tlock(n,k){var o=(B.sc||{})[n];return !!(o&&o[k]!==undefined)}
 function tlockMsg(){try{note("Тест уже пройдено. Повторно його можна пройти після завершення сесії.")}catch(e){}}
 function playQ(n,key){var qs=key=="big"?LES[n].big:LES[n].q;CUR9=n;if(tlock(n,key)){tlockMsg();return lesson9(n)}LAST9=function(){if(tlock(n,key)){tlockMsg();return lesson9(n)}quizG(qs,function(s){CURK=key},"again9","menu9")};LAST9()}
-function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k;for(k in o)v.push(o[k]);if(B.rd[n])v.push(100);return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/v.length):0}
+var NORD=0;/* NORD=1: читалка не враховується (звіт у таблицю) */
+function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k;for(k in o)v.push(o[k]);if(B.rd[n]&&!NORD)v.push(100);return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/v.length):0}
 function lessonItems(n){var L=LES[n],h="",cl=["a","c","d","b"],c=0;
  if(L.r)h+=mb("a","📖","Читалка",L.r.length+" "+(L.r.length<5?"сторінки":"сторінок")+" з малюнками"+(B.rd[n]?" · ✓":""),"openR("+n+")");
  (L.g||[]).forEach(function(g,i){if(g.hide)return;if(g.type=="fn"){h+=mb(cl[c++%4],g.icon,g.title,g.sub,g.fn+"()");return}var t=GI[g.type];h+=mb(cl[c++%4],t[0],g.title,t[1]+" · "+bst(n,"g"+i),"playG("+n+","+i+")")});
@@ -1540,7 +1541,7 @@ var _tp5=topics;topics=function(){var r=_tp5();if(ME&&ME.c.charAt(0)=="5"){CUR9=
 
 /* ---------- звіт учителю ---------- */
 function dAll5(cls,name){var r=[],k;for(k in LES){k=+k;if(k<=500||k>=600)continue;var l=dLine(cls,name,k,k-500);if(l)r.push(l)}return r.join("\n")}
-var _c5=code;code=function(){var b=_c5();if(ME&&ME.c.charAt(0)=="5"){useB5();var any=false,i;for(i=1;i<=T5N;i++)if(B5.l[500+i]||P5(i))any=true;if(any){var n=ME.n.replace(/\|/g," "),d=0,s=0,v=[];for(i=1;i<=52;i++)v.push(0);for(i=1;i<=T5N;i++){var p=P5(i);v[i-1]=P12(p);s+=p;if(B5.l[500+i])d++}
+var _c5=code;code=function(){var b=_c5();if(ME&&ME.c.charAt(0)=="5"){useB5();var any=false,i;for(i=1;i<=T5N;i++)if(B5.l[500+i]||P5(i)||(B5.rd||{})[500+i])any=true;if(any){var n=ME.n.replace(/\|/g," "),d=0,s=0,v=[];for(i=1;i<=52;i++)v.push(0);for(i=1;i<=T5N;i++){var p=P5(i);v[i-1]=P12(p);s+=p;if(B5.l[500+i])d++}
  b+="\n"+["INF5","K5",ME.c,n,d,P12(s/T5N)].join("|")+"\n"+["INF5","L5",ME.c,n].concat(v).join("|");var x=dAll5(ME.c,n);if(x)b+="\n"+x}}return b};
 
 /* ---------- нові елементи: плитки-інвентар у читалці, гра «Шахта» ---------- */
@@ -1600,7 +1601,7 @@ var _tp6=topics;topics=function(){var r=_tp6();if(ME&&ME.c.charAt(0)=="6"){CUR9=
   Array.prototype.forEach.call(bs,function(b){if(b.parentNode)b.parentNode.removeChild(b)})}}return r};
 GRD[6]=1;
 function dAll6(cls,name){var r=[],k;for(k in LES){k=+k;if(k<=600||k>=700)continue;var l=dLine(cls,name,k,k-600);if(l)r.push(l)}return r.join("\n")}
-var _c6=code;code=function(){var b=_c6();if(ME&&ME.c.charAt(0)=="6"){useB6();var any=false,i;for(i=1;i<=T6N;i++)if(B6.l[600+i]||P6(i))any=true;if(any){var n=ME.n.replace(/\|/g," "),d=0,s=0,v=[];for(i=1;i<=52;i++)v.push(0);for(i=1;i<=T6N;i++){var p=P6(i);v[i-1]=P12(p);s+=p;if(B6.l[600+i])d++}
+var _c6=code;code=function(){var b=_c6();if(ME&&ME.c.charAt(0)=="6"){useB6();var any=false,i;for(i=1;i<=T6N;i++)if(B6.l[600+i]||P6(i)||(B6.rd||{})[600+i])any=true;if(any){var n=ME.n.replace(/\|/g," "),d=0,s=0,v=[];for(i=1;i<=52;i++)v.push(0);for(i=1;i<=T6N;i++){var p=P6(i);v[i-1]=P12(p);s+=p;if(B6.l[600+i])d++}
  b+="\n"+["INF5","K6",ME.c,n,d,P12(s/T6N)].join("|")+"\n"+["INF5","L6",ME.c,n].concat(v).join("|");var x=dAll6(ME.c,n);if(x)b+="\n"+x}}return b};
 
 /* ===== gx.js · інтерактивні ігри для 5 і 6 класів: перетягування, свайпи, лінії, удари кайлом, ефекти ===== */
@@ -6357,6 +6358,9 @@ Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LE
  L.g.forEach(function(g){if(g.type=="sort")g.hide=true});var ty=L.big?"boss":GX.ORD[((n%100)-1)%4];if(GX.pool(n).length>=8)L.g.push({type:ty,title:GX.gtitle(ty,n),items:[]})});
 /* підсумкові уроки всіх класів: лишається лише великий тест */
 Object.keys(LES).forEach(function(k){var L=LES[k];if(L.big&&L.q)L.noq=true});
+
+/* у таблицю йде бал без читалки */
+(function(){var _cz=code;code=function(){NORD=1;try{return _cz()}finally{NORD=0}}})();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
