@@ -2361,7 +2361,7 @@ GM.pxl=function(g){var pool=shuffle(GX.pool(CUR9)),N=Math.min(g.boss?12:9,pool.l
  var cv=document.getElementById("p11c"),cx=cv.getContext("2d"),src=document.createElement("canvas");src.width=160;src.height=120;GX11.scene(src,sk);
  var qb=document.getElementById("p11q"),oo=document.getElementById("p11o"),sm=document.createElement("canvas");
  function draw(kk){kk=Math.max(1,kk);var w=Math.max(1,Math.round(320/kk)),h=Math.max(1,Math.round(240/kk));sm.width=w;sm.height=h;var s=sm.getContext("2d");s.imageSmoothingEnabled=true;s.drawImage(src,0,0,w,h);cx.imageSmoothingEnabled=false;cx.drawImage(sm,0,0,320,240)}
- function anim(from,to){var t=0,id=setInterval(function(){t+=1;var kk=from+(to-from)*(t/10);draw(kk);if(t>=10||!GX11.alive("p11c"))clearInterval(id)},40)}
+ function anim(from,to){var t0=Date.now(),D=800;cv.classList.remove("flash11");void cv.offsetWidth;cv.classList.add("flash11");(function st(){if(!GX11.alive("p11c"))return;var u=Math.min(1,(Date.now()-t0)/D),e=1-Math.pow(1-u,3);draw(from+(to-from)*e);if(u<1)requestAnimationFrame(st)})()}
  function hud(){var px=Math.round(320/k)*Math.round(240/k);gs9("Питання "+Math.min(i+1,N)+" / "+N+" · вірно: "+sc+" · блоків: "+px)}
  function show(){if(i>=N)return end();busy=false;hud();var q=qs[i];qb.textContent=q.q;oo.innerHTML="";shuffle(q.a.slice(0,3)).forEach(function(a){var b=GX11.el("button","blk",a);b.onclick=function(){pick(b,a===q.a[0],q)};oo.appendChild(b)})}
  function pick(b,ok,q){if(busy)return;busy=true;Array.prototype.forEach.call(oo.children,function(x){x.disabled=true;if(x.textContent===q.a[0])x.classList.add("ok")});
@@ -7773,6 +7773,55 @@ GX.TT11={run:"Біг: обери доріжку",swp:"Свайп: факт чи 
   L.g.forEach(function(g){if(g.type=="adv"||g.type=="dig"||g.type=="def"||g.type=="boss"||g.type=="bld")g.hide=true});
   var ty=L.big?"hck":ORD[((n-1100)-1)%ORD.length];if(ty=="wrd"&&GX11.terms(n).length<3)ty="run";
   if(GX.pool(n).length>=8)L.g.push({type:ty,title:GX.TT11[ty],items:[],boss:!!L.big})})})();
+
+/* ===== gx11v.js · візуал і анімації ігор 11 класу ===== */
+var GV11={t:"",
+ meta:{run:["Біг","#ff3d81","#7c5cff"],swp:["Свайп","#ff9a3d","#ff3d81"],wrd:["Слово","#2bb673","#00b4ff"],hck:["Злам","#0f9d58","#064e3b"],pxl:["Піксель","#7c5cff","#00b4ff"],
+  sort:["Сортування","#00b4ff","#5b4bff"],pairs:["Пари","#ff5f6d","#ffa14d"],tf:["Правда чи ні","#35d9a0","#00b4ff"],mine:["Сапер","#5b4bff","#ff5f6d"],seq:["Порядок","#ffa14d","#ff5f6d"],cloze:["Пропуск","#7c5cff","#ff5f6d"]},
+ art:{
+ run:"<path d='M0 70 L60 20 H160 L220 70Z' fill='#fff' opacity='.18'/><path d='M110 20 V70 M85 20 L55 70 M135 20 L165 70' stroke='#fff' stroke-width='2' opacity='.6'/><rect x='94' y='34' width='10' height='24' rx='4' fill='#fff'/><circle cx='99' cy='28' r='6' fill='#fff'/>",
+ swp:"<rect x='120' y='8' width='56' height='64' rx='10' fill='#fff' opacity='.9' transform='rotate(14 148 40)'/><rect x='84' y='10' width='56' height='64' rx='10' fill='#fff' opacity='.55' transform='rotate(-10 112 42)'/><path d='M150 38 l8 8 l14 -16' stroke='#ff9a3d' stroke-width='5' fill='none' stroke-linecap='round' transform='rotate(14 148 40)'/>",
+ wrd:"<g fill='#fff'><rect x='56' y='20' width='28' height='32' rx='7' opacity='.95'/><rect x='88' y='20' width='28' height='32' rx='7' opacity='.55'/><rect x='120' y='20' width='28' height='32' rx='7' opacity='.95'/><rect x='152' y='20' width='28' height='32' rx='7' opacity='.35'/></g><g fill='#0b6a45' font-weight='800' font-size='20' font-family='sans-serif'><text x='64' y='44'>С</text><text x='128' y='44'>Л</text></g>",
+ hck:"<g fill='#4ade80' font-family='monospace' font-size='12' opacity='.8'><text x='20' y='20'>01101</text><text x='150' y='30'>10010</text><text x='60' y='58'>11001</text><text x='170' y='64'>0101</text></g><path d='M110 10 L142 22 V44 C142 58 126 66 110 70 C94 66 78 58 78 44 V22Z' fill='none' stroke='#4ade80' stroke-width='3'/><circle cx='110' cy='34' r='6' fill='#4ade80'/><rect x='107' y='36' width='6' height='14' rx='3' fill='#4ade80'/>",
+ pxl:"<g opacity='.9'><rect x='84' y='14' width='16' height='16' fill='#fff' opacity='.9'/><rect x='100' y='14' width='16' height='16' fill='#fff' opacity='.45'/><rect x='116' y='14' width='16' height='16' fill='#fff' opacity='.7'/><rect x='84' y='30' width='16' height='16' fill='#fff' opacity='.4'/><rect x='100' y='30' width='16' height='16' fill='#fff' opacity='.95'/><rect x='116' y='30' width='16' height='16' fill='#fff' opacity='.55'/><rect x='84' y='46' width='16' height='16' fill='#fff' opacity='.7'/><rect x='100' y='46' width='16' height='16' fill='#fff' opacity='.5'/><rect x='116' y='46' width='16' height='16' fill='#fff' opacity='.9'/></g><circle cx='160' cy='44' r='18' fill='#fff' opacity='.2'/>",
+ sort:"<rect x='50' y='14' width='54' height='50' rx='10' fill='#fff' opacity='.9'/><rect x='116' y='14' width='54' height='50' rx='10' fill='#fff' opacity='.5'/><circle cx='77' cy='39' r='8' fill='#00b4ff'/><rect x='134' y='31' width='18' height='16' rx='3' fill='#5b4bff'/>",
+ pairs:"<circle cx='84' cy='40' r='22' fill='#fff' opacity='.9'/><circle cx='136' cy='40' r='22' fill='#fff' opacity='.55'/><path d='M104 40 H116' stroke='#fff' stroke-width='5' stroke-linecap='round'/>",
+ tf:"<circle cx='84' cy='40' r='24' fill='#fff' opacity='.9'/><path d='M72 40 l9 9 l15 -17' stroke='#35d9a0' stroke-width='6' fill='none' stroke-linecap='round'/><circle cx='142' cy='40' r='24' fill='#fff' opacity='.5'/><path d='M132 30 l20 20 M152 30 l-20 20' stroke='#fff' stroke-width='6' stroke-linecap='round'/>",
+ mine:"<g fill='#fff'><rect x='58' y='12' width='30' height='30' rx='6' opacity='.9'/><rect x='92' y='12' width='30' height='30' rx='6' opacity='.5'/><rect x='126' y='12' width='30' height='30' rx='6' opacity='.7'/><rect x='58' y='46' width='30' height='24' rx='6' opacity='.5'/><rect x='92' y='46' width='30' height='24' rx='6' opacity='.9'/></g><circle cx='107' cy='58' r='6' fill='#5b4bff'/>",
+ seq:"<g fill='#fff'><rect x='54' y='44' width='34' height='26' rx='6' opacity='.5'/><rect x='94' y='30' width='34' height='40' rx='6' opacity='.7'/><rect x='134' y='12' width='34' height='58' rx='6' opacity='.95'/></g>",
+ cloze:"<g fill='#fff'><rect x='40' y='30' width='50' height='12' rx='6' opacity='.9'/><rect x='96' y='30' width='40' height='12' rx='6' fill='none' stroke='#fff' stroke-width='3' stroke-dasharray='5 4'/><rect x='142' y='30' width='40' height='12' rx='6' opacity='.9'/></g>"}};
+GV11.banner=function(t){var m=GV11.meta[t];if(!m)return "";return "<div class='gbn' style='--a1:"+m[1]+";--a2:"+m[2]+"'><svg viewBox='0 0 220 80' preserveAspectRatio='xMaxYMid meet' aria-hidden='true'>"+(GV11.art[t]||"")+"</svg><span class='gt'>"+m[0]+"</span></div>"};
+/* запам'ятовуємо тип гри */
+(function(){for(var k in GM){(function(k,f){GM[k]=function(g){GV11.t=k;return f(g)}})(k,GM[k])}
+ var _f=fr9;fr9=function(t,h,b){_f(t,h,b);if(!document.body.classList.contains("g11"))return;var c=document.querySelector("#gb"),card=c&&c.parentNode;if(card&&!card.querySelector(".gbn")){var d=document.createElement("div");d.innerHTML=GV11.banner(GV11.t);if(d.firstChild)card.insertBefore(d.firstChild,card.firstChild)}}})();
+(function(){var s=document.createElement("style");s.textContent=
+"body.g11 .gbn{position:relative;overflow:hidden;height:86px;border-radius:20px;margin:-4px -4px 12px;background:linear-gradient(135deg,var(--a1),var(--a2));box-shadow:0 12px 26px color-mix(in srgb,var(--a1) 34%,transparent)}"+
+"body.g11 .gbn svg{position:absolute;right:0;top:0;height:100%;width:80%}"+
+"body.g11 .gbn .gt{position:absolute;left:16px;bottom:10px;color:#fff;font-weight:900;font-size:13px;letter-spacing:1.4px;text-transform:uppercase;background:rgba(255,255,255,.22);padding:4px 12px;border-radius:99px}"+
+"body.g11 .gbn svg{animation:flt11 5s ease-in-out infinite}"+
+"@keyframes flt11{50%{transform:translateY(-4px)}}@keyframes up11{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}"+
+"@keyframes pop11{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}"+
+"@keyframes shk11{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}"+
+"@keyframes ok11{0%{transform:scale(1)}40%{transform:scale(1.045);box-shadow:0 0 0 6px rgba(18,161,80,.25)}100%{transform:scale(1)}}"+
+"@keyframes flip11{0%{transform:rotateX(0);background:#fff;color:var(--tx);border-color:#d9dbea}49%{transform:rotateX(90deg);background:#fff;border-color:#d9dbea}50%{background:var(--bg);color:var(--fg);border-color:var(--bg)}100%{transform:rotateX(0);background:var(--bg);color:var(--fg);border-color:var(--bg)}}"+
+"@keyframes card11{from{opacity:0;transform:translateY(40px) scale(.92)}to{opacity:1;transform:none}}@keyframes flash11{0%{box-shadow:0 0 0 0 rgba(124,92,255,.7)}100%{box-shadow:0 0 0 22px rgba(124,92,255,0)}}"+
+"@keyframes line11{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}@keyframes glow11{50%{box-shadow:0 0 22px rgba(74,222,128,.5)}}"+
+"body.g11 #gb>*{animation:up11 .4s both}"+
+"body.g11 .blk,body.g11 .p11o button,body.g11 .h11o button{animation:pop11 .35s both}"+
+"body.g11 .blk:nth-child(2),body.g11 .p11o button:nth-child(2),body.g11 .h11o button:nth-child(2){animation-delay:.06s}body.g11 .blk:nth-child(3),body.g11 .p11o button:nth-child(3),body.g11 .h11o button:nth-child(3){animation-delay:.12s}body.g11 .blk:nth-child(4){animation-delay:.18s}"+
+"body.g11 .blk.ok,body.g11 .blk.good,body.g11 .p11o button.ok,body.g11 .h11o button.ok,body.g11 .r11b button.ok{animation:ok11 .5s both}"+
+"body.g11 .blk.no,body.g11 .blk.bad,body.g11 .p11o button.no,body.g11 .h11o button.no,body.g11 .r11b button.no{animation:shk11 .45s both}"+
+"body.g11 .s11card:not(.drag){animation:card11 .4s both}"+
+"body.g11 .w11c.g,body.g11 .w11c.y,body.g11 .w11c.x{animation:flip11 .55s both}"+
+"body.g11 .w11c.g{--bg:#2bb673;--fg:#fff}body.g11 .w11c.y{--bg:#ffc928;--fg:#15152e}body.g11 .w11c.x{--bg:#e3e4ee;--fg:#666}"+
+"body.g11 .w11c:nth-child(2){animation-delay:.08s}body.g11 .w11c:nth-child(3){animation-delay:.16s}body.g11 .w11c:nth-child(4){animation-delay:.24s}body.g11 .w11c:nth-child(5){animation-delay:.32s}body.g11 .w11c:nth-child(6){animation-delay:.4s}body.g11 .w11c:nth-child(n+7){animation-delay:.48s}"+
+".p11cv.flash11{animation:flash11 .8s}.p11cv{box-shadow:0 12px 30px rgba(30,30,80,.16)}"+
+".h11{position:relative;overflow:hidden;animation:glow11 3s infinite}.h11::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px)}"+
+".h11l{animation:none}.h11l em{animation:line11 .3s both}"+
+".r11cv{animation:up11 .4s both}"+
+".w11g{width:100%}.w11r{width:100%;justify-content:center}.w11c{flex:1 1 0!important;max-width:36px;min-width:0!important;width:auto!important}"+
+"@media (prefers-reduced-motion:reduce){body.g11 *{animation:none!important}}";
+document.head.appendChild(s)})();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
