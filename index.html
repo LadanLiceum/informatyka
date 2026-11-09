@@ -734,7 +734,7 @@ function playQ(n,key){var qs=key=="big"?LES[n].big:LES[n].q;CUR9=n;if(tlock(n,ke
 function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k;for(k in o)v.push(o[k]);if(B.rd[n])v.push(100);return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/v.length):0}
 function lessonItems(n){var L=LES[n],h="",cl=["a","c","d","b"],c=0;
  if(L.r)h+=mb("a","📖","Читалка",L.r.length+" "+(L.r.length<5?"сторінки":"сторінок")+" з малюнками"+(B.rd[n]?" · ✓":""),"openR("+n+")");
- (L.g||[]).forEach(function(g,i){if(g.type=="fn"){h+=mb(cl[c++%4],g.icon,g.title,g.sub,g.fn+"()");return}var t=GI[g.type];h+=mb(cl[c++%4],t[0],g.title,t[1]+" · "+bst(n,"g"+i),"playG("+n+","+i+")")});
+ (L.g||[]).forEach(function(g,i){if(g.hide)return;if(g.type=="fn"){h+=mb(cl[c++%4],g.icon,g.title,g.sub,g.fn+"()");return}var t=GI[g.type];h+=mb(cl[c++%4],t[0],g.title,t[1]+" · "+bst(n,"g"+i),"playG("+n+","+i+")")});
  if(L.q)h+=tlock(n,"q")?mb("lock","🔒","Тест","пройдено: "+B.sc[n].q+"% · повторно — після завершення сесії","tlockMsg()"):mb("b","📝","Тест",L.q.length+" питань · "+bst(n,"q")+" · одна спроба","playQ("+n+",\"q\")");
  if(L.big)h+=tlock(n,"big")?mb("lock","🔒","Великий тест із теми","пройдено: "+B.sc[n].big+"% · повторно — після завершення сесії","tlockMsg()"):mb("b","📝","Великий тест із теми",L.big.length+" питання · "+bst(n,"big")+" · одна спроба","playQ("+n+",\"big\")");
  return h}
@@ -1679,27 +1679,42 @@ function deco(x){var d=WD.dec;
   else if(d=="fire"){R("#7d2b2b",x-8,GY-30,16,30);R("#5e1c1c",x-4,GY-22,6,6);R("#ff6a00",x-6,GY-44,12,14);R("#ffd24a",x-3,GY-52+Math.round(Math.sin(t*9)*2),6,12)}
   else if(d=="obs"){R("#1a0f2b",x-9,GY-60,18,60);R("#2a1a47",x-5,GY-52,6,8);R("#6a35c9",x-3,GY-66,6,6)}
   else tree(x)}
+ function hs(i){return Math.abs(Math.sin(i*12.9898)*43758.5453)%1}
+ var FL={nether:"#ff9b2f",end:"#b06aff",ocean:"#ff6a9c",desert:"#8b6b2a",cave:"#6fd3ff"};
+ function orn(sx,wx){var r=hs(wx/20),fc=FL[WD.dec=="fire"?"nether":WD.dec=="obs"?"end":WD.dec=="palm"?"ocean":WD.dec=="cactus"?"desert":WD.dec=="stal"?"cave":""];
+  if(r<.16){R("#2b2b2b",sx+5,GY+16+Math.floor(r*100)%20,5,5)}else if(r<.22){R("#d8a77a",sx+10,GY+22+Math.floor(r*100)%14,5,5)}else if(r<.245){R("#5fe6ff",sx+8,GY+30,5,5);R("#b9f6ff",sx+9,GY+31,2,2)}
+  if(fc&&hs(wx/20+7)<.25){R(fc,sx+8,GY-6,3,3);R("#3a8a3a",sx+9,GY-3,1,3)}else if(!fc&&WD.dec!="spruce"&&hs(wx/20+3)<.3){R("#3a8a3a",sx+6,GY-4,1,4);R("#3a8a3a",sx+9,GY-5,1,5);R("#3a8a3a",sx+12,GY-3,1,3)}}
+ function stopOf(o){return SX+(o.t=="creeper"?46:o.t=="wall"?20:22)}
  function steve(x,y,walking,arm,tl,dead){ctx.save();ctx.translate(Math.round(x),Math.round(y));if(dead){ctx.rotate(-Math.min(1.5,endT*3))}
   var sw=walking?Math.sin(t*11)*5:0;R("#3b3f9e",-7+sw,-14,7,14);R("#2b2f7e",0-sw,-14,7,14);R("#2aa5c8",-7,-30,14,16);R("#c8956b",-7,-44,14,14);R("#3b2a1a",-7,-44,14,5);R("#fff",1,-37,4,3);R("#4a2d9e",3,-37,2,3);R("#a36b4a",-1,-32,6,0);
   ctx.save();ctx.translate(0,-28);ctx.rotate(arm);R("#c8956b",-2,0,5,13);R("#2aa5c8",-2,0,5,5);
   if(tl=="pick"){R("#6b4a2a",0,9,3,14);R("#9ad7e8",-6,19,16,4)}else if(tl=="sword"){R("#6b4a2a",0,10,3,5);R("#d8d8d8",0,-4,3,15)}else if(tl=="block"){R("#b8864b",-3,12,10,10);R("#8b5a2b",-3,16,10,1)}ctx.restore();
   if(hurtT>0){ctx.globalAlpha=.5;R("#ff2a1a",-8,-45,16,45);ctx.globalAlpha=1}ctx.restore()}
  function creeper(x,y,flash){R(flash?"#fff":"#4caf50",x,y-30,20,24);R(flash?"#ddd":"#3b9140",x+2,y-28,4,4);R(flash?"#ddd":"#3b9140",x+12,y-20,5,5);R("#111",x+3,y-24,4,5);R("#111",x+13,y-24,4,5);R("#111",x+7,y-18,6,5);R("#111",x+5,y-13,3,5);R("#111",x+12,y-13,3,5);R(flash?"#fff":"#4caf50",x,y-6,8,6);R(flash?"#fff":"#4caf50",x+12,y-6,8,6)}
- function draw(){var gr=ctx.createLinearGradient(0,0,0,GY);gr.addColorStop(0,WD.s0);gr.addColorStop(1,WD.s1);ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);if(WD.sun)R(WD.dec=="cactus"?"#fff2a8":"#ffe45e",290,16,WD.dec=="cactus"?34:24,WD.dec=="cactus"?34:24);if(WD.star)for(var q=0;q<30;q++){R(Math.sin(t*2+q)>.8?"#fff":"#b9a8ff",(q*97)%W,(q*53)%130,2,2)}
+ function draw(){var tot=PX-SX-34,frac=Math.max(0,Math.min(1,cam/tot)),torches=[],gr=ctx.createLinearGradient(0,0,0,GY);gr.addColorStop(0,WD.s0);gr.addColorStop(1,WD.s1);ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);if(WD.sun)R(WD.dec=="cactus"?"#fff2a8":"#ffe45e",290,30+Math.round(frac*60),WD.dec=="cactus"?34:24,WD.dec=="cactus"?34:24);if(WD.star)for(var q=0;q<30;q++){R(Math.sin(t*2+q)>.8?"#fff":"#b9a8ff",(q*97)%W,(q*53)%130,2,2)}
   if(WD.cl)for(var c=0;c<4;c++){var cx=((c*170-cam*.3)%680+680)%680-80;R("#fff",cx,30+c*14,50,12);R("#fff",cx+10,22+c*14,30,10)}
+  [[.22,.09,50,60,23],[.5,.13,30,45,17]].forEach(function(L){ctx.fillStyle="rgba(0,0,0,"+L[1]+")";for(var hx=0;hx<W;hx+=6){var hy=GY-L[2]-14*Math.sin((hx+cam*L[0])/L[3])-8*Math.sin((hx+cam*L[0])/L[4]);ctx.fillRect(hx,Math.round(hy),6,GY-hy)}});
   for(var tx=0;tx<W+60;tx+=1){}
   for(var wx=Math.floor((cam-30)/150)*150;wx<cam+W+60;wx+=150){var near=false;obs.forEach(function(o){if(Math.abs(o.x-wx-40)<90)near=true});if(Math.abs(PX-wx)<110)near=true;if(!near)deco(wx+40-cam)}
   var pits=obs.filter(function(o){return o.t=="lava"});
   for(var i=-20;i<W+20;i+=20){var wx2=Math.floor((cam+i)/20)*20,sx=wx2-cam,inLava=false,planks=false;pits.forEach(function(o){if(wx2>=o.x&&wx2<o.x+60){if(o.done)planks=true;else inLava=true}});
    if(inLava){var wv=Math.sin(t*3+wx2)*2;R(WD.p[0],sx,GY+wv,20,50);R(WD.p[1],sx+3,GY+4+wv,8,5);R(WD.p[2],sx+9,GY+18,9,6)}
-   else{R(WD.d,sx,GY,20,50);R(WD.dd,sx+3,GY+8,5,5);R(WD.dd,sx+11,GY+22,5,5);R(WD.dd,sx+6,GY+34,5,5);R(WD.top,sx,GY,20,6);R(WD.dd,sx+4,GY+5,4,2);R(WD.dd,sx+13,GY+5,4,2);if(planks){R("#b8864b",sx,GY-3,20,5);R("#8b5a2b",sx,GY+1,20,1)}}}
+   else{R(WD.d,sx,GY,20,50);R(WD.dd,sx+3,GY+8,5,5);R(WD.dd,sx+11,GY+22,5,5);R(WD.dd,sx+6,GY+34,5,5);R(WD.top,sx,GY,20,6);R(WD.dd,sx+4,GY+5,4,2);R(WD.dd,sx+13,GY+5,4,2);orn(sx,wx2);if(planks){R("#b8864b",sx,GY-3,20,5);R("#8b5a2b",sx,GY+1,20,1)}}}
   obs.forEach(function(o,k){if(o.done)return;var sx=o.x-cam;if(sx>W+10||sx<-60)return;
    if(o.t=="wall"){for(var rr=0;rr<3;rr++)for(var cc=0;cc<2;cc++){var bx=sx+cc*20,by=GY-20-rr*20;R("#8b8b8b",bx,by,20,20);R("#707070",bx+2,by+2,7,7);R("#a5a5a5",bx+11,by+10,6,6);ctx.strokeStyle="#4a4a4a";ctx.strokeRect(bx+.5,by+.5,19,19)}}
    else if(o.t=="creeper")creeper(sx,GY,fuse>0&&Math.floor(t*14)%2==0)});
-  var px=PX-cam;if(px<W+60){R("#2a1a3a",px,GY-64,8,64);R("#2a1a3a",px+40,GY-64,8,64);R("#2a1a3a",px,GY-64,48,8);R("#2a1a3a",px,GY-8,48,8);ctx.save();ctx.beginPath();ctx.rect(px+8,GY-56,32,48);ctx.clip();for(var a=0;a<6;a++)for(var b=0;b<5;b++){var v=Math.sin(t*2+a*1.3+b*.9);ctx.fillStyle=state=="win"?(v>0?"#e0b3ff":"#b060ff"):(v>0?"#5a1f8f":"#3d1566");ctx.fillRect(px+8+a*6,GY-56+b*10,6,10)}ctx.restore()}
+  obs.forEach(function(o){var sx=o.x-cam;if(sx>W+40||sx<-80)return;if(!o.done){var tx=sx-34;R("#6b4a2a",tx,GY-18,3,18);R("#ffd24a",tx-1,GY-24+Math.round(Math.sin(t*12+tx)),5,6);R("#ff9b2f",tx,GY-22,3,3);torches.push(tx+1)}else{var fx=sx+(o.t=="lava"?66:26),wv=Math.round(Math.sin(t*6+fx)*2);R("#ddd",fx,GY-34,2,34);R("#2fe07a",fx+2,GY-34,14,9);R("#1fb85e",fx+2+wv,GY-30,10,3)}});
+  var sg=140-cam;if(sg>-40&&sg<W+40){R("#6b4a2a",sg-2,GY-14,4,14);R("#b8864b",sg-22,GY-32,44,18);R("#8b5a2b",sg-22,GY-16,44,2);ctx.font="bold 10px monospace";ctx.fillStyle="#3b2410";ctx.fillText("СТАРТ",sg-17,GY-19)}
+  var px=PX-cam;if(px<W+60){ctx.font="bold 10px monospace";ctx.fillStyle="#e0b3ff";ctx.fillText("ПОРТАЛ",px+2,GY-72);R("#2a1a3a",px,GY-64,8,64);R("#2a1a3a",px+40,GY-64,8,64);R("#2a1a3a",px,GY-64,48,8);R("#2a1a3a",px,GY-8,48,8);ctx.save();ctx.beginPath();ctx.rect(px+8,GY-56,32,48);ctx.clip();for(var a=0;a<6;a++)for(var b=0;b<5;b++){var v=Math.sin(t*2+a*1.3+b*.9);ctx.fillStyle=state=="win"?(v>0?"#e0b3ff":"#b060ff"):(v>0?"#5a1f8f":"#3d1566");ctx.fillRect(px+8+a*6,GY-56+b*10,6,10)}ctx.restore()}
   var arm=-.2,walking=state=="walk",tl=state=="ask"||state=="act"?tool:null;if(state=="act")arm=-.5-1.1*Math.abs(Math.sin(actT*8));if(state=="ask")arm=-.5;
   var kb=hurtT>0?-Math.sin(hurtT*6)*6:0;steve(SX+kb,GY,walking,arm,tl,state=="dead");
-  parts.forEach(function(p){R(p.c,p.x,p.y,p.s,p.s)})}
+  parts.forEach(function(p){R(p.c,p.x,p.y,p.s,p.s)});
+  if(WD.sun){ctx.globalAlpha=.3*frac;R("#1a1040",0,0,W,H);ctx.globalAlpha=1}
+  ctx.globalAlpha=.2*(WD.sun?frac:1);ctx.fillStyle="#ffd24a";torches.forEach(function(x){ctx.beginPath();ctx.arc(x,GY-16,30,0,6.283);ctx.fill()});ctx.globalAlpha=1;
+  function nx(f){return 24+f*(W-48)}R("#000",24,16,W-48,8);R("#222",25,17,W-50,6);R("#2fe07a",25,17,Math.round(frac*(W-50)),6);
+  obs.forEach(function(o,k){var x=nx((o.x-stopOf(o))/tot),col=o.done?"#2fe07a":(k==stage&&state!="win"?(Math.floor(t*4)%2?"#ffe45e":"#fff"):(o.t=="wall"?"#a5a5a5":o.t=="lava"?WD.p[0]:"#4caf50"));R("#000",x-5,14,10,12);R(col,x-4,15,8,10)});
+  R("#000",nx(1)-6,13,12,14);R(state=="win"?"#e0b3ff":"#8a3fd8",nx(1)-5,14,10,12);
+  var mx=nx(frac);R("#000",mx-5,2,10,11);R("#c8956b",mx-4,3,8,8);R("#3b2a1a",mx-4,3,8,3);R("#fff",mx,6,2,2);R("#000",mx-1,26,3,3)}
  var last=0;function loop(ts){if(!document.body.contains(cv))return;var dt=Math.min(.05,((ts||0)-last)/1000);last=ts||0;update(dt);draw();requestAnimationFrame(loop)}
  say("<p class='mut'>🚶 Стів іде…</p>");requestAnimationFrame(function(ts){last=ts;loop(ts)})};
 (function(){var st=document.createElement("style");st.textContent=".gxcv{width:100%;image-rendering:pixelated;border:4px solid #2b2b2b;display:block;background:#8ecbff}.gxq{margin-top:8px;min-height:60px}.gxq b{display:block;margin-bottom:6px}";try{document.head.appendChild(st)}catch(e){}})();
@@ -4465,7 +4480,7 @@ QQ("Якої якості має бути схема в документі?","Ч
 
 /* додаємо «Пригоду» в кінець кожного уроку 5–6 класів (після всіх LES) */
 GI5.adv=["🌌","Пригода: шлях до порталу"];
-Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"}))return;if(GX.pool(n).length>=6)L.g.push({type:"adv",title:"Пригода: шлях до порталу",items:[]})});
+Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"}))return;L.g.forEach(function(g){if(g.type=="sort")g.hide=true});if(GX.pool(n).length>=6)L.g.push({type:"adv",title:"Пригода: шлях до порталу",items:[]})});
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
