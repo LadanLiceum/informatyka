@@ -8436,9 +8436,61 @@ GM.inv=function(g){var N=6,qs=getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs
  loop(cv,upd,draw)};
 GI.inv=["🚀","Захисник: збий правильну відповідь"];
 
+
+/* ---------- Флаппі-ракета ---------- */
+GM.flap=function(g){var N=6,qs=getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
+ var W=312,H=380,cv=head(g.title,"Тисни 🔥 (або пробіл, або торкнись поля) — ракета підстрибує. Пролети крізь отвір з ПРАВИЛЬНОЮ літерою!",true);cv.width=W;cv.height=H;var ctx=cv.getContext("2d");
+ var by,vy,gx,ops,qi=0,sc=0,lives=3,wrong=false,done=false,go=false,T=0,passed=false,YC=[78,190,302],OH=40,BR=11;
+ function ready(){by=H/2;vy=0;gx=W+30;passed=false;go=false}
+ function newQ(){ops=panel(qs[qi]);wrong=false;ready();hud(qi,N,sc,lives)}
+ newQ();
+ function flap(){if(done)return;go=true;vy=-250;snd("click")}
+ cv.addEventListener("touchstart",function(e){flap();e.preventDefault()},{passive:false});cv.addEventListener("mousedown",flap);
+ ctl(cv,function(d){if(d=="f"||d=="u")flap()},true);
+ function lose(){lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}ready()}
+ function upd(dt){if(done)return;T+=dt;if(!go)return;vy+=620*dt;by+=vy*dt;gx-=70*dt;
+  if(by<BR||by>H-BR)return lose();
+  if(!passed&&gx<70+BR+22&&gx>70-BR-22){var k=-1;for(var i=0;i<3&&i<ops.length;i++)if(Math.abs(by-YC[i])<OH-BR+4)k=i;if(k<0)return lose();
+   if(gx<70){passed=true;var o=ops[k];if(o.ok){if(!wrong)sc++;snd("ok");qi++;if(qi>=N){done=true;over(cv,"LEVEL CLEAR!");hud(N-1,N,sc,lives);setTimeout(function(){fin9(sc,N)},1000);return}newQ()}else{wrong=true;lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}gx=W+30;passed=false;go=false;by=H/2;vy=0}}}}
+ function draw(){if(done)return;ctx.fillStyle="#070720";ctx.fillRect(0,0,W,H);ctx.fillStyle="#fff";for(var i=0;i<30;i++)ctx.fillRect((i*97+T*20*(1+i%3))%W*1,(i*53)%H,1.5,1.5);
+  var n=Math.min(3,ops.length);ctx.fillStyle="#141a6b";ctx.strokeStyle="#3b4cff";ctx.lineWidth=2;
+  var segs=[],prev=0;for(var j=0;j<n;j++){segs.push([prev,YC[j]-OH]);prev=YC[j]+OH}segs.push([prev,H]);
+  segs.forEach(function(sg){if(sg[1]>sg[0]){ctx.fillRect(gx-22,sg[0],44,sg[1]-sg[0]);ctx.strokeRect(gx-22,sg[0],44,sg[1]-sg[0])}});
+  for(var j2=0;j2<n;j2++)letter(ctx,gx,YC[j2],j2,13);
+  var y=by;ctx.save();ctx.translate(70,y);ctx.rotate(Math.max(-.5,Math.min(.8,vy/400)));ctx.fillStyle="#ff2e93";ctx.beginPath();ctx.moveTo(16,0);ctx.lineTo(-12,-9);ctx.lineTo(-8,0);ctx.lineTo(-12,9);ctx.closePath();ctx.fill();ctx.fillStyle="#fff";ctx.fillRect(2,-3,6,6);if(go){ctx.fillStyle="#fbbf24";ctx.beginPath();ctx.moveTo(-9,0);ctx.lineTo(-20-Math.random()*6,0);ctx.lineTo(-9,4);ctx.fill()}ctx.restore();
+  if(!go)wait(cv)}
+ loop(cv,upd,draw)};
+GI.flap=["🚀","Ракета: пролети крізь правильну відповідь"];
+
+/* ---------- Арканоїд ---------- */
+GM.brk=function(g){var N=6,qs=getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
+ var W=312,H=380,cv=head(g.title,"Рухай платформу ◀ ▶ (або тягни пальцем), запусти кульку 🔥 і вдар у цеглину з ПРАВИЛЬНОЮ літерою.",true);cv.width=W;cv.height=H;var ctx=cv.getContext("2d");
+ var px=W/2,mv=0,PW=64,bx,by,vx,vy,live=false,bricks,ops,qi=0,sc=0,lives=3,wrong=false,done=false,T=0,SP=170;
+ function ball(){live=false;vx=0;vy=0}
+ function newQ(){ops=panel(qs[qi]);bricks=ops.slice(0,3).map(function(o,k){return {x:12+k*100,y:44,w:88,h:34,k:k,ok:o.ok,on:true}});wrong=false;ball();hud(qi,N,sc,lives)}
+ newQ();cv._pos=function(cx){var r=cv.getBoundingClientRect();px=Math.max(PW/2,Math.min(W-PW/2,(cx-r.left)/r.width*W))};
+ function launch(){if(live||done)return;live=true;var a=(Math.random()*.6-.3);vx=SP*Math.sin(a)+(mv*40);vy=-SP*Math.cos(a)}
+ ctl(cv,function(d,rel){if(d=="f"||d=="u"){launch();return}if(d=="l")mv=-1;else if(d=="r")mv=1;else if(rel=="l"&&mv<0||rel=="r"&&mv>0)mv=0},true);
+ function lose(){lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}ball()}
+ function upd(dt){if(done)return;T+=dt;px=Math.max(PW/2,Math.min(W-PW/2,px+mv*240*dt));
+  if(!live){bx=px;by=H-40;return}
+  bx+=vx*dt;by+=vy*dt;if(bx<6){bx=6;vx=Math.abs(vx)}if(bx>W-6){bx=W-6;vx=-Math.abs(vx)}if(by<6){by=6;vy=Math.abs(vy)}
+  if(vy>0&&by>H-34&&by<H-22&&Math.abs(bx-px)<PW/2+6){var off=(bx-px)/(PW/2);var a=off*1.0;var sp=Math.min(SP+qi*10,260);vx=sp*Math.sin(a);vy=-sp*Math.cos(a);snd("click")}
+  if(by>H+10)return lose();
+  for(var i=0;i<bricks.length;i++){var b=bricks[i];if(b.on&&bx>b.x-6&&bx<b.x+b.w+6&&by>b.y-6&&by<b.y+b.h+6){b.on=false;vy=Math.abs(vy);
+   if(b.ok){if(!wrong)sc++;snd("ok");qi++;if(qi>=N){done=true;over(cv,"LEVEL CLEAR!");hud(N-1,N,sc,lives);setTimeout(function(){fin9(sc,N)},1000);return}newQ();return}
+   else{wrong=true;lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}ball();return}}}}
+ function draw(){if(done)return;ctx.fillStyle="#070720";ctx.fillRect(0,0,W,H);
+  bricks.forEach(function(b){if(!b.on)return;ctx.fillStyle=COL[b.k];rr(ctx,b.x,b.y,b.w,b.h,6);ctx.fill();ctx.fillStyle="#111";ctx.font="bold 20px monospace";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(LET[b.k],b.x+b.w/2,b.y+b.h/2+1)});
+  ctx.fillStyle="#3dffa2";rr(ctx,px-PW/2,H-30,PW,10,5);ctx.fill();
+  ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(live?bx:px,live?by:H-40,6,0,7);ctx.fill();
+  if(!live){ctx.fillStyle="#9aa6d6";ctx.font="bold 13px monospace";ctx.textAlign="center";ctx.fillText("Займи позицію й тисни 🔥",W/2,H/2)}}
+ loop(cv,upd,draw)};
+GI.brk=["🧱","Арканоїд: розбий правильну цеглину"];
 /* додаємо в уроки 9 класу */
-Object.keys(LES).forEach(function(k){var n=+k;if(!(n>=1&&n<=52)||!LES[n].g)return;var L=LES[n];if(L.g.some(function(g){return g.type=="pac"}))return;
- L.g.push({type:"pac",title:"Pac-Man: знання проти привидів"},{type:"snake",title:"Змійка: ласуй знаннями"},{type:"inv",title:"Захисник: космічний бій"})});
+var BIG=[["pac","Pac-Man: знання проти привидів"],["snake","Змійка: ласуй знаннями"],["flap","Ракета: крізь правильні ворота"],["inv","Захисник: космічний бій"],["brk","Арканоїд: цеглини знань"]];
+Object.keys(LES).forEach(function(k){var n=+k;if(!(n>=1&&n<=52)||!LES[n].g)return;var L=LES[n];if(L.g.some(function(g){return BIG.some(function(b){return b[0]==g.type})}))return;
+ var b=BIG[(n-1)%5];L.g.push({type:b[0],title:b[1]})});
 })();
 
 /* 9 клас: ретро-аркада */
