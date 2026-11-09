@@ -8439,15 +8439,18 @@ GI.inv=["🚀","Захисник: збий правильну відповідь
 
 /* ---------- Флаппі-ракета ---------- */
 GM.flap=function(g){var N=6,qs=getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
- var W=312,H=380,cv=head(g.title,"Тримай ▲ ▼ (або тягни пальцем по полю): ракета летить вгору-вниз. Пролети крізь отвір з ПРАВИЛЬНОЮ літерою!","ud");cv.width=W;cv.height=H;var ctx=cv.getContext("2d");
+ var W=312,H=380,cv=head(g.title,"▲ (або пробіл, або торкнись поля) — ракета підстрибує, ▼ — пікірує вниз. Пролети крізь отвір з ПРАВИЛЬНОЮ літерою!","ud");cv.width=W;cv.height=H;var ctx=cv.getContext("2d");
  var by,vy=0,mvy=0,gx,ops,qi=0,sc=0,lives=3,wrong=false,done=false,go=false,T=0,passed=false,YC=[78,190,302],OH=40,BR=11;
  function ready(){by=H/2;vy=0;mvy=0;gx=W+30;passed=false;go=false}
  function newQ(){ops=panel(qs[qi]);wrong=false;ready();hud(qi,N,sc,lives)}
  newQ();
- cv._pos=function(cx,cy){var r=cv.getBoundingClientRect();go=true;by=Math.max(BR,Math.min(H-BR,(cy-r.top)/r.height*H))};
- ctl(cv,function(d,rel){if(d=="u"){mvy=-1;go=true}else if(d=="d"){mvy=1;go=true}else if(rel=="u"&&mvy<0||rel=="d"&&mvy>0)mvy=0},true);
+ function flap(){if(done)return;go=true;vy=-250;snd("click")}
+ function dive(){if(done)return;go=true;vy=Math.max(vy,0)+260}
+ cv.addEventListener("touchstart",function(e){flap();e.preventDefault()},{passive:false});cv.addEventListener("mousedown",flap);
+ ctl(cv,function(d){if(d=="u"||d=="f")flap();else if(d=="d")dive()},false);
  function lose(){lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}ready()}
- function upd(dt){if(done)return;T+=dt;if(!go)return;by=Math.max(BR,Math.min(H-BR,by+mvy*190*dt));vy=mvy*200;gx-=70*dt;
+ function upd(dt){if(done)return;T+=dt;if(!go)return;vy+=620*dt;by+=vy*dt;gx-=70*dt;
+  if(by<BR||by>H-BR)return lose();
   if(!passed&&gx<70+BR+22&&gx>70-BR-22){var k=-1;for(var i=0;i<3&&i<ops.length;i++)if(Math.abs(by-YC[i])<OH-BR+4)k=i;if(k<0)return lose();
    if(gx<70){passed=true;var o=ops[k];if(o.ok){if(!wrong)sc++;snd("ok");qi++;if(qi>=N){done=true;over(cv,"LEVEL CLEAR!");hud(N-1,N,sc,lives);setTimeout(function(){fin9(sc,N)},1000);return}newQ()}else{wrong=true;lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}gx=W+30;passed=false;go=false;by=H/2;vy=0}}}}
  function draw(){if(done)return;ctx.fillStyle="#070720";ctx.fillRect(0,0,W,H);ctx.fillStyle="#fff";for(var i=0;i<30;i++)ctx.fillRect((i*97+T*20*(1+i%3))%W*1,(i*53)%H,1.5,1.5);
