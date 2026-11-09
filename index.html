@@ -8370,7 +8370,7 @@ GM.pac=function(g){var N=6,qs=getQs(CUR9,N);if(qs.length<2){return fin9(0,1)}N=q
  var SP=[[1,11],[11,11],[6,3]],qi=0,sc=0,lives=3,wrong=false,ops,cells,inv=0,done=false,T=0,mouth=0;
  var pac,gh,go=false;function wall(x,y){return x<0||y<0||x>=W||y>=H||MZ[y][x]=="#"}
  function reset(){go=false;pac={x:6,y:9,fx:6,fy:9,d:[0,0],nd:[0,0],t:0};gh=[{x:1,y:1,fx:1,fy:1,t:0,c:"#ff4d4d",p:.8},{x:11,y:1,fx:11,fy:1,t:0,c:"#ff9de0",p:.5},{x:6,y:11,fx:6,fy:11,t:0,c:"#4de1ff",p:.3}].slice(0,qi>=3?3:2)}
- function newQ(){ops=panel(qs[qi]);cells=ops.map(function(o,k){return {x:SP[k]?SP[k][0]:0,y:SP[k]?SP[k][1]:0,k:k,ok:o.ok,on:k<3}}).filter(function(c){return SP[c.k]});wrong=false;reset();hud(qi,N,sc,lives)}
+ function newQ(){ops=panel(qs[qi]);var cand=[],xx,yy;for(yy=0;yy<H;yy++)for(xx=0;xx<W;xx++)if(MZ[yy][xx]=="."&&Math.abs(xx-6)+Math.abs(yy-9)>=5&&Math.abs(xx-1)+Math.abs(yy-1)>=4&&Math.abs(xx-11)+Math.abs(yy-1)>=4)cand.push([xx,yy]);cand=shuffle(cand);var sp=[];cand.forEach(function(c){if(sp.length<ops.length&&sp.every(function(p){return Math.abs(p[0]-c[0])+Math.abs(p[1]-c[1])>=6}))sp.push(c)});if(sp.length<ops.length)sp=cand.slice(0,ops.length);cells=ops.slice(0,3).map(function(o,k){return {x:sp[k][0],y:sp[k][1],k:k,ok:o.ok,on:true}});wrong=false;reset();hud(qi,N,sc,lives)}
  newQ();ctl(cv,function(d){if(d&&DIR[d]){pac.nd=DIR[d];go=true}},false);
  function can(e,d){return !wall(e.x+d[0],e.y+d[1])}
  function hit(){if(inv>0)return;lives--;inv=1.6;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}reset()}
