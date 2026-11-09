@@ -735,7 +735,7 @@ function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k;for(k in o)v
 function lessonItems(n){var L=LES[n],h="",cl=["a","c","d","b"],c=0;
  if(L.r)h+=mb("a","📖","Читалка",L.r.length+" "+(L.r.length<5?"сторінки":"сторінок")+" з малюнками"+(B.rd[n]?" · ✓":""),"openR("+n+")");
  (L.g||[]).forEach(function(g,i){if(g.hide)return;if(g.type=="fn"){h+=mb(cl[c++%4],g.icon,g.title,g.sub,g.fn+"()");return}var t=GI[g.type];h+=mb(cl[c++%4],t[0],g.title,t[1]+" · "+bst(n,"g"+i),"playG("+n+","+i+")")});
- if(L.q)h+=tlock(n,"q")?mb("lock","🔒","Тест","пройдено: "+B.sc[n].q+"% · повторно — після завершення сесії","tlockMsg()"):mb("b","📝","Тест",L.q.length+" питань · "+bst(n,"q")+" · одна спроба","playQ("+n+",\"q\")");
+ if(L.q&&!L.noq)h+=tlock(n,"q")?mb("lock","🔒","Тест","пройдено: "+B.sc[n].q+"% · повторно — після завершення сесії","tlockMsg()"):mb("b","📝","Тест",L.q.length+" питань · "+bst(n,"q")+" · одна спроба","playQ("+n+",\"q\")");
  if(L.big)h+=tlock(n,"big")?mb("lock","🔒","Великий тест із теми","пройдено: "+B.sc[n].big+"% · повторно — після завершення сесії","tlockMsg()"):mb("b","📝","Великий тест із теми",L.big.length+" питання · "+bst(n,"big")+" · одна спроба","playQ("+n+",\"big\")");
  return h}
 
@@ -4502,6 +4502,9 @@ QQ("Якої якості має бути схема в документі?","Ч
 /* додаємо «Пригоду» в кінець кожного уроку 5–6 класів (після всіх LES) */
 GI5.adv=["🌌","Пригода: шлях до порталу"];
 Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"}))return;L.g.forEach(function(g){if(g.type=="sort")g.hide=true});if(GX.pool(n).length>=6)L.g.push({type:"adv",title:"Пригода: шлях до порталу",items:[]})});
+
+/* підсумкові уроки 5–6 класів: лишається лише великий тест (24 питання) */
+Object.keys(LES).forEach(function(k){var n=+k;if(n>500&&n<700&&LES[n].big&&LES[n].q)LES[n].noq=true});
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
