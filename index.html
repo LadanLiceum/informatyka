@@ -1474,6 +1474,148 @@ function dAll6(cls,name){var r=[],k;for(k in LES){k=+k;if(k<=600||k>=700)continu
 var _c6=code;code=function(){var b=_c6();if(ME&&ME.c.charAt(0)=="6"){useB6();var any=false,i;for(i=1;i<=T6N;i++)if(B6.l[600+i]||P6(i))any=true;if(any){var n=ME.n.replace(/\|/g," "),d=0,s=0,v=[];for(i=1;i<=52;i++)v.push(0);for(i=1;i<=T6N;i++){var p=P6(i);v[i-1]=P12(p);s+=p;if(B6.l[600+i])d++}
  b+="\n"+["INF5","K6",ME.c,n,d,P12(s/T6N)].join("|")+"\n"+["INF5","L6",ME.c,n].concat(v).join("|");var x=dAll6(ME.c,n);if(x)b+="\n"+x}}return b};
 
+/* ===== gx.js · інтерактивні ігри для 5 і 6 класів: перетягування, свайпи, лінії, удари кайлом, ефекти ===== */
+var GX={on:function(){return CUR9>500&&CUR9<700}};
+GX.burst=function(el,kind){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,em=kind=="bad"?["💥","🔥","💨"]:["✨","⭐","💎","🟩"];
+ for(var k=0;k<14;k++){var s=document.createElement("span");s.className="gxp";s.textContent=em[k%em.length];var a=Math.random()*6.283,d=40+Math.random()*70;
+  s.style.cssText="left:"+cx+"px;top:"+cy+"px;--dx:"+Math.round(Math.cos(a)*d)+"px;--dy:"+Math.round(Math.sin(a)*d-30)+"px";document.body.appendChild(s);(function(s){setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s)},900)})(s)}};
+GX.shake=function(el){if(!el)return;el.classList.remove("gxsh");void el.offsetWidth;el.classList.add("gxsh")};
+GX.flash=function(c){var d=document.createElement("div");d.className="gxfl";d.style.background=c||"rgba(220,40,20,.35)";document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d)},450)};
+GX.up=function(x,y,sel){var e=document.elementFromPoint(x,y);return e&&e.closest?e.closest(sel):null};
+/* перетягування: ghost-копія під пальцем; торкання без руху = tap */
+GX.drag=function(el,o){el.style.touchAction="none";
+ el.onpointerdown=function(e){if(el.gxLock)return;e.preventDefault();var sx=e.clientX,sy=e.clientY,moved=false,last=null,ghost=null,r=el.getBoundingClientRect(),ox=e.clientX-r.left,oy=e.clientY-r.top;
+  function mv(ev){var dx=ev.clientX-sx,dy=ev.clientY-sy;
+   if(!moved&&Math.abs(dx)+Math.abs(dy)>8){moved=true;ghost=el.cloneNode(true);ghost.removeAttribute("id");ghost.className+=" gxghost";ghost.style.width=r.width+"px";document.body.appendChild(ghost);el.style.opacity=".25"}
+   if(moved){ghost.style.left=(ev.clientX-ox)+"px";ghost.style.top=(ev.clientY-oy)+"px";var t=o.hit(ev.clientX,ev.clientY);if(t!==last){if(last&&o.out)o.out(last);if(t&&o.over)o.over(t);last=t}}}
+  function up(ev){document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);
+   if(ghost&&ghost.parentNode)ghost.parentNode.removeChild(ghost);el.style.opacity="";if(last&&o.out)o.out(last);
+   if(!moved){if(o.tap)o.tap();return}
+   var t=ev.type=="pointercancel"?null:o.hit(ev.clientX,ev.clientY);if(t)o.drop(t)}
+  document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)}};
+GX.nextBtn=function(i,n,sc,show){var adv=false;function go(){if(adv)return;adv=true;i++;i<n?show(i):fin9(sc(),n)}nxt9(i<n-1?"Далі →":"Результат",go);return go};
+
+/* ---------- Сортування: перетягни блок у скриню ---------- */
+(function(){var old=GM.sort;
+GM.sort=function(g){if(!GX.on())return old(g);var its=shuffle(g.items),i=0,sc=0,n=its.length;
+ function show(){var it=its[i],done=false,tried=0;
+  fr9(g.title,g.hint||"Перетягни блок у потрібну скриню (або торкнись блока, а потім скрині).","<div class='gxst'><div id='gxit' class='gxblk'>"+esc9(it[0])+"</div></div><div id='gxch' class='gxch'></div><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
+  var item=document.getElementById("gxit"),box=document.getElementById("gxch"),armed=false;
+  g.buckets.forEach(function(bn,k){var c=document.createElement("div");c.className="gxchest c"+(k%4);c.dataset.k=k;c.innerHTML="<div class='lid'></div><div class='bx'><b>"+esc9(bn)+"</b></div>";box.appendChild(c);
+   c.onclick=function(){if(armed)put(c)}});
+  function put(c){if(done)return;var ok=+c.dataset.k===it[1];
+   if(ok){done=true;if(!tried)sc++;c.classList.add("open");GX.burst(c,"ok");item.classList.add("gxsink");gs9((i+1)+" / "+n+" · ✅ "+sc);document.getElementById("fb").textContent="Так! "+(it[2]||"");var go=GX.nextBtn(i,n,function(){return sc},function(j){i=j;show()});setTimeout(go,it[2]&&it[2].length>40?2600:1500)}
+   else{tried++;GX.shake(item);GX.shake(c);c.classList.add("bad");setTimeout(function(){c.classList.remove("bad")},450);document.getElementById("fb").textContent=tried>1?"Ще ні. "+(it[2]||"")+" Спробуй ще 🔁":"Не туди 🔁 Спробуй ще раз!"}}
+  GX.drag(item,{hit:function(x,y){return GX.up(x,y,".gxchest")},over:function(t){t.classList.add("hov")},out:function(t){t.classList.remove("hov")},drop:put,tap:function(){armed=!armed;item.classList.toggle("sel",armed)}})}
+ show()}})();
+
+/* ---------- Пари: проведи лінію ---------- */
+(function(){var old=GM.pairs;
+GM.pairs=function(g){if(!GX.on())return old(g);var it=g.items,n=it.length,ix=it.map(function(p,i){return i}),found=0,err=0,sel=null;
+ fr9(g.title,g.hint||"Проведи пальцем лінію від поняття до його пари (або торкнись обох).","<div id='gxp' class='gxp2'><svg id='gxs'></svg><div class='gxcol' id='lt'></div><div class='gxcol' id='rt'></div></div>");gs9("Пар: 0 / "+n);
+ var wrap=document.getElementById("gxp"),svg=document.getElementById("gxs"),NS="http://www.w3.org/2000/svg";
+ function ctr(el,side){var c=wrap.getBoundingClientRect(),r=el.getBoundingClientRect();return [(side?r.left:r.right)-c.left,r.top+r.height/2-c.top]}
+ function ln(a,b,cls){var l=document.createElementNS(NS,"line"),p=ctr(a,0),q=Array.isArray(b)?b:ctr(b,1);l.setAttribute("x1",p[0]);l.setAttribute("y1",p[1]);l.setAttribute("x2",q[0]);l.setAttribute("y2",q[1]);l.setAttribute("class",cls);svg.appendChild(l);return l}
+ function tryc(a,b){if(a.gxLock||b.gxLock)return;if(sel){sel.classList.remove("sel");sel=null}
+  if(a.ix===b.ix){a.gxLock=b.gxLock=true;a.classList.add("ok");b.classList.add("ok");ln(a,b,"gxl ok");GX.burst(b,"ok");found++;gs9("Пар: "+found+" / "+n+(err?" · помилок: "+err:""));if(found==n)setTimeout(function(){fin9(Math.max(0,n-err),n)},800)}
+  else{err++;gs9("Пар: "+found+" / "+n+" · помилок: "+err);var l=ln(a,b,"gxl bad");setTimeout(function(){if(l.parentNode)l.parentNode.removeChild(l)},450);GX.shake(a);GX.shake(b)}}
+ function mk(id,arr,side){arr.forEach(function(i){var b=document.createElement("div");b.className="gxcard"+(side?" r":"");b.textContent=it[i][side?1:0];b.ix=i;document.getElementById(id).appendChild(b);
+  if(side){b.onclick=function(){if(sel)tryc(sel,b)}}
+  else{b.style.touchAction="none";b.onpointerdown=function(e){if(b.gxLock)return;e.preventDefault();var tl=null,moved=false,sx=e.clientX,sy=e.clientY,cr=wrap.getBoundingClientRect();
+    function mv(ev){if(Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)>8)moved=true;if(!moved)return;if(!tl)tl=ln(b,[0,0],"gxl drag");tl.setAttribute("x2",ev.clientX-cr.left);tl.setAttribute("y2",ev.clientY-cr.top)}
+    function up(ev){document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);if(tl&&tl.parentNode)tl.parentNode.removeChild(tl);
+     if(!moved){if(sel)sel.classList.remove("sel");sel=b;b.classList.add("sel");return}
+     var t=GX.up(ev.clientX,ev.clientY,".gxcard.r");if(t)tryc(b,t)}
+    document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)}}})}
+ mk("lt",shuffle(ix.slice()),0);mk("rt",shuffle(ix.slice()),1)}})();
+
+/* ---------- Шахта: два удари кайлом, кріпери, вибухи ---------- */
+GM.mine=function(g){var its=shuffle(g.items),i=0,sc=0,need=0,n=its.length;its.forEach(function(r){r[1].forEach(function(x){if(x[1])need++})});
+ function show(){var r=its[i],found=0,total=0,hp=3,done=false;r[1].forEach(function(x){if(x[1])total++});
+  fr9(g.title,g.hint||"Бий кайлом ⛏️: два удари — і блок зламано. Хибний блок — це кріпер 💥: втрачаєш ❤️.","<div class='fun'><b>"+r[0]+"</b></div><div id='mg' class='mine'></div><p id='fb' class='mut'></p>");
+  function hud(){gs9((i+1)+" / "+n+" · "+new Array(hp+1).join("❤️")+(hp<3?new Array(4-hp).join("🖤"):""))}hud();
+  var bs=[],mg=document.getElementById("mg");
+  function finish(){if(done)return;done=true;bs.forEach(function(o){o.b.disabled=true;if(o.x[1]&&!o.hit){o.b.className="blk mn ok";o.b.textContent="💎 "+o.x[0]}});
+   document.getElementById("fb").textContent=hp<=0?"Кріпери перемогли — але ти знайшов "+found+" з "+total+".":"Усе знайдено! 🎉";nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,need)})}
+  shuffle(r[1].slice()).forEach(function(x){var b=document.createElement("button");b.className="blk mn gxm";b.innerHTML="<span class='gxt'>"+esc9(x[0])+"</span>";var o={b:b,x:x,hit:false,h:0};bs.push(o);
+   b.onclick=function(){if(done||b.disabled)return;o.h++;if(o.h<2){b.classList.add("cr1");GX.shake(b);GX.burst(b,"ok");return}
+    b.disabled=true;o.hit=true;b.classList.remove("cr1");
+    if(x[1]){found++;sc++;b.className="blk mn ok";b.textContent="💎 "+x[0];GX.burst(b,"ok");if(found==total)finish()}
+    else{hp--;b.className="blk mn bad";b.textContent="💥 "+x[0];GX.burst(b,"bad");GX.flash();GX.shake(mg);hud();if(hp<=0)finish()}};mg.appendChild(b)})}
+ show()};
+
+/* ---------- Правда чи хибно: свайп картки ---------- */
+(function(){var old=GM.tf;
+GM.tf=function(g){if(!GX.on())return old(g);var its=shuffle(g.items),i=0,sc=0,n=its.length;
+ function show(){var it=its[i],done=false;fr9(g.title,g.hint||"Свайпни картку: праворуч — ПРАВДА ✔, ліворуч — ХИБНО ✖ (або тисни кнопки).","<div class='gxsw'><div class='gxlab l'>✖<br>Хибно</div><div class='gxlab r'>✔<br>Правда</div><div id='gxc' class='gxcard2'>"+esc9(it[0])+"</div></div><div id='bk' class='two2'></div><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
+  var c=document.getElementById("gxc");
+  function decide(v,dx){if(done)return;done=true;var ok=v===it[1];if(ok)sc++;c.classList.remove("yes","no");c.classList.add(ok?"ok":"bad");c.style.transition="transform .45s,opacity .45s";c.style.transform="translateX("+(v?1:-1)*320+"px) rotate("+(v?25:-25)+"deg)";c.style.opacity="0";
+   if(ok)GX.burst(document.getElementById("fb"),"ok");else{GX.flash();GX.shake(document.querySelector(".gxsw"))}
+   gs9((i+1)+" / "+n+" · ✅ "+sc);document.getElementById("fb").textContent=(ok?"Вірно! ":"Не зовсім. ")+(it[2]||"");nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)})}
+  [["✖ Хибно",false],["✔ Правда",true]].forEach(function(o){var b=document.createElement("button");b.className="blk"+(o[1]?"":" alt2");b.textContent=o[0];b.onclick=function(){decide(o[1])};document.getElementById("bk").appendChild(b)});
+  c.style.touchAction="none";c.onpointerdown=function(e){if(done)return;e.preventDefault();var sx=e.clientX,dx=0;
+   function mv(ev){dx=ev.clientX-sx;c.style.transform="translateX("+dx+"px) rotate("+dx/12+"deg)";c.classList.toggle("yes",dx>30);c.classList.toggle("no",dx<-30)}
+   function up(){document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);
+    if(Math.abs(dx)>90)decide(dx>0);else{c.style.transition="transform .2s";c.style.transform="";c.classList.remove("yes","no");setTimeout(function(){c.style.transition=""},220)}}
+   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)}}
+ show()}})();
+
+/* ---------- Послідовність: перетягни блоки в правильний порядок ---------- */
+(function(){var old=GM.seq;
+GM.seq=function(g){if(!GX.on())return old(g);var it=g.items,n=it.length,err=0,ord=shuffle(it.map(function(x,i){return i}));
+ if(n>1){var tries=0;while(ord.every(function(v,k){return v===k})&&tries++<5)ord=shuffle(ord)}
+ fr9(g.title,g.hint||"Перетягни блоки (за ⠿) у правильному порядку й натисни «Перевірити».","<div id='gxl' class='gxlist'></div><div id='ck'></div>");gs9("Помилок: 0");
+ var box=document.getElementById("gxl");
+ ord.forEach(function(i,k){var r=document.createElement("div");r.className="gxrow";r.dataset.i=i;r.innerHTML="<span class='gxh'>⠿</span><span class='gxn'></span><span>"+esc9(it[i])+"</span>";r.style.touchAction="none";box.appendChild(r);
+  r.onpointerdown=function(e){e.preventDefault();var rc=r.getBoundingClientRect(),oy=e.clientY-rc.top,gh=r.cloneNode(true);gh.className="gxrow gxghost";gh.style.width=rc.width+"px";gh.style.left=rc.left+"px";gh.style.top=rc.top+"px";document.body.appendChild(gh);r.classList.add("ph");
+   function mv(ev){gh.style.top=(ev.clientY-oy)+"px";var rows=Array.prototype.filter.call(box.children,function(x){return x!==r}),placed=false;
+    for(var q=0;q<rows.length;q++){var b=rows[q].getBoundingClientRect();if(ev.clientY<b.top+b.height/2){box.insertBefore(r,rows[q]);placed=true;break}}if(!placed)box.appendChild(r);num()}
+   function up(){document.removeEventListener("pointermove",mv);document.removeEventListener("pointerup",up);document.removeEventListener("pointercancel",up);if(gh.parentNode)gh.parentNode.removeChild(gh);r.classList.remove("ph")}
+   document.addEventListener("pointermove",mv);document.addEventListener("pointerup",up);document.addEventListener("pointercancel",up)}});
+ function num(){Array.prototype.forEach.call(box.children,function(r,k){r.querySelector(".gxn").textContent=(k+1)+"."})}num();
+ var c=document.createElement("button");c.className="pri";c.textContent="Перевірити";document.getElementById("ck").appendChild(c);
+ c.onclick=function(){var rows=Array.prototype.slice.call(box.children),bad=0;rows.forEach(function(r,k){var ok=+r.dataset.i===k;r.classList.remove("ok","bad");r.classList.add(ok?"ok":"bad");if(!ok){bad++;GX.shake(r)}});
+  if(!bad){GX.burst(c,"ok");c.disabled=true;rows.forEach(function(r){r.onpointerdown=null});setTimeout(function(){fin9(Math.max(0,n-err),n)},900)}
+  else{err++;gs9("Помилок: "+err+" · не на місці: "+bad);GX.flash("rgba(220,40,20,.2)");setTimeout(function(){rows.forEach(function(r){r.classList.remove("ok","bad")})},1100)}}}})();
+
+/* ---------- Пропуски: перетягни слово в діру ---------- */
+(function(){var old=GM.cloze;
+GM.cloze=function(g){if(!GX.on())return old(g);var its=shuffle(g.items),i=0,sc=0,n=its.length;
+ function show(){var it=its[i],done=false,tried=0;
+  fr9(g.title,g.hint||"Перетягни потрібне слово в пропуск (або торкнись слова).","<div class='fun gxsn'><b>"+esc9(it[0]).replace("___","<span id='gxg' class='gxgap'>?</span>")+"</b></div><div id='o' class='gxopt'></div><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
+  var gap=document.getElementById("gxg");
+  function put(a,ch){if(done||ch.gxLock)return;if(a===it[1][0]){done=true;if(!tried)sc++;gap.textContent=a;gap.classList.add("ok");ch.style.visibility="hidden";GX.burst(gap,"ok");gs9((i+1)+" / "+n+" · ✅ "+sc);document.getElementById("fb").textContent=it[2]||"Вірно!";var go=GX.nextBtn(i,n,function(){return sc},function(j){i=j;show()});setTimeout(go,it[2]&&it[2].length>40?2600:1300)}
+   else{tried++;ch.gxLock=true;ch.classList.add("gxdead");GX.shake(gap);GX.shake(ch);GX.burst(gap,"bad");document.getElementById("fb").textContent="Не те слово 🔁 Спробуй інше!"}}
+  shuffle(it[1].slice()).forEach(function(a){var ch=document.createElement("div");ch.className="gxblk";ch.textContent=a;document.getElementById("o").appendChild(ch);
+   GX.drag(ch,{hit:function(x,y){return GX.up(x,y,"#gxg")},over:function(t){t.classList.add("hov")},out:function(t){t.classList.remove("hov")},drop:function(){put(a,ch)},tap:function(){put(a,ch)}})})}
+ show()}})();
+
+(function(){var R=[
+".gxp{position:fixed;z-index:999;pointer-events:none;font-size:18px;margin:-9px 0 0 -9px;animation:gxp .85s ease-out forwards}@keyframes gxp{to{transform:translate(var(--dx),var(--dy)) rotate(240deg) scale(.4);opacity:0}}",
+".gxsh{animation:gxsh .4s}@keyframes gxsh{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}",
+".gxfl{position:fixed;inset:0;z-index:998;pointer-events:none;animation:gxfl .45s ease-out forwards}@keyframes gxfl{to{opacity:0}}",
+".gxghost{position:fixed!important;z-index:997;pointer-events:none;margin:0!important;transform:rotate(-3deg) scale(1.06);box-shadow:0 10px 18px rgba(0,0,0,.45)}",
+".gxblk{background:#7d7d7d;background-image:repeating-conic-gradient(#8b8b8b 0 25%,#707070 0 50%);background-size:16px 16px;color:#fff;border:4px solid #2b2b2b;padding:12px 14px;text-align:center;font-weight:800;font-size:1.05em;line-height:1.25;text-shadow:1px 1px 0 #000;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;display:inline-block;margin:4px}",
+".gxblk.sel{outline:4px solid #ffc93c}.gxblk.hov,.gxgap.hov{outline:4px solid #ffc93c;transform:scale(1.06)}.gxblk.gxdead{opacity:.35;filter:grayscale(1)}",
+".gxst{text-align:center;min-height:84px;padding:8px 0}.gxst .gxblk{font-size:1.2em;display:block;margin:0 auto;max-width:92%}.gxsink{animation:gxsink .5s forwards}@keyframes gxsink{to{transform:translateY(60px) scale(.2);opacity:0}}",
+".gxch{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px;margin:8px 0}",
+".gxchest{position:relative;text-align:center;color:#fff;transition:transform .15s}.gxchest .lid{height:26px;background:#b57a3a;border:4px solid #3b2410;border-bottom:0;transform-origin:0 100%;transition:transform .35s}.gxchest .lid:after{content:'';display:block;width:14px;height:12px;background:#ffd24a;border:2px solid #3b2410;margin:14px auto 0}",
+".gxchest .bx{background:#8b5a2b;border:4px solid #3b2410;padding:14px 6px;min-height:58px;display:flex;align-items:center;justify-content:center;font-size:.95em;text-shadow:1px 1px 0 #000}",
+".gxchest.c1 .bx{background:#2f6f9e}.gxchest.c1 .lid{background:#3d86bd}.gxchest.c2 .bx{background:#7a4aa8}.gxchest.c2 .lid{background:#9560c4}.gxchest.c3 .bx{background:#2f8a4e}.gxchest.c3 .lid{background:#3fa863}",
+".gxchest.hov{transform:scale(1.06);filter:brightness(1.2)}.gxchest.open .lid{transform:rotate(-40deg) translateY(-8px)}.gxchest.open .bx{box-shadow:inset 0 0 16px #ffe28a}.gxchest.bad .bx{background:#b5321f}",
+".gxp2{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:8px 0}.gxp2 svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}.gxcol{display:flex;flex-direction:column;gap:10px}",
+".gxcard{background:#9b6a3a;border:4px solid #3b2410;color:#fff;padding:10px 8px;text-align:center;font-weight:700;font-size:.92em;line-height:1.2;min-height:50px;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;text-shadow:1px 1px 0 #000;position:relative}.gxcard.r{background:#3d6fa0}",
+".gxcard.sel{outline:4px solid #ffc93c}.gxcard.ok{background:#2f9e5a;box-shadow:0 0 14px #6dff9c}",
+".gxl{stroke-width:5;stroke-linecap:square}.gxl.drag{stroke:#ffc93c}.gxl.ok{stroke:#2fe07a}.gxl.bad{stroke:#ff4a3a}",
+".gxm{position:relative;overflow:hidden}.gxm.cr1:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,transparent 46%,rgba(0,0,0,.65) 47% 49%,transparent 50%),linear-gradient(60deg,transparent 58%,rgba(0,0,0,.6) 59% 61%,transparent 62%),linear-gradient(170deg,transparent 30%,rgba(0,0,0,.55) 31% 33%,transparent 34%)}.gxm{cursor:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><text y='22' font-size='22'>⛏️</text></svg>\") 4 22,pointer}",
+".gxsw{position:relative;min-height:150px;margin:8px 0;overflow:hidden}.gxlab{position:absolute;top:50%;transform:translateY(-50%);font-weight:900;font-size:1.1em;text-align:center;opacity:.7}.gxlab.l{left:6px;color:#c0392b}.gxlab.r{right:6px;color:#1e9e50}",
+".gxcard2{position:relative;margin:0 60px;background:#fff8e1;border:4px solid #3b2410;padding:20px 12px;min-height:110px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;font-size:1.1em;line-height:1.3;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;box-shadow:4px 4px 0 rgba(0,0,0,.35)}",
+".gxcard2.yes{background:#c9f5d4;border-color:#1e9e50}.gxcard2.no{background:#ffd6d0;border-color:#c0392b}.gxcard2.ok{background:#8ff0ad}.gxcard2.bad{background:#ff9d92}",
+".gxlist{margin:8px 0}.gxrow{display:flex;align-items:center;gap:8px;background:#8b8b8b;background-image:repeating-conic-gradient(#8b8b8b 0 25%,#7a7a7a 0 50%);background-size:16px 16px;border:4px solid #2b2b2b;color:#fff;padding:10px;margin:6px 0;font-weight:700;line-height:1.25;text-shadow:1px 1px 0 #000;user-select:none;-webkit-user-select:none}",
+".gxrow .gxh{font-size:1.4em;opacity:.8;cursor:grab}.gxrow .gxn{min-width:26px;font-weight:900;color:#ffe28a}.gxrow.ph{opacity:.25;outline:3px dashed #ffc93c}.gxrow.ok{background:#2f9e5a;background-image:none}.gxrow.bad{background:#b5321f;background-image:none}",
+".gxsn{font-size:1.1em;line-height:2}.gxgap{display:inline-block;min-width:96px;padding:2px 12px;margin:0 4px;border:3px dashed #8a6d3b;background:#fff3cf;text-align:center;font-weight:900;vertical-align:middle;transition:transform .15s}.gxgap.ok{border-style:solid;border-color:#1e9e50;background:#c9f5d4}.gxopt{text-align:center;margin:10px 0}"
+];var st=document.createElement("style");st.textContent=R.join("\n");try{document.head.appendChild(st)}catch(e){}})();
+
 /* ===== Тема 1. Програмне забезпечення (уроки 1–6) · за підручником Ривкінда та ін., 9 кл. ===== */
 function QQ(q,a,b,c){return {q:q,a:c===undefined?[a,b]:[a,b,c]}}
 
