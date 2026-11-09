@@ -1770,7 +1770,7 @@ GX.pool2=null;
 
 /* ---------- спільний каркас: питання → дія → наступний етап ---------- */
 GX.run=function(g,cfg){var E={WD:GX.world(CUR9),W:360,H:200,sc:0,hp:3,i:0,tried:false,state:"anim",t:0,parts:[],hurtT:0,endT:0,tm:[],note:"",hx:70,hy:130,g:{}};
- var pool=shuffle(GX.pool(CUR9));E.qs=pool.slice(0,8);E.N=E.qs.length;
+ var pool=shuffle(GX.pool(CUR9));E.qs=pool.slice(0,cfg.max||8);E.N=E.qs.length;
  fr9(g.title,cfg.hint,"<canvas id='gxcv' width='360' height='200' class='gxcv'></canvas><div id='gxq' class='gxq'></div>");
  var cv=document.getElementById("gxcv"),ctx=cv.getContext("2d"),qb=document.getElementById("gxq"),done=false;E.ctx=ctx;
  E.R=function(c,x,y,w,h){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h)};
@@ -1833,15 +1833,15 @@ GM.dig=function(g){var T=["dirt","dirt","stone","coal","stone","iron","gold","di
 
 /* ---------- БІЙ З БОСОМ: Ендер-дракон ---------- */
 GM.boss=function(g){var GY=165;
- GX.run(g,{hint:"Стріляй із лука! Правильна відповідь — стріла влучає в дракона, помилка — дракон випльовує вогняну кулю.",unit:"життя дракона",walkMsg:"🏹 Стів натягує тятиву…",rightMsg:"🏹 Стріляю!",winMsg:"🐉 Ендер-дракон переможений!",
- init:function(E){E.g={arrows:[],balls:[],hits:0,flash:0,dead:0,dx:250,dy:62};E.hx=60;E.hy=GY},
+ GX.run(g,{max:12,hint:"Фінальний бій! Стріляй із лука: правильна відповідь — стріла влучає в дракона, помилка — вогняна куля. На половині здоров’я дракон розлютиться!",unit:"життя дракона",walkMsg:"🏹 Стів натягує тятиву…",rightMsg:"🏹 Стріляю!",winMsg:"🐉 Ендер-дракон переможений!",
+ init:function(E){E.g={arrows:[],balls:[],hits:0,flash:0,dead:0,dx:250,dy:62,ph:0,p2:0,ban:0};E.hx=60;E.hy=GY},
  stage:function(E){E.after(.5,function(){E.ask("🐉 Ендер-дракон кружляє над островом!")})},
  right:function(E){var G=E.g;G.arrows.push({x:76,y:GY-30,a:0});GX.snd("hit")},
- wrong:function(E){var G=E.g;G.balls.push({x:G.dx-30,y:G.dy+8});GX.snd("boom")},
+ wrong:function(E){var G=E.g;G.balls.push({x:G.dx-30,y:G.dy+8});if(G.p2){G.balls.push({x:G.dx-10,y:G.dy-14})}GX.snd("boom")},
  win:function(E){E.g.dead=.01},
- update:function(E,dt){var G=E.g;G.dx=250+Math.sin(E.t*.7)*50;G.dy=62+Math.sin(E.t*1.4)*12+(G.dead?G.dead*60:0);if(G.flash>0)G.flash-=dt;if(G.dead){G.dead+=dt;if(Math.random()<dt*8)E.boom(G.dx+(Math.random()-.5)*60,G.dy,["#c58bff","#7b2fbf","#fff","#ff9bf0"],6)}
-  G.arrows.forEach(function(a){var tx=G.dx-6,ty=G.dy+6,d=Math.hypot(tx-a.x,ty-a.y),sp=300*dt;if(d<=sp+14){a.hit=1;G.flash=.3;G.hits++;GX.snd("break");E.boom(tx,ty,["#ff4a8a","#c58bff","#fff"],20);E.after(.35,function(){E.advance()})}else{a.x+=(tx-a.x)/d*sp;a.y+=(ty-a.y)/d*sp;a.a=Math.atan2(ty-a.y,tx-a.x)}});G.arrows=G.arrows.filter(function(a){return!a.hit});
-  G.balls.forEach(function(b){var tx=66,ty=GY-30,d=Math.hypot(tx-b.x,ty-b.y),sp=210*dt;if(d<=sp+10){b.hit=1;E.boom(66,GY-26,["#c58bff","#7b2fbf","#fff"],20)}else{b.x+=(tx-b.x)/d*sp;b.y+=(ty-b.y)/d*sp}});G.balls=G.balls.filter(function(b){return!b.hit})},
+ update:function(E,dt){var G=E.g;G.ph+=dt*(G.p2?1.8:1);if(G.ban>0)G.ban-=dt;G.dx=250+Math.sin(G.ph*.7)*(G.p2?62:50);G.dy=62+Math.sin(G.ph*1.4)*(G.p2?20:12)+(G.dead?G.dead*60:0);if(G.flash>0)G.flash-=dt;if(G.dead){G.dead+=dt;if(Math.random()<dt*8)E.boom(G.dx+(Math.random()-.5)*60,G.dy,["#c58bff","#7b2fbf","#fff","#ff9bf0"],6)}
+  G.arrows.forEach(function(a){var tx=G.dx-6,ty=G.dy+6,d=Math.hypot(tx-a.x,ty-a.y),sp=300*dt;if(d<=sp+14){a.hit=1;G.flash=.3;G.hits++;GX.snd("break");if(!G.p2&&G.hits>=Math.ceil(E.N/2)&&G.hits<E.N){G.p2=1;G.ban=2;GX.flash("rgba(255,60,60,.35)");GX.snd("boom");E.boom(G.dx,G.dy,["#ff4040","#ff9b2f","#fff"],30)}E.boom(tx,ty,["#ff4a8a","#c58bff","#fff"],20);E.after(.35,function(){E.advance()})}else{a.x+=(tx-a.x)/d*sp;a.y+=(ty-a.y)/d*sp;a.a=Math.atan2(ty-a.y,tx-a.x)}});G.arrows=G.arrows.filter(function(a){return!a.hit});
+  G.balls.forEach(function(b){var tx=66,ty=GY-30,d=Math.hypot(tx-b.x,ty-b.y),sp=(G.p2?270:210)*dt;if(d<=sp+10){b.hit=1;E.boom(66,GY-26,["#c58bff","#7b2fbf","#fff"],20)}else{b.x+=(tx-b.x)/d*sp;b.y+=(ty-b.y)/d*sp}});G.balls=G.balls.filter(function(b){return!b.hit})},
  draw:function(E){var G=E.g,ctx=E.ctx,R=E.R,gr=ctx.createLinearGradient(0,0,0,GY);gr.addColorStop(0,"#0d0820");gr.addColorStop(1,"#2a1450");ctx.fillStyle=gr;ctx.fillRect(0,0,360,200);
   for(var q=0;q<36;q++)R(Math.sin(E.t*2+q)>.85?"#fff":"#b9a8ff",(q*97)%360,(q*53)%140,2,2);
   [[120,60],[180,85],[240,50],[310,75]].forEach(function(p,k){R("#1a0f2b",p[0]-9,GY-p[1],18,p[1]);R("#2a1a47",p[0]-5,GY-p[1]+10,5,8);var by=GY-p[1]-14+Math.round(Math.sin(E.t*3+k)*2);R("#ff6ad5",p[0]-6,by,12,12);R("#ffd0f4",p[0]-3,by+3,4,4)});
@@ -1850,9 +1850,9 @@ GM.boss=function(g){var GY=165;
   var dx=G.dx,dy=G.dy;if(!(G.dead&&G.dead>1.6)){var fl=G.flash>0,wf=Math.sin(E.t*5)*14;ctx.save();ctx.translate(dx,dy);ctx.globalAlpha=G.dead?Math.max(0,1-G.dead/1.8):1;
    var C1=fl?"#fff":"#14141c",C2=fl?"#ddd":"#2a2a38";
    ctx.fillStyle=C2;ctx.beginPath();ctx.moveTo(-10,-6);ctx.lineTo(10,-6);ctx.lineTo(34,-40+wf);ctx.lineTo(6,-6);ctx.fill();ctx.beginPath();ctx.moveTo(10,-6);ctx.lineTo(30,-6);ctx.lineTo(66,-34+wf);ctx.lineTo(30,-4);ctx.fill();
-   R2(C1,-20,-6,56,18);R2(C1,36,-2,22,8);R2(C1,58,0,18,6);R2(C1,-34,-10,16,16);R2("#3a3a4c",-34,-10,16,3);R2("#d98cff",-30,-6,5,4);R2("#d98cff",-22,-6,4,4);R2(C1,-40,-2,8,8);R2("#d98cff",-38,3,6,1);ctx.restore()}
+   R2(C1,-20,-6,56,18);R2(C1,36,-2,22,8);R2(C1,58,0,18,6);R2(C1,-34,-10,16,16);R2("#3a3a4c",-34,-10,16,3);R2(G.p2?"#ff4040":"#d98cff",-30,-6,5,4);R2(G.p2?"#ff4040":"#d98cff",-22,-6,4,4);R2(C1,-40,-2,8,8);R2("#d98cff",-38,3,6,1);ctx.restore()}
   function R2(c,x,y,w,h){ctx.fillStyle=c;ctx.fillRect(x,y,w,h)}
-  var rem=Math.max(0,1-G.hits/E.N);R("#000",110,6,142,12);R("#3a0a2a",111,7,140,10);R("#d33",111,7,Math.round(140*rem),10);ctx.font="bold 9px monospace";ctx.fillStyle="#000";ctx.fillText("ЕНДЕР-ДРАКОН",255,16);ctx.fillStyle="#fff";ctx.fillText("ЕНДЕР-ДРАКОН",254,15);
+  var rem=Math.max(0,1-G.hits/E.N);R("#000",180,6,170,12);R("#3a0a2a",181,7,168,10);R(G.p2?"#ff7a1a":"#d33",181,7,Math.round(168*rem),10);R("#fff",180+Math.round(168/2),6,1,12);ctx.font="bold 9px monospace";ctx.fillStyle="#000";ctx.fillText(G.p2?"ЕНДЕР-ДРАКОН · ФАЗА 2":"ЕНДЕР-ДРАКОН",181,30);ctx.fillStyle="#fff";ctx.fillText(G.p2?"ЕНДЕР-ДРАКОН · ФАЗА 2":"ЕНДЕР-ДРАКОН",180,29);if(G.p2&&!G.dead){ctx.globalAlpha=.1+.06*Math.sin(E.t*6);R("#ff2a1a",0,0,360,200);ctx.globalAlpha=1}if(G.ban>0){ctx.font="bold 18px monospace";ctx.fillStyle="#000";ctx.fillText("ФАЗА 2!",131,101);ctx.fillStyle="#ff6a3a";ctx.fillText("ФАЗА 2!",130,100);ctx.font="bold 10px monospace";ctx.fillStyle="#fff";ctx.fillText("Дракон розлютився!",120,116)}
   G.arrows.forEach(function(a){ctx.save();ctx.translate(a.x,a.y);ctx.rotate(a.a);R2("#c8a060",-8,-1,14,2);R2("#fff",4,-2,4,4);R2("#ddd",-9,-2,3,4);ctx.restore()});
   G.balls.forEach(function(b){R("#7b2fbf",b.x-6,b.y-6,12,12);R("#d98cff",b.x-3,b.y-3,6,6);R("#fff",b.x-1,b.y-1,2,2)});
   E.hero(60,GY,{walking:false,arm:E.state=="ask"?-1.2:-1.45,tool:"bow"})}})};
