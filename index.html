@@ -8289,6 +8289,13 @@ var m=p>=.8?"Ти справжній майстер інформатики. Та
 var cols=["#ff5d73","#ffd24a","#4ade80","#38bdf8","#c084fc"],cf="";if(p>=.5)for(var i=0;i<22;i++)cf+="<i style='left:"+(Math.random()*100)+"%;background:"+cols[i%5]+";animation-delay:"+(Math.random()*3)+"s'></i>";
 var d1=document.createElement("div");d1.className="endx";d1.innerHTML=cf+CAT+"<h3 class='exs'>"+t+"</h3><p class='exm'>"+m+"</p><p class='exm'>Дякуємо за гру! Мяу 🐾</p>";card.insertBefore(d1,card.firstChild);window.scrollTo(0,0)}catch(e){}};
 })();
+/* підсвітка правильних/неправильних відповідей у тестах і іграх 9–11 класів */
+(function(){var s=document.createElement("style");var o="#o button.ok,#gb button.ok,.blk.ok,.blk.good,#bk button.ok,.p11o button.ok,.h11o button.ok,.r11b button.ok",b="#o button.bad,#gb button.bad,.blk.bad,.blk.no,#bk button.bad,.p11o button.no,.h11o button.no,.r11b button.no";
+function m(B,l){return l.split(",").map(function(x){return B+" "+x}).join(",")}
+var css="";
+css+=m("body.g11",o)+"{background:#8be58f!important;border-color:#1f9d55!important;color:#0b3d1f!important;box-shadow:0 0 0 3px rgba(31,157,85,.35)!important}"+m("body.g11",b)+"{background:#ff9b9b!important;border-color:#d93a3a!important;color:#5a0d0d!important;box-shadow:0 0 0 3px rgba(217,58,58,.3)!important}";
+css+=m("body.g10c",o)+"{background:rgba(52,245,168,.22)!important;border-color:#34f5a8!important;color:#d6fff0!important;box-shadow:0 0 16px rgba(52,245,168,.55)!important}"+m("body.g10c",b)+"{background:rgba(255,77,141,.22)!important;border-color:#ff4d8d!important;color:#ffd6e6!important;box-shadow:0 0 16px rgba(255,77,141,.5)!important}";
+s.textContent=css;document.head.appendChild(s)})();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
