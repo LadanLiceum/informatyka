@@ -595,7 +595,7 @@ function topics9(){CUR9=0;
  SEC9.map(function(t,i){var ls=secLes(i+1),dn=ls.filter(function(n){return B.l[n]}).length;return mb(["a","b","c","d"][i%4],["⚙️","📄","🧩","🧊","🛡️","🗄️","💻"][i],"Тема "+(i+1)+". "+t,"уроки "+ls[0]+"–"+ls[ls.length-1]+" · пройдено "+dn+" з "+ls.length,"section9("+(i+1)+")")}).join("")}
 function lv(){var g9=ME&&ME.c.charAt(0)=="9",x=g9?B.read*10+B.quiz*5+B.g1*10+B.g2*15+(B.g3||0)*10:S.read*10+S.quiz*5+S.game*5+(S.g2||0)*20+(S.g3||0)*20+A.read*10+A.quiz*5+A.g1*10+A.g2*15+A.g3*10,L=Math.floor(x/60)+1,t=["Новачок","Дослідник","Кібер-юнга","Майстер","Легенда"][Math.min(L-1,4)];return "<div class='lv'><b>Рівень "+L+" · "+t+"</b><div class='bar'><i style='width:"+(x%60)/60*100+"%'></i></div><span class='mut'>"+x+" XP</span></div>"}
 function code(){var n=ME.n.replace(/\|/g," ");if(ME.c.charAt(0)=="9")return ["INF5","K9",ME.c,n,B.quiz,B.g1,B.g2,B.read,B.g3||0].join("|");var b=["INF5","K1",ME.c,n,S.quiz,S.game,S.read,S.g2||0,S.g3||0].join("|");if(A.read||A.quiz||A.g1||A.g2||A.g3)b+="\n"+["INF5","K2",ME.c,n,A.quiz,A.g1,A.g2,A.g3,A.read].join("|");return b}
-var CK={"5-А":"gmfsb","5-Б":"1u6z5w0","6-А":"1gqcusv","6-Б":"1dtpre5","7-А":"1gelrab","7-Б":"l3weu7","8-А":"1b9isym","8-Б":"1bquvp9","9-А":"19aa48g","9-Б":"1hblxwr","10-А":"v41zpj","10-Б":"qdx2c3","10-ІТ":"hzjfoe","10-ШІ":"12ygv29","11-А":"ycihr8","11-Б":"1bth8jw"};
+var CK={"5-А":"gmfsb","5-Б":"hz15z9","6-А":"1gqcusv","6-Б":"1dtpre5","7-А":"1gelrab","7-Б":"l3weu7","8-А":"1b9isym","8-Б":"1bquvp9","9-А":"19aa48g","9-Б":"1hblxwr","10-А":"v41zpj","10-Б":"qdx2c3","10-ІТ":"hzjfoe","10-ШІ":"12ygv29","11-А":"ycihr8","11-Б":"1bth8jw"};
 function hh(s){var h=5381;s="inf|"+s.trim().toLowerCase();for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return (h>>>0).toString(36)}
 var BD="<svg viewBox='0 0 320 140' role='img' aria-label='Шкільна дошка'><rect x='3' y='3' width='314' height='122' rx='8' fill='#a8703a' stroke='#2b2f55' stroke-width='4'/><rect x='13' y='13' width='294' height='102' rx='3' fill='#2f6b52' stroke='#2b2f55' stroke-width='3'/><rect x='20' y='124' width='280' height='10' rx='3' fill='#8a5a2b' stroke='#2b2f55' stroke-width='3'/><rect x='44' y='118' width='24' height='6' rx='2' fill='#fff' stroke='#2b2f55' stroke-width='1.5'/><rect x='240' y='114' width='34' height='10' rx='2' fill='#ffc93c' stroke='#2b2f55' stroke-width='2'/><text class='chalk' x='160' y='44' text-anchor='middle' font-size='20' fill='#f4f1e6'>ІНФОРМАТИКА</text><g fill='none' stroke='#f4f1e6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' opacity='.92'><rect x='26' y='56' width='38' height='26' rx='3'/><path d='M45 82v8M36 90h18M33 64h14M33 71h22'/><rect x='214' y='58' width='36' height='16' rx='8'/><path d='M250 66h10'/><rect x='262' y='58' width='36' height='16' rx='2'/><path d='M280 74v10'/><path d='M280 84l14 10l-14 10l-14-10z'/><path d='M100 62l10 8l-10 8M130 78h14'/></g><text class='chalk' x='160' y='86' text-anchor='middle' font-size='15' fill='#ffd35a'>a + b = c</text><text class='chalk' x='172' y='106' text-anchor='middle' font-size='14' fill='#7ad0ff'>0101 1010</text><text class='chalk' x='78' y='106' font-size='13' fill='#ff9ac1'>&lt;/&gt;</text></svg>";
 function homeHero(t,s,b){return "<div class='hero home'><div class='win'><div class='wbar'><i></i><i></i><i></i><span>informatyka.exe</span></div><div class='wbody'><div class='mas'>"+bot(1,72)+"</div><div class='wt'><h1>"+t+"</h1><div class='mut'>"+s+"</div>"+(b?"<button class='sm' onclick='who()'>Змінити</button>":"")+"</div><div class='stk'>"+["pen","book","pc","bulb","gear","target"].map(function(n){return ico(n,30)}).join("")+"</div></div></div></div>"}
@@ -1149,7 +1149,7 @@ var SVG="<svg viewBox='0 0 84 62' aria-hidden='true'>"+
 var X=60,DIR=1,CUR=null,SAY=["Мяв!","Мур-р-р","Няв 🐟","Пограємо?","Ще раз!","Мррр…","Ловлю м’ячик!"];
 function rnd(a,b){return a+Math.random()*(b-a)}
 function alive(o){return o===CUR&&!o.gaming&&document.body.contains(o.el)}
-function wantCat(a){return !!(a.querySelector(".hero.home")||a.querySelector(".fb"))}
+function wantCat(a){return !!a.querySelector(".fb")}
 
 function fit(o){if(o.gaming)return;var el=o.el,top=el.getBoundingClientRect().top,h=window.innerHeight-top-14;el.style.height=Math.max(130,Math.min(h,430))+"px";
  var W=el.clientWidth-84;if(X>W)X=Math.max(0,W);o.cat.style.left=X+"px"}
@@ -1642,12 +1642,17 @@ GX.W={
  desert:{s0:"#ffc977",s1:"#fff0c8",top:"#f2dc8e",d:"#e0c273",dd:"#c8a85a",p:["#c9983a","#e8c060","#a87a28"],pn:"🏜️ Рухомі піски!",dec:"cactus",star:0,sun:1,cl:1}};
 GX.world=function(n){var T=n>600?TP6:TP5,k=n%100,w="cave";T.forEach(function(t){if(k>=t.a&&k<=t.b)w=t.w});return GX.W[w]||GX.W.cave};
 /* ===== gx2.js · «Пригода»: міні-гра в стилі Minecraft (Стів іде до порталу, відповіді прибирають перешкоди) ===== */
-GX.pool=function(n){var L=LES[n],q=[];(L.g||[]).forEach(function(g){var it=g.items||[];
- if(g.type=="cloze")it.forEach(function(x){q.push({q:x[0].replace("___","▁▁▁"),a:x[1].slice(0,3)})});
- else if(g.type=="tf")it.forEach(function(x){q.push({q:"Правда чи хибно?\n"+x[0],a:x[1]?["Правда","Хибно"]:["Хибно","Правда"]})});
- else if(g.type=="quest")it.forEach(function(x){q.push({q:x[0],a:x[1].slice(0,3)})});
- else if(g.type=="sort")it.forEach(function(x){var o=[g.buckets[x[1]]];g.buckets.forEach(function(b,k){if(k!=x[1]&&o.length<3)o.push(b)});q.push({q:"Куди належить: «"+x[0]+"»?",a:o})});
- else if(g.type=="pairs")it.forEach(function(x,i){var o=[x[1]];shuffle(it.filter(function(y,j){return j!=i})).slice(0,2).forEach(function(y){o.push(y[1])});q.push({q:"До «"+x[0]+"» підходить:",a:o})})});
+GX.pool=function(n){var L=LES[n],q=[];function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+ function pick(a,k,ex){return shuffle(a.filter(function(x){return ex.indexOf(x)<0})).slice(0,k)}
+ (L.g||[]).forEach(function(g){var it=g.items||[],tt=(g.title||"").replace(/^[^:]*:\s*/,"");
+  if(g.type=="cloze")it.forEach(function(x){q.push({q:x[0].replace("___","▁▁▁"),a:x[1].slice(0,3)})});
+  else if(g.type=="tf")it.forEach(function(x){q.push({q:"Правда чи хибно?\n"+x[0],a:x[1]?["Правда","Хибно"]:["Хибно","Правда"]})});
+  else if(g.type=="quest")it.forEach(function(x){q.push({q:x[0],a:x[1].slice(0,3)})});
+  else if(g.type=="sort")it.forEach(function(x){var o=[g.buckets[x[1]]].concat(pick(g.buckets,2,[g.buckets[x[1]]])),lw=tt.charAt(0).toLowerCase()+tt.slice(1),
+    qq=/що з чим/i.test(tt)?"«"+x[0]+"» — до якої групи належить?":/\?$/.test(tt)?"«"+x[0]+"» — "+lw:"«"+x[0]+"» — до якої групи належить? ("+lw+")";q.push({q:qq,a:o})});
+  else if(g.type=="seq"&&it.length>=3){var ts=cap(tt);q.push({q:ts+": який крок ПЕРШИЙ?",a:[it[0]].concat(pick(it,2,[it[0]]))});
+   var k=Math.floor(Math.random()*(it.length-1));q.push({q:ts+": що робимо одразу ПІСЛЯ «"+it[k]+"»?",a:[it[k+1]].concat(pick(it,2,[it[k],it[k+1]]))})}
+  else if(g.type=="mine")it.forEach(function(r){var good=[],bad=[];r[1].forEach(function(x){(x[1]?good:bad).push(x[0])});if(good.length&&bad.length>=2)q.push({q:"Що з цього підходить: «"+r[0].replace(/^Розбий лише\s*/i,"")+"»?",a:[shuffle(good.slice())[0]].concat(shuffle(bad.slice()).slice(0,2))})})});
  return q};
 GM.adv=function(g){var WD=GX.world(CUR9),pool=shuffle(GX.pool(CUR9)),N=Math.min(8,pool.length),qs=pool.slice(0,N),sc=0,hp=3,stage=0,tried=false,GY=150,SX=70,W=360,H=200;
  fr9(g.title,"Допоможи Стіву дійти до порталу: правильна відповідь прибирає перешкоду. Кожна помилка — мінус ❤️.","<canvas id='gxcv' width='"+W+"' height='"+H+"' class='gxcv'></canvas><div id='gxq' class='gxq'></div>");
@@ -4299,7 +4304,7 @@ r:[
  f:"Тепер можеш зробити красиву таблицю з розкладом уроків свого класу.",fl:"Порада"}
 ],
 g:[
-{type:"pairs",title:"Крафт: операція — елемент керування",items:[["Об’єднати клітинки","вкладка Макет"],["Розділити клітинки","вкладка Макет"],["Межі таблиці","Конструктор таблиць"],["Заливка клітинок","Конструктор таблиць"],["Очистити вміст","клавіша Delete"],["Додати рядок у кінці","Tab в останній клітинці"]]},
+{type:"pairs",title:"Крафт: операція — результат",items:[["Об’єднати клітинки","з кількох клітинок одна"],["Розділити клітинки","одна клітинка на кілька"],["Межі таблиці","колір і товщина ліній"],["Заливка клітинок","колір внутрішньої частини"],["Очистити вміст","клавіша Delete"],["Додати рядок у кінці","Tab в останній клітинці"]]},
 {type:"sort",title:"Скрині: редагування чи форматування?",buckets:["Редагування","Форматування"],items:[["Додати рядок",0,"Змінює структуру."],["Змінити колір заливки",1,"Оформлення."],["Об’єднати клітинки",0,"Структура."],["Змінити товщину меж",1,"Оформлення."],["Видалити стовпець",0,"Структура."],["Вирівняти текст по центру",1,"Оформлення."]]},
 {type:"seq",title:"Побудуй за порядком: об’єднати клітинки",items:["Виділити клітинки","Відкрити вкладку Макет","Вибрати Об’єднати клітинки","Перевірити результат"]},
 {type:"mine",title:"Шахта: Макет і Конструктор",items:[["Розбий лише ДІЇ вкладки Макет",[["Вставити рядки",1],["Видалити стовпці",1],["Об’єднати клітинки",1],["Змінити колір шрифту слайда",0],["Запустити показ",0],["Додати анімацію",0]]],["Розбий лише ВЛАСТИВОСТІ меж",[["Колір",1],["Тип лінії",1],["Товщина",1],["Гучність",0],["Мова",0],["Назва файлу",0]]],["Розбий лише ПРАВДИВІ твердження",[["Delete очищує вміст, таблиця лишається",1],["Tab у останній клітинці додає рядок",1],["Таблицю можна копіювати",1],["Таблицю не можна переміщувати",0],["Межі не можна змінити",0],["Об’єднати клітинки не можна",0]]]]},
@@ -4447,7 +4452,7 @@ r:[
 ],
 g:[
 {type:"sort",title:"Скрині: що з чим?",buckets:["Список","Таблиця","Графіка"],items:[["Маркери",0,"Список."],["Об’єднати клітинки",1,"Таблиця."],["Обтікання текстом",2,"Графіка."],["Перезапустити нумерацію",0,"Список."],["Конструктор таблиць",1,"Таблиця."],["Групувати фігури",2,"Графіка."]]},
-{type:"pairs",title:"Крафт: команда — вкладка",items:[["Таблиця","Вставлення"],["SmartArt","Вставлення"],["Маркери","Основне"],["Об’єднати клітинки","Макет"],["Заливка таблиці","Конструктор таблиць"],["Формат фігури","тимчасова вкладка"]]},
+{type:"pairs",title:"Крафт: команда — вкладка",items:[["Таблиця","Вставлення ⇒ Таблиці"],["SmartArt","Вставлення ⇒ Ілюстрації"],["Маркери","Основне"],["Об’єднати клітинки","Макет"],["Заливка таблиці","Конструктор таблиць"],["Формат фігури","тимчасова вкладка"]]},
 {type:"seq",title:"Побудуй за порядком: документ практичної",items:["Створити документ","Ввести заголовок і текст","Вставити таблицю","Додати фігури чи SmartArt","Зберегти файл"]},
 {type:"mine",title:"Шахта: усе про документи",items:[["Розбий лише ВИДИ списків",[["Маркований",1],["Нумерований",1],["Багаторівневий",1],["Оптичний",0],["Мережевий",0],["Дзеркальний",0]]],["Розбий лише ОБ’ЄКТИ таблиці",[["Рядок",1],["Стовпець",1],["Клітинка",1],["Слайд",0],["Абзац",0],["Фігура",0]]],["Розбий лише ТИПИ SmartArt",[["Цикл",1],["Процес",1],["Ієрархія",1],["Заголовок",0],["Колонтитул",0],["Сторінка",0]]]]},
 {type:"tf",title:"Правда чи хибно: документ",items:[["Документ може містити список, таблицю й графіку.",true,"Так."],["Tab у таблиці переходить до наступної клітинки.",true,"Так."],["SmartArt вставляють на вкладці Рецензування.",false,"Вставлення."],["Обтікання текстом — властивість графічного об’єкта.",true,"Так."],["Список не можна відсортувати.",false,"Можна."],["Файл Word має формат DOCX.",true,"Так."]]},
