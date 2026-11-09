@@ -607,7 +607,7 @@ function who(){document.body.className="";var cs=Object.keys(CK);
  document.getElementById("go").onclick=function(){var n=document.getElementById("nm").value.trim(),c=document.getElementById("cl").value,k=document.getElementById("ky").value;
   if(n.length<3){er("Напиши прізвище та ім’я");return}
   if(hh(k)!==CK[c]&&hh(k)!=="1x14id"){er("Невірний код класу. Запитай у вчителя");return}
-  ME={n:n,c:c};sv("inf5me",JSON.stringify(ME));topics()}}
+  ME={n:n,c:c};if(hh(k)!==CK[c])ME.t=1;sv("inf5me",JSON.stringify(ME));topics()}}
 var GRD={5:1,6:1,9:1};
 function stubGrade(){var g=parseInt(ME.c,10);var th=/ІТ$/.test(ME.c)?"g10it":/ШІ$/.test(ME.c)?"g10ai":"";document.body.className=th||(g==10?"g10y":g<=7?"g5":"g9");document.title="Інформатика — "+g+" клас";
  $.innerHTML=homeHero("Привіт, "+esc(ME.n)+"!",esc(ME.c)+" клас · матеріали готуємо",1)+"<div class='card'><h2>"+(th=="g10ai"?"Модель ще навчається…":th=="g10it"?"Новий реліз скоро":"Скоро тут буде багато цікавого")+"</h2><p>Для "+g+" класу матеріали ще готуються. Заходь трохи пізніше!</p></div>"+[["⚙️","Тема 1"],["🧩","Тема 2"],["🧊","Тема 3"]].map(lk).join("")}
@@ -8263,9 +8263,9 @@ var OUTK="inf5q";
 function obGet(){try{return JSON.parse(localStorage.getItem(OUTK)||"{}")}catch(e){return{}}}
 function obSet(o){try{localStorage.setItem(OUTK,JSON.stringify(o))}catch(e){}}
 function flush(){if(RESULTS_URL.indexOf("http")!==0)return Promise.resolve([]);var o=obGet(),ks=Object.keys(o);if(!ks.length)return Promise.resolve([]);return Promise.all(ks.map(function(k){var body=o[k];return fetch(RESULTS_URL,{method:"POST",mode:"no-cors",body:body}).then(function(){var c=obGet();if(c[k]===body){delete c[k];obSet(c)}return true}).catch(function(){return false})}))}
-function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!/^(5|9)-|^10-ІТ$/.test(ME.c))return Promise.resolve();var o=obGet();o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code();obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку — відправимо пізніше")})}
+function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t)return Promise.resolve();var o=obGet();o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code();obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку — відправимо пізніше")})}
 window.addEventListener("online",function(){flush()});
-var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf5me"))queuePush()};
+var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf11l"||k=="inf10g"||k=="inf5me"))queuePush()};
 if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
 setTimeout(flush,1500);
 setTimeout(push,3000);
