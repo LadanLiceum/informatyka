@@ -2128,11 +2128,11 @@ GM.adv=function(g){var WD=GX.world(CUR9),pool=shuffle(GX.pool(CUR9)),N=Math.min(
  function bossIntro(){var A=ARMS[aidx()],nm=[],q;for(q=0;q<4;q++)if(A[q])nm.push((q>1?AJP:AJM)[A[q]]+" "+SL[q]);qb.innerHTML="";
   var ev=document.createElement("div");ev.className="gxev";ev.textContent="👹 Мінібос — Страж порталу! Результат бою залежить від спорядження, яке ти зібрав.";qb.appendChild(ev);
   var p=document.createElement("p");p.className="mut";p.textContent="Спорядження: "+(nm.length?nm.join(", "):"немає — це дуже погано")+" · серць: "+hp;qb.appendChild(p);
-  var b=document.createElement("button");b.className="pri";b.textContent="У бій!";b.onclick=function(){if(state!="boss")return;startFight()};qb.appendChild(b)}
+  var b=document.createElement("button");b.className="pri";b.textContent="У бій!";b.onclick=function(){if(state!="boss")return;startFight()};qb.appendChild(b);if(b.scrollIntoView)b.scrollIntoView({block:"nearest"})}
  function planFight(){var ai=aidx(),sd=2+ai*.9,bd=Math.max(1,7-ai*.8),sh=8+hp*4,bh=40,ev=[],s2=sh,b2=bh;
   for(var r=0;r<16&&s2>0&&b2>0;r++){b2-=sd;ev.push({w:"s",s:Math.max(0,s2),b:Math.max(0,b2)});if(b2<=0)break;s2-=bd;ev.push({w:"b",s:Math.max(0,s2),b:Math.max(0,b2)})}
   return {ev:ev,win:b2<=0,sh:sh,bh:bh}}
- function startFight(){plan=planFight();fightEv=plan.ev;fi=0;fT=0;SH=plan.sh;BH=plan.bh;curS=SH;curB=BH;state="fight";qb.innerHTML="";say("<p class='mut'>⚔️ Бій триває…</p>")}
+ function startFight(){plan=planFight();fightEv=plan.ev;fi=0;fT=0;SH=plan.sh;BH=plan.bh;curS=SH;curB=BH;state="fight";qb.innerHTML="";say("<p class='mut'>⚔️ Бій триває! Дивись на шкали здоров’я: чим краще спорядження, тим більше шансів.</p>")}
  function applyEv(e){curS=e.s;curB=e.b;if(e.w=="s"){bossHit=.25;GX.snd("break");boom(BX-cam,GY-44,["#fff","#ff4d4d","#ffd24a"],12)}else{hurtT=.45;GX.flash();GX.shake(cv);GX.snd("bad");boom(SX+8,GY-30,["#ff4d4d","#fff"],10)}}
  function update(dt){t+=dt;if(hurtT>0)hurtT-=dt;if(fuse>0)fuse-=dt;
   parts.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=380*dt;p.l-=dt});parts=parts.filter(function(p){return p.l>0});
@@ -2141,7 +2141,7 @@ GM.adv=function(g){var WD=GX.world(CUR9),pool=shuffle(GX.pool(CUR9)),N=Math.min(
   else if(state=="bossfall"){fallT+=dt;if(fallT>1.2){bossDone=true;state="walk";GX.snd("ok");say("<p class='mut'>🏆 Мінібоса переможено! Стів іде до порталу…</p>")}}
   else if(state=="act"){actT+=dt;var o2=obs[stage];if(actT>.35&&!o2.done){o2.done=true;if(o2.t=="wall"){GX.snd("break");boom(o2.x-cam+10,GY-30,["#8b8b8b","#707070","#a5a5a5"],22)}else if(o2.t=="lava"){GX.snd("place");boom(o2.x-cam+30,GY-6,["#b8864b","#8b5a2b","#ff9b2f"],16)}else{GX.snd("poof");boom(o2.x-cam+10,GY-15,["#fff","#9be37a","#4caf50"],24)}}
    if(actT>.8){var pi=aidx();gp+=tried?.35:1;stage++;hud();state="walk";var ni=aidx(),msg="";if(ni!=pi){var d=[],mx=0;for(var q=0;q<4;q++)if(ARMS[ni][q]!=ARMS[pi][q]){d.push((q>1?AJP:AJM)[ARMS[ni][q]]+" "+SL[q]);mx=Math.max(mx,ARMS[ni][q])}if(d.length){msg="🛡️ Нове спорядження: "+d.join(", ");boom(SX,GY-24,[MAT[mx][0],MAT[mx][2],"#fff"],22);GX.snd("ok")}}say("<p class='mut'>"+(msg?msg+" · ":"")+(stage<N?"🚶 іде далі…":"🚶 попереду мінібос…")+"</p>")}}
-  else if(state=="dead"||state=="win"){endT+=dt;if(endT>1.8&&!g.over){g.over=1;setTimeout(function(){fin9(sc,N)},50)}}}
+  else if(state=="dead"||state=="win"){endT+=dt;if(endT>1&&!g.btn){g.btn=1;var eb=document.createElement("button");eb.className="pri";eb.textContent=state=="win"?"🏆 Побачити результат →":"Побачити результат →";eb.onclick=function(){if(!g.over){g.over=1;fin9(sc,N)}};qb.appendChild(eb);if(eb.scrollIntoView)eb.scrollIntoView({block:"nearest"})}if(endT>9&&!g.over){g.over=1;fin9(sc,N)}}}
  function R(c,x,y,w,h){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
  function tree(x){R("#6b4a2a",x-4,GY-32,8,32);R("#2e8b3a",x-16,GY-58,32,28);R("#3aa84a",x-10,GY-68,20,12)}
 function deco(x){var d=WD.dec;
@@ -8572,7 +8572,7 @@ function sk(n){return function(g){GX.sk=SK[n];var r=GM["_"+n](g);var p=document.
 GM.whack=function(g){var N=6,qs=A.getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
  var C=100,cv=A.head(g.title,"З нір вилазять три істоти з літерами. Торкнись тієї, що відповідає ПРАВИЛЬНІЙ відповіді! Неправильна — мінус ❤️.","f");cv.width=C*3;cv.height=C*3;var ctx=cv.getContext("2d");
  document.getElementById("adp").style.display="none";
- var ops,mobs,qi=0,sc=0,lives=3,wrong=false,done=false,T=0,round=0,tl=0,MAXT=6;
+ var ops,mobs,qi=0,sc=0,lives=3,wrong=false,done=false,T=0,round=0,tl=0,MAXT=60;
  function spawn(){var cells=[0,1,2,3,4,5,6,7,8].sort(function(){return Math.random()-.5}).slice(0,ops.length);mobs=ops.map(function(o,k){return {c:cells[k],k:k,ok:o.ok,on:true,pop:0,kind:k}});tl=MAXT}
  function newQ(){ops=A.panel(qs[qi]);wrong=false;spawn();A.hud(qi,N,sc,lives)}
  newQ();
