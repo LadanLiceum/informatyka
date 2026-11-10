@@ -957,11 +957,14 @@ function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function fbHtml(mood,txt,cls,extra){return "<div class='fb "+cls+"' id='fb'><div class='fm'>"+bot(mood,64)+"</div><div class='fb-t'>"+txt+(extra||"")+"</div></div>"}
 function confetti(box){for(var k=0;k<16;k++){var s=document.createElement("span");s.className="cf";var a=Math.random()*Math.PI*2,d=50+Math.random()*80;s.style.cssText="background:"+CF[k%CF.length]+";--dx:"+Math.round(Math.cos(a)*d)+"px;--dy:"+Math.round(Math.sin(a)*d-20)+"px;--r:"+Math.round(Math.random()*540-270)+"deg;animation-delay:"+(Math.random()*.08)+"s";box.appendChild(s)}}
 
-quizG=function(QS,fin,tr,bk){var qs=shuffle(QS),i=0,sc=0,streak=0;
- function show(){var q=qs[i],ans=shuffle(q.a),done=false;
+var SWC=0;try{document.addEventListener("visibilitychange",function(){if(document.hidden)SWC++})}catch(e){}
+function antRec(les,key,st){try{if(!ME||ME.t||!st.t.length)return;var tt=st.t,avg=tt.reduce(function(a,b){return a+b},0)/tt.length,mn=Math.min.apply(null,tt);
+ var o=JSON.parse(localStorage.getItem("inf5ant")||"{}");o[ME.c+"|"+ME.n+"|"+les+"|"+key]=["INF5","T",ME.c,ME.n.replace(/\|/g," "),les||0,key||"q",avg.toFixed(1),mn.toFixed(1),st.sw,st.fast,tt.length].join("|");localStorage.setItem("inf5ant",JSON.stringify(o))}catch(e){}}
+quizG=function(QS,fin,tr,bk){var qs=shuffle(QS),i=0,sc=0,streak=0,st={t:[],sw:0,fast:0};
+ function show(){var q=qs[i],ans=shuffle(q.a),done=false,t0=Date.now(),sw0=SWC;
   $.innerHTML="<div class='top'><button class='sm' onclick='"+bk+"()'>← Меню</button><span class='mut'>"+(i+1)+" / "+qs.length+"</span></div><div class='bar'><i style='width:"+(i/qs.length*100)+"%'></i></div><div class='card'><h2>"+q.q+"</h2>"+fbHtml(1,pick(IDLT),"idle")+"<div id='o'></div></div><div id='n'></div>";
   var TL=30,tl=TL,tmr=null;function stopT(){if(tmr){clearInterval(tmr);tmr=null}}
-  function answer(a,b){if(done)return;done=true;stopT();var right=a===q.a[0];if(right){sc++;streak++}else streak=0;
+  function answer(a,b){if(done)return;done=true;stopT();var right=a===q.a[0],dt=Math.min(30,(Date.now()-t0)/1000);st.t.push(dt);st.sw+=SWC-sw0;if(right&&dt<3)st.fast++;if(right){sc++;streak++}else streak=0;
    Array.prototype.forEach.call(document.querySelectorAll("#o button"),function(x){if(x.textContent===q.a[0])x.className="ok"});
    if(!right&&b)b.className="bad";
    var f=document.getElementById("fb");
@@ -975,7 +978,7 @@ quizG=function(QS,fin,tr,bk){var qs=shuffle(QS),i=0,sc=0,streak=0;
   if(card){card.insertBefore(tb,card.children[1]);card.insertBefore(tt,tb.nextSibling)}
 
   tmr=setInterval(function(){if(!document.getElementById("tmri")){stopT();return}tl--;var bi=document.getElementById("tmri");bi.style.width=Math.max(0,tl/TL*100)+"%";bi.style.background=tl<=10?"#e74c3c":tl<=20?"#f1c40f":"#2ecc71";document.getElementById("tmrt").textContent="⏱ "+Math.max(0,tl)+" с";if(tl<=0){stopT();answer(null,null)}},1000)}
- function end(){fin(sc);endScr(sc,qs.length,tr,bk)}
+ function end(){fin(sc);antRec(CUR9,CURK,st);endScr(sc,qs.length,tr,bk)}
  show()};
 
 /* старий тест 5 класу (тема 1) теж через новий рушій */
@@ -8682,7 +8685,7 @@ var OUTK="inf5q";
 function obGet(){try{return JSON.parse(localStorage.getItem(OUTK)||"{}")}catch(e){return{}}}
 function obSet(o){try{localStorage.setItem(OUTK,JSON.stringify(o))}catch(e){}}
 function flush(){if(RESULTS_URL.indexOf("http")!==0)return Promise.resolve([]);var o=obGet(),ks=Object.keys(o);if(!ks.length)return Promise.resolve([]);return Promise.all(ks.map(function(k){var body=o[k];return fetch(RESULTS_URL,{method:"POST",mode:"no-cors",body:body}).then(function(){var c=obGet();if(c[k]===body){delete c[k];obSet(c)}return true}).catch(function(){return false})}))}
-function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t)return Promise.resolve();var o=obGet();o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code();obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку — відправимо пізніше")})}
+function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t)return Promise.resolve();var o=obGet();var ant="";try{var A_=JSON.parse(localStorage.getItem("inf5ant")||"{}"),pre=ME.c+"|"+ME.n+"|";Object.keys(A_).forEach(function(k){if(k.indexOf(pre)===0)ant+="\n"+A_[k]})}catch(e){}o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code()+ant;obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку — відправимо пізніше")})}
 window.addEventListener("online",function(){flush()});
 var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf11l"||k=="inf10g"||k=="inf5me"))queuePush()};
 if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}return navigator.serviceWorker.ready}).then(function(){try{if(localStorage.getItem("infOff"))return;caches.open("inf-v3").then(function(c){return c.match("index.html")}).then(function(m){if(!m)return;localStorage.setItem("infOff","1");var d=document.createElement("div");d.textContent="✅ Готово: застосунок працюватиме й без інтернету";d.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:12px;font:600 14px sans-serif;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";setTimeout(function(){d.remove()},700)},4500)})}catch(e){}}).catch(function(){})});
