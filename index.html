@@ -8324,11 +8324,10 @@ var st=document.createElement("style");st.textContent=".tmx{display:flex;align-i
 Object.keys(LES).forEach(function(k){var n=+k;if(!(n>1000&&n<1100))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="term"}))return;
  var tr=L.g.filter(function(g){return g.type=="trace"})[0];if(!tr)return;var out=[];
  var T=tr.title.replace(/^Що виведе код\?\s*/,"");
- out.push({type:"term",title:"Термінал: "+(T||"введи вивід"),items:tr.items});
+ var half=Math.ceil(tr.items.length/2);out.push({type:"term",title:"Термінал: "+(T||"введи вивід"),items:tr.items.slice(0,half)});
  var progs=tr.items.map(function(x){return x[0].split("\n")}).filter(function(a){return a.length>=3&&a.length<=7});
  if(progs.length>=2)out.push({type:"parsons",title:"Збери програму: "+(T||""),items:progs.slice(0,5)});
- out.push({type:"blitz",title:"Бліц-інтерпретатор: "+(T||""),items:tr.items,sec:12});
- out.push(tr);
+ out.push({type:"blitz",title:"Бліц-інтерпретатор: "+(T||""),items:tr.items.slice(half),sec:14});
  L.g.forEach(function(g){if(g.type=="bug"||g.type=="cloze"||g.type=="tf"||g.type=="ladder")out.push(g)});
  L.g=out;
  var pc=progs.length;console.log&&0;L._pc=pc});
