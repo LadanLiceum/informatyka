@@ -11656,7 +11656,7 @@ s.textContent=css;document.head.appendChild(s)})();
 /* прокрутка вгору при кожному новому екрані тесту/гри/результату */
 (function(){function up(){try{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0}catch(e){}}
 try{new MutationObserver(function(){if(document.getElementById("o")||document.getElementById("gb")||document.getElementById("gxcv")||document.querySelector(".endx")){up();setTimeout(up,50)}}).observe($,{childList:true})}catch(e){}
-var q=quizG;quizG=function(a,b,c,d){q(a,b,c,d);up()}})();
+var q=quizG;quizG=function(a,b,c,d){q(a,b,c,d);up()};var _rx=rdx;rdx=function(i){var r=_rx.apply(this,arguments);up();setTimeout(up,50);return r}})();
 
 /* ---- світліша тема 10-А/Б ---- */
 (function(){var s=document.createElement("style");s.textContent=
