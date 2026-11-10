@@ -10531,6 +10531,7 @@ if(LES[820])LES[820].big=bigOf8(11,19);
 
 /* ===== фінальні правки: шахта лише 5–6 кл., ≤4 простих ігор на урок, мітки у списку уроку 8–11 кл. ===== */
 (function(){
+window.GALL={};Object.keys(LES).forEach(function(k){(LES[k].g||[]).forEach(function(x){var a=GALL[x.type]||(GALL[x.type]={});if(!a[clsOfK(+k)])a[clsOfK(+k)]=[+k,x]})});function clsOfK(k){return k>=500&&k<600?5:k>=600&&k<700?6:k>=800&&k<900?8:k<100?9:k>=1000&&k<1100||k>=1200&&k<1300?10:k>=1100&&k<1200?11:0}
 var SIMPLE_AUTH=["pairs","tf","cloze","sort","seq"];
 var NEW_S=[["s_sw","Свайп-вердикт","↔️"],["s_duel","Дуель: 2 варіанти","⚔️"],["s_elim","Викресли хибні","✂️"],["s_streak","Серія відповідей","🔥"],["s_bet","Ставка ×1 / ×2","🎲"],["s_words","Склади відповідь","🧩"],["s_type","Введи відповідь","⌨️"],["s_hang","Шибениця","🔤"],["s_ghost","Наздожени бота","🏁"],["s_vault","Сейф","🔐"],["s_slider","Повзунок","🎚️"],["s_flash","Спалах пам’яті","⚡"],["s_liar","Хто бреше?","🤥"],["s_bridge","Міст: з’єднай пари","🌉"],["s_audit","Аудит тверджень","📋"],["s_toggles","Тумблери","🔘"],["s_wheel","Колесо множника","🎡"],["s_scratch","Скретч-картки","🪙"],["s_express","Експрес-вердикт","⏱️"],["s_tower","Вежа знань","🗼"]];
 var MED_AUTH0=["gaps","memory","decode","quest","pick","odd","bug","speed","ladder","hunt","build","ribbon","trace"];
@@ -10545,12 +10546,13 @@ var CL={};Object.keys(LES).map(Number).sort(function(a,b){return a-b}).forEach(f
 Object.keys(CL).forEach(function(c){c=+c;var u=UNIQ[c]||{s:[],m:[]},LS=spread(SIMPLE_AUTH.concat(NEW_S.map(function(x){return x[0]})),u.s),LM=spread(MED_AUTH,u.m),ps=(c*7)%LS.length,pm=(c*5)%Math.max(1,LM.length);
  CL[c].forEach(function(k){var L=LES[k];if(!L||!L.g)return;var by={};L.g.forEach(function(x){if(!by[x.type])by[x.type]=x});
   function pick(list,p,n){var out=[],t=0;while(out.length<n&&t<list.length){var ty=list[p%list.length];p++;t++;var o=by[ty]||(NEWT[ty]?{type:ty,title:NEWT[ty]}:null);if(o&&out.indexOf(o)<0)out.push(o)}return [out,p]}
-  var a=pick(LS,ps,3);ps=a[1];var b=pick(LM,pm,2);pm=b[1];
+  var a=pick(LS,ps,3);ps=a[1];var b=pick(LM,pm,1);pm=b[1];
   var cx=L.g.filter(function(x){return !ALLSM[x.type]&&x.type!="mine"});
+  if(cx.length>1){var bs=cx.filter(function(x){return x.type=="boss"});cx=[bs.length?bs[0]:cx[0]]}
   L.g=a[0].concat(b[0],cx)})});
 /* 10 складних ігор 8 класу: по 2 на урок за колом */
 var CX8=[["adv","Пригода: місія на планеті"],["dock","Стикування зі станцією"],["radar","Радар: знайди сигнал"],["pac","Pac-Man: лабіринт станції"],["grav","Гравітаційна гармата"],["belt","Конвеєр вантажів"],["boss8","Бій із кораблем-ШІ"],["inv","Захисник: відбий атаку"],["sim","Реактор: відновлення запуску"],["ast","Астероїдний пояс"]];
-Object.keys(LES).forEach(function(k){k=+k;if(k<=800||k>=900)return;var L=LES[k];if(!L||!L.g||L.cx8)return;L.cx8=1;var b=((k-801)*2)%10;[0,1].forEach(function(j){var c=CX8[(b+j)%10];L.g.push({type:c[0],title:c[1]})})});
+Object.keys(LES).forEach(function(k){k=+k;if(k<=800||k>=900)return;var L=LES[k];if(!L||!L.g||L.cx8)return;L.cx8=1;var b=(k-801)%10;[0].forEach(function(j){var c=CX8[(b+j)%10];L.g.push({type:c[0],title:c[1]})})});
 /* нейтральні назви ігор для 8 класу */
 var GI8={},i;for(i in GI5)GI8[i]=GI5[i];for(i in GI)if(!GI8[i])GI8[i]=GI[i];
 GI8.dock=["🛰️","Стикування"];GI8.radar=["📡","Радар"];GI8.grav=["🪐","Гравітаційна гармата"];GI8.belt=["📦","Конвеєр"];GI8.boss8=["🛸","Бій із ШІ"];GI8.sim=["⚛️","Реактор"];GI8.ast=["☄️","Астероїди"];GI8.adv=["🌌","Пригода"];GI8.pac=["👾","Pac-Man"];GI8.inv=["🚀","Захисник"];
