@@ -1,6 +1,8 @@
 // Збір результатів «Інформатика». Вставте в Apps Script (Розширення → Apps Script), замініть увесь код,
 // потім: Розгорнути → Керувати розгортаннями → олівець → Версія: Нова версія → Розгорнути (посилання не зміниться).
 var KEY = "inf-x7k29";
+// Ключ вчителя для екрана «Мій клас» в застосунку. Вигадайте довгий пароль (лише латиниця/цифри). Порожньо = екран вимкнено, дані нікому не віддаються.
+var TEACHER_KEY = "";
 
 var SHEETS = {
   K1: {name: "5 кл: Тема 1", head: ["Клас", "Учень", "Тест", "Ігри", "Читалка", "Гра 2", "Гра 3", "Оновлено"]},
@@ -17,6 +19,8 @@ var SHEETS = {
   L11: {name: "11 кл: Уроки (бали)", head: null},
   K10B: {name: "10 кл (осн.): Підсумок (бали)", head: ["Клас", "Учень", "Уроків пройдено", "Середній бал", "Оновлено"]},
   L10B: {name: "10 кл (осн.): Уроки (бали)", head: null},
+  K7: {name: "7 кл: Підсумок (бали)", head: ["Клас", "Учень", "Уроків пройдено", "Середній бал", "Оновлено"]},
+  L7: {name: "7 кл: Уроки (бали)", head: null},
   K8: {name: "8 кл: Підсумок (бали)", head: ["Клас", "Учень", "Уроків пройдено", "Середній бал", "Оновлено"]},
   L8: {name: "8 кл: Уроки (бали)", head: null},
 };
@@ -48,7 +52,19 @@ function doPost(e) {
   return ContentService.createTextOutput("ok");
 }
 
-function doGet() { return ContentService.createTextOutput("ok"); }
+function doGet(e) {
+  var tk = e && e.parameter && e.parameter.tk;
+  if (!TEACHER_KEY || tk !== TEACHER_KEY) return ContentService.createTextOutput("ok");
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), rows = [];
+  ["K5", "K6", "K7", "K8", "K10", "K10B", "K11"].forEach(function (k) {
+    var sh = ss.getSheetByName(SHEETS[k].name);
+    if (!sh || sh.getLastRow() < 2) return;
+    sh.getRange(2, 1, sh.getLastRow() - 1, 5).getValues().forEach(function (r) {
+      rows.push({ k: k, c: r[0], n: r[1], d: r[2], a: r[3], u: r[4] });
+    });
+  });
+  return ContentService.createTextOutput(JSON.stringify({ rows: rows })).setMimeType(ContentService.MimeType.JSON);
+}
 
 function save(ss, cfg, kind, cls, name, vals) {
   var sh = ss.getSheetByName(cfg.name);
