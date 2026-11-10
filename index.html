@@ -10700,7 +10700,7 @@ GM.sf_nether=function(g){var N=6,qs=Q(N);if(qs.length<3)return fin9(0,1);N=qs.le
  var W=312,H=300,GY=220,el=M.frame(g.title,"Втеча з планети! Торкайся екрана (або пробіл) — стрибок, у повітрі можна ще раз. Не падай у плазмову ріку й перестрибуй енергетичні кулі. Біля варп-воріт відповідай на питання.","<div class='hud' id='nh'></div><canvas id='nv'></canvas><div id='nq'></div>");
  var cv=document.getElementById("nv"),cx=M.setup(cv,W,H),segs=[],gates=[],x=0,k;
  segs.push([-200,420]);x=420;
- for(k=0;k<N;k++){var gx=900+k*1050;while(x<gx-420){x+=38+Math.random()*22;var l=150+Math.random()*130;segs.push([x,x+l]);x+=l}segs.push([Math.min(x+42,gx-180),gx+120]);gates.push({x:gx,done:false});x=gx+120}
+ for(k=0;k<N;k++){var gx=900+k*1050;while(x<gx-420){x+=(Math.random()<.5?38+Math.random()*22:68+Math.random()*22);var l=150+Math.random()*130;segs.push([x,x+l]);x+=l}segs.push([Math.min(x+42,gx-180),gx+120]);gates.push({x:gx,done:false});x=gx+120}
  var endX=x+120;segs.push([x,endX+200]);
  var wx=0,py=GY,vy=0,jumps=0,hp=3,sc=0,qi=0,inv=0,paused=false,over=false,last=0,T=0,fb=[],fbT=2,sp=105,msg="",mt=0,dead=false;
  function hud(){document.getElementById("nh").innerHTML="<span>"+"❤️".repeat(hp)+"🖤".repeat(3-hp)+"</span><span>🌀 варп "+Math.min(qi+1,N)+"/"+N+"</span>"}hud();
