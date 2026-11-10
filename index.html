@@ -11794,7 +11794,7 @@ var CL={};Object.keys(LES).map(Number).sort(function(a,b){return a-b}).forEach(f
 Object.keys(CL).forEach(function(c){c=+c;var u=UNIQ[c]||{s:[],m:[]},LS=spread(SIMPLE_AUTH.concat(NEW_S.map(function(x){return x[0]})),u.s),LM=spread(MED_AUTH,u.m),ps=(c*7)%LS.length,pm=(c*5)%Math.max(1,LM.length);
  CL[c].forEach(function(k){var L=LES[k];if(!L||!L.g)return;var by={};L.g.forEach(function(x){if(!by[x.type])by[x.type]=x});
   function pick(list,p,n){var out=[],t=0;while(out.length<n&&t<list.length){var ty=list[p%list.length];p++;t++;var o=by[ty]||(NEWT[ty]?{type:ty,title:NEWT[ty]}:null);if(o&&out.indexOf(o)<0)out.push(o)}return [out,p]}
-  var a=pick(LS,ps,3);ps=a[1];var b=pick(LM,pm,1);pm=b[1];
+  var a=pick(LS,ps,c==5?4:3);ps=a[1];var b=c==5?[[],pm]:pick(LM,pm,1);pm=b[1];
   var cx=L.g.filter(function(x){return !ALLSM[x.type]&&x.type!="mine"});
   if(cx.length>1){var bs=cx.filter(function(x){return x.type=="boss"});cx=[bs.length?bs[0]:cx[0]]}
   L.g=a[0].concat(b[0],cx)})});
