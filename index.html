@@ -1450,8 +1450,10 @@ function lockT(ic,t){return "<button class='mb lock' disabled><span class='ic'>"
 function topics10(){CUR9=0;useB(1);document.body.className="g10it";document.title="Інформатика — 10-ІТ";
  $.innerHTML=homeHero("Привіт, "+esc(ME.n)+"!","10-ІТ · Python · обери тему",1)+lv10()+
  lockT("📊","Тема 1. Опрацювання, аналіз та моделювання даних")+lockT("🎤","Тема 2. Стратегія презентування")+
- mb("a","🧱","Тема 3. Структури даних","30 уроків · списки, рядки, множини, матриці, словники","section10()")+
+ mb("a","🧱","Тема 3. Структури даних","пройдено "+t3done()+" з 30 · прогрес "+t3pct()+"% · списки, рядки, множини, матриці","section10()")+
  lockT("⚙️","Тема 4. Алгоритми опрацювання даних")+lockT("🌐","Тема 5. Вебпрограмування")}
+function t3done(){var d=0;for(var i=1;i<=T10N;i++)if(B10.l[1000+i])d++;return d}
+function t3pct(){var s=0;for(var i=1;i<=T10N;i++)s+=lessonPct10(i);return Math.round(s/T10N)}
 function section10(){CUR9=0;var dn=0;for(var i=1;i<=T10N;i++)if(B10.l[1000+i])dn++;
  $.innerHTML="<div class='top'><button class='sm' onclick='topics()'>← Теми</button></div><div class='hero'><div class='big'>"+ico("doc",72)+"</div><h1>Тема 3. Структури даних</h1><div class='mut'>Пройдено "+dn+" з "+T10N+" · Python</div></div>"+
  T3.map(function(x,k){var n=k+1,has=!!LES[1000+n],p=lessonPct10(n);return mb(has?(x[1]=="p"?"c":x[1]=="s"?"b":"a"):"soon",String(n),x[0],"Урок "+n+(x[1]=="p"?" · практична":x[1]=="s"?" · підсумковий":"")+" · "+(has?(p?"прогрес "+p+"%":"є матеріали"):"скоро"),"lesson10("+n+")")}).join("")}
@@ -2310,13 +2312,13 @@ GM.dig=function(g){var T=["dirt","dirt","stone","coal","stone","iron","gold","di
 
 /* ---------- БІЙ З БОСОМ: Ендер-дракон ---------- */
 GM.boss=function(g){var GY=165;
- GX.run(g,{max:12,hint:"Фінальний бій! Стріляй із лука: правильна відповідь — стріла влучає в дракона, помилка — вогняна куля. На половині здоров’я дракон розлютиться!",unit:"життя дракона",walkMsg:"🏹 Стів натягує тятиву…",rightMsg:"🏹 Стріляю!",winMsg:"🐉 Ендер-дракон переможений!",
- init:function(E){E.g={arrows:[],balls:[],hits:0,flash:0,dead:0,dx:250,dy:62,ph:0,p2:0,ban:0};E.hx=60;E.hy=GY},
+ GX.run(g,{max:12,hint:"Фінальний бій! Стріляй із лука: правильна відповідь — стріла влучає в дракона, помилка — вогняна куля. У тебе 2 Тотеми безсмертя: якщо серця закінчаться, тотем воскресить Стіва. На половині здоров’я дракон розлютиться!",unit:"життя дракона",walkMsg:"🏹 Стів натягує тятиву…",rightMsg:"🏹 Стріляю!",winMsg:"🐉 Ендер-дракон переможений!",
+ init:function(E){E.g={tot:2,totT:0,arrows:[],balls:[],hits:0,flash:0,dead:0,dx:250,dy:62,ph:0,p2:0,ban:0};E.hx=60;E.hy=GY},
  stage:function(E){E.after(.5,function(){E.ask("🐉 Ендер-дракон кружляє над островом!")})},
  right:function(E){var G=E.g;G.arrows.push({x:76,y:GY-30,a:0});GX.snd("hit")},
- wrong:function(E){var G=E.g;G.balls.push({x:G.dx-30,y:G.dy+8});if(G.p2){G.balls.push({x:G.dx-10,y:G.dy-14})}GX.snd("boom")},
+ wrong:function(E){var G=E.g;if(E.hp<=0&&G.tot>0){G.tot--;E.hp=2;G.totT=1.8;GX.flash("rgba(255,215,0,.45)");GX.snd("hit");E.boom(66,GY-30,["#ffd84a","#2fbf5a","#fff"],36);E.hud();E.say("<p class='mut'>🗿 Тотем безсмертя врятував Стіва!</p>")}G.balls.push({x:G.dx-30,y:G.dy+8});if(G.p2){G.balls.push({x:G.dx-10,y:G.dy-14})}GX.snd("boom")},
  win:function(E){E.g.dead=.01},
- update:function(E,dt){var G=E.g;G.ph+=dt*(G.p2?1.8:1);if(G.ban>0)G.ban-=dt;G.dx=250+Math.sin(G.ph*.7)*(G.p2?62:50);G.dy=62+Math.sin(G.ph*1.4)*(G.p2?20:12)+(G.dead?G.dead*60:0);if(G.flash>0)G.flash-=dt;if(G.dead){G.dead+=dt;if(Math.random()<dt*8)E.boom(G.dx+(Math.random()-.5)*60,G.dy,["#c58bff","#7b2fbf","#fff","#ff9bf0"],6)}
+ update:function(E,dt){var G=E.g;G.ph+=dt*(G.p2?1.8:1);if(G.ban>0)G.ban-=dt;if(G.totT>0)G.totT-=dt;G.dx=250+Math.sin(G.ph*.7)*(G.p2?62:50);G.dy=62+Math.sin(G.ph*1.4)*(G.p2?20:12)+(G.dead?G.dead*60:0);if(G.flash>0)G.flash-=dt;if(G.dead){G.dead+=dt;if(Math.random()<dt*8)E.boom(G.dx+(Math.random()-.5)*60,G.dy,["#c58bff","#7b2fbf","#fff","#ff9bf0"],6)}
   G.arrows.forEach(function(a){var tx=G.dx-6,ty=G.dy+6,d=Math.hypot(tx-a.x,ty-a.y),sp=300*dt;if(d<=sp+14){a.hit=1;G.flash=.3;G.hits++;GX.snd("break");if(!G.p2&&G.hits>=Math.ceil(E.N/2)&&G.hits<E.N){G.p2=1;G.ban=2;GX.flash("rgba(255,60,60,.35)");GX.snd("boom");E.boom(G.dx,G.dy,["#ff4040","#ff9b2f","#fff"],30)}E.boom(tx,ty,["#ff4a8a","#c58bff","#fff"],20);E.after(.35,function(){E.advance()})}else{a.x+=(tx-a.x)/d*sp;a.y+=(ty-a.y)/d*sp;a.a=Math.atan2(ty-a.y,tx-a.x)}});G.arrows=G.arrows.filter(function(a){return!a.hit});
   G.balls.forEach(function(b){var tx=66,ty=GY-30,d=Math.hypot(tx-b.x,ty-b.y),sp=(G.p2?270:210)*dt;if(d<=sp+10){b.hit=1;E.boom(66,GY-26,["#c58bff","#7b2fbf","#fff"],20)}else{b.x+=(tx-b.x)/d*sp;b.y+=(ty-b.y)/d*sp}});G.balls=G.balls.filter(function(b){return!b.hit})},
  draw:function(E){var G=E.g,ctx=E.ctx,R=E.R,gr=ctx.createLinearGradient(0,0,0,GY);gr.addColorStop(0,"#0d0820");gr.addColorStop(1,"#2a1450");ctx.fillStyle=gr;ctx.fillRect(0,0,360,200);
@@ -2332,6 +2334,9 @@ GM.boss=function(g){var GY=165;
   var rem=Math.max(0,1-G.hits/E.N);R("#000",180,6,170,12);R("#3a0a2a",181,7,168,10);R(G.p2?"#ff7a1a":"#d33",181,7,Math.round(168*rem),10);R("#fff",180+Math.round(168/2),6,1,12);ctx.font="bold 9px monospace";ctx.fillStyle="#000";ctx.fillText(G.p2?"ЕНДЕР-ДРАКОН · ФАЗА 2":"ЕНДЕР-ДРАКОН",181,30);ctx.fillStyle="#fff";ctx.fillText(G.p2?"ЕНДЕР-ДРАКОН · ФАЗА 2":"ЕНДЕР-ДРАКОН",180,29);if(G.p2&&!G.dead){ctx.globalAlpha=.1+.06*Math.sin(E.t*6);R("#ff2a1a",0,0,360,200);ctx.globalAlpha=1}if(G.ban>0){ctx.font="bold 18px monospace";ctx.fillStyle="#000";ctx.fillText("ФАЗА 2!",131,101);ctx.fillStyle="#ff6a3a";ctx.fillText("ФАЗА 2!",130,100);ctx.font="bold 10px monospace";ctx.fillStyle="#fff";ctx.fillText("Дракон розлютився!",120,116)}
   G.arrows.forEach(function(a){ctx.save();ctx.translate(a.x,a.y);ctx.rotate(a.a);R2("#c8a060",-8,-1,14,2);R2("#fff",4,-2,4,4);R2("#ddd",-9,-2,3,4);ctx.restore()});
   G.balls.forEach(function(b){R("#7b2fbf",b.x-6,b.y-6,12,12);R("#d98cff",b.x-3,b.y-3,6,6);R("#fff",b.x-1,b.y-1,2,2)});
+  function TT(x,y,z){R("#c9971c",x,y,10*z,14*z);R("#ffd84a",x+z,y+z,8*z,12*z);R("#2fbf5a",x+2*z,y+4*z,2*z,2*z);R("#2fbf5a",x+6*z,y+4*z,2*z,2*z);R("#8a5a10",x+3*z,y+8*z,4*z,2*z)}
+  for(q=0;q<2;q++){ctx.globalAlpha=q<G.tot?1:.25;TT(318+q*16,24,1);ctx.globalAlpha=1}ctx.font="bold 8px monospace";ctx.fillStyle="#ffd84a";ctx.fillText("ТОТЕМИ",262,34);
+  if(G.totT>0){var tz=3+Math.sin(E.t*10)*.4;ctx.globalAlpha=Math.min(1,G.totT);TT(60-5*tz,GY-90-(1.8-G.totT)*14,tz);ctx.globalAlpha=1}
   E.hero(60,GY,{walking:false,arm:E.state=="ask"?-1.2:-1.45,tool:"bow"})}})};
 
 /* ---------- ОБОРОНА: маяк / сніжний форт ---------- */
@@ -2500,17 +2505,17 @@ GM.swp=function(g){var pool=shuffle(GX.pool(CUR9)),N=Math.min(g.boss?14:10,pool.
 
 /* ---------- 3. СЛОВО ---------- */
 GM.wrd=function(g){var T=shuffle(GX11.terms(CUR9)),R=Math.min(4,T.length),r=0,sc=0,MAX=6,fin=false,row=0,w,words=T.slice(0,R);
- fr9(g.title,"Відгадай термін за описом. У кожній спробі літери підсвічуються: зелена — на місці, жовта — є в слові, сіра — немає. Перша літера вже відкрита.","<div class='w11d' id='w11d'></div><div class='w11g' id='w11g'></div><div class='w11f'><input id='w11i' autocomplete='off' autocapitalize='off' spellcheck='false'><button class='pri' id='w11b'>Перевірити</button></div><p class='mut' id='w11m'></p>");
+ fr9(g.title,"Відгадай термін за описом. У кожній спробі літери підсвічуються: зелена — на місці, жовта — є в слові, сіра — немає. Перша літера вже стоїть — вводь решту літер.","<div class='w11d' id='w11d'></div><div class='w11g' id='w11g'></div><div class='w11f'><input id='w11i' autocomplete='off' autocapitalize='off' spellcheck='false'><button class='pri' id='w11b'>Перевірити</button></div><p class='mut' id='w11m'></p>");
  var gr=document.getElementById("w11g"),inp=document.getElementById("w11i"),msg=document.getElementById("w11m");inp.style.setProperty("width","100%","important");inp.style.setProperty("min-width","120px","important");inp.style.setProperty("flex","1 1 auto","important");inp.parentNode.style.setProperty("width","100%","important");var wb=document.getElementById("w11b");wb.style.setProperty("width","auto","important");wb.style.setProperty("flex","0 0 auto","important");wb.style.setProperty("margin","0","important");inp.style.setProperty("margin","0","important");inp.style.setProperty("letter-spacing","1px","important");
  function hud(){gs9("Слово "+(r+1)+" / "+R+" · вірно: "+sc)}
- function load(){hud();w=words[r];row=0;gr.innerHTML="";document.getElementById("w11d").textContent="Опис: "+w.d;inp.value="";inp.maxLength=w.w.length;inp.placeholder=w.w.charAt(0).toUpperCase()+" … ("+w.w.length+" літер)";msg.textContent="";
-  for(var k=0;k<MAX;k++){var rw=GX11.el("div","w11r","");for(var j=0;j<w.w.length;j++)rw.appendChild(GX11.el("div","w11c",k==0&&j==0?w.w.charAt(0):""));gr.appendChild(rw)}inp.disabled=false;inp.focus()}
+ function load(){hud();w=words[r];row=0;gr.innerHTML="";document.getElementById("w11d").textContent="Опис: "+w.d;inp.value="";inp.maxLength=w.w.length;inp.placeholder="решта літер ("+(w.w.length-1)+")…";msg.textContent="";
+  for(var k=0;k<MAX;k++){var rw=GX11.el("div","w11r","");for(var j=0;j<w.w.length;j++)rw.appendChild(GX11.el("div","w11c",j==0?w.w.charAt(0):""));gr.appendChild(rw)}inp.disabled=false;inp.focus()}
  function paint(guess){var res=[],left={},k;for(k=0;k<w.w.length;k++)if(guess.charAt(k)!=w.w.charAt(k))left[w.w.charAt(k)]=(left[w.w.charAt(k)]||0)+1;
   for(k=0;k<w.w.length;k++){if(guess.charAt(k)==w.w.charAt(k))res.push("g");else if(left[guess.charAt(k)]>0){res.push("y");left[guess.charAt(k)]--}else res.push("x")}
   var rw=gr.children[row];for(k=0;k<w.w.length;k++){var c=rw.children[k];c.textContent=guess.charAt(k);c.className="w11c "+res[k]}}
  function next(win){inp.disabled=true;if(win){sc++;GX.snd("ok");msg.textContent="Вірно! "+w.w.toUpperCase()}else{GX.snd("bad");msg.textContent="Не вдалося. Це було: "+w.w.toUpperCase()}hud();
   setTimeout(function(){r++;if(r>=R){if(!fin){fin=true;fin9(sc,R)}}else load()},1500)}
- function go(){if(inp.disabled)return;var gs=inp.value.trim().toLowerCase();if(gs.length!=w.w.length){msg.textContent="Потрібно літер: "+w.w.length;GX.shake(inp);return}msg.textContent="";paint(gs);inp.value="";if(gs==w.w)return next(true);row++;if(row>=MAX)next(false);else inp.focus()}
+ function go(){if(inp.disabled)return;var gs=inp.value.trim().toLowerCase();if(gs.length==w.w.length-1||(gs.length<w.w.length&&gs.charAt(0)!=w.w.charAt(0)&&gs.length==w.w.length-1))gs=w.w.charAt(0)+gs;else if(gs.length==w.w.length&&gs.charAt(0)!=w.w.charAt(0))gs=w.w.charAt(0)+gs.slice(1);if(gs.length!=w.w.length){msg.textContent="Потрібно літер (без першої): "+(w.w.length-1);GX.shake(inp);return}msg.textContent="";paint(gs);inp.value="";if(gs==w.w)return next(true);row++;if(row>=MAX)next(false);else inp.focus()}
  document.getElementById("w11b").onclick=go;inp.addEventListener("keydown",function(e){if(e.key=="Enter")go()});load()};
 
 /* ---------- 4. ЗЛАМ ---------- */
@@ -4964,9 +4969,9 @@ r:[
 ],
 g:[
 {type:"pairs",title:"Крафт: поняття — пояснення",items:[["Операційна система","комплекс програм для керування комп’ютером"],["Файл","набір даних, що має ім’я"],["Папка","об’єкт для впорядкування файлів"],["Ярлик","посилання на інший об’єкт"],["Розширення","символи після останньої крапки в імені"],["WIMP","вікна, значки, меню, вказівник"]]},
-{type:"sort",title:"Скрині: файл, папка чи ярлик?",buckets:["Файл","Папка","Ярлик"],items:[["реферат.docx",0,"Має розширення."],["Малюнки",1,"Папка для файлів."],["Значок зі стрілкою в куті",2,"Це ярлик."],["пісня.mp3",0,"Звуковий файл."],["Документи",1,"Системна папка."],["Ярлик на Робочому столі",2,"Посилання на об’єкт."],["графіка1.bmp",0,"Файл із малюнком."]]},
+{type:"sort",title:"Скрині: файл, папка чи ярлик?",buckets:["Файл","Папка","Ярлик"],items:[["реферат.docx",0,"Має розширення."],["Малюнки",1,"Папка для файлів."],["Значок зі стрілкою в куті",2,"Це ярлик."],["пісня.mp3",0,"Звуковий файл."],["Папка «Документи»",1,"Це системна папка, а не файл."],["Документ.docx",0,"Має розширення — це файл."],["Ярлик на Робочому столі",2,"Посилання на об’єкт."],["графіка1.bmp",0,"Файл із малюнком."]]},
 {type:"tf",title:"Правда чи хибно: ОС і файли",items:[["Без операційної системи сучасний комп’ютер не працює.",true,"Так."],["Windows і MacOS — це операційні системи.",true,"Так."],["Файл не має імені.",false,"Кожен файл має ім’я."],["Розширення — це символи після останньої крапки в імені файлу.",true,"Так."],["Ярлик — це копія файлу.",false,"Це посилання."],["Ім’я диска — літера з двокрапкою, наприклад C:.",true,"Так."]]},
-{type:"mine",title:"Шахта: об’єкти ОС",items:[["Розбий лише ОПЕРАЦІЙНІ СИСТЕМИ",[["Windows 11",1],["Android",1],["Paint",0],["MacOS",1],["Принтер",0],["Chrome OS",1]]],["Розбий лише ЕЛЕМЕНТИ WIMP",[["Вікна",1],["Значки",1],["Меню",1],["Вказівник",1],["Файл",0],["Диск",0]]],["Розбий лише ФАЙЛИ з розширеннями",[["лист.docx",1],["Малюнки",0],["фото.jpg",1],["Документи",0],["пісня.mp3",1],["Кошик",0]]]]},
+{type:"mine",title:"Шахта: об’єкти ОС",items:[["Розбий лише ОПЕРАЦІЙНІ СИСТЕМИ",[["Windows 11",1],["Android",1],["Paint",0],["MacOS",1],["Принтер",0],["Chrome OS",1]]],["Розбий лише ЕЛЕМЕНТИ WIMP",[["Вікна",1],["Значки",1],["Меню",1],["Вказівник",1],["Файл",0],["Диск",0]]],["Розбий лише ФАЙЛИ з розширеннями",[["лист.docx",1],["Малюнки",0],["фото.jpg",1],["Папка «Документи»",0],["пісня.mp3",1],["Кошик",0]]]]},
 {type:"cloze",title:"Табличка: ОС",items:[["ОС розшифровується як ___ система.",["операційна","олімпійська","об’єктна"],""],["Скорочення WIMP — це вікна, значки, меню, ___.",["вказівник","файл","диск"],""],["Набір даних, що має ім’я, — це ___.",["файл","принтер","процесор"],""],["Для впорядкованого зберігання файлів створюють ___.",["папки","розширення","мережі"],""],["Значок зі стрілкою в куті — ознака ___.",["ярлика","файлу","диска"],""]]}
 ],
 q:[
@@ -8653,6 +8658,16 @@ s.textContent=css;document.head.appendChild(s)})();
 (function(){function up(){try{window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0}catch(e){}}
 try{new MutationObserver(function(){if(document.getElementById("o")||document.getElementById("gb")||document.getElementById("gxcv")||document.querySelector(".endx")){up();setTimeout(up,50)}}).observe($,{childList:true})}catch(e){}
 var q=quizG;quizG=function(a,b,c,d){q(a,b,c,d);up()}})();
+
+/* ---- світліша тема 10 класів (10-ІТ, 10-А/Б) ---- */
+(function(){var s=document.createElement("style");s.textContent=
+"body.g10it{--tx:#f1f5fb;--mt:#b4c1d4;background-color:#1b2638!important;background-image:radial-gradient(560px 360px at 0 -4%,rgba(61,255,162,.18),transparent 70%),radial-gradient(520px 340px at 100% 6%,rgba(167,139,250,.22),transparent 70%),radial-gradient(520px 380px at 50% 110%,rgba(34,211,238,.16),transparent 70%),linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px)!important}"+
+"body.g10c{--bg:#1a2340;--cd:rgba(52,68,112,.62);--tx:#f1f6ff;--mt:#b9c8e2;background-color:#1a2340!important;background-image:radial-gradient(620px 380px at 6% -6%,rgba(34,211,238,.26),transparent 70%),radial-gradient(520px 340px at 102% 4%,rgba(139,92,246,.28),transparent 70%),radial-gradient(560px 420px at 50% 112%,rgba(255,61,129,.14),transparent 70%),linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px)!important}"+
+"body.g10it .card,body.g10it .mb,body.g10it button.mb,body.g10it .opt,body.g10c .card,body.g10c .mb,body.g10c button.mb{background-image:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.06))!important;background-color:rgba(46,62,96,.72)!important;border-color:rgba(255,255,255,.2)!important}"+
+"html body.g10it .mb:not(.tc):not(.ep10),html body.g10c .mb:not(.tc):not(.ep10){background:linear-gradient(135deg,color-mix(in srgb,var(--c,#3dffa2) 34%,rgba(58,76,114,.96)),rgba(58,76,114,.92) 75%)!important;border-color:rgba(255,255,255,.22)!important}"+
+"html body.g10c .mb.post,html body.g10c .mb.ep{background:linear-gradient(135deg,color-mix(in srgb,var(--a1) 30%,rgba(58,76,120,.95)),rgba(58,76,120,.92) 75%)!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 6px 18px rgba(0,0,0,.2)!important}"+
+"body.g10it .mut,body.g10c .mut{color:var(--mt)!important}";
+document.head.appendChild(s)})();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
