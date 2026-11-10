@@ -11171,7 +11171,17 @@ function css(){var o="";Object.keys(GAL).forEach(function(pl){var G=GAL[pl],c=G.
  ".gst{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.gst span{padding:2px 9px;border-radius:99px;border:1px solid color-mix(in srgb,var(--a1) 45%,transparent);font-size:11px;font-weight:700}";
  return o}
 var FIL={cod:"hue-rotate(-12deg) saturate(1.1)",arc:"saturate(.55) brightness(1.18)",hw:"hue-rotate(150deg) saturate(1.1)",alg:"hue-rotate(48deg)",web:"hue-rotate(-30deg) saturate(1.2)",tab:"hue-rotate(165deg) brightness(1.1)",ai:"hue-rotate(85deg) saturate(1.1)",prj:"hue-rotate(-62deg)"};
-function css2(){var o="";Object.keys(FIL).forEach(function(pl){o+="body.g10c.g8.p-"+pl+" .sf canvas,body.g10c.g8.p-"+pl+" .arc{filter:"+FIL[pl]+"}"});o+=".gbn .gmbg{position:absolute;left:-18px;top:-14px;width:150px;height:110px;opacity:.38;pointer-events:none;mix-blend-mode:screen}.gbn .gmbg svg{position:static;width:100%;height:100%;animation:none}";return o}
+function css2(){var o="";Object.keys(FIL).forEach(function(pl){o+="body.g10c.g8.p-"+pl+" .sf canvas,body.g10c.g8.p-"+pl+" .arc{filter:"+FIL[pl]+"}"});o+=".gbn .gmbg{position:absolute;left:-18px;top:-14px;width:150px;height:110px;opacity:.38;pointer-events:none;mix-blend-mode:screen}.gbn .gmbg svg{position:static;width:100%;height:100%;animation:none}";o+=".top{margin-bottom:4px}.hero11{margin:0 0 6px!important}.card.tt{margin:0 0 8px!important}.sech{margin:14px 0 10px!important}.card.tt{padding-left:18px;padding-right:18px}.gmi{padding:12px 12px!important;height:auto!important;min-height:0}.sech.gx{padding-left:6px;padding-right:6px}.hero11 .pst{margin-left:0;margin-right:0}"+
+".hero11 .art{animation:gFloat 6s ease-in-out infinite}.gmp{animation:gFloat 5s ease-in-out infinite}"+
+".hero11::after{content:'';position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.14),transparent);transform:skewX(-18deg);animation:gSweep 7s ease-in-out infinite;pointer-events:none}"+
+".hero11{animation:gGlow 4.5s ease-in-out infinite}.gmi{animation:gGlow 5.5s ease-in-out infinite;position:relative;overflow:hidden}"+
+".gmi::after{content:'';position:absolute;left:0;right:0;height:2px;top:0;background:linear-gradient(90deg,transparent,var(--a1),transparent);opacity:.6;animation:gScan 5s linear infinite;pointer-events:none}"+
+".hero11 .hk{animation:gBlink 3s ease-in-out infinite}"+
+"@keyframes gFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(2deg)}}"+
+"@keyframes gSweep{0%,55%{left:-80px}100%{left:120%}}"+
+"@keyframes gGlow{0%,100%{box-shadow:0 0 18px color-mix(in srgb,var(--a1) 18%,transparent)}50%{box-shadow:0 0 34px color-mix(in srgb,var(--a1) 40%,transparent)}}"+
+"@keyframes gScan{0%{top:0}100%{top:100%}}@keyframes gBlink{0%,100%{opacity:1}50%{opacity:.6}}"+
+"@media(prefers-reduced-motion:reduce){.hero11,.hero11 .art,.hero11::after,.gmi,.gmi::after,.gmp,.hero11 .hk{animation:none}}";return o}
 var st=document.createElement("style");st.textContent=css()+css2();document.head.appendChild(st);
 function setArt(root){var a=root&&root.querySelector(".art");return a}
 var _h=home8;home8=function(){_h();var bs=document.querySelectorAll(".mb.post");[].forEach.call(bs,function(b,k){var G=GAL[plOf(k)],t=TP8[k];if(!G)return;var a=b.querySelector(".art");if(a)a.innerHTML=art(t.pl);var em=b.querySelector(".ph em");if(em)em.textContent="Місія "+(k+1)+" · "+G.s;var pt=b.querySelector(".pt");if(pt)pt.textContent=t.t+" · планета «"+G.p+"»"});
