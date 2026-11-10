@@ -10866,7 +10866,7 @@ function cl(a,l,h){return Math.max(l,Math.min(h,a))}
 /* ---------- 8. Будівельник ---------- */
 GM.sf_build=function(g){var qs=Q(3);if(qs.length<2)return fin9(0,1);var NB=Math.min(3,qs.length);
  var PT=[["..b..",".bbb.","ppgpp","ppppp","pp.pp"],[".c.c.","ccccc","cgcgc","ccccc","c.c.c"],["..g..",".ggg.","bbbbb","bpppb","bbbbb"]],MP={c:"cobble",p:"plank",b:"brick",g:"glow"},KEYS=["c","p","b","g"];
- var bi=0,sc=0,W=312,H=250,C=40,el=M.frame(g.title,"Креслення корабля! Відповідай на питання — отримаєш запас модулів (помилка = менше модулів). Обери модуль праворуч, торкайся клітинок 5×5 і відтвори креслення. Дрон 🧨 летить до верфі — встигни до вибуху!","<div id='bl'></div>");
+ var bi=0,sc=0,W=312,H=300,C=40,el=M.frame(g.title,"Креслення корабля! Відповідай на питання — отримаєш запас модулів (помилка = менше модулів). Обери модуль праворуч, торкайся клітинок 5×5 і відтвори креслення. Дрон 🧨 летить до верфі — встигни до вибуху!","<div id='bl'></div>");
  function build(){if(bi>=NB)return fin9(sc,NB*2);var b=document.getElementById("bl");b.innerHTML="<div class='nar'>Корабель "+(bi+1)+" з "+NB+". Питання виборця будівельних модулів:</div><div id='bq'></div>";M.ask(document.getElementById("bq"),qs[bi],function(ok){if(ok)sc++;site(ok)})}
  function site(ok){var pt=PT[bi],need=0;pt.forEach(function(r){r.split("").forEach(function(c){if(c!=".")need++})});var supply=ok?need+4:need-3,gd=[],sel="c",tm=0,T=0,done=false,boomT=0;for(var i=0;i<5;i++)gd.push([".",".",".",".","."]);
   var b=document.getElementById("bl");b.innerHTML="<div class='msg' id='bm'></div><canvas id='bc'></canvas><div class='msg'>"+(ok?"✅ Запас: "+supply+" модулів (з резервом)":"⚠️ Запас лише "+supply+" модулів — не вистачить!")+"</div><button class='ob ok' id='bd' style='text-align:center'>✔ Корабель завершено</button>";
@@ -10879,13 +10879,13 @@ GM.sf_build=function(g){var qs=Q(3);if(qs.length<2)return fin9(0,1);var NB=Math.
   cv.onpointerdown=function(e){if(done)return;var r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H,col=Math.floor((x-6)/C),row=Math.floor((y-6)/C);
    if(col>=0&&col<5&&row>=0&&row<5){if(gd[row][col]===sel){gd[row][col]="."}else if(gd[row][col]!=="."){gd[row][col]=sel}else if(cnt()<supply){gd[row][col]=sel}M.snd("click")}
    else if(x>222){var k=Math.floor((y-6)/50);if(k>=0&&k<4)sel=KEYS[k]}e.preventDefault()};
-  function draw(){cx.fillStyle="#6aa84f";cx.fillRect(0,0,W,H);M.sky(cx,W,110,T,false);for(var x=0;x<W;x+=16)M.blk(cx,"grass",x,214,16),M.blk(cx,"dirt",x,230,16);
-   for(var r=0;r<5;r++)for(var c=0;c<5;c++){var x2=6+c*C,y2=6+r*C;cx.fillStyle=(r+c)%2?"#c8c8c8":"#d8d8d8";cx.fillRect(x2,y2,C,C);var v=gd[r][c];if(v!==".")M.blk(cx,MP[v],x2,y2,C);cx.strokeStyle="rgba(0,0,0,.35)";cx.lineWidth=1;cx.strokeRect(x2+.5,y2+.5,C-1,C-1)}
-   cx.strokeStyle="#000";cx.lineWidth=4;cx.strokeRect(4,4,C*5+4,C*5+4);
-   cx.fillStyle="#c6c6c6";cx.fillRect(220,0,92,214);cx.strokeStyle="#000";cx.lineWidth=3;cx.strokeRect(222,2,88,210);
-   KEYS.forEach(function(k,i){var y=8+i*50;cx.fillStyle=sel==k?"#5aa02c":"#8b8b8b";cx.fillRect(226,y,80,44);cx.strokeStyle="#000";cx.lineWidth=2;cx.strokeRect(226,y,80,44);M.blk(cx,MP[k],232,y+6,32);M.txt(cx,"Модуль",268,y+26,11,"#fff")});
-   cx.fillStyle="#000";cx.fillRect(228,214,0,0);M.txt(cx,"Модулів: "+(supply-cnt()),W-90,H-8,11,"#fff");
-   var s=10;cx.fillStyle="#000";cx.fillRect(10,H-52,5*s+4,5*s+4);for(var r2=0;r2<5;r2++)for(var c2=0;c2<5;c2++){var v2=pt[r2].charAt(c2);cx.fillStyle=v2=="."?"#bbb":{c:"#7d7d7d",p:"#b8864b",b:"#9b4a3a",g:"#e8b84a"}[v2];cx.fillRect(12+c2*s,H-50+r2*s,s,s)}M.txt(cx,"креслення",70,H-34,10,"#fff");
+  function draw(){cx.fillStyle="#05061a";cx.fillRect(0,0,W,H);M.sky(cx,W,214,T,true);for(var x=0;x<W;x+=16)for(var yy=214;yy<H;yy+=16)M.blk(cx,(x+yy)%32?"stone":"cobble",x,yy,16);cx.fillStyle="rgba(5,6,26,.55)";cx.fillRect(0,214,W,H-214);
+   for(var r=0;r<5;r++)for(var c=0;c<5;c++){var x2=6+c*C,y2=6+r*C;cx.fillStyle=(r+c)%2?"#16204a":"#1d2a5c";cx.fillRect(x2,y2,C,C);var v=gd[r][c];if(v!==".")M.blk(cx,MP[v],x2,y2,C);cx.strokeStyle="rgba(120,220,255,.28)";cx.lineWidth=1;cx.strokeRect(x2+.5,y2+.5,C-1,C-1)}
+   cx.strokeStyle="#22d3ee";cx.lineWidth=3;cx.strokeRect(4,4,C*5+4,C*5+4);
+   cx.fillStyle="rgba(10,16,44,.92)";cx.fillRect(220,0,92,214);cx.strokeStyle="#22d3ee";cx.lineWidth=2;cx.strokeRect(222,2,88,210);
+   KEYS.forEach(function(k,i){var y=8+i*50;cx.fillStyle=sel==k?"#0f7a56":"#1e2a5a";cx.fillRect(226,y,80,44);cx.strokeStyle=sel==k?"#3dffa2":"#4f6bd8";cx.lineWidth=2;cx.strokeRect(226,y,80,44);M.blk(cx,MP[k],232,y+6,32);M.txt(cx,"Модуль",266,y+26,9,"#fff")});
+   M.txt(cx,"Модулів: "+(supply-cnt()),W-92,H-10,12,"#fff");
+   var s=14,px0=12,py0=222;cx.fillStyle="#0a1030";cx.fillRect(px0-3,py0-3,5*s+6,5*s+6);for(var r2=0;r2<5;r2++)for(var c2=0;c2<5;c2++){var v2=pt[r2].charAt(c2);if(v2!=="."){M.blk(cx,MP[v2],px0+c2*s,py0+r2*s,s)}}cx.strokeStyle="#22d3ee";cx.lineWidth=2;cx.strokeRect(px0-3,py0-3,5*s+6,5*s+6);M.txt(cx,"КРЕСЛЕННЯ",px0+5*s+14,py0+14,12,"#7be0ff");M.txt(cx,"Повтори його",px0+5*s+14,py0+32,11,"#fff");M.txt(cx,"у сітці вгорі",px0+5*s+14,py0+46,11,"#fff");
    var prog=cl(tm/LIM,0,1),cxp=-20+prog*(220);M.creeper(cx,cxp,214-24,1.5);if(prog>.8){cx.fillStyle=Math.floor(T*8)%2?"#fff":"#f00";cx.fillRect(cxp,214-36,20,4)}
    if(boomT>0){cx.fillStyle="rgba(255,200,60,"+boomT+")";cx.fillRect(0,0,W,H)}}
   (function lp(ts){if(!M.alive(cv)||done&&boomT<=0&&done&&0)return;var dt=Math.min(.05,(ts-last)/1000||0);last=ts;T+=dt;if(!done){tm+=dt;if(tm>=LIM){boomT=.9;M.snd("bad");var ps=[];for(var r=0;r<5;r++)for(var c=0;c<5;c++)if(gd[r][c]!==".")ps.push([r,c]);sh(ps).slice(0,3).forEach(function(p){gd[p[0]][p[1]]="."});finish(true)}}boomT=Math.max(0,boomT-dt*1.4);draw();requestAnimationFrame(lp)})(0)}
