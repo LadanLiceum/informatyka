@@ -9754,6 +9754,7 @@ function blankLine(k){return (k.pre?k.pre+" ":"")+"▁▁▁▁▁"+(k.post?" "+
 function quizFallback(A,q){quiz(A,q,null,function(o,b,ops){mark(ops,o,b);A.done(o.ok,undefined,o.ok?"":"Правильно: "+q.a[0])})}
 /* 8. Шибениця */
 GM.s_hang=function(g){run(g,{nb:3,n:5,hint:"Відгадай слово за літерами. 5 помилок — і програш.",draw:function(q,A){var full=q.a[0],ans=full,disp=q.q;if(ans.length>14||/\s/.test(ans)){var key=keyOf(full);if(!key)return quizFallback(A,q);ans=key.word;disp=q.q+"\n\nВідповідь: «"+blankLine(key)+"» — відгадай пропущене слово."}
+ var _st=ans.toLowerCase().replace(/[^a-zа-яіїєґ0-9]/g,"");_st=_st.slice(0,Math.max(4,_st.length-2));if(_st.length>=4&&q.q.toLowerCase().replace(/[^a-zа-яіїєґ0-9 ]/g,"").indexOf(_st)>=0)return quizFallback(A,q);
  qline(A,{q:disp});var low=ans.toLowerCase(),letters={},wrong=0,got={};low.split("").forEach(function(c){if(/[a-zа-яіїєґ]/.test(c))letters[c]=1});var lat=/[a-z]/.test(low),alpha=(lat?"abcdefghijklmnopqrstuvwxyz":"абвгґдеєжзиіїйклмнопрстуфхцчшщьюя").split(""),bank=Object.keys(letters);shuffle(alpha).forEach(function(c){if(bank.length<Object.keys(letters).length+5&&!letters[c])bank.push(c)});bank=shuffle(bank);
  var wd=document.createElement("div");wd.className="vt";var st=document.createElement("div"),kb=document.createElement("div");A.el.appendChild(wd);A.el.appendChild(st);A.el.appendChild(kb);
  function d(){wd.textContent=low.split("").map(function(c){return /[a-zа-яіїєґ]/.test(c)?(got[c]?c:"_"):c}).join(" ");st.textContent="❤️".repeat(5-wrong)+"🖤".repeat(wrong)}d();
