@@ -2112,7 +2112,7 @@ GX.pool=function(n){var L=LES[n],q=[];function cap(s){return s.charAt(0).toUpper
    var k=Math.floor(Math.random()*(it.length-1));q.push({q:ts+": що робимо одразу ПІСЛЯ «"+it[k]+"»?",a:[it[k+1]].concat(pick(it,2,[it[k],it[k+1]]))})}
   else if(g.type=="mine")it.forEach(function(r){var good=[],bad=[];r[1].forEach(function(x){(x[1]?good:bad).push(x[0])});if(good.length&&bad.length>=2)q.push({q:"Що з цього підходить: «"+r[0].replace(/^Розбий лише\s*/i,"")+"»?",a:[shuffle(good.slice())[0]].concat(shuffle(bad.slice()).slice(0,2))})})});
  return q};
-GM.adv=function(g){var WD=GX.world(CUR9),pool=shuffle(GX.pool(CUR9)),N=Math.min(8,pool.length),qs=pool.slice(0,N),sc=0,hp=3,stage=0,tried=false,GY=150,SX=70,W=360,H=200;
+GM.adv=function(g){g.btn=0;g.over=0;var WD=GX.world(CUR9),pool=shuffle(GX.pool(CUR9)),N=Math.min(8,pool.length),qs=pool.slice(0,N),sc=0,hp=3,stage=0,tried=false,GY=150,SX=70,W=360,H=200;
  fr9(g.title,"Допоможи Стіву дійти до порталу: правильна відповідь прибирає перешкоду. Кожна помилка — мінус ❤️.","<canvas id='gxcv' width='"+W+"' height='"+H+"' class='gxcv'></canvas><div id='gxq' class='gxq'></div>");
  var cv=document.getElementById("gxcv"),ctx=cv.getContext("2d"),qb=document.getElementById("gxq");
  var types=[],tp=["wall","lava","creeper"];for(var k=0;k<N;k++)types.push(k<3?tp[k]:tp[Math.floor(Math.random()*3)]);types=shuffle(types.slice(0,3)).concat(types.slice(3));
@@ -8227,9 +8227,10 @@ var s=document.createElement("style");s.textContent=c;document.head.appendChild(
 var ART10T={
 home:"<svg viewBox='0 0 200 120' aria-hidden='true'><g font-family='monospace' font-weight='700'><text x='6' y='34' font-size='34' fill='#3dffa2' opacity='.9'>{ }</text><text x='108' y='40' font-size='26' fill='#22d3ee' opacity='.85'>&lt;/&gt;</text><text x='64' y='92' font-size='30' fill='#a78bfa' opacity='.85'>#!</text><text x='128' y='100' font-size='22' fill='#fbbf24' opacity='.8'>0x1F</text></g><g stroke='#3dffa2' stroke-width='1.4' opacity='.35' fill='none'><path d='M6 108h60l10-12h50M150 8v26l12 12h30'/></g><g fill='#3dffa2'><circle cx='66' cy='108' r='3'/><circle cx='192' cy='46' r='3'/></g></svg>",
 sec:"<svg viewBox='0 0 200 80' aria-hidden='true'><g font-family='monospace' font-weight='700' font-size='14'><text x='6' y='20'><tspan fill='#a78bfa'>class&#160;</tspan><tspan fill='#3dffa2'>Data</tspan><tspan fill='#8b98a9'>:</tspan></text><text x='20' y='42'><tspan fill='#22d3ee'>items</tspan><tspan fill='#e6edf3'>&#160;=&#160;</tspan><tspan fill='#fbbf24'>[1,&#160;2,&#160;3]</tspan></text><text x='20' y='64'><tspan fill='#a78bfa'>return&#160;</tspan><tspan fill='#3dffa2'>True</tspan></text></g></svg>"};
+function Ne10(){var c=0;for(var i=1;i<=T10N;i++)if(LES[1000+i])c++;return c||1}
 function lvdata10(){var s=0,d=0;for(var i=1;i<=T10N;i++){s+=lessonPct10(i);if(B10.l[1000+i])d++}var x=Math.round(s/3),L=Math.floor(x/100)+1;return {x:x,L:L,t:["Новачок","Кодер","Розробник","Архітектор","Легенда"][Math.min(L-1,4)],p:x%100,d:d}}
 function tc10(ic,t,sub,on,fn,pr){return "<button class='tc"+(on?" act":" lock")+"'"+(on?" onclick='"+fn+"'":" disabled")+"><span class='fl'>"+ic+"</span><span class='ti'><b>"+t+"</b><span class='sub'>"+sub+"</span>"+(pr!=null?"<span class='bar'><i style='width:"+pr+"%'></i></span>":"")+"</span><span class='st'>"+(on?"●":"⏻")+"</span></button>"}
-topics10=function(){CUR9=0;useB(1);document.body.className="g10it";document.title="Інформатика — 10-ІТ";var v=lvdata10(),bl=Math.round(v.p/100*14),pr=0;for(var i=1;i<=T10N;i++)pr+=lessonPct10(i);pr=Math.round(pr/T10N);
+topics10=function(){CUR9=0;useB(1);document.body.className="g10it";document.title="Інформатика — 10-ІТ";var v=lvdata10(),bl=Math.round(v.p/100*14),pr=0;for(var i=1;i<=T10N;i++)pr+=lessonPct10(i);pr=Math.round(pr/Ne10());
  $.innerHTML="<div class='ap'><b><i>$</i> informatyka<u></u></b><span>10-ІТ</span></div>"+
  "<div class='term'><span class='fb' style='display:none'></span><div class='th'><i></i><i></i><i></i><span>~/10-it — zsh</span></div><div class='tb'><div class='art'>"+ART10T.home+"</div>"+
  "<div class='ln'><em>$</em> whoami</div><div class='out'>"+esc(ME.n)+"</div>"+
@@ -8240,7 +8241,7 @@ topics10=function(){CUR9=0;useB(1);document.body.className="g10it";document.titl
  tc10("01","Тема 1. Опрацювання, аналіз та моделювання даних","// скоро",0)+tc10("02","Тема 2. Стратегія презентування","// скоро",0)+
  tc10("03","Тема 3. Структури даних","30 уроків · списки, рядки, множини, матриці, словники · "+v.d+" пройдено",1,"section10()",pr)+
  tc10("04","Тема 4. Алгоритми опрацювання даних","// скоро",0)+tc10("05","Тема 5. Вебпрограмування","// скоро",0)};
-section10=function(){CUR9=0;var dn=0,s=0;for(var i=1;i<=T10N;i++){if(B10.l[1000+i])dn++;s+=lessonPct10(i)}s=Math.round(s/T10N);
+section10=function(){CUR9=0;var dn=0,s=0;for(var i=1;i<=T10N;i++){if(B10.l[1000+i])dn++;s+=lessonPct10(i)}s=Math.round(s/Ne10());
  $.innerHTML="<div class='top'><button class='sm' onclick='topics()'>← Теми</button><span class='mut'>10-ІТ · Python</span></div>"+
  "<div class='term sx'><div class='th'><i></i><i></i><i></i><span>topic_03/structures.py</span></div><div class='tb'><div class='art'>"+ART10T.sec+"</div><h2>Тема 3. Структури даних</h2><div class='out'>пройдено "+dn+" з "+T10N+" · "+s+"%</div><div class='bar'><i style='width:"+s+"%'></i></div></div></div>"+
  T3.map(function(x,k){var n=k+1,has=!!LES[1000+n],p=lessonPct10(n),tg=x[1]=="p"?["practice","t-p"]:x[1]=="s"?["test","t-s"]:["lesson","t-l"];
@@ -8659,14 +8660,12 @@ s.textContent=css;document.head.appendChild(s)})();
 try{new MutationObserver(function(){if(document.getElementById("o")||document.getElementById("gb")||document.getElementById("gxcv")||document.querySelector(".endx")){up();setTimeout(up,50)}}).observe($,{childList:true})}catch(e){}
 var q=quizG;quizG=function(a,b,c,d){q(a,b,c,d);up()}})();
 
-/* ---- світліша тема 10 класів (10-ІТ, 10-А/Б) ---- */
+/* ---- світліша тема 10-А/Б ---- */
 (function(){var s=document.createElement("style");s.textContent=
-"body.g10it{--tx:#f1f5fb;--mt:#b4c1d4;background-color:#1b2638!important;background-image:radial-gradient(560px 360px at 0 -4%,rgba(61,255,162,.18),transparent 70%),radial-gradient(520px 340px at 100% 6%,rgba(167,139,250,.22),transparent 70%),radial-gradient(520px 380px at 50% 110%,rgba(34,211,238,.16),transparent 70%),linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px)!important}"+
 "body.g10c{--bg:#1a2340;--cd:rgba(52,68,112,.62);--tx:#f1f6ff;--mt:#b9c8e2;background-color:#1a2340!important;background-image:radial-gradient(620px 380px at 6% -6%,rgba(34,211,238,.26),transparent 70%),radial-gradient(520px 340px at 102% 4%,rgba(139,92,246,.28),transparent 70%),radial-gradient(560px 420px at 50% 112%,rgba(255,61,129,.14),transparent 70%),linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px)!important}"+
-"body.g10it .card,body.g10it .mb,body.g10it button.mb,body.g10it .opt,body.g10c .card,body.g10c .mb,body.g10c button.mb{background-image:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.06))!important;background-color:rgba(46,62,96,.72)!important;border-color:rgba(255,255,255,.2)!important}"+
-"html body.g10it .mb:not(.tc):not(.ep10),html body.g10c .mb:not(.tc):not(.ep10){background:linear-gradient(135deg,color-mix(in srgb,var(--c,#3dffa2) 34%,rgba(58,76,114,.96)),rgba(58,76,114,.92) 75%)!important;border-color:rgba(255,255,255,.22)!important}"+
+"body.g10c .card,body.g10c .mb,body.g10c button.mb{background-image:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.06))!important;background-color:rgba(46,62,96,.72)!important;border-color:rgba(255,255,255,.2)!important}"+
 "html body.g10c .mb.post,html body.g10c .mb.ep{background:linear-gradient(135deg,color-mix(in srgb,var(--a1) 30%,rgba(58,76,120,.95)),rgba(58,76,120,.92) 75%)!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 6px 18px rgba(0,0,0,.2)!important}"+
-"body.g10it .mut,body.g10c .mut{color:var(--mt)!important}";
+"body.g10c .mut{color:var(--mt)!important}";
 document.head.appendChild(s)})();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
