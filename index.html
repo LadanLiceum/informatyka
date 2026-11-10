@@ -12598,7 +12598,7 @@ window.uxRev=function(){if(!ME)return;var m=me(),qs=[],map={};m.mis.slice().reve
 /* --- панель на головному екрані --- */
 var _tp=topics;topics=function(){var r=_tp.apply(this,arguments);try{panel()}catch(e){}return r};
 window.uxTch=function(){var k="";try{k=localStorage.getItem("inftk")||""}catch(e){}
- var a=document.getElementById("app");a.innerHTML="<div class='top'><button class='sm' onclick='topics()'>← Меню</button></div><div class='card'><h2>👩‍🏫 Мій клас</h2><p class='mut'>Підсумок із таблиці результатів. Потрібен ключ вчителя (змінна TEACHER_KEY у скрипті таблиці).</p><input id='tk' type='password' placeholder='Ключ вчителя' value='"+esc(k)+"' autocomplete='off'><button class='pri' id='tkb'>Показати</button><div id='tkr' class='mut' style='margin-top:10px'></div></div>";
+ var a=document.getElementById("app");a.innerHTML="<div class='top'><button class='sm' onclick='who()'>← Назад</button></div><div class='card'><h2>👩‍🏫 Мій клас</h2><p class='mut'>Підсумок із таблиці результатів. Потрібен ключ вчителя (змінна TEACHER_KEY у скрипті таблиці).</p><input id='tk' type='password' placeholder='Ключ вчителя' value='"+esc(k)+"' autocomplete='off'><button class='pri' id='tkb'>Показати</button><div id='tkr' class='mut' style='margin-top:10px'></div></div>";
  var go=function(){var v=document.getElementById("tk").value.trim(),r=document.getElementById("tkr");if(!v)return;try{localStorage.setItem("inftk",v)}catch(e){}r.textContent="Завантаження…";
   fetch(RESULTS_URL+"?tk="+encodeURIComponent(v)).then(function(x){return x.text()}).then(function(t){var d;try{d=JSON.parse(t)}catch(e){r.textContent="Не вдалося: невірний ключ або TEACHER_KEY не задано в скрипті (чи скрипт не оновлено).";return}tchView(d.rows||[])}).catch(function(){r.textContent="Немає зв’язку. Спробуй пізніше."})};
  document.getElementById("tkb").onclick=go;if(k)go()};
@@ -12610,7 +12610,7 @@ function tchView(rows){var r=document.getElementById("tkr"),cl={},i;rows.forEach
    h+="<tr style='border-top:1px solid rgba(128,128,128,.3)"+(warn?";background:rgba(255,120,80,.18)":"")+"'><td>"+esc(x.n)+"</td><td align=center>"+esc(x.d)+"</td><td align=center>"+Math.round(+x.a)+"%</td><td align=center>"+(days===null?"—":days===0?"сьогодні":days+" дн.")+"</td></tr>"});
   document.getElementById("tkt").innerHTML=h+"</table><p class='mut'>Підсвічено: середній бал нижче 50% або не заходив 14+ днів. Береться найкращий результат учня.</p>"};
  document.getElementById("tkc").onchange=draw;draw()}
-function panel(){if(!ME)return;if(ME.t){var ap=document.getElementById("app");if(ap&&!ap.querySelector(".uxp")){var hr=ap.querySelector(".hero11,.h7,.term,.hero");if(hr)hr.insertAdjacentHTML("afterend","<div class='uxp'><button class='uxm' onclick='uxTch()'>👩‍🏫 Мій клас — результати</button></div>")}return}var app=document.getElementById("app");if(!app||app.querySelector(".uxp"))return;var hero=app.querySelector(".hero11,.h7,.term,.hero");if(!hero)return;
+function panel(){if(!ME||ME.t)return;var app=document.getElementById("app");if(!app||app.querySelector(".uxp"))return;var hero=app.querySelector(".hero11,.h7,.term,.hero");if(!hero)return;
  var m=me(),t=today(),n=m.cnt[t]||0,live=(m.day===t||m.day===yest())?(m.st||0):0,h="";
  var dots="";for(var i=0;i<GOAL;i++)dots+="<i class='"+(i<n?"on":"")+"'></i>";
  var own7=/продовжити/i.test(app.textContent);
@@ -12631,10 +12631,13 @@ function cosm(){try{var app=document.getElementById("app");if(!app)return;var in
  var old=app.querySelector(".mb.uxnext");if(old&&old!==first)old.classList.remove("uxnext");if(first&&!first.classList.contains("uxnext"))first.classList.add("uxnext")}catch(e){}}
 var pend=0;new MutationObserver(function(){if(pend)return;pend=1;setTimeout(function(){pend=0;cosm()},60)}).observe(document.documentElement,{childList:true,subtree:true});
 if(document.readyState!=="loading")startObs();else document.addEventListener("DOMContentLoaded",startObs);
+/* --- прихована для учнів кнопка «Мій клас» під екраном входу --- */
+var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button></div>")}catch(e){}return r};
 /* --- випадкова затримка відправки, щоб розтягти пік навантаження на таблицю --- */
 var _fl=flush;flush=function(){if(ENDING)return _fl();return new Promise(function(res){setTimeout(function(){_fl().then(res,function(){res([false])})},Math.floor(Math.random()*4000))})};
 /* --- стилі --- */
-var css=".uxp{margin:10px 0;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);display:flex;flex-direction:column;gap:8px;font-size:15px}"+
+var css=".uxtl{text-align:center;margin:26px 0 8px}.uxtl button{background:none!important;border:0!important;box-shadow:none!important;color:inherit;opacity:.45;font-size:13px;text-decoration:underline;padding:6px 10px;width:auto;cursor:pointer}.uxtl button:hover{opacity:.8}"+
+".uxp{margin:10px 0;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);display:flex;flex-direction:column;gap:8px;font-size:15px}"+
 ".uxr{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.uxs b,.uxg b{font-size:17px}.uxg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin:0 2px;border:2px solid currentColor;opacity:.45;vertical-align:-1px}.uxg i.on{background:#ffd23f;border-color:#ffd23f;opacity:1}"+
 ".uxp button{display:block;width:100%;text-align:left;margin:0;padding:11px 12px;font:inherit;font-size:15px;border-radius:12px;cursor:pointer}.uxc{background:#2ecc71;color:#06280f;border:0;font-weight:700;animation:uxpl 2.4s ease-in-out infinite}.uxc b{font-weight:800}.uxm{background:rgba(255,255,255,.14);color:inherit;border:2px solid rgba(255,255,255,.3)}"+
 "body.g5 .uxp,body.g5 .uxp button{border-radius:0}body.g5 .uxp{background:rgba(0,0,0,.35);border:3px solid rgba(0,0,0,.6);color:#fff}body.g5 .uxc{border:3px solid #0b3d17;box-shadow:inset 0 -4px rgba(0,0,0,.25)}"+
