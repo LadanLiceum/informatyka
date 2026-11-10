@@ -1858,7 +1858,7 @@ var TPG=[
 {t:"Практикум з інформаційних технологій",a:25,b:33,i:"05",pl:"pr",nm:"Практикум з ІТ",h:"9 уроків · тема 5"},
 {t:"Повторення і підсумок",a:34,b:35,i:"06",pl:"fin",nm:"Повторення і підсумок",h:"2 уроки · резерв"}];
 function tpg(n){for(var i=0;i<TPG.length;i++)if(n>=TPG[i].a&&n<=TPG[i].b)return i;return 0}
-function PG(n){return lessonPct(1100+n)}
+function PG(n){return lessonPct(1200+n)}
 var ARTG={
 home:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='1.4' opacity='.45'><path d='M20 30h50l12 14h40M20 70h36l14-14h56l16 16M30 110h60l12-16h50M150 20v30l14 14h40'/></g><g fill='var(--a1)'><circle cx='20' cy='30' r='3.5'/><circle cx='122' cy='44' r='3.5'/><circle cx='20' cy='70' r='3.5'/><circle cx='142' cy='72' r='3.5'/><circle cx='30' cy='110' r='3.5'/><circle cx='152' cy='94' r='3.5'/><circle cx='204' cy='64' r='3.5'/></g><path d='M118 18 L168 36 V76 C168 106 146 124 118 134 C90 124 68 106 68 76 V36 Z' fill='var(--a2)' opacity='.14'/><path d='M118 18 L168 36 V76 C168 106 146 124 118 134 C90 124 68 106 68 76 V36 Z' fill='none' stroke='var(--a1)' stroke-width='2.6' stroke-linejoin='round'/><path d='M96 76 l16 16 l28 -32' fill='none' stroke='var(--a2)' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/></svg>",
 it:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='2'><circle cx='110' cy='75' r='46'/><ellipse cx='110' cy='75' rx='20' ry='46'/><path d='M64 75h92M72 52h76M72 98h76'/></g><g fill='var(--a2)'><circle cx='170' cy='34' r='6'/><circle cx='40' cy='42' r='5'/><circle cx='184' cy='110' r='5'/></g><path d='M110 29 L170 34 M64 75 L40 42 M156 75 L184 110' stroke='var(--a2)' stroke-width='1.4' opacity='.6'/></svg>",
@@ -8642,6 +8642,143 @@ G+".fun{background:#0d0c2e;border:2px dashed #22d3ee;border-radius:6px;color:#ea
 ".arc{display:block;margin:6px auto;width:100%;max-width:340px;touch-action:none;image-rendering:pixelated;border:3px solid #3b4cff;border-radius:6px;box-shadow:0 0 22px rgba(59,76,255,.6);background:#0b0b22}"+
 ".adp{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,52px);gap:6px;justify-content:center;margin:6px 0}.adp button{width:64px;height:52px;padding:0;margin:0;text-align:center;font-size:22px;background:#14123f;border-color:#ff2e93;color:#ff7ac2;box-shadow:0 3px 0 #7a1050}.adp .u{grid-column:2;grid-row:1}.adp .l{grid-column:1;grid-row:2}.adp .d{grid-column:2;grid-row:2}.adp .r{grid-column:3;grid-row:2}.adp.lr{grid-template-rows:52px}.adp.lr .l{grid-row:1;grid-column:1}.adp.lr .r{grid-row:1;grid-column:3}.adp.fo{grid-template-columns:140px}.adp.fo .f{grid-column:1;width:140px}.adp.lr .f{grid-row:1;grid-column:2;background:#ff2e93;color:#fff;border-color:#ffb0d8}.adp.lr{grid-template-columns:repeat(3,84px)}.adp.lr button{width:84px}";
 document.head.appendChild(s)})();
+
+/* ===== 8 клас (70 год.): рушій уроків за календарним планом (ключі LES = 800+n), тема «космічна місія» ===== */
+var B8={l:{},rd:{},sc:{},read:0,quiz:0,g1:0,g2:0};
+try{var bg0=JSON.parse(localStorage.getItem("inf8"));if(bg0){B8=bg0;B8.l=B8.l||{};B8.rd=B8.rd||{};B8.sc=B8.sc||{}}}catch(e){}
+function useB8(){B=B8;saveB=function(){sv("inf8",JSON.stringify(B8))}}
+var T8=[
+["Кодування та декодування повідомлень","l"],
+["Кодування текстових даних. Таблиці кодів символів","l"],
+["Кодування графічних даних. Колірні моделі. Кодування мультимедійних даних","l"],
+["Двійкове кодування","l"],
+["Одиниці вимірювання довжини двійкового коду","l"],
+["Практична робота № 1 «Розв’язування задач на визначення довжини двійкового коду повідомлень»","p"],
+["Архівування та стиснення даних. Види стиснення даних","l"],
+["Резервне копіювання даних","l"],
+["Архіватори. Типи архівних файлів. Операції над архівами","l"],
+["Практична робота № 2 «Архівування та розархівування даних»","p"],
+["Сучасний персональний комп’ютер, його основні складові. Процесор, його основні характеристики","l"],
+["Пристрої пам’яті, їх види та характеристики","l"],
+["Зовнішня пам’ять","l"],
+["Пристрої введення даних, їх види та характеристики","l"],
+["Пристрої виведення даних, їх види та характеристики","l"],
+["Види сучасних комп’ютерів та їх застосування. Перспективні напрями вдосконалення","l"],
+["Добір складових комп’ютера залежно від його призначення","l"],
+["Діагностика апаратної та програмної складової комп’ютера, усунення збоїв у їх роботі","l"],
+["Історія обчислювальних і комп’ютерних пристроїв","l"],
+["Практична робота № 3. «Добір складових персонального комп’ютера залежно від його призначення»","p"],
+["Етапи розв’язування задач з використанням алгоритмів і проєктів","l"],
+["Кнопка: створення, властивості, події, обробники подій","l"],
+["Напис: створення, властивості, події, обробники подій","l"],
+["Поле: створення, властивості, події, обробники подій","l"],
+["Введення даних і виведення результатів з використанням полів","l"],
+["Практична робота № 4. «Проєкти з полями, написами і кнопками, з уведенням даних і виведенням результатів»","p"],
+["Логічні величини. Логічні вирази","l"],
+["Логічні операції заперечення, кон’юнкція, диз’юнкція","l"],
+["Логічні вирази в розгалуженнях","l"],
+["Проєкти з розгалуженнями з використанням логічних виразів (частина 1)","l"],
+["Проєкти з розгалуженнями з використанням логічних виразів (частина 2)","l"],
+["Проєкти з розгалуженнями з використанням логічних виразів. Підсумкове оцінювання за 1 семестр","s"],
+["Використання прапорців у проєктах з розгалуженнями","l"],
+["Використання перемикачів у проєктах з розгалуженнями","l"],
+["Практична робота № 5. «Проєкти з розгалуженнями»","p"],
+["Цикл з лічильником","l"],
+["Проєкти із циклами з лічильником (частина 1)","l"],
+["Проєкти із циклами з лічильником (частина 2)","l"],
+["Цикл з передумовою","l"],
+["Проєкти із циклом з передумовою (частина 1)","l"],
+["Проєкти із циклом з передумовою (частина 2)","l"],
+["Практична робота № 6. «Проєкти із циклами»","p"],
+["Дизайн вебсторінок (ергономіка, композиція, кольористика). Тренди вебдизайну","l"],
+["Поняття про мову гіпертекстової розмітки","l"],
+["Автоматизовані засоби створення і публікації вебресурсів (частина 1)","l"],
+["Автоматизовані засоби створення і публікації вебресурсів (частина 2)","l"],
+["Практична робота № 7. «Створення сайту з використанням онлайн-системи конструювання сайтів»","p"],
+["Об’єкти електронної таблиці, їх властивості. Формати даних в електронних таблицях","l"],
+["Адресація: відносна, абсолютна, мішана. Іменовані комірки і діапазони. Модифікація формул","l"],
+["Функції в табличному процесорі","l"],
+["Математичні та статистичні функції","l"],
+["Логічні функції","l"],
+["Практична робота № 8. «Використання функцій у табличному процесорі»","p"],
+["Упорядковування даних у таблицях","l"],
+["Прості й розширені фільтри","l"],
+["Умовне форматування","l"],
+["Друкування електронної таблиці. Встановлення параметрів сторінки","l"],
+["Практична робота № 9. «Вибирання даних в електронних таблицях»","p"],
+["Смарт-технології","l"],
+["Інтернет речей та його використання","l"],
+["Поняття штучного інтелекту","l"],
+["Використання штучного інтелекту в різних галузях. Переваги та ризики застосування штучного інтелекту","l"],
+["Навчальний проєкт та етапи його виконання","l"],
+["Використання систем штучного інтелекту для виконання проєкту (частина 1)","l"],
+["Використання систем штучного інтелекту для виконання проєкту (частина 2)","l"],
+["Практикум з використання інформаційних технологій (частина 1)","l"],
+["Практикум з використання інформаційних технологій (частина 2)","l"],
+["Практикум з використання інформаційних технологій (частина 3)","l"],
+["Практикум з використання інформаційних технологій. Підсумкове оцінювання за 2 семестр","s"],
+["Узагальнення та систематизація знань, умінь і навичок","s"]];
+var T8N=T8.length;
+var TP8=[
+{t:"Кодування: як повідомлення стають числами",a:1,b:6,i:"01",pl:"cod",nm:"Кодування",h:"6 уроків · місія 1"},
+{t:"Архіви даних",a:7,b:10,i:"02",pl:"arc",nm:"Архіви даних",h:"4 уроки · місія 2"},
+{t:"Апаратне забезпечення персонального комп’ютера",a:11,b:20,i:"03",pl:"hw",nm:"Апаратне забезпечення",h:"10 уроків · місія 3"},
+{t:"Алгоритми та програми",a:21,b:42,i:"04",pl:"alg",nm:"Алгоритми та програми",h:"22 уроки · місія 4",sec:[[21,"Частина 1 · форми, події, логіка"],[33,"Частина 2 · прапорці, перемикачі, цикли"]]},
+{t:"Створення та публікація вебресурсів",a:43,b:47,i:"05",pl:"web",nm:"Вебресурси",h:"5 уроків · місія 5"},
+{t:"Опрацювання даних у таблицях",a:48,b:58,i:"06",pl:"tab",nm:"Електронні таблиці",h:"11 уроків · місія 6"},
+{t:"Смарт-технології. Штучний інтелект",a:59,b:62,i:"07",pl:"ai",nm:"Смарт-технології і ШІ",h:"4 уроки · місія 7"},
+{t:"Практикум з використання інформаційних технологій",a:63,b:70,i:"08",pl:"prj",nm:"Практикум",h:"8 уроків · місія 8"}];
+function tp8(n){for(var i=0;i<TP8.length;i++)if(n>=TP8[i].a&&n<=TP8[i].b)return i;return 0}
+function P8(n){return lessonPct(800+n)}
+var ART8={
+home:"<svg viewBox='0 0 220 150' aria-hidden='true'><circle cx='150' cy='70' r='34' fill='var(--a1)' opacity='.2'/><circle cx='150' cy='70' r='34' fill='none' stroke='var(--a1)' stroke-width='2'/><ellipse cx='150' cy='70' rx='62' ry='14' fill='none' stroke='var(--a2)' stroke-width='2' transform='rotate(-18 150 70)'/><path d='M40 112 l10 -34 l10 34 z' fill='var(--a2)'/><rect x='46' y='108' width='8' height='12' fill='var(--a1)'/><g fill='#fff' opacity='.8'><circle cx='24' cy='26' r='2'/><circle cx='100' cy='20' r='1.6'/><circle cx='196' cy='28' r='2'/><circle cx='186' cy='126' r='1.6'/><circle cx='80' cy='60' r='1.4'/></g></svg>",
+cod:"<svg viewBox='0 0 220 150' aria-hidden='true'><g font-family='monospace' font-weight='700' font-size='26' fill='var(--a1)'><text x='20' y='52'>0101</text><text x='96' y='84' fill='var(--a2)'>1100</text><text x='30' y='118'>0011</text><text x='128' y='132' fill='var(--a2)' font-size='18'>01</text></g></svg>",
+arc:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='2.4'><rect x='62' y='34' width='96' height='84' rx='12' fill='var(--a1)' fill-opacity='.14'/><path d='M110 34v84M110 48h10M100 60h10M110 72h10M100 84h10'/></g><path d='M40 40 l22 22 M180 40 l-22 22 M40 112 l22 -22 M180 112 l-22 -22' stroke='var(--a2)' stroke-width='3' stroke-linecap='round'/></svg>",
+hw:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='2.4'><rect x='66' y='40' width='88' height='70' rx='8' fill='var(--a1)' fill-opacity='.14'/><rect x='88' y='60' width='44' height='30' rx='4' stroke='var(--a2)'/><path d='M80 40v-14M100 40v-14M120 40v-14M140 40v-14M80 110v14M100 110v14M120 110v14M140 110v14M66 62h-14M66 88h-14M154 62h14M154 88h14'/></g></svg>",
+alg:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='2.4'><rect x='80' y='14' width='60' height='24' rx='12' fill='var(--a1)' fill-opacity='.18'/><path d='M110 38v20M110 58 L150 80 L110 102 L70 80 Z' stroke='var(--a2)'/><path d='M110 102v20'/><rect x='80' y='122' width='60' height='20' rx='10' fill='var(--a1)' fill-opacity='.18'/></g></svg>",
+web:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='2.4'><rect x='36' y='28' width='148' height='94' rx='10' fill='var(--a1)' fill-opacity='.12'/><path d='M36 52h148'/><circle cx='52' cy='40' r='3' fill='var(--a2)'/><circle cx='64' cy='40' r='3' fill='var(--a2)'/><path d='M52 72h60M52 88h90M52 104h40' stroke='var(--a2)'/></g><g font-family='monospace' font-weight='700' font-size='20' fill='var(--a2)'><text x='140' y='108'>&lt;/&gt;</text></g></svg>",
+tab:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='2.2'><rect x='48' y='28' width='124' height='94' rx='8' fill='var(--a1)' fill-opacity='.12'/><path d='M48 52h124M48 76h124M48 100h124M90 28v94M132 28v94'/></g><rect x='92' y='54' width='38' height='20' fill='var(--a2)' opacity='.5'/></svg>",
+ai:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke='var(--a1)' stroke-width='2.4'><rect x='70' y='40' width='80' height='64' rx='16' fill='var(--a1)' fill-opacity='.14'/><path d='M110 40V24M104 24h12'/></g><circle cx='94' cy='72' r='8' fill='var(--a2)'/><circle cx='126' cy='72' r='8' fill='var(--a2)'/><path d='M96 92 q14 8 28 0' fill='none' stroke='var(--a2)' stroke-width='3' stroke-linecap='round'/></svg>",
+prj:"<svg viewBox='0 0 220 150' aria-hidden='true'><g fill='none' stroke-width='2.4' stroke-linejoin='round'><path d='M110 22 L158 46 L110 70 L62 46Z' fill='var(--a1)' fill-opacity='.2' stroke='var(--a1)'/><path d='M62 46V92L110 116V70' fill='var(--a2)' fill-opacity='.16' stroke='var(--a2)'/><path d='M158 46V92L110 116' fill='var(--a1)' fill-opacity='.08' stroke='var(--a1)'/></g></svg>"};
+function pat8(n){var v=n%6,o="<svg viewBox='0 0 76 70' preserveAspectRatio='xMidYMid slice' aria-hidden='true' style='fill:none;stroke:#fff;stroke-width:1.6;opacity:.38'>";
+ if(v==0)o+="<path d='M10 10h30v14h26M4 40h24l10 10h30M44 60h20'/><circle cx='66' cy='24' r='3'/><circle cx='38' cy='50' r='3'/>";else if(v==1)o+="<path d='M38 6 l26 10 v20 c0 16 -12 24 -26 30 c-14 -6 -26 -14 -26 -30 V16z'/>";else if(v==2)o+="<path d='M0 20 H76 M0 40 H76 M0 60 H76 M20 0 V70 M44 0 V70 M68 0 V70' style='stroke-width:1'/>";else if(v==3)o+="<path d='M14 14 l12 12 l-12 12 M34 40 h22'/><rect x='46' y='8' width='22' height='22' rx='5'/>";else if(v==4)o+="<path d='M30 4 l14 8 v16 l-14 8 l-14 -8 V12z M52 34 l14 8 v16 l-14 8 l-14 -8 V42z'/>";else o+="<circle cx='56' cy='20' r='16'/><circle cx='56' cy='20' r='8'/><path d='M0 58 H40 L48 50'/>";
+ return o+"</svg>"}
+
+function xp8(){var s=0;for(var i=1;i<=T8N;i++)s+=P8(i);return Math.round(s*10)}
+var LV8N=["Курсант","Пілот","Штурман","Командир","Капітан","Легенда"];
+function lev8(){var x=xp8(),L=Math.min(Math.floor(x/350),5);return {n:L+1,t:LV8N[L],p:Math.min(100,Math.round((x-L*350)/3.5)),x:x}}
+function setSk8(pl){document.body.className="g10c g8 p-"+pl;document.title="Інформатика — 8 клас"}
+function lv8(k){var s=0,d=0,t=TP8[k],c=t.b-t.a+1;for(var i=t.a;i<=t.b;i++){s+=P8(i);if(B8.l[800+i])d++}
+ return "<div class='hero11 p-"+t.pl+"'><div class='art'>"+ART8[t.pl]+"</div><div class='hk'>"+t.h+"</div><h2>"+t.nm+"</h2><div class='pst'><span><b>"+d+"/"+c+"</b>пройдено</span><span><b>"+Math.round(s*10)+"</b>XP</span><span><b>"+Math.round(c?s/c:0)+"%</b>прогрес</span></div></div>"}
+function home8(){CUR9=0;useB8();setSk8("home");var L=lev8(),dn=0;for(var i=1;i<=T8N;i++)if(B8.l[800+i])dn++;
+ $.innerHTML="<div class='ap'><b>ІНФОРМАТИКА</b><span>8 клас</span></div>"+
+ "<div class='hero11 p-home'><div class='art'>"+ART8.home+"</div><div class='hk'>"+esc(ME.c)+" · МІСІЯ АКТИВНА</div><h2>Привіт, "+esc(ME.n)+"!</h2><div class='lvl'><span>РІВЕНЬ "+L.n+" · "+L.t+"</span><span>"+L.x+" XP</span></div><div class='bar'><i style='width:"+L.p+"%'></i></div><p>Пройдено уроків: "+dn+" з "+T8N+". Обирай тему та вирушай.</p><button class='sm' onclick='who()'>Змінити</button></div>"+
+ "<div class='sech'>Теми курсу</div>"+
+ TP8.map(function(t,k){var d=0,s=0,c=t.b-t.a+1;for(var i=t.a;i<=t.b;i++){s+=P8(i);if(B8.l[800+i])d++}
+  return "<button class='mb post p-"+t.pl+"' onclick='section8("+(k+1)+")'><span class='ph'><span class='ring'><span>"+t.i+"</span></span><span><b>"+t.nm+"</b><em>"+t.h+"</em></span></span><span class='art'>"+ART8[t.pl]+"</span><span class='pt'>"+t.t+"</span><span class='bar'><i style='width:"+Math.round(s/c)+"%'></i></span><span class='sub'>Пройдено "+d+" з "+c+"</span></button>"}).join("")}
+function section8(k){k=k||1;CUR9=0;useB8();var t=TP8[k-1];setSk8(t.pl);
+ $.innerHTML="<div class='top'><button class='sm' onclick='topics()'>← Теми</button><span class='mut'>"+t.nm+"</span></div>"+lv8(k-1)+"<div class='card tt'><h2>"+t.t+"</h2></div>"+
+ T8.slice(t.a-1,t.b).map(function(x,j){var n=t.a+j,p=P8(n),has=!!LES[800+n],ty=x[1]=="p"?"практична":x[1]=="s"?"підсумковий":"урок",hd="";(t.sec||[]).forEach(function(q){if(q[0]==n)hd="<div class='sech'>"+q[1]+"</div>"});
+  return hd+"<button class='mb ep"+(has?"":" soon")+"' onclick='lesson8("+n+")'><span class='th'>"+pat8(n)+"<span class='nm'>"+n+"</span><span class='dur'>"+ty+"</span>"+(p?"<i style='width:"+p+"%'></i>":"")+"</span><span class='et'><b>"+x[0]+"</b><span class='sub'>"+(has?(p?"переглянуто "+p+"%":"новий урок"):"скоро · матеріали готуються")+"</span></span></button>"}).join("")}
+function lesson8(n){CUR9=800+n;useB8();var x=T8[n-1],p=P8(n),k=tp8(n),t=TP8[k],K={l:"Урок",p:"Практична робота",s:"Підсумковий урок"};setSk8(t.pl);
+ $.innerHTML="<div class='top'><button class='sm' onclick='section8("+(k+1)+")'>← "+t.nm+"</button><span class='mut'>Урок "+n+" з "+T8N+"</span></div><div class='lbn p-"+t.pl+"'><div class='art'>"+ART8[t.pl]+"</div><span class='big'>"+(n<10?"0":"")+n+"</span><span class='ty'>"+K[x[1]]+"</span></div><div class='card'><span class='mut'>"+K[x[1]]+" "+n+"</span><h2>"+x[0]+"</h2><div class='bar'><i style='width:"+p+"%'></i></div><span class='mut'>Прогрес уроку: "+p+"%</span></div>"+
+ (LES[800+n]?lessonItems5(800+n):"<div class='card soonc'><div class='pulse'>Скоро</div><h2>Матеріали готуються</h2><p>Читалка, ігри й тест до цього уроку з’являться незабаром. Заходь трохи пізніше!</p></div>")}
+var _l98=lesson9;lesson9=function(n){return (n>800&&n<900)?lesson8(n-800):_l98(n)};
+var _d98=done9;done9=function(){if(CUR9>800&&CUR9<900){B8.l[CUR9]=1;B8.rd[CUR9]=1;saveB();return menu9()}return _d98()};
+var _es8=endScr;endScr=function(a,b,c,e){if(CUR9>800&&CUR9<900&&ME&&/^8-[АБ]$/.test(ME.c)){useB8();B.l[CUR9]=1;var k=CURK||c;CURK=null;var o=B.sc[CUR9]=B.sc[CUR9]||{},pc=Math.round(100*a/b);if(!(o[k]>=pc))o[k]=pc;saveB()}return _es8(a,b,c,e)};
+var _tp8x=topics;topics=function(){if(ME&&CK[ME.c]&&/^8-[АБ]$/.test(ME.c)){return home8()}return _tp8x()};
+function dAll8(cls,name){var r=[],k;for(k in LES){k=+k;if(k<=800||k>=900)continue;var l=dLine(cls,name,k,k-800);if(l)r.push(l)}return r.join("\n")}
+var _c8=code;code=function(){var b=_c8();if(ME&&/^8-[АБ]$/.test(ME.c)){useB8();var any=false,i;for(i=1;i<=T8N;i++)if(B8.l[800+i]||P8(i)||(B8.rd||{})[800+i])any=true;if(any){var n=ME.n.replace(/\|/g," "),d=0,s=0,v=[];for(i=1;i<=T8N;i++)v.push(0);for(i=1;i<=T8N;i++){var p=P8(i);v[i-1]=P12(p);s+=p;if(B8.l[800+i])d++}
+ b+="\n"+["INF5","K8",ME.c,n,d,P12(s/T8N)].join("|")+"\n"+["INF5","L8",ME.c,n].concat(v).join("|");var x=dAll8(ME.c,n);if(x)b+="\n"+x}}return b};
+
+/* ---- тема 8 класу: космічна місія (поверх g10c) ---- */
+(function(){var G="body.g10c.g8 ",c=
+"body.g10c.g8{--a1:#ffb02e;--a2:#7cf0ff;--bg:#120a34;--cd:rgba(46,34,98,.72);--ln:rgba(255,200,120,.22);--tx:#f6f1ff;--mt:#c3b8e8;background-color:#120a34!important;background-image:radial-gradient(1.4px 1.4px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 78% 8%,#fff,transparent),radial-gradient(1.6px 1.6px at 34% 62%,#cfe,transparent),radial-gradient(1px 1px at 90% 54%,#fff,transparent),radial-gradient(1.2px 1.2px at 56% 88%,#fff,transparent),radial-gradient(1px 1px at 6% 78%,#fff,transparent),radial-gradient(560px 380px at 8% -6%,rgba(255,176,46,.22),transparent 70%),radial-gradient(520px 360px at 100% 6%,rgba(124,240,255,.2),transparent 70%),radial-gradient(560px 420px at 50% 112%,rgba(255,92,170,.14),transparent 70%)!important;background-size:auto!important;background-attachment:fixed!important}"+
+"body.g10c.g8.p-home,body.g10c.g8 .p-home{--a1:#ffb02e;--a2:#7cf0ff}body.g10c.g8.p-cod,body.g10c.g8 .p-cod{--a1:#7cf0ff;--a2:#a78bfa}body.g10c.g8.p-arc,body.g10c.g8 .p-arc{--a1:#ffb02e;--a2:#ff5caa}body.g10c.g8.p-hw,body.g10c.g8 .p-hw{--a1:#6dffb0;--a2:#7cf0ff}body.g10c.g8.p-alg,body.g10c.g8 .p-alg{--a1:#c4a3ff;--a2:#ffb02e}body.g10c.g8.p-web,body.g10c.g8 .p-web{--a1:#5cc8ff;--a2:#6dffb0}body.g10c.g8.p-tab,body.g10c.g8 .p-tab{--a1:#ffd54a;--a2:#7cf0ff}body.g10c.g8.p-ai,body.g10c.g8 .p-ai{--a1:#ff5caa;--a2:#c4a3ff}body.g10c.g8.p-prj,body.g10c.g8 .p-prj{--a1:#ffb02e;--a2:#6dffb0}"+
+"html body.g10c.g8 .mb.post,html body.g10c.g8 .mb.ep,html body.g10c.g8 .card,html body.g10c.g8 .lv{background:linear-gradient(135deg,color-mix(in srgb,var(--a1) 20%,rgba(56,42,116,.92)),rgba(56,42,116,.9) 75%)!important;border-color:rgba(255,220,160,.28)!important}"+
+G+".hero11,"+G+".lbn{background:linear-gradient(135deg,color-mix(in srgb,var(--a1) 30%,#2b1d66),#1a1048 80%)!important}"+
+G+".ap b{letter-spacing:3px}";
+var s=document.createElement("style");s.textContent=c;document.head.appendChild(s)})();
 
 /* фінальне вікно + прокрутка вгору при запуску гри */
 (function(){
