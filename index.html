@@ -10651,8 +10651,8 @@ GM.sf_mine=function(g){var N=4,qs=Q(N);if(qs.length<2)return fin9(0,1);N=Math.mi
  var wt=[],rr=M.R(7);for(y=0;y<S;y++){wt[y]=[];for(x=0;x<S;x++){var r=rr();wt[y][x]=r<.07?"coal":r<.11?"iron":r<.125?"gold":r<.14?"redore":"stone"}}
  var el=M.frame(g.title,"Станція знеструмлена. Знайди 4 дата-ядра 💾 у темних відсіках (кожне захищене питанням) і поверніся до шлюзу. Бережись охоронних дронів! Керуй стрілками, кнопками або тягни пальцем.","<div class='hud' id='mh'></div><canvas id='mcv'></canvas><div class='pad'><span></span><button data-d='u'>▲</button><span></span><button data-d='l'>◀</button><button data-d='d'>▼</button><button data-d='r'>▶</button></div><div id='mq'></div>");
  var cv=document.getElementById("mcv"),cx=M.setup(cv,W,W),off=document.createElement("canvas");off.width=off.height=W;var oc=off.getContext("2d");
- var P={x:1,y:1},hp=3,sc=0,got=0,dir=null,last=0,busy=false,over=false,inv=0,flash=0,T0=0,tm=0;
- function hud(){document.getElementById("mh").innerHTML="<span>"+"❤️".repeat(hp)+"🖤".repeat(3-hp)+"</span><span>💾 "+got+"/"+N+"</span>"+(got==N?"<span>🚪 До шлюзу!</span>":"")}hud();
+ var P={x:1,y:1},hp=6,sc=0,got=0,dir=null,last=0,busy=false,over=false,inv=0,flash=0,T0=0,tm=0;
+ function hud(){document.getElementById("mh").innerHTML="<span>"+"❤️".repeat(Math.floor(hp/2))+(hp%2?"💔":"")+"🖤".repeat(3-Math.ceil(hp/2))+"</span><span>💾 "+got+"/"+N+"</span>"+(got==N?"<span>🚪 До шлюзу!</span>":"")}hud();
  function hurt(){if(inv>0)return;hp--;inv=1.4;flash=.4;M.snd("bad");hud();if(hp<=0)end(false)}
  function end(win){if(over)return;over=true;document.removeEventListener("keydown",kh);var b=document.getElementById("mq");b.innerHTML="<div class='qb'>"+(win?"🛰️ Ти вийшов зі станції з дата-ядрами!":"💥 Дрон-охоронець спрацював… Відсік заблоковано.")+"</div>";var bt=M.mk("button","ob","Результат →");bt.onclick=function(){fin9(sc,N)};b.appendChild(bt)}
  function free(x,y){return map[y]&&map[y][x]==1}
