@@ -960,14 +960,20 @@ function confetti(box){for(var k=0;k<16;k++){var s=document.createElement("span"
 quizG=function(QS,fin,tr,bk){var qs=shuffle(QS),i=0,sc=0,streak=0;
  function show(){var q=qs[i],ans=shuffle(q.a),done=false;
   $.innerHTML="<div class='top'><button class='sm' onclick='"+bk+"()'>← Меню</button><span class='mut'>"+(i+1)+" / "+qs.length+"</span></div><div class='bar'><i style='width:"+(i/qs.length*100)+"%'></i></div><div class='card'><h2>"+q.q+"</h2>"+fbHtml(1,pick(IDLT),"idle")+"<div id='o'></div></div><div id='n'></div>";
-  ans.forEach(function(a){var b=document.createElement("button");b.textContent=a;b.onclick=function(){if(done)return;done=true;var right=a===q.a[0];if(right){sc++;streak++}else streak=0;
+  var TL=30,tl=TL,tmr=null;function stopT(){if(tmr){clearInterval(tmr);tmr=null}}
+  function answer(a,b){if(done)return;done=true;stopT();var right=a===q.a[0];if(right){sc++;streak++}else streak=0;
    Array.prototype.forEach.call(document.querySelectorAll("#o button"),function(x){if(x.textContent===q.a[0])x.className="ok"});
-   if(!right)b.className="bad";
+   if(!right&&b)b.className="bad";
    var f=document.getElementById("fb");
    if(f){var ex=right&&streak>=3?"<span class='stz'>серія "+streak+"</span>":"";
-    var nf=document.createElement("div");nf.innerHTML=right?fbHtml(2,pick(OKT),"ok",ex):fbHtml(0,pick(BADT),"bad","<small>Правильна відповідь підсвічена</small>");
+    var nf=document.createElement("div");nf.innerHTML=right?fbHtml(2,pick(OKT),"ok",ex):fbHtml(0,pick(BADT),"bad","<small>"+(a===null?"Час вийшов! ":"")+"Правильна відповідь підсвічена</small>");
     f.parentNode.replaceChild(nf.firstChild,f);if(right)confetti(document.getElementById("fb"))}
-   var n=document.createElement("button");n.className="pri";n.textContent=i<qs.length-1?"Далі →":"Результат";n.onclick=function(){i++;i<qs.length?show():end()};document.getElementById("n").appendChild(n)};document.getElementById("o").appendChild(b)})}
+   var n=document.createElement("button");n.className="pri";n.textContent=i<qs.length-1?"Далі →":"Результат";n.onclick=function(){i++;i<qs.length?show():end()};document.getElementById("n").appendChild(n)}
+  ans.forEach(function(a){var b=document.createElement("button");b.textContent=a;b.onclick=function(){answer(a,b)};document.getElementById("o").appendChild(b)});
+  var card=document.querySelector(".card"),tb=document.createElement("div");tb.id="tmrw";tb.style.cssText="height:8px;border-radius:6px;background:rgba(128,128,128,.25);margin:10px 0;overflow:hidden";tb.innerHTML="<i id='tmri' style='display:block;height:100%;width:100%;background:#2ecc71;transition:width 1s linear,background .5s'></i>";
+  var tt=document.createElement("div");tt.id="tmrt";tt.className="mut";tt.style.cssText="text-align:right;font-size:13px;margin:-4px 0 6px";tt.textContent="⏱ "+tl+" с";
+  if(card){card.insertBefore(tb,card.children[1]);card.insertBefore(tt,tb.nextSibling)}
+  tmr=setInterval(function(){if(!document.getElementById("tmri")){stopT();return}tl--;var bi=document.getElementById("tmri");bi.style.width=Math.max(0,tl/TL*100)+"%";bi.style.background=tl<=10?"#e74c3c":tl<=20?"#f1c40f":"#2ecc71";document.getElementById("tmrt").textContent="⏱ "+Math.max(0,tl)+" с";if(tl<=0){stopT();answer(null,null)}},1000)}
  function end(){fin(sc);endScr(sc,qs.length,tr,bk)}
  show()};
 
