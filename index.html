@@ -12091,9 +12091,13 @@ o+="body.g5 .w11c{border-radius:0!important;border:3px solid #000!important;back
 function dd(){[].forEach.call(document.querySelectorAll("body.g5 #app .mb"),function(b){var t=b.querySelector("b"),s=b.querySelector(".sub");if(t&&s&&s.textContent.indexOf(t.textContent+" · ")==0)s.textContent=s.textContent.slice(t.textContent.length+3)})}
 var _l5=lesson5;lesson5=function(n){_l5(n);dd()};var _l6=lesson6;lesson6=function(n){_l6(n);dd()};
 var _s5=section5;section5=function(k){_s5(k);k=k||1;var t=TP5[k-1];if(t)brief(t.w,B5T[k-1],k,TP5.length)};
-var BK5=0;var _tpb=topics;topics=function(){BK5=0;return _tpb.apply(this,arguments)};
-var _ma=menuA;menuA=function(){var r=_ma.apply(this,arguments);if(BK5&&ME&&ME.c.charAt(0)=="5"){var b=document.querySelector("#app .top .sm");if(b){b.setAttribute("onclick","section5(5)");b.textContent="← Тема 5"}}return r};
-var _s5b=section5;section5=function(k){BK5=(k==5)?1:0;var r=_s5b(k);if(k==5&&typeof A!="undefined"&&typeof PA!="undefined"){$.insertAdjacentHTML("beforeend","<div class='card' style='margin-top:12px'><h2>🧩 Ігри про алгоритми</h2><span class='mut'>Читалка, ігри й тест із розділу «Алгоритми та програми»</span></div>"+mb("a","📖","Читалка",A.read?"✅ прочитано":PA.length+" сторінок з малюнками","rdA(0)")+mb("c","🧱","Склади алгоритм","найкраще: "+A.g1+" з 4","algOrd()")+mb("d","🐱","Лабіринт Байта","програмуй кота · "+A.g2+" з 3","maze()")+mb("c","🐞","Знайди баг","найкраще: "+A.g3+" з 4","bug()")+mb("b","📝","Тест (після ігор)","найкращий результат: "+A.quiz+" з 12","quizA()"))}return r};
+var ALG5L=0,ALG5S=null,ALG5T="";var _ma=menuA;menuA=function(){if(ALG5L&&ME&&ME.c.charAt(0)=="5"){var n=ALG5L,t=ALG5T,s=JSON.stringify([A.g1,A.g2,A.g3,A.read]);if(s!==ALG5S){try{useB5();var o=B.sc[n]=B.sc[n]||{};o[t]=100;saveB()}catch(e){}}ALG5L=0;return lesson5(n-500)}return _ma.apply(this,arguments)};
+function al5(t,f){return function(g){ALG5L=CUR9;ALG5T=t;ALG5S=JSON.stringify([A.g1,A.g2,A.g3,A.read]);f()}}
+GM.al_ord=al5("al_ord",function(){algOrd()});GM.al_maze=al5("al_maze",function(){maze()});GM.al_bug=al5("al_bug",function(){bug()});
+var ALN={al_ord:["🧱","Склади алгоритм"],al_maze:["🐱","Лабіринт Байта"],al_bug:["🐞","Знайди баг"]};
+Object.keys(ALN).forEach(function(k){GI[k]=GI5[k]=ALN[k]});
+var ALM={30:"al_maze",31:"al_ord",32:"al_ord",33:"al_maze",34:"al_ord",35:"al_bug",36:"al_maze",37:"al_maze",38:"al_bug",40:"al_ord",41:"al_bug",42:"al_maze"};
+Object.keys(ALM).forEach(function(n){var L=LES[500+(+n)];if(!L||!L.g||!L.g.length)return;var t=ALM[n];L.g[Math.min(1,L.g.length-1)]={type:t,title:ALN[t][1]}});
 var _s6=section6;section6=function(k){_s6(k);k=k||1;var t=TP6[k-1];if(t)brief(t.w,B6T[k-1],k,TP6.length)};
 })();
 
