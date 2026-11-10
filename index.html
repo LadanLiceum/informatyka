@@ -1303,7 +1303,7 @@ var SVG="<svg viewBox='0 0 84 62' aria-hidden='true'><defs>"+
 var X=60,DIR=1,CUR=null,SAY=["Мяв!","Мур-р-р","Няв!","Пограємо?","Ще раз!","Мррр…","Ловлю м’ячик!"];
 function rnd(a,b){return a+Math.random()*(b-a)}
 function alive(o){return o===CUR&&!o.gaming&&document.body.contains(o.el)}
-function wantCat(a){return !!(a.querySelector(".fb")||a.querySelector("#go"))}
+function wantCat(a){return !!a.querySelector("#go")&&!a.querySelector(".fb")}
 
 function fit(o){if(o.gaming)return;var el=o.el,top=el.getBoundingClientRect().top,h=window.innerHeight-top-14;el.style.height=Math.max(130,Math.min(h,430))+"px";
  var W=el.clientWidth-84;if(X>W)X=Math.max(0,W);o.cat.style.left=X+"px"}
@@ -10168,6 +10168,41 @@ QQ("Що потрібно зробити наприкінці?","Висново�
 QQ("Яка складова вплине на швидкий запуск ОС?","SSD","CD-ROM","Мікрофон")]
 });
 if(LES[820])LES[820].big=bigOf8(11,19);
+})();
+
+/* ===== фінальні правки: шахта лише 5–6 кл., ≤4 простих ігор на урок, мітки у списку уроку 8–11 кл. ===== */
+(function(){
+var SIMPLE=["pairs","tf","cloze","sort","mine","seq"];
+function prio(mc){return mc?["pairs","sort","mine","tf","seq","cloze"]:["pairs","tf","sort","seq","cloze"]}
+Object.keys(LES).forEach(function(k){k=+k;var L=LES[k];if(!L||!L.g)return;var mc=k>=500&&k<700;
+ var g=L.g.filter(function(x){return mc||x.type!="mine"});
+ var cnt=0;g.forEach(function(x){if(SIMPLE.indexOf(x.type)>=0)cnt++});
+ if(cnt>4){var P=prio(mc),simple=g.filter(function(x){return SIMPLE.indexOf(x.type)>=0});
+  simple.sort(function(a,b){return P.indexOf(a.type)-P.indexOf(b.type)});
+  var keep=simple.slice(0,4);g=g.filter(function(x){return SIMPLE.indexOf(x.type)<0||keep.indexOf(x)>=0})}
+ L.g=g});
+/* нейтральні назви ігор для 8 класу */
+var GI8={},i;for(i in GI5)GI8[i]=GI5[i];
+GI8.pairs=["🔗","З’єднай пари"];GI8.seq=["🛰️","Склади порядок"];GI8.sort=["📡","Розсортуй"];GI8.tf=["✅","Правда чи ні"];GI8.cloze=["✍️","Заповни пропуск"];
+var _li5=lessonItems5;lessonItems5=function(k){if(k>800&&k<900){var G0=GI;GI=GI8;try{return lessonItems(k)}finally{GI=G0}}return _li5(k)};
+/* візуальні мітки: читалка / гра / тест */
+var _li=lessonItems;
+lessonItems=function(n){var h=_li(n);if(!ME||!/^(8|9|10|11)/.test(ME.c||""))return h;
+ return h.replace(/<button class=(['"])mb ([^'"]*)\1 onclick=(['"])([^'"]*)\3><span class=(['"])ic\5>([\s\S]*?)<\/span><span><b>([\s\S]*?)<\/b><br><span class=(['"])sub\8>([\s\S]*?)<\/span>/g,function(m,q1,cl,q3,fn,q5,ic,t,q8,sub){
+  if(cl.indexOf("tk")>=0)return m;
+  var kind=/^openR/.test(fn)?"read":/^playQ/.test(fn)?"test":/^tlockMsg/.test(fn)?"lock":"game";
+  var dn=kind=="lock"?true:kind=="read"?/✓/.test(sub):!/ще не грав/.test(sub);
+  var lb={read:"ЧИТАЛКА",game:"ГРА",test:"ТЕСТ",lock:"ТЕСТ"}[kind];
+  return "<button class='mb "+cl+" tk tk-"+kind+(dn?" dn":"")+"' onclick='"+fn+"'><span class='ic'>"+ic+"</span><span><span class='kd'>"+lb+"</span><br><b>"+t+"</b><br><span class='sub'>"+sub+"</span>"});
+};
+var st=document.createElement("style");st.textContent=
+".mb.tk{position:relative;border-left:6px solid var(--tkc)!important;padding-right:52px}"+
+".tk-read{--tkc:#4da3ff}.tk-game{--tkc:#37d67a}.tk-test{--tkc:#ff9f43}.tk-lock{--tkc:#8a8fa8}"+
+".mb.tk .ic{display:grid!important;place-items:center;width:46px;height:46px;min-width:46px;flex:none;margin-right:12px;border-radius:14px;background:color-mix(in srgb,var(--tkc) 30%,transparent)!important;border:2px solid var(--tkc)!important;font-size:24px;line-height:1;text-shadow:none}"+
+".mb.tk .kd{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 8px;border-radius:99px;background:var(--tkc);color:#10142b;margin-bottom:3px}"+
+".mb.tk.dn::after{content:'✓';position:absolute;right:14px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:#37d67a;color:#06210f;font-weight:900;display:grid;place-items:center;font-size:16px}"+
+".mb.tk.tk-lock.dn::after{background:#8a8fa8}";
+document.head.appendChild(st);
 })();
 
 /* фінальне вікно + прокрутка вгору при запуску гри */
