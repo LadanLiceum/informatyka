@@ -1414,7 +1414,7 @@ function check(muts){var a=document.getElementById("app");if(!a)return;
  clearTimeout(pend);pend=setTimeout(function(){var a=document.getElementById("app");if(!a)return;
   var has=a.querySelector(".cp");
   if(!wantCat(a)){if(has)has.parentNode.removeChild(has);return}
-  if(!has)mount(a);else{if(a.lastElementChild!==has)a.appendChild(has);fit(CUR)}},60)}
+  if(!has)mount(a);else{var _ls=a.lastElementChild;if(_ls!==has&&!(_ls&&_ls.className==="uxtl"&&_ls.previousElementSibling===has))a.appendChild(has);fit(CUR)}},60)}
 try{new MutationObserver(check).observe(document.getElementById("app")||document.body,{childList:true,subtree:true})}catch(e){}
 window.addEventListener("resize",function(){if(CUR&&document.body.contains(CUR.el))fit(CUR)});
 setTimeout(function(){check()},200);
@@ -12620,7 +12620,7 @@ function panel(){if(!ME||ME.t)return;var app=document.getElementById("app");if(!
  if(nm)h+="<button class='uxm' onclick='uxRev()'>🔁 Повтор помилок <b>("+nm+")</b></button>";
  h+="</div>";hero.insertAdjacentHTML("afterend",h)}
 /* --- косметика карток: стани, дубль підзаголовка, «почни тут» --- */
-function cosm(){try{var app=document.getElementById("app");if(!app)return;var inL=false,top=app.querySelector(".top .mut");if(top&&/Урок\s+\d+\s+з/.test(top.textContent))inL=true;
+function cosm(){try{var app=document.getElementById("app");if(!app)return;var tl=app.querySelector(".uxtl");if(tl&&app.lastElementChild!==tl)app.appendChild(tl);var inL=false,top=app.querySelector(".top .mut");if(top&&/Урок\s+\d+\s+з/.test(top.textContent))inL=true;
  var mbs=app.querySelectorAll(".mb:not(.lock)"),first=null,i,b,s,bt,tx,mm,st;
  for(i=0;i<mbs.length;i++){b=mbs[i];s=b.querySelector(".sub");bt=b.querySelector("b");if(!s)continue;tx=s.textContent;
   if(bt&&tx.indexOf(bt.textContent)===0&&tx.length>bt.textContent.length+3&&!s.getAttribute("data-ux")){s.textContent=tx.slice(bt.textContent.length).replace(/^\s*[·:—-]\s*/,"");tx=s.textContent}
@@ -12632,7 +12632,7 @@ function cosm(){try{var app=document.getElementById("app");if(!app)return;var in
 var pend=0;new MutationObserver(function(){if(pend)return;pend=1;setTimeout(function(){pend=0;cosm()},60)}).observe(document.documentElement,{childList:true,subtree:true});
 if(document.readyState!=="loading")startObs();else document.addEventListener("DOMContentLoaded",startObs);
 /* --- прихована для учнів кнопка «Мій клас» під екраном входу --- */
-var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button></div>")}catch(e){}return r};
+var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button></div>");var mv=function(){var l=document.querySelector("#app .uxtl"),ap=document.getElementById("app");if(l&&ap&&ap.lastElementChild!==l)ap.appendChild(l)};setTimeout(mv,80);setTimeout(mv,500);setTimeout(mv,1500)}catch(e){}return r};
 /* --- випадкова затримка відправки, щоб розтягти пік навантаження на таблицю --- */
 var _fl=flush;flush=function(){if(ENDING)return _fl();return new Promise(function(res){setTimeout(function(){_fl().then(res,function(){res([false])})},Math.floor(Math.random()*4000))})};
 /* --- стилі --- */
