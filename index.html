@@ -995,7 +995,11 @@ function confetti(box){for(var k=0;k<16;k++){var s=document.createElement("span"
 var SWC=0;try{document.addEventListener("visibilitychange",function(){if(document.hidden)SWC++})}catch(e){}
 function antRec(les,key,st){try{if(!ME||ME.t||!st.t.length)return;var tt=st.t,avg=tt.reduce(function(a,b){return a+b},0)/tt.length,mn=Math.min.apply(null,tt);
  var o=JSON.parse(localStorage.getItem("inf5ant")||"{}");o[ME.c+"|"+ME.n+"|"+les+"|"+key]=["INF5","T",ME.c,ME.n.replace(/\|/g," "),les||0,key||"q",avg.toFixed(1),mn.toFixed(1),st.sw,st.fast,tt.length].join("|");localStorage.setItem("inf5ant",JSON.stringify(o))}catch(e){}}
-quizG=function(QS,fin,tr,bk){var qs=shuffle(QS),i=0,sc=0,streak=0,st={t:[],sw:0,fast:0};
+function spreadQ(a){function nz(t){return String(t).toLowerCase().replace(/[’']/g,"").replace(/[^a-zа-яіїєґ0-9 ]/g,"")}
+ function cf(x,y){var ax=nz(x.a[0]),ay=nz(y.a[0]);return(ax.length>=5&&nz(y.q).indexOf(ax)>=0)||(ay.length>=5&&nz(x.q).indexOf(ay)>=0)}
+ var rest=a.slice(),out=[];while(rest.length){var pick=-1,i,j,ok;for(i=0;i<rest.length&&pick<0;i++){ok=true;for(j=Math.max(0,out.length-5);j<out.length;j++)if(cf(rest[i],out[j])){ok=false;break}if(ok)pick=i}
+  if(pick<0)pick=0;out.push(rest.splice(pick,1)[0])}return out}
+quizG=function(QS,fin,tr,bk){var qs=spreadQ(shuffle(QS)),i=0,sc=0,streak=0,st={t:[],sw:0,fast:0};
  function show(){var q=qs[i],ans=shuffle(q.a),done=false,t0=Date.now(),sw0=SWC;
   $.innerHTML="<div class='top'><button class='sm' onclick='"+bk+"()'>← Меню</button><span class='mut'>"+(i+1)+" / "+qs.length+"</span></div><div class='bar'><i style='width:"+(i/qs.length*100)+"%'></i></div><div class='card'><h2>"+q.q+"</h2>"+fbHtml(1,pick(IDLT),"idle")+"<div id='o'></div></div><div id='n'></div>";
   var TL=30,tl=TL,tmr=null;function stopT(){if(tmr){clearInterval(tmr);tmr=null}}
