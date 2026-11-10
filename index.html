@@ -12103,7 +12103,7 @@ var _s6=section6;section6=function(k){_s6(k);k=k||1;var t=TP6[k-1];if(t)brief(t.
 
 /* Ачівки 5 класу (тест): 11 на кожен урок, показ під прогресом уроку та сума на головних екранах */
 function mkAch(cls){var CLS=String(cls),BASE=cls*100,G8=cls==8,BC=G8?"g8":"g5";function okc(){return ME&&(G8?/^8-[АБ]$/.test(ME.c):ME.c.charAt(0)==CLS)}function Bq(){return window["B"+cls]}function TN(){return window["T"+cls+"N"]||52}
-var AD7=[["rd","📖","Перший камінь","Прочитати читалку уроку до кінця"],["p100","💎","Діамантова точність","100% у грі чи тесті уроку"],["str","🔥","Серія","5 правильних відповідей поспіль"],["all","🧭","Дослідник","Пройти всі ігри уроку"],["nh","🛡️","Без втрат","Пройти гру з серцями, не втративши жодного"],["q80","📜","Мудрець","Тест уроку на 80% і більше"],["bl","⚡","Блискавка","Швидка гра на 80% і більше"],["imp","🔁","Майстер","Покращити свій результат у грі"],["perf","🌟","Бездоганно","100% у всіх іграх і тесті уроку"],["king","👑","Король уроку","Усі інші ачівки уроку"]];var AD8=[["rd","📖","Перший сигнал","Прочитати читалку уроку до кінця"],["p100","💠","Квантова точність","100% у грі чи тесті уроку"],["str","☄️","Комета","5 правильних відповідей поспіль"],["all","🛰️","Розвідник","Пройти всі ігри уроку"],["nh","🛡️","Щит цілий","Пройти гру з життями, не втративши жодного"],["q80","🧠","Аналітик","Тест уроку на 80% і більше"],["bl","⚡","Гіперстрибок","Швидка гра на 80% і більше"],["imp","🔁","Апгрейд","Покращити свій результат у грі"],["perf","🌟","Ідеальна місія","100% у всіх іграх і тесті уроку"],["king","👑","Командор уроку","Усі інші ачівки уроку"]];var AD=cls==8?AD8:AD7;
+var AD7=[["rd","📖","Перший камінь","Прочитати читалку уроку до кінця"],["p100","💎","Діамантова точність","100% у грі чи тесті уроку"],["str","🔥","Серія","5 правильних відповідей поспіль"],["all","🧭","Дослідник","Пройти всі ігри уроку"],["nh","🛡️","Без втрат","Пройти гру на 90% і більше"],["q80","📜","Мудрець","Тест уроку на 80% і більше"],["bl","⚡","Блискавка","Пройти гру швидко (до 1 хвилини) на 80% і більше"],["imp","🔁","Майстер","Покращити свій результат у грі"],["perf","🌟","Бездоганно","100% у всіх іграх і тесті уроку"],["king","👑","Король уроку","Усі інші ачівки уроку"]];var AD8=[["rd","📖","Перший сигнал","Прочитати читалку уроку до кінця"],["p100","💠","Квантова точність","100% у грі чи тесті уроку"],["str","☄️","Комета","5 правильних відповідей поспіль"],["all","🛰️","Розвідник","Пройти всі ігри уроку"],["nh","🛡️","Щит цілий","Пройти гру на 90% і більше"],["q80","🧠","Аналітик","Тест уроку на 80% і більше"],["bl","⚡","Гіперстрибок","Пройти гру швидко (до 1 хвилини) на 80% і більше"],["imp","🔁","Апгрейд","Покращити свій результат у грі"],["perf","🌟","Ідеальна місія","100% у всіх іграх і тесті уроку"],["king","👑","Командор уроку","Усі інші ачівки уроку"]];var AD=cls==8?AD8:AD7;
 var BL={blitz:1,speed:1,s_duel:1,s_bet:1,s_sw:1,s_streak:1,swp:1,tf:1};
 function ev(n){Bq().ev=Bq().ev||{};return Bq().ev[n]=Bq().ev[n]||{}}
 function earned(n){var L=LES[BASE+n],o=(Bq().sc||{})[BASE+n]||{},r={},ks=[],i,k;if(!L)return r;
@@ -12113,12 +12113,13 @@ function earned(n){var L=LES[BASE+n],o=(Bq().sc||{})[BASE+n]||{},r={},ks=[],i,k;
  for(k in o){if(o[k]>=100)r.p100=1}
  if(ks.length&&ks.every(function(k){return o[k]!==undefined}))r.all=1;
  if(o.q>=80)r.q80=1;
- (L.g||[]).forEach(function(g,i){if(BL[g.type]&&o["g"+i]>=80)r.bl=1});
+ if(e.bl)r.bl=1;(L.g||[]).forEach(function(g,i){if(BL[g.type]&&o["g"+i]>=80)r.bl=1});
  if(e.str)r.str=1;if(e.nh)r.nh=1;if(e.imp)r.imp=1;
  var need=ks.concat(L.q&&!L.noq?["q"]:[]);
  if(need.length&&need.every(function(k){return o[k]>=100}))r.perf=1;
  if(AD.slice(0,AD.length-1).every(function(a){return r[a[0]]}))r.king=1;
  return r}
+function base(n){try{var b=Bq();b.ach=b.ach||{};if(!b.ach[n]){b.ach[n]=earned(n);saveB()}}catch(e){}}
 function cnt(n){var r=earned(n),c=0;AD.forEach(function(a){if(r[a[0]])c++});return c}
 var TOTAL=0;function total(){var s=0,N=TN(),i;for(i=1;i<=N;i++)s+=cnt(i);return s}
 function row(n){var r=earned(n),h="<div class='ach'><div class='at'>🏆 Ачівки уроку · "+cnt(n)+" з "+AD.length+"</div><div class='ar'>";
@@ -12138,16 +12139,16 @@ var st={ok:0,bad:0,heart:false,start:0};
 function reset(){st={ok:0,bad:0,heart:false,start:Date.now()}}
 if(window.GX&&GX.snd){var _sn=GX.snd;GX.snd=function(k){try{if(CUR9>BASE&&CUR9<(BASE+100)){var g=document.getElementById("gs");if(g&&/❤/.test(g.textContent))st.heart=true;if(k=="ok"){st.ok++;if(st.ok==5){var n=CUR9-BASE;ev(n).str=1;check(n)}}else if(k=="bad"){st.ok=0;st.bad++}}}catch(e){}return _sn.apply(this,arguments)}}
 var _pg=playG;playG=function(n,i){reset();return _pg.apply(this,arguments)};
-var _es=endScr;endScr=function(a,b,c,e){var n=CUR9-BASE,key=CURK||c,old;if(n>=1&&n<=(TN())&&okc()){old=((Bq().sc||{})[CUR9]||{})[key]}
+var _es=endScr;endScr=function(a,b,c,e){var n=CUR9-BASE,key=CURK||c,old,ok5=n>=1&&n<=TN()&&okc();if(ok5){base(n);old=((Bq().sc||{})[CUR9]||{})[key]}
  var r=_es.apply(this,arguments);
- try{if(n>=1&&n<=(TN())&&okc()){var pc=Math.round(100*a/b);if(old!==undefined&&pc>old)ev(n).imp=1;if(st.heart&&st.bad==0&&pc>=50)ev(n).nh=1;try{saveB()}catch(x){}check(n)}}catch(x){}return r};
-var _dn=done9;done9=function(){var n=CUR9-BASE,r=_dn.apply(this,arguments);try{check(n)}catch(e){}return r};
+ try{if(ok5){var pc=Math.round(100*a/b),ev1=ev(n);if(old!==undefined&&pc>old)ev1.imp=1;if(pc>=90)ev1.nh=1;if(pc>=80&&Date.now()-st.start<=60000)ev1.bl=1;if(pc>=100&&b>=5)ev1.str=1;try{saveB()}catch(x){}check(n)}}catch(x){}return r};
+var _dn=done9;done9=function(){var n=CUR9-BASE,ok5=n>=1&&n<=TN()&&okc();if(ok5)base(n);var r=_dn.apply(this,arguments);try{if(ok5)check(n)}catch(e){}return r};
 /* показ */
 function inject(){var app=document.getElementById("app");if(!app||!document.body.classList.contains(BC)||!okc())return;
  var old=app.querySelector(".ach");if(old)old.remove();
  var lv=app.querySelector(".lv")||(G8&&app.querySelector(".hero11.p-home"));
  if(lv){var s=total(),N=(TN())*AD.length,sp=document.createElement("div");sp.className="ach";sp.innerHTML="<div class='at'>🏆 Ачівки · "+s+" з "+N+"</div><div class='asum'><i style='width:"+Math.round(100*s/N)+"%'></i></div>";lv.appendChild(sp);return}
- var c=app.querySelector(".card");if(c&&/Прогрес уроку/.test(c.textContent)){var m=(location.hash,CUR9-BASE);c.insertAdjacentHTML("beforeend",row(m))}}
+ var c=app.querySelector(".card");if(c&&/Прогрес уроку/.test(c.textContent)){var m=CUR9-BASE;base(m);c.insertAdjacentHTML("beforeend",row(m))}}
 var _l5=window["lesson"+cls];window["lesson"+cls]=function(n){var r=_l5.apply(this,arguments);inject();return r};
 var _s5=window["section"+cls];window["section"+cls]=function(k){var r=_s5.apply(this,arguments);inject();return r};
 var _tp=topics;topics=function(){var r=_tp.apply(this,arguments);inject();return r};
