@@ -10895,7 +10895,7 @@ GM.sf_build=function(g){var qs=Q(3);if(qs.length<2)return fin9(0,1);var NB=Math.
 GM.sf_archer=function(g){var N=7,qs=Q(N);if(qs.length<3)return fin9(0,1);N=qs.length;
  var W=312,H=300,BS=16,qi=0,sc=0,hp=3,el=M.frame(g.title,"Орбітальна гармата 🛰️: відтягни приціл — тягни палець НАЗАД від гармати й відпусти. Влуч у ціль з ПРАВИЛЬНОЮ відповіддю (табличка з літерою). Сонячний вітер зносить снаряд! 3 постріли на питання.","<div class='hud' id='ah'></div><div id='aq'></div><canvas id='ac'></canvas>");
  var cv=document.getElementById("ac"),cx=M.setup(cv,W,H),T=0,last=0,hts=[],mobs=[],arr=null,drag=null,ammo=3,wind=0,ops=[],over=false,lock=false,fx=[],hit=0,tries=0,lockT=0;
- var rr=M.R(Math.floor(Math.random()*9999)+3);for(var x=0;x<W/BS+2;x++){hts[x]=Math.round(10+Math.sin(x*.35)*3+rr()*3)}
+ var rr=M.R(Math.floor(Math.random()*9999)+3);for(var x=0;x<W/BS+2;x++){hts[x]=Math.round(4+Math.sin(x*.35)*1.2+rr()*1.4)}
  function hy(x){return H-hts[cl(Math.floor(x/BS),0,hts.length-1)]*BS}
  var PXX=34;
  function hud(){document.getElementById("ah").innerHTML="<span>"+"❤️".repeat(hp)+"🖤".repeat(3-hp)+"</span><span>Питання "+Math.min(qi+1,N)+"/"+N+"</span><span>🎯 "+ammo+"</span><span>💨 "+(wind>0?"→":"←")+Math.abs(Math.round(wind/10))+"</span>"}
@@ -10907,11 +10907,11 @@ GM.sf_archer=function(g){var N=7,qs=Q(N);if(qs.length<3)return fin9(0,1);N=qs.le
  cv.onpointerdown=function(e){if(arr||lock||over||ammo<=0)return;var p=cp(e);if(Math.hypot(p[0]-PXX,p[1]-(hy(PXX)-24))<90){drag=p}e.preventDefault()};
  cv.onpointermove=function(e){if(drag){drag=cp(e)}};
  cv.onpointerup=function(e){if(!drag)return;var p=drag,sx=PXX,sy=hy(PXX)-24,dx=sx-p[0],dy=sy-p[1],d=Math.min(110,Math.hypot(dx,dy));drag=null;if(d<14)return;var a=Math.atan2(dy,dx),v=d*4.4;arr={x:sx,y:sy,vx:Math.cos(a)*v,vy:Math.sin(a)*v,t:0};ammo--;hud();M.snd("click")};
- function traj(){var res=[],sx=PXX,sy=hy(PXX)-24,dx=sx-drag[0],dy=sy-drag[1],d=Math.min(110,Math.hypot(dx,dy)),a=Math.atan2(dy,dx),v=d*4.4,vx=Math.cos(a)*v,vy=Math.sin(a)*v,x=sx,y=sy;for(var i=0;i<14;i++){vx+=wind*.02;x+=vx*.07;vy+=40*.07*5.5;y+=vy*.07;res.push([x,y])}return res}
+ function traj(){var res=[],sx=PXX,sy=hy(PXX)-24,dx=sx-drag[0],dy=sy-drag[1],d=Math.min(110,Math.hypot(dx,dy)),a=Math.atan2(dy,dx),v=d*4.4,vx=Math.cos(a)*v,vy=Math.sin(a)*v,x=sx,y=sy;for(var i=0;i<22;i++){vx+=wind*.02;x+=vx*.07;vy+=40*.07*5.5;y+=vy*.07;res.push([x,y])}return res}
  function draw(){M.sky(cx,W,H,T,false);for(var x=0;x<hts.length;x++)for(var y=H-hts[x]*BS,j=0;y<H;y+=BS,j++)M.blk(cx,j?"dirt":"gside",x*BS,y,BS);
   var ps=hy(PXX);M.steve(cx,PXX-8,ps-32,2,false);cx.strokeStyle="#8a5a2b";cx.lineWidth=3;cx.beginPath();cx.arc(PXX+12,ps-22,12,-1.2,1.2);cx.stroke();
   mobs.forEach(function(m){var y=hy(m.x);if(!m.alive)return;if(m.t=="zombie")M.zombie(cx,m.x-8,y-32,2,true);else if(m.t=="skeleton")M.skeleton(cx,m.x-8,y-32,2,true);else M.creeper(cx,m.x-8,y-32,2);M.blk(cx,"plank",m.x-12,y-62,24);cx.strokeStyle="#000";cx.lineWidth=2;cx.strokeRect(m.x-12,y-62,24,24);M.txt(cx,"ABC"[m.k],m.x,y-44,16,"#fff","center");if(m.ang>0){cx.fillStyle="rgba(255,0,0,"+m.ang+")";cx.fillRect(m.x-10,y-30,20,30)}});
-  if(drag){var tr=traj();tr.forEach(function(p,i){cx.fillStyle="rgba(255,255,255,"+(1-i/16)+")";cx.fillRect(p[0]-2,p[1]-2,4,4)});cx.strokeStyle="#fff";cx.lineWidth=2;cx.beginPath();cx.moveTo(PXX,hy(PXX)-24);cx.lineTo(drag[0],drag[1]);cx.stroke()}
+  if(drag){var tr=traj();tr.forEach(function(p,i){cx.fillStyle="rgba(165,243,252,"+(1-i/24)+")";cx.fillRect(p[0]-2,p[1]-2,4,4)});cx.strokeStyle="#fff";cx.lineWidth=2;cx.beginPath();cx.moveTo(PXX,hy(PXX)-24);cx.lineTo(drag[0],drag[1]);cx.stroke()}
   if(arr){var a=Math.atan2(arr.vy,arr.vx);cx.strokeStyle="#d8b86a";cx.lineWidth=3;cx.beginPath();cx.moveTo(arr.x,arr.y);cx.lineTo(arr.x-Math.cos(a)*16,arr.y-Math.sin(a)*16);cx.stroke();cx.fillStyle="#eee";cx.fillRect(arr.x-2,arr.y-2,4,4)}
   var fx0=W-30;cx.fillStyle="#8a5a2b";cx.fillRect(fx0,40,3,36);cx.fillStyle="#e11d1d";cx.fillRect(fx0+3,40,wind>0?16:-16+0,10);cx.fillRect(wind>0?fx0+3:fx0-13,40,16,10);
   fx.forEach(function(f){cx.globalAlpha=Math.max(0,f.l);cx.fillStyle=f.c;cx.fillRect(f.x,f.y,4,4)});cx.globalAlpha=1}
