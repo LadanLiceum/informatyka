@@ -12555,6 +12555,7 @@ mkAch(7);
 
 /* ===== UX: «Продовжити», стрік і ціль дня, повтор помилок, стани карток, підказка при невдачах, нагорода ===== */
 (function(){
+var REV=0;
 var UK="infux",U={};try{U=JSON.parse(localStorage.getItem(UK))||{}}catch(e){}
 function usv(){try{localStorage.setItem(UK,JSON.stringify(U))}catch(e){}}
 function key(){return ME?(ME.c||"")+"|"+(ME.n||""):"-"}
@@ -12565,7 +12566,7 @@ function plain(t){return String(t).replace(/<[^>]*>/g,"").replace(/\s+/g," ").tr
 var GOAL=3;
 function toast(t){try{var d=document.createElement("div");d.className="uxt";d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.className="uxt out"},2600);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d)},3200)}catch(e){}}
 /* --- запам'ятовуємо останній урок --- */
-var _l9=lesson9;lesson9=function(n){var r=_l9.apply(this,arguments);try{if(ME&&n&&!ME.t){var h=document.querySelector("#app .card h2, #app h1, #app h2"),m=me();m.last={n:n,t:h?plain(h.textContent).slice(0,70):"урок"};usv()}}catch(e){}return r};
+var _l9=lesson9;lesson9=function(n){REV=0;var r=_l9.apply(this,arguments);try{if(ME&&n&&!ME.t){var h=document.querySelector("#app .card h2, #app h1, #app h2"),m=me();m.last={n:n,t:h?plain(h.textContent).slice(0,70):"урок"};usv()}}catch(e){}return r};
 /* --- лічильник дня / стрік --- */
 function tick(){var m=me(),t=today();if(m.day!==t){m.st=(m.day===yest())?(m.st||0)+1:1;m.day=t}
  var before=m.cnt[t]||0;m.cnt[t]=before+1;var k;for(k in m.cnt)if(k!==t&&k!==yest())delete m.cnt[k];usv();
@@ -12573,10 +12574,9 @@ function tick(){var m=me(),t=today();if(m.day!==t){m.st=(m.day===yest())?(m.st||
 /* --- нагорода (конфеті) --- */
 function burst(){try{if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;var w=document.createElement("div");w.className="uxb";var c=["#ffd23f","#3ddc84","#4cc9f0","#ff6b9d","#b388ff"],i,s;for(i=0;i<26;i++){s=document.createElement("i");s.style.left=(5+Math.random()*90)+"%";s.style.background=c[i%5];s.style.animationDelay=(Math.random()*.35)+"s";s.style.setProperty("--dx",(Math.random()*80-40)+"px");w.appendChild(s)}document.body.appendChild(w);setTimeout(function(){if(w.parentNode)w.parentNode.removeChild(w)},2300)}catch(e){}}
 /* --- кінець гри/тесту --- */
-var REV=0;
 var _es=endScr;endScr=function(a,b,c,d){var inRev=REV,k=CUR9,cur=CURK;var r=_es.apply(this,arguments);
  try{if(ME&&!ME.t){var pc=b?Math.round(100*a/b):0;
-  if(inRev){var p=document.querySelector("#app p.mut");if(p&&/надіслано/i.test(p.textContent))p.textContent="🔁 Це повторення помилок — оцінка в урок не записується";REV=0}
+  if(inRev){var p=document.querySelector("#app p.mut");if(p&&/надіслано/i.test(p.textContent))p.textContent="🔁 Це повторення помилок — оцінка в урок не записується";try{var AN=JSON.parse(localStorage.getItem("inf5ant")||"{}"),pk=ME.c+"|"+ME.n+"|0|",ch=0;Object.keys(AN).forEach(function(q){if(q.indexOf(pk)===0){delete AN[q];ch=1}});if(ch)localStorage.setItem("inf5ant",JSON.stringify(AN))}catch(e){}REV=0}
   else{tick();var m=me(),f=m.fl[k]=(m.fl[k]||[]);f.push(pc);if(f.length>3)f.shift();usv();
    if(pc>=80)burst();
    if(f.length>=2&&f[f.length-1]<50&&f[f.length-2]<50&&k){var h=document.createElement("div");h.className="card uxh";h.innerHTML="<b>💡 Не виходить? Це нормально.</b><br><span class='mut'>Перечитай читалку уроку — там відповіді — і спробуй ще раз.</span><br><button class='sm' onclick='lesson9("+k+")'>📖 До уроку</button>";var host=document.getElementById("app");if(host)host.insertBefore(h,host.children[1]||null)}}}}catch(e){}
@@ -12597,7 +12597,7 @@ window.uxRev=function(){if(!ME)return;var m=me(),qs=[],map={};m.mis.slice().reve
  m.revk=map;usv();REV=1;CUR9=0;CURK=null;LAST9=function(){uxRev()};
  quizG(qs,function(){},"uxRev","topics")};
 /* --- панель на головному екрані --- */
-var _tp=topics;topics=function(){var r=_tp.apply(this,arguments);try{panel()}catch(e){}return r};
+var _tp=topics;topics=function(){REV=0;var r=_tp.apply(this,arguments);try{panel()}catch(e){}return r};
 window.uxTch=function(){var k="";try{k=localStorage.getItem("inftk")||""}catch(e){}
  var a=document.getElementById("app");a.innerHTML="<div class='top'><button class='sm' onclick='who()'>← Назад</button></div><div class='card'><h2>👩‍🏫 Мій клас</h2><p class='mut'>Підсумок із таблиці результатів. Потрібен ключ вчителя (змінна TEACHER_KEY у скрипті таблиці).</p><input id='tk' type='password' placeholder='Ключ вчителя' value='"+esc(k)+"' autocomplete='off'><button class='pri' id='tkb'>Показати</button><div id='tkr' class='mut' style='margin-top:10px'></div></div>";
  var go=function(){var v=document.getElementById("tk").value.trim(),r=document.getElementById("tkr");if(!v)return;try{localStorage.setItem("inftk",v)}catch(e){}r.textContent="Завантаження…";
@@ -12633,6 +12633,7 @@ function cosm(){try{var app=document.getElementById("app");if(!app)return;var tl
 var pend=0;new MutationObserver(function(){if(pend)return;pend=1;setTimeout(function(){pend=0;cosm()},60)}).observe(document.documentElement,{childList:true,subtree:true});
 if(document.readyState!=="loading")startObs();else document.addEventListener("DOMContentLoaded",startObs);
 /* --- прихована для учнів кнопка «Мій клас» під екраном входу --- */
+var _pQ=playQ;playQ=function(){REV=0;return _pQ.apply(this,arguments)};var _pG=playG;playG=function(){REV=0;return _pG.apply(this,arguments)};
 var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button></div>");var mv=function(){var l=document.querySelector("#app .uxtl"),ap=document.getElementById("app");if(l&&ap&&ap.lastElementChild!==l)ap.appendChild(l)};setTimeout(mv,80);setTimeout(mv,500);setTimeout(mv,1500)}catch(e){}return r};
 /* --- випадкова затримка відправки, щоб розтягти пік навантаження на таблицю --- */
 var _fl=flush;flush=function(){if(ENDING)return _fl();return new Promise(function(res){setTimeout(function(){_fl().then(res,function(){res([false])})},Math.floor(Math.random()*4000))})};
@@ -12647,7 +12648,7 @@ var css=".uxtl{text-align:center;margin:26px 0 8px}.uxtl button{background:none!
 "body.g5 .mb.uxnext::after{border-radius:0;border:2px solid #3a2c00}@keyframes uxnx{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}"+
 ".uxh{margin-top:10px;text-align:center}.uxt{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:99999;background:#1f2a44;color:#fff;border:2px solid #ffd23f;padding:10px 16px;border-radius:14px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.4);animation:uxin .35s ease-out;transition:opacity .5s,transform .5s;max-width:92vw;text-align:center}.uxt.out{opacity:0;transform:translateX(-50%) translateY(-14px)}@keyframes uxin{from{opacity:0;transform:translateX(-50%) translateY(-14px)}}"+
 ".uxb{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:99998}.uxb i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px;animation:uxf 1.9s ease-in forwards}@keyframes uxf{to{transform:translate(var(--dx),105vh) rotate(720deg);opacity:.9}}"+
-"@media (prefers-reduced-motion:reduce){.uxc,.mb.uxnext{animation:none}.uxb{display:none}}";
+"@media (prefers-reduced-motion:reduce){.uxc,.mb.uxnext,.uxt{animation:none;transition:none}.uxb{display:none}}";
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
 })();
 
