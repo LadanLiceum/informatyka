@@ -275,7 +275,7 @@ body.g10y .wbar i{border:0;background:rgba(255,255,255,.85)}body.g10y .wbar i:nt
 body.g10y .wbody{background-image:radial-gradient(#e3e8ff 1.5px,transparent 1.5px);background-size:14px 14px}
 </style>
 <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'>
-<link rel='manifest' href='manifest.json'><meta name='theme-color' content='#2b2f55'><link rel='icon' href='icon.svg'>
+<link rel='manifest' href='manifest.json'><meta name='theme-color' content='#2b2f55'><link rel='icon' href='icon.svg'><link rel='apple-touch-icon' href='apple-touch-icon.png'><meta name='apple-mobile-web-app-capable' content='yes'><meta name='mobile-web-app-capable' content='yes'><meta name='apple-mobile-web-app-title' content='Інформатика'><meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>
 </head>
 <body>
 <main id="app"></main>
@@ -8665,7 +8665,7 @@ function flush(){if(RESULTS_URL.indexOf("http")!==0)return Promise.resolve([]);v
 function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t)return Promise.resolve();var o=obGet();o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code();obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку — відправимо пізніше")})}
 window.addEventListener("online",function(){flush()});
 var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf11l"||k=="inf10g"||k=="inf5me"))queuePush()};
-if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}return navigator.serviceWorker.ready}).then(function(){try{if(localStorage.getItem("infOff"))return;caches.open("inf-v3").then(function(c){return c.match("index.html")}).then(function(m){if(!m)return;localStorage.setItem("infOff","1");var d=document.createElement("div");d.textContent="✅ Готово: застосунок працюватиме й без інтернету";d.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:12px;font:600 14px sans-serif;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";setTimeout(function(){d.remove()},700)},4500)})}catch(e){}}).catch(function(){})});
 setTimeout(flush,1500);
 setTimeout(push,3000);
 topics();
