@@ -12101,6 +12101,66 @@ Object.keys(ALM).forEach(function(n){var L=LES[500+(+n)];if(!L||!L.g||!L.g.lengt
 var _s6=section6;section6=function(k){_s6(k);k=k||1;var t=TP6[k-1];if(t)brief(t.w,B6T[k-1],k,TP6.length)};
 })();
 
+/* Анімовані піксельні сцени-обкладинки тем (5–6 клас): по одній на світ */
+(function(){
+function R(x,y,w,h,c,cl,st){return "<rect x='"+x+"' y='"+y+"' width='"+w+"' height='"+h+"' fill='"+c+"'"+(cl?" class='"+cl+"'":"")+(st?" style='"+st+"'":"")+"/>"}
+function D(d){return "animation-delay:"+d+"s"}
+function stars(n,seed,y1,col){var h="",s=seed;for(var i=0;i<n;i++){s=(s*9301+49297)%233280;var x=Math.floor(s/233280*68)+1;s=(s*9301+49297)%233280;var y=Math.floor(s/233280*y1)+1;h+=R(x,y,1,1,col||"#fff","tw",D((i%5)*.3))}return h}
+function noise(c1,c2,seed,x0,y0,x1,y1){var h="",s=seed;for(var y=y0;y<y1;y+=2)for(var x=x0;x<x1;x+=2){s=(s*9301+49297)%233280;if(s%5==0)h+=R(x,y,2,2,c2)}return R(x0,y0,x1-x0,y1-y0,c1)+h}
+var SC={
+cave:function(){return noise("#3b3b3b","#323232",7,0,0,70,28)+R(0,0,70,2,"#222")+R(5,2,3,2,"#222")+R(5,4,2,2,"#222")+R(50,2,4,2,"#222")+R(51,4,2,3,"#222")+R(0,23,70,5,"#5b5b5b")+R(0,23,70,1,"#7a7a7a")+
+ R(30,20,12,2,"#9a9a9a")+R(33,18,6,2,"#7a7a7a")+R(26,5,20,14,"#141414")+R(27,6,18,12,"#3ea0ff")+R(28,7,16,10,"#59b4ff")+R(28,7,16,1,"#9bd3ff")+R(29,9,8,1,"#fff")+R(29,11,12,1,"#cde8ff")+R(29,13,6,1,"#cde8ff")+R(37,14,2,1,"#143a66","blink")+
+ R(13,10,1,10,"#8a5a2b")+R(12,7,3,3,"#ffb02e","flick")+R(13,6,1,2,"#fff3a0","flick")+"<circle cx='13.5' cy='9' r='8' fill='#ffb02e' opacity='.14' class='glow'/>"+
+ R(56,10,1,10,"#8a5a2b")+R(55,7,3,3,"#ffb02e","flick",D(.2))+R(56,6,1,2,"#fff3a0","flick",D(.2))+"<circle cx='56.5' cy='9' r='8' fill='#ffb02e' opacity='.14' class='glow' style='"+D(.7)+"'/>"+
+ R(3,19,4,4,"#6b6b6b")+R(4,20,1,1,"#58e0ff")+R(6,21,1,1,"#58e0ff")+R(3,22,1,1,"#58e0ff")+R(5,19,1,1,"#fff","tw")+
+ R(62,18,5,5,"#6b6b6b")+R(63,19,1,1,"#ffd23f")+R(65,20,1,1,"#ffd23f")+R(64,22,1,1,"#ffd23f")+R(66,18,1,1,"#fff","tw",D(.5))+
+ R(20,18,1,1,"#ffd8a0","rise",D(0))+R(47,17,1,1,"#ffd8a0","rise",D(1.2))+R(36,19,1,1,"#9bd3ff","rise",D(2))},
+ocean:function(){var h=R(0,0,70,28,"#2f7fe0")+R(0,0,70,6,"#4f9bf5")+R(0,6,70,6,"#3d8bea")+R(0,16,70,6,"#2a6fd6")+R(0,22,70,6,"#235fbd");
+ h+="<g opacity='.18'>"+R(10,0,4,22,"#fff")+R(24,0,3,18,"#fff")+R(48,0,5,24,"#fff")+"</g>";
+ h+=R(0,24,70,4,"#e2d28a")+R(0,24,70,1,"#f2e6a8")+R(6,25,2,1,"#c9b86e")+R(40,26,3,1,"#c9b86e");
+ [[8,"#3fa83a"],[11,"#2f8f2f"],[59,"#3fa83a"],[62,"#2f8f2f"]].forEach(function(k,i){h+="<g class='sway' style='"+D(i*.4)+"'>"+R(k[0],14,1,10,k[1])+R(k[0]+1,17,1,7,k[1])+R(k[0],12,1,2,k[1])+"</g>"});
+ h+=R(29,17,12,6,"#e8e8e8")+R(29,17,12,1,"#fff")+R(29,22,12,1,"#9a9a9a")+R(31,19,2,2,"#2bd35a")+R(34,19,2,2,"#ffd23f","blink")+R(37,19,2,2,"#2bd35a")+R(31,13,1,4,"#cfcfcf")+R(38,13,1,4,"#cfcfcf")+R(31,12,1,1,"#ff5a5a","blink")+R(38,12,1,1,"#ff5a5a","blink",D(.5));
+ h+="<g fill='none' stroke='#fff' stroke-width='1' shape-rendering='crispEdges'><path class='sig' d='M27 11 h-3 M27 11 v-3 M43 11 h3 M43 11 v-3' style='"+D(0)+"'/><path class='sig' d='M25 8 h-4 M25 8 v-5 M45 8 h4 M45 8 v-5' style='"+D(.5)+"'/></g>";
+ h+="<g class='swim'>"+R(0,9,5,3,"#ff8a2a")+R(5,9,2,1,"#ff8a2a")+R(5,11,2,1,"#ff8a2a")+R(1,10,1,1,"#fff")+R(4,9,1,3,"#e86a00")+"</g>";
+ h+="<g class='swim' style='animation-duration:13s;animation-delay:-5s'>"+R(0,19,4,2,"#ffd23f")+R(4,19,1,2,"#e8a800")+R(1,19,1,1,"#222")+"</g>";
+ [[18,0],[22,1.1],[50,.5],[54,1.8],[66,.9]].forEach(function(b){h+=R(b[0],22,1,1,"#cfe8ff","rise",D(b[1]))});return h},
+end:function(){var h=R(0,0,70,28,"#150a24")+R(0,12,70,10,"#1d0e33")+stars(16,3,14,"#e9d5ff");
+ h+=R(0,22,70,6,"#e4e0a0")+R(0,22,70,1,"#f3f0bd")+R(0,25,70,3,"#cfca85")+R(5,24,3,1,"#bdb870")+R(50,26,4,1,"#bdb870");
+ h+=R(5,6,4,16,"#1b1230")+R(5,6,4,1,"#3a2760")+R(6,10,1,1,"#c58bff","tw")+R(7,15,1,1,"#c58bff","tw",D(.6))+"<g class='float'>"+R(4,1,6,4,"#ff7ad9")+R(5,0,4,6,"#ff7ad9")+R(6,1,2,4,"#fff")+"</g>"+"<circle cx='7' cy='3' r='6' fill='#ff7ad9' opacity='.16' class='glow'/>";
+ h+="<g class='float' style='"+D(.4)+"'>"+R(24,5,22,14,"#2a2a40")+R(25,6,20,12,"#f7f3ff")+R(25,6,20,3,"#c58bff")+R(27,11,10,1,"#6b4aa8")+R(27,13,14,1,"#9a86c9")+R(27,15,8,1,"#9a86c9")+R(39,11,4,5,"#7ad0ff")+R(40,12,2,3,"#fff")+"</g>";
+ h+=R(57,9,2,13,"#111")+R(60,9,2,13,"#111")+R(56,2,6,8,"#111")+R(57,4,1,1,"#e07bff","blink")+R(60,4,1,1,"#e07bff","blink")+R(55,10,1,8,"#111")+R(62,10,1,8,"#111");
+ [[16,0],[20,.8],[34,1.6],[50,.4],[52,2.1],[65,1.2]].forEach(function(p){h+=R(p[0],21,1,1,"#d98cff","rise",D(p[1]))});return h},
+snow:function(){var h=R(0,0,70,28,"#a9cdf0")+R(0,0,70,8,"#bcd8f5")+R(0,8,70,6,"#cfe3f8")+R(0,14,70,8,"#e0eefb")+R(0,22,70,6,"#ffffff")+R(0,22,70,1,"#dbe9f7")+R(0,26,70,2,"#e6eff8");
+ [[6,"#2e6f3a"],[58,"#2e6f3a"]].forEach(function(k,i){var x=k[0];h+=R(x+3,18,2,5,"#6b4a2b")+R(x,15,8,3,k[1])+R(x+1,12,6,3,k[1])+R(x+2,9,4,3,k[1])+R(x+3,7,2,2,k[1])+R(x,15,8,1,"#fff")+R(x+1,12,6,1,"#fff")+R(x+2,9,4,1,"#fff")});
+ h+=R(23,6,24,16,"#3a3a3a")+R(24,7,22,14,"#fffdf3")+R(24,7,22,2,"#4da3ff")+R(26,11,14,1,"#8a8a8a")+R(26,13,18,1,"#8a8a8a")+R(26,15,12,1,"#8a8a8a")+R(26,17,16,1,"#8a8a8a")+R(26,19,8,1,"#8a8a8a")+R(23,6,1,16,"#242424");
+ h+="<g class='write'>"+R(40,17,1,1,"#e53935")+R(41,16,1,1,"#ffd23f")+R(42,15,1,1,"#ffd23f")+R(43,14,1,1,"#ffd23f")+R(44,13,1,1,"#e8b84a")+"</g>"+R(35,11,1,1,"#1a1a1a","blink");
+ h+=R(17,17,5,5,"#fff")+R(18,18,1,1,"#222")+R(20,18,1,1,"#222")+R(17,13,5,4,"#fff")+R(18,14,1,1,"#222")+R(20,14,1,1,"#222")+R(19,15,1,1,"#ff8a2a")+R(16,12,7,1,"#b5651d")+R(17,11,5,1,"#b5651d");
+ for(var i=0;i<14;i++){h+=R(2+i*5,0,1,1,"#fff","fall",D((i%7)*.55)+";animation-duration:"+(3.2+(i%4)*.7)+"s")}return h},
+nether:function(){var h=noise("#4a1313","#3d0e0e",11,0,0,70,28)+R(0,0,70,3,"#2a0808")+R(8,3,4,2,"#2a0808")+R(52,3,5,3,"#2a0808")+R(0,22,70,6,"#ff6a00")+R(0,22,70,1,"#ffb347")+
+ "<g class='lava'>"+R(2,24,6,1,"#ffd23f")+R(16,25,8,1,"#ffb347")+R(34,24,5,1,"#ffd23f")+R(50,25,9,1,"#ffb347")+R(64,24,4,1,"#ffd23f")+"</g>";
+ h+=R(28,4,14,19,"#14081f")+R(30,6,10,15,"#1f0d33")+"<g class='port'>"+R(31,7,8,13,"#9b30ff")+R(32,8,6,11,"#b85cff")+R(33,10,4,7,"#d98cff")+"</g>"+R(28,4,14,2,"#2a1445")+R(28,21,14,2,"#2a1445")+R(28,4,2,19,"#2a1445")+R(40,4,2,19,"#2a1445")+R(32,9,1,1,"#fff","tw")+R(36,15,1,1,"#fff","tw",D(.7));
+ h+=R(3,6,6,6,"#2c8f3a")+R(4,7,4,4,"#46c25a")+R(5,8,2,2,"#d8ffe0","seq1")+R(6,12,1,3,"#ffd23f")+"<path class='seq2' d='M6 15 v3 m-1 -1 l1 1 l1 -1' stroke='#ffd23f' fill='none' shape-rendering='crispEdges'/>"+
+ R(3,18,6,5,"#d9a521")+R(4,19,4,3,"#ffcf3d")+R(5,20,2,1,"#fff3a0","seq2")+R(10,20,1,1,"#ffd23f")+R(12,20,1,1,"#ffd23f","seq3")+R(14,20,1,1,"#ffd23f")+R(16,20,1,1,"#ffd23f","seq1")+R(18,20,1,1,"#ffd23f")+R(20,20,1,1,"#ffd23f","seq3")+R(22,20,1,1,"#ffd23f")+R(24,20,2,1,"#ffd23f","seq2");
+ [[12,0],[18,1],[46,.5],[52,1.7],[60,.9],[24,2],[44,2.4]].forEach(function(e){h+=R(e[0],21,1,1,"#ffb347","ember",D(e[1]))});return h},
+desert:function(){var h=R(0,0,70,28,"#f6d98a")+R(0,0,70,8,"#ffeaa8")+R(0,8,70,8,"#fbe0a0");
+ h+="<g style='transform-origin:57px 7px' class='spin'>"+R(56,0,2,3,"#ffe27a")+R(56,11,2,3,"#ffe27a")+R(50,6,3,2,"#ffe27a")+R(62,6,3,2,"#ffe27a")+R(51,1,2,2,"#ffe27a")+R(62,1,2,2,"#ffe27a")+R(51,11,2,2,"#ffe27a")+R(62,11,2,2,"#ffe27a")+"</g>"+R(54,4,7,7,"#ffcf3d")+R(55,5,5,5,"#ffe066");
+ h+=R(0,20,70,8,"#e8c56a")+R(0,20,70,1,"#f4d98a")+R(0,24,70,4,"#d9b255")+R(6,26,3,1,"#c29c42")+R(46,25,4,1,"#c29c42");
+ h+=R(3,12,3,8,"#3a9a3a")+R(1,14,2,1,"#3a9a3a")+R(1,11,1,4,"#3a9a3a")+R(6,15,2,1,"#3a9a3a")+R(7,12,1,4,"#3a9a3a")+R(4,12,1,1,"#ffd0e8");
+ h+=R(12,15,5,5,"#d9b45a")+R(13,12,3,3,"#d9b45a")+R(14,10,1,2,"#d9b45a")+R(12,15,5,1,"#f0d078")+R(13,12,3,1,"#f0d078")+R(16,15,1,5,"#b8923a")+R(15,12,1,3,"#b8923a");
+ h+="<g class='tgt'>"+R(34,6,16,16,"#2a2a2a")+R(35,7,14,14,"#fff")+R(37,9,10,10,"#e53935")+R(39,11,6,6,"#fff")+R(41,13,2,2,"#e53935")+R(41,22,2,3,"#8a5a2b")+"</g>";
+ h+="<g class='arrow'>"+R(10,13,12,1,"#8a5a2b")+R(22,12,2,3,"#d0d0d0")+R(9,12,3,1,"#ff7a7a")+R(9,14,3,1,"#ff7a7a")+"</g>";
+ h+=R(41,13,2,2,"#ffd23f","blink");return h}
+};
+var css=document.createElement("style");css.textContent=".scn{margin:6px auto 4px;width:min(100%,300px)}.scn svg{display:block;width:100%;height:auto;border:4px solid #000;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25),0 4px 0 rgba(0,0,0,.35);image-rendering:pixelated}"+
+".scn .blink{animation:sB 1s steps(2) infinite}.scn .flick{animation:sF .45s steps(2) infinite;transform-box:fill-box;transform-origin:50% 100%}.scn .glow{animation:sG 2s ease-in-out infinite}.scn .tw{animation:sT 1.8s steps(2) infinite}.scn .float{animation:sFl 3.2s ease-in-out infinite}.scn .rise{animation:sR 3s linear infinite}.scn .sway{animation:sSw 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}.scn .swim{animation:sSwm 9s linear infinite}.scn .fall{animation:sFa 4s linear infinite}.scn .spin{animation:sSp 24s linear infinite}.scn .sig{animation:sSg 1.8s steps(3) infinite}.scn .write{animation:sWr 2.4s steps(6) infinite}.scn .lava{animation:sLv 5s linear infinite}.scn .port{animation:sPt 1.6s ease-in-out infinite}.scn .ember{animation:sEm 3.2s linear infinite}.scn .seq1,.scn .seq2,.scn .seq3{animation:sSq 2.4s steps(2) infinite}.scn .seq2{animation-delay:.8s}.scn .seq3{animation-delay:1.6s}.scn .arrow{animation:sAr 3.4s ease-in infinite}.scn .tgt{animation:sTg 3.4s linear infinite;transform-box:fill-box;transform-origin:50% 100%}"+
+"@keyframes sB{50%{opacity:0}}@keyframes sF{50%{transform:scaleY(1.3)}}@keyframes sG{0%,100%{opacity:.08}50%{opacity:.22}}@keyframes sT{50%{opacity:.15}}@keyframes sFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}@keyframes sR{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-14px);opacity:0}}@keyframes sSw{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}@keyframes sSwm{from{transform:translateX(-12px)}to{transform:translateX(74px)}}@keyframes sFa{0%{transform:translate(0,0);opacity:0}10%{opacity:1}100%{transform:translate(3px,28px);opacity:.9}}@keyframes sSp{to{transform:rotate(360deg)}}@keyframes sSg{0%{opacity:0}40%{opacity:1}100%{opacity:0}}@keyframes sWr{0%{transform:translateX(-10px)}100%{transform:translateX(0)}}@keyframes sLv{from{transform:translateX(0)}to{transform:translateX(-8px)}}@keyframes sPt{0%,100%{opacity:.75}50%{opacity:1}}@keyframes sEm{0%{transform:translate(0,0);opacity:0}15%{opacity:1}100%{transform:translate(4px,-20px);opacity:0}}@keyframes sSq{0%{opacity:1}50%{opacity:.25}100%{opacity:1}}@keyframes sAr{0%{transform:translateX(-26px);opacity:0}6%{opacity:1}55%{transform:translateX(12px);opacity:1}70%,100%{transform:translateX(12px);opacity:0}}@keyframes sTg{0%,54%{transform:rotate(0)}58%{transform:rotate(-5deg)}64%{transform:rotate(3deg)}70%,100%{transform:rotate(0)}}"+
+"@media(prefers-reduced-motion:reduce){.scn *{animation:none!important}}";document.head.appendChild(css);
+function put(w){var b=document.querySelector("#app .hero .big");if(!b||!SC[w])return;b.className="big scn";b.innerHTML="<svg viewBox='0 0 70 28' shape-rendering='crispEdges' aria-hidden='true'>"+SC[w]()+"</svg>"}
+var _a=section5;section5=function(k){var r=_a.apply(this,arguments);k=k||1;var t=TP5[k-1];if(t)put(t.w);return r};
+var _b=section6;section6=function(k){var r=_b.apply(this,arguments);k=k||1;var t=TP6[k-1];if(t)put(t.w);return r};
+window.SCN56=SC;
+})();
+
 /* Ачівки 5 класу (тест): 11 на кожен урок, показ під прогресом уроку та сума на головних екранах */
 function mkAch(cls){var CLS=String(cls),BASE=cls*100,G8=cls==8,BC=G8?"g8":"g5";function okc(){return ME&&(G8?/^8-[АБ]$/.test(ME.c):ME.c.charAt(0)==CLS)}function Bq(){return window["B"+cls]}function TN(){return window["T"+cls+"N"]||52}
 var AD7=[["rd","📖","Перший камінь","Прочитати читалку уроку до кінця"],["p100","💎","Діамантова точність","100% у грі чи тесті уроку"],["str","🔥","Серія","5 правильних відповідей поспіль"],["all","🧭","Дослідник","Пройти всі ігри уроку"],["nh","🛡️","Без втрат","Пройти гру на 90% і більше"],["q80","📜","Мудрець","Тест уроку на 80% і більше"],["bl","⚡","Блискавка","Пройти гру швидко (до 1 хвилини) на 80% і більше"],["imp","🔁","Майстер","Покращити свій результат у грі"],["perf","🌟","Бездоганно","100% у всіх іграх і тесті уроку"],["king","👑","Король уроку","Усі інші ачівки уроку"]];var AD8=[["rd","📖","Перший сигнал","Прочитати читалку уроку до кінця"],["p100","💠","Квантова точність","100% у грі чи тесті уроку"],["str","☄️","Комета","5 правильних відповідей поспіль"],["all","🛰️","Розвідник","Пройти всі ігри уроку"],["nh","🛡️","Щит цілий","Пройти гру на 90% і більше"],["q80","🧠","Аналітик","Тест уроку на 80% і більше"],["bl","⚡","Гіперстрибок","Пройти гру швидко (до 1 хвилини) на 80% і більше"],["imp","🔁","Апгрейд","Покращити свій результат у грі"],["perf","🌟","Ідеальна місія","100% у всіх іграх і тесті уроку"],["king","👑","Командор уроку","Усі інші ачівки уроку"]];var AD=cls==8?AD8:AD7;
