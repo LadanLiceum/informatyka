@@ -12037,6 +12037,19 @@ var q=quizG;quizG=function(a,b,c,d){q(a,b,c,d);up()};var _rx=rdx;rdx=function(i)
 "html body.g10c .mb.post,html body.g10c .mb.ep{background:linear-gradient(135deg,color-mix(in srgb,var(--a1) 30%,rgba(58,76,120,.95)),rgba(58,76,120,.92) 75%)!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 6px 18px rgba(0,0,0,.2)!important}"+
 "body.g10c .mut{color:var(--mt)!important}";
 document.head.appendChild(s)})();
+/* ---- ігрові екрани: без контекстного меню, виділення, масштабування ---- */
+(function(){
+var GSEL="canvas,.sf,.mc,.sg,.adp,.arp,.arc,.pad,#gb,#gxcv,.gate";
+function inGame(){try{var l=document.querySelectorAll("#app "+GSEL.split(",").join(",#app "));for(var i=0;i<l.length;i++)if(l[i].offsetWidth>150&&l[i].offsetHeight>60)return true}catch(e){}return false}
+var st=document.createElement("style");st.textContent="body.ingame,body.ingame *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}body.ingame{touch-action:pan-y}body.ingame canvas,body.ingame .adp button,body.ingame .pad button{touch-action:none}body.ingame input,body.ingame textarea{-webkit-user-select:text;user-select:text}";
+document.head.appendChild(st);
+function sync(){try{document.body.classList.toggle("ingame",inGame())}catch(e){}}
+try{new MutationObserver(sync).observe(document.getElementById("app")||document.body,{childList:true,subtree:true})}catch(e){}
+document.addEventListener("contextmenu",function(e){if(document.body.classList.contains("ingame")&&!/^(INPUT|TEXTAREA)$/.test(e.target.tagName))e.preventDefault()},true);
+["gesturestart","gesturechange","gestureend"].forEach(function(n){document.addEventListener(n,function(e){if(document.body.classList.contains("ingame"))e.preventDefault()},{passive:false})});
+document.addEventListener("touchmove",function(e){if(e.touches&&e.touches.length>1&&document.body.classList.contains("ingame"))e.preventDefault()},{passive:false});
+document.addEventListener("dragstart",function(e){if(document.body.classList.contains("ingame"))e.preventDefault()});
+sync()})();
 
 /* ===== 5–6 класи: анотація-брифінг до кожного світу на сторінці теми ===== */
 (function(){
