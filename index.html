@@ -11235,6 +11235,28 @@ var q=quizG;quizG=function(a,b,c,d){q(a,b,c,d);up()}})();
 "body.g10c .mut{color:var(--mt)!important}";
 document.head.appendChild(s)})();
 
+/* ===== 5–6 класи: анотація-брифінг до кожного світу на сторінці теми ===== */
+(function(){
+var WN={cave:["⛏️","Печера даних","#8bd45a"],ocean:["🌊","Океан мереж","#4da3ff"],end:["🌌","Край слайдів","#c58bff"],snow:["❄️","Сніжна рівнина","#8ecbff"],nether:["🔥","Вогняний Незер","#ff7a45"],desert:["🏜️","Піщані оази","#ffc857"]};
+var B5T=[
+"Ти спускаєшся у печеру, де ховаються дані. Збирай інформацію, зберігай її, передавай та опрацьовуй — і навчись, як працюють інформаційні системи.",
+"Підводні кабелі, вузли й сигнали — океан тримає всі мережі разом. Дізнайся, як комп’ютери «розмовляють» між собою та як безпечно користуватися Інтернетом.",
+"На краю світу слайди світяться, як зорі. Створюй презентації: додавай текст, малюнки й анімацію, щоб розповісти історію так, щоб її запам’ятали.",
+"Сніжна рівнина чекає на чисті сторінки. Набирай, редагуй і гарно оформлюй текстові документи — від короткої записки до цілого проєкту.",
+"У вогняному Незері виживає той, хто мислить кроками. Складай алгоритми, керуй виконавцем і створюй свої перші програми.",
+"Остання експедиція — пустеля практики. Застосуй усе, що вмієш: пошук, документи, презентації й проєкти для справжніх завдань."];
+var B6T=[
+"Незер сповнений дивних машин. Дізнайся, які цифрові пристрої нас оточують, як вони працюють і що таке цифрові технології.",
+"У пустелі слайди — як оази. Збирай презентації з тексту, зображень, звуку й анімації та проводь власний показ.",
+"На сніжній рівнині чисті сторінки чекають на слова. Створюй, редагуй і форматуй текстові документи: шрифти, абзаци, списки й таблиці."];
+function brief(w,txt,k,n,cls){var W=WN[w];if(!W)return;var h=document.querySelector("#app .hero");if(!h||document.querySelector("#app .wbr"))return;
+ var d=document.createElement("div");d.className="wbr";d.style.setProperty("--wc",W[2]);
+ d.innerHTML="<div class='wi'>"+W[0]+"</div><div><b>Світ "+k+" з "+n+" · «"+W[1]+"»</b><p>"+txt+"</p></div>";h.parentNode.insertBefore(d,h.nextSibling)}
+var st=document.createElement("style");st.textContent=".wbr{display:flex;gap:12px;align-items:center;margin:0 0 12px;padding:12px 14px;border-radius:16px;border:1px solid color-mix(in srgb,var(--wc) 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--wc) 20%,rgba(10,10,30,.55)),rgba(10,10,30,.55));position:relative;overflow:hidden;animation:wbG 5s ease-in-out infinite}.wbr .wi{flex:0 0 46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:26px;background:color-mix(in srgb,var(--wc) 25%,transparent);animation:wbF 4.5s ease-in-out infinite}.wbr b{display:block;font-size:12.5px;letter-spacing:.3px;color:var(--wc);margin-bottom:3px}.wbr p{margin:0;font-size:13.5px;line-height:1.4;color:#fff}.wbr::after{content:'';position:absolute;top:0;bottom:0;width:50px;left:-70px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);transform:skewX(-18deg);animation:wbS 8s ease-in-out infinite;pointer-events:none}@keyframes wbF{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@keyframes wbG{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 22px color-mix(in srgb,var(--wc) 32%,transparent)}}@keyframes wbS{0%,60%{left:-70px}100%{left:120%}}@media(prefers-reduced-motion:reduce){.wbr,.wbr .wi,.wbr::after{animation:none}}";document.head.appendChild(st);
+var _s5=section5;section5=function(k){_s5(k);k=k||1;var t=TP5[k-1];if(t)brief(t.w,B5T[k-1],k,TP5.length)};
+var _s6=section6;section6=function(k){_s6(k);k=k||1;var t=TP6[k-1];if(t)brief(t.w,B6T[k-1],k,TP6.length)};
+})();
+
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
 var _pt;function queuePush(){clearTimeout(_pt);_pt=setTimeout(push,1200)}
