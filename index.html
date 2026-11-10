@@ -10568,11 +10568,11 @@ window.CXH={CSS:CSS,Q:Q,shf:shf,snd:snd,alive:alive,frame:frame,ask:ask,mk:mk,cl
 GM.cx_stealth=function(g){var qs=Q(6);if(qs.length<3)return fin9(0,1);
  var M=[". . . # . . E",". # T . . # .",". # . # . . T",". . . # . # .","T . # . . . .",". # . . # T .","S . . . . . ."].map(function(r){return r.split(" ")}),R=7,NT=4;
  var P={r:6,c:0},lives=3,sc=0,hk={},tried={},qi=0,busy=false,over=false,msg="";
- var GU=[{p:[[4,3],[4,4],[4,5],[4,6]],i:0,d:1,f:[0,1]},{p:[[0,4],[1,4],[2,4]],i:0,d:1,f:[1,0]},{p:[[6,2],[6,3],[6,4],[6,5],[6,6]],i:4,d:-1,f:[0,-1]}];
- var el=frame(g.title,"Проникни до серверної: зламай 4 термінали 💻 (кожен — питання) і дійди до виходу 🚪. Охоронці 👮 бачать на 2 клітинки перед собою. Стрілки або кнопки; ⏳ — почекати.","<div class='st' id='cs'></div><div class='gd' id='cg'></div><div class='msg' id='cm'></div><div id='cq'></div><div class='pad' id='cp'><span></span><button class='blk' data-d='u'>▲</button><span></span><button class='blk' data-d='l'>◀</button><button class='blk' data-d='w'>⏳</button><button class='blk' data-d='r'>▶</button><span></span><button class='blk' data-d='d'>▼</button></div>");
+ var GU=[{p:[[4,3],[4,4],[4,5],[4,6]],i:0,d:1,f:[0,1]},{p:[[0,4],[1,4],[2,4]],i:0,d:1,f:[1,0]}];
+ var el=frame(g.title,"Проникни до серверної: зламай 4 термінали 💻 (кожен — питання) і дійди до виходу 🚪. Двоє охоронців 👮 патрулюють; червоні клітинки — зона, де тебе помітять (їхня клітинка й та, у яку вони дивляться). Стрілки або кнопки; ⏳ — почекати.","<div class='st' id='cs'></div><div class='gd' id='cg'></div><div class='msg' id='cm'></div><div id='cq'></div><div class='pad' id='cp'><span></span><button class='blk' data-d='u'>▲</button><span></span><button class='blk' data-d='l'>◀</button><button class='blk' data-d='w'>⏳</button><button class='blk' data-d='r'>▶</button><span></span><button class='blk' data-d='d'>▼</button></div>");
  function wall(r,c){return r<0||c<0||r>=R||c>=R||M[r][c]=="#"}
  function pos(G){return G.p[G.i]}
- function vis(){var s={};GU.forEach(function(G){var p=pos(G);s[p[0]+","+p[1]]=1;for(var k=1;k<=2;k++){var r=p[0]+G.f[0]*k,c=p[1]+G.f[1]*k;if(wall(r,c))break;s[r+","+c]=1}});return s}
+ function vis(){var s={};GU.forEach(function(G){var p=pos(G);s[p[0]+","+p[1]]=1;for(var k=1;k<=1;k++){var r=p[0]+G.f[0]*k,c=p[1]+G.f[1]*k;if(wall(r,c))break;s[r+","+c]=1}});return s}
  function draw(){var V=vis(),gd=document.getElementById("cg");if(!gd)return;gd.style.gridTemplateColumns="repeat("+R+",40px)";gd.innerHTML="";var all=Object.keys(hk).length==NT;
   for(var r=0;r<R;r++)for(var c=0;c<R;c++){var d=mk("div",M[r][c]=="#"?"wl":V[r+","+c]?"vs":""),t=M[r][c],h="";if(t=="#")h="🧱";else if(t=="T")h=hk[r+","+c]?"✅":"💻";else if(t=="E")h=all?"🚪":"🔒";
    GU.forEach(function(G){var p=pos(G);if(p[0]==r&&p[1]==c)h="👮"});if(P.r==r&&P.c==c)h="🧑‍💻";d.textContent=h;gd.appendChild(d)}
