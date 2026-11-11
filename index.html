@@ -602,12 +602,16 @@ function hh(s){var h=5381;s="inf|"+s.trim().toLowerCase();for(var i=0;i<s.length
 var BD="<svg viewBox='0 0 320 140' role='img' aria-label='Шкільна дошка'><rect x='3' y='3' width='314' height='122' rx='8' fill='#a8703a' stroke='#2b2f55' stroke-width='4'/><rect x='13' y='13' width='294' height='102' rx='3' fill='#2f6b52' stroke='#2b2f55' stroke-width='3'/><rect x='20' y='124' width='280' height='10' rx='3' fill='#8a5a2b' stroke='#2b2f55' stroke-width='3'/><rect x='44' y='118' width='24' height='6' rx='2' fill='#fff' stroke='#2b2f55' stroke-width='1.5'/><rect x='240' y='114' width='34' height='10' rx='2' fill='#ffc93c' stroke='#2b2f55' stroke-width='2'/><text class='chalk' x='160' y='44' text-anchor='middle' font-size='20' fill='#f4f1e6'>ІНФОРМАТИКА</text><g fill='none' stroke='#f4f1e6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' opacity='.92'><rect x='26' y='56' width='38' height='26' rx='3'/><path d='M45 82v8M36 90h18M33 64h14M33 71h22'/><rect x='214' y='58' width='36' height='16' rx='8'/><path d='M250 66h10'/><rect x='262' y='58' width='36' height='16' rx='2'/><path d='M280 74v10'/><path d='M280 84l14 10l-14 10l-14-10z'/><path d='M100 62l10 8l-10 8M130 78h14'/></g><text class='chalk' x='160' y='86' text-anchor='middle' font-size='15' fill='#ffd35a'>a + b = c</text><text class='chalk' x='172' y='106' text-anchor='middle' font-size='14' fill='#7ad0ff'>0101 1010</text><text class='chalk' x='78' y='106' font-size='13' fill='#ff9ac1'>&lt;/&gt;</text></svg>";
 function homeHero(t,s,b){return "<div class='hero home'><div class='win'><div class='wbar'><i></i><i></i><i></i><span>informatyka.exe</span></div><div class='wbody'><div class='mas'>"+bot(1,72)+"</div><div class='wt'><h1>"+t+"</h1><div class='mut'>"+s+"</div>"+(b?"<button class='sm' onclick='who()'>Змінити</button>":"")+"</div><div class='stk'>"+["pen","book","pc","bulb","gear","target"].map(function(n){return ico(n,30)}).join("")+"</div></div></div></div>"}
 function who(){document.body.className="";var cs=Object.keys(CK);
- $.innerHTML=homeHero("Привіт! Хто ти?","Назви себе й введи код класу — його дає вчитель",0)+"<div class='card'><label>Прізвище та ім’я</label><input id='nm' maxlength='40' placeholder='Наприклад: Шевченко Тарас' value='"+(ME?esc(ME.n):"")+"'><label>Клас</label><select id='cl'>"+cs.map(function(c){return "<option"+(ME&&ME.c===c?" selected":"")+">"+c+"</option>"}).join("")+"</select><label>Код класу</label><input id='ky' maxlength='20' placeholder='Код від вчителя' autocomplete='off'><p id='er' class='mut'></p><button class='pri' id='go'>Увійти</button></div>";
+ $.innerHTML=homeHero("Привіт! Хто ти?","Назви себе й введи код класу — його дає вчитель",0)+"<div class='card'><label>Прізвище та ім’я</label><input id='nm' maxlength='40' placeholder='Наприклад: Шевченко Тарас' value='"+(ME?esc(ME.n):"")+"'><label>Клас</label><select id='cl'>"+cs.map(function(c){return "<option"+(ME&&ME.c===c?" selected":"")+">"+c+"</option>"}).join("")+"</select><label>Код класу</label><input id='ky' maxlength='20' placeholder='Код від вчителя' autocomplete='off'><label>Твій PIN (4 цифри)</label><input id='pn' maxlength='4' inputmode='numeric' pattern='[0-9]*' placeholder='Вигадай і запам’ятай' autocomplete='off'><p class='mut' style='font-size:13px;margin:4px 0'>PIN повертає твій прогрес, якщо зайдеш з іншого пристрою. Перший раз — вигадай, потім вводь той самий.</p><p id='er' class='mut'></p><button class='pri' id='go'>Увійти</button></div>";
  function er(m){document.getElementById("er").textContent=m}
  document.getElementById("go").onclick=function(){var n=document.getElementById("nm").value.trim(),c=document.getElementById("cl").value,k=document.getElementById("ky").value;
   if(n.length<3){er("Напиши прізвище та ім’я");return}
   if(hh(k)!==CK[c]&&hh(k)!=="1x14id"){er("Невірний код класу. Запитай у вчителя");return}
-  ME={n:n,c:c};if(hh(k)!==CK[c])ME.t=1;sv("inf5me",JSON.stringify(ME));topics()}}
+  var pn=document.getElementById("pn").value.trim(),tch=hh(k)!==CK[c];
+  if(!tch&&!/^\d{4}$/.test(pn)){er("PIN — це 4 цифри");return}
+  n=n.replace(/\s+/g," ");ME={n:n,c:c};if(tch)ME.t=1;else ME.p=hh(pn+"|"+c);
+  if(window.loginCheck&&!ME.t)return window.loginCheck(function(ok,msg){if(ok){sv("inf5me",JSON.stringify(ME));topics()}else{var m0=ME;ME=null;who();document.getElementById("nm").value=m0.n;document.getElementById("cl").value=m0.c;if(msg){var e=document.getElementById("er");if(e)e.textContent=msg}}});
+  sv("inf5me",JSON.stringify(ME));topics()}}
 var GRD={5:1,6:1,9:1};
 function stubGrade(){var g=parseInt(ME.c,10);var th=/ІТ$/.test(ME.c)?"g10it":/ШІ$/.test(ME.c)?"g10ai":"";document.body.className=th||(g==10?"g10y":g<=7?"g5":"g9");document.title="Інформатика — "+g+" клас";
  $.innerHTML=homeHero("Привіт, "+esc(ME.n)+"!",esc(ME.c)+" клас · матеріали готуємо",1)+"<div class='card'><h2>"+(th=="g10ai"?"Модель ще навчається…":th=="g10it"?"Новий реліз скоро":"Скоро тут буде багато цікавого")+"</h2><p>Для "+g+" класу матеріали ще готуються. Заходь трохи пізніше!</p></div>"+[["⚙️","Тема 1"],["🧩","Тема 2"],["🧊","Тема 3"]].map(lk).join("")}
@@ -12690,7 +12694,7 @@ var st=document.createElement("style");st.textContent=css;document.head.appendCh
 /* ===== Синхронізація прогресу: знімок у таблицю + відновлення при вході на будь-якому пристрої ===== */
 (function(){
 var SK=["inf5","inf5a","inf9","inf10","inf10g","inf5l","inf6l","inf7l","inf8","inf11l"],SQ="inf5sq",MAXC=44000;
-function on(){return typeof RESULTS_URL!=="undefined"&&RESULTS_URL.indexOf("http")===0&&ME&&!ME.t&&typeof CK!=="undefined"&&CK[ME.c]}
+function on(){return typeof RESULTS_URL!=="undefined"&&RESULTS_URL.indexOf("http")===0&&ME&&!ME.t&&ME.p&&typeof CK!=="undefined"&&CK[ME.c]}
 function pk(){return ME.c+"|"+ME.n}
 function rj(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
 function snap(slim){var o={},k,i,u=rj("infux"),a=rj("inf5ant");for(i=0;i<SK.length;i++){k=SK[i];var v=rj(k);if(v!=null)o[k]=v}
@@ -12702,7 +12706,7 @@ function qget(){try{return JSON.parse(localStorage.getItem(SQ)||"{}")}catch(e){r
 function qset(o){try{localStorage.setItem(SQ,JSON.stringify(o))}catch(e){}}
 function ship(){var o=qget(),ks=Object.keys(o);if(!ks.length||RESULTS_URL.indexOf("http")!==0)return Promise.resolve();
  return Promise.all(ks.map(function(k){var body=o[k];return fetch(RESULTS_URL,{method:"POST",mode:"no-cors",body:body,keepalive:body.length<60000}).then(function(){var c=qget();if(c[k]===body){delete c[k];qset(c)}}).catch(function(){})}))}
-function stage(){if(ENDING||!on()||SYNCBLOCK)return;var p=enc();if(!p)return;var o=qget();o[pk()]=RESULTS_KEY+"\nINF5|S|"+ME.c+"|"+ME.n.replace(/\|/g," ")+"|"+Date.now()+"|"+p;qset(o)}
+function stage(){if(ENDING||!on()||SYNCBLOCK)return;var p=enc();if(!p)return;var o=qget();o[pk()]=RESULTS_KEY+"\nINF5|S|"+ME.c+"|"+ME.n.replace(/\|/g," ")+"|"+ME.p+"|"+Date.now()+"|"+p;qset(o)}
 var SYNCBLOCK=true,_t;
 function later(){clearTimeout(_t);_t=setTimeout(function(){stage();ship()},4000)}
 var _sv=sv;sv=function(k,v){_sv(k,v);if(SK.indexOf(k)>=0&&!SYNCBLOCK)later()};
@@ -12721,16 +12725,27 @@ function apply(R){var ch=0,L=snap(0);
   else if(k==="inf5ant"){var a=rj("inf5ant")||{};Object.keys(m).forEach(function(q){if(!(q in a))a[q]=m[q]});localStorage.setItem("inf5ant",JSON.stringify(a))}
   else localStorage.setItem(k,js)});return ch}
 var done={};
-function pull(){if(!on())return;var key=pk();if(done[key])return;done[key]=1;
- var flag="infpl:"+key;try{if(sessionStorage.getItem(flag)){SYNCBLOCK=false;return}}catch(e){}
- var url=RESULTS_URL+"?st=1&c="+encodeURIComponent(ME.c)+"&n="+encodeURIComponent(ME.n);
- var to=new Promise(function(r){setTimeout(function(){r(null)},5000)});
+function dlg(h){var o=document.createElement("div");o.className="sess-ov";o.innerHTML="<div class='sess-b' role='dialog'>"+h+"</div>";document.body.appendChild(o);return o}
+function rm(o){if(o&&o.parentNode)o.parentNode.removeChild(o)}
+function ask(title,txt,yes,no,cb){var o=dlg("<h2>"+title+"</h2><p>"+txt+"</p><button class='pri' id='sy-y'>"+yes+"</button><button id='sy-n'>"+no+"</button>");o.querySelector("#sy-y").onclick=function(){rm(o);cb(true)};o.querySelector("#sy-n").onclick=function(){rm(o);cb(false)}}
+function fetchSt(){var url=RESULTS_URL+"?st=1&c="+encodeURIComponent(ME.c)+"&n="+encodeURIComponent(ME.n)+"&h="+encodeURIComponent(ME.p);
+ var to=new Promise(function(r){setTimeout(function(){r(null)},6000)});
  var f=fetch(url).then(function(x){return x.text()}).then(function(t){return JSON.parse(t)}).catch(function(){return null});
- Promise.race([f,to]).then(function(d){try{sessionStorage.setItem(flag,"1")}catch(e){}
-  if(d&&d.p){var R=null;try{R=JSON.parse(decodeURIComponent(d.p))}catch(e){}
-   if(R&&apply(R)){try{note("Відновлено прогрес ✔")}catch(e){}setTimeout(function(){location.reload()},400);return}}
-  SYNCBLOCK=false;if(d)later()})}
-var _tp=topics;topics=function(){var r=_tp.apply(this,arguments);try{pull()}catch(e){}return r};
+ return Promise.race([f,to])}
+/* перевірка імені+PIN на сервері; cb(ok,msg) */
+function check(cb,login){fetchSt().then(function(d){
+ if(!d||!d.s){cb(true);return}                       /* нема зв’язку — пускаємо, звіримось пізніше */
+ if(d.s==="bad"){cb(false,"PIN не підходить до цього імені. Перевір PIN і написання імені. Забув PIN — попроси вчителя скинути.");return}
+ if(d.s==="sug"){ask("Це ти?","Схоже, ти вже входив(ла) як <b>"+esc(d.n)+"</b>. Продовжити з цим іменем?","Так, це я","Ні, я інший",function(y){if(!y){cb(false,"Тоді зміни PIN або ім’я.");return}ME.n=d.n;check(cb,login)});return}
+ if(d.s==="new"&&login){ask("Новий профіль","Ти входиш уперше як <b>"+esc(ME.n)+"</b>. Усе написано правильно? Запам’ятай свій PIN.","Так, усе вірно","Виправити",function(y){cb(y)});return}
+ if(d.s==="ok"&&d.p){var R=null;try{R=JSON.parse(decodeURIComponent(d.p))}catch(e){}
+  if(R){sv("inf5me",JSON.stringify(ME));if(apply(R)){try{note("Відновлено прогрес ✔")}catch(e){}setTimeout(function(){location.reload()},400);return}}}
+ cb(true)})}
+window.loginCheck=function(cb){check(function(ok,msg){if(ok){try{sessionStorage.setItem("infpl:"+ME.c+"|"+ME.n,"1")}catch(e){}SYNCBLOCK=false}cb(ok,msg)},1)};
+function pull(){if(!ME||ME.t)return;if(!ME.p){return}if(!on())return;var key=pk();if(done[key])return;done[key]=1;
+ var flag="infpl:"+key;try{if(sessionStorage.getItem(flag)){SYNCBLOCK=false;return}}catch(e){}
+ check(function(ok,msg){if(!ok){ME=null;try{localStorage.removeItem("inf5me")}catch(e){}who();return}try{sessionStorage.setItem(flag,"1")}catch(e){}SYNCBLOCK=false;later()},0)}
+var _tp=topics;topics=function(){if(ME&&!ME.t&&!ME.p&&CK[ME.c]){var m=ME;ME=null;who();var nm=document.getElementById("nm"),cl=document.getElementById("cl");if(nm)nm.value=m.n;if(cl)cl.value=m.c;var e=document.getElementById("er");if(e)e.textContent="Додай PIN (4 цифри) — він повертає твій прогрес на інших пристроях.";return}var r=_tp.apply(this,arguments);try{pull()}catch(e){}return r};
 })();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
