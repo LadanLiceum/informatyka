@@ -38,6 +38,7 @@ function doPost(e) {
       var l = lines[i].trim();
       if (l.indexOf("INF5|") !== 0) continue;
       var p = l.split("|");
+      if (p[1] === "S") { if (p.length >= 6) saveState(ss, p[2], p[3], p[5]); continue; }
       if (p[1] === "D") { if (p.length >= 16) det.push(p); continue; }
       if (p[1] === "T") { if (p.length >= 11) tms.push(p); continue; }
       var cfg = SHEETS[p[1]];
@@ -53,6 +54,17 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  if (e && e.parameter && e.parameter.st) {
+    var out = { p: "" };
+    var shS = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(STATE_NAME);
+    if (shS && shS.getLastRow() > 1) {
+      var vs = shS.getRange(2, 1, shS.getLastRow() - 1, 3).getValues();
+      for (var q = 0; q < vs.length; q++) {
+        if (String(vs[q][0]) === String(e.parameter.c) && String(vs[q][1]) === String(e.parameter.n)) { out.p = String(vs[q][2]); break; }
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
+  }
   var tk = e && e.parameter && e.parameter.tk;
   if (!TEACHER_KEY || tk !== TEACHER_KEY) return ContentService.createTextOutput("ok");
   var ss = SpreadsheetApp.getActiveSpreadsheet(), rows = [], det = [];
@@ -156,4 +168,41 @@ function saveTimes(ss, list) {
     if (idx[key] === undefined) { data.push(row); idx[key] = data.length - 1; } else { data[idx[key]] = row; }
   });
   sh.getRange(2, 1, data.length, W).setValues(data);
+}
+
+// ---- Знімок прогресу учня (для відновлення на іншому пристрої) ----
+var STATE_NAME = "Стан учнів";
+function dmerge(a, b) {
+  if (a == null) return b;
+  if (b == null) return a;
+  if (typeof a === "number" && typeof b === "number") return Math.max(a, b);
+  if (Array.isArray(a) && Array.isArray(b)) {
+    var seen = {}, r = [];
+    a.concat(b).forEach(function (x) { var s = JSON.stringify(x); if (!seen[s]) { seen[s] = 1; r.push(x); } });
+    return r.slice(-200);
+  }
+  if (typeof a === "object" && typeof b === "object" && !Array.isArray(a) && !Array.isArray(b)) {
+    var o = {};
+    Object.keys(a).concat(Object.keys(b)).forEach(function (k) { if (!(k in o)) o[k] = dmerge(a[k], b[k]); });
+    return o;
+  }
+  return b;
+}
+function saveState(ss, cls, name, enc) {
+  var sh = ss.getSheetByName(STATE_NAME);
+  if (!sh) { sh = ss.insertSheet(STATE_NAME); sh.getRange(1, 1, 1, 4).setValues([["Клас", "Учень", "Дані", "Оновлено"]]).setFontWeight("bold"); }
+  var inc; try { inc = JSON.parse(decodeURIComponent(enc)); } catch (e) { return; }
+  var row = -1;
+  if (sh.getLastRow() > 1) {
+    var vs = sh.getRange(2, 1, sh.getLastRow() - 1, 2).getValues();
+    for (var i = 0; i < vs.length; i++) if (String(vs[i][0]) === cls && String(vs[i][1]) === name) { row = i + 2; break; }
+  }
+  var merged = inc;
+  if (row > 0) {
+    try { merged = dmerge(JSON.parse(decodeURIComponent(String(sh.getRange(row, 3).getValue()))), inc); } catch (e) { merged = inc; }
+  } else { row = sh.getLastRow() + 1; }
+  var out = encodeURIComponent(JSON.stringify(merged));
+  if (out.length > 49000) out = encodeURIComponent(JSON.stringify(inc));
+  if (out.length > 49000) return;
+  sh.getRange(row, 1, 1, 4).setValues([[cls, name, out, new Date()]]);
 }

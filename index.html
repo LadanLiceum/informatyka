@@ -12687,6 +12687,52 @@ var css=".tks{margin-top:8px;border:2px solid rgba(128,128,128,.35);border-radiu
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
 })();
 
+/* ===== Синхронізація прогресу: знімок у таблицю + відновлення при вході на будь-якому пристрої ===== */
+(function(){
+var SK=["inf5","inf5a","inf9","inf10","inf10g","inf5l","inf6l","inf7l","inf8","inf11l"],SQ="inf5sq",MAXC=44000;
+function on(){return typeof RESULTS_URL!=="undefined"&&RESULTS_URL.indexOf("http")===0&&ME&&!ME.t&&typeof CK!=="undefined"&&CK[ME.c]}
+function pk(){return ME.c+"|"+ME.n}
+function rj(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+function snap(slim){var o={},k,i,u=rj("infux"),a=rj("inf5ant");for(i=0;i<SK.length;i++){k=SK[i];var v=rj(k);if(v!=null)o[k]=v}
+ if(u&&u[pk()]){var x=JSON.parse(JSON.stringify(u[pk()]));if(slim)x.mis=[];o.infux=x}
+ if(a&&!slim){var pre=pk()+"|",b={};Object.keys(a).forEach(function(q){if(q.indexOf(pre)===0)b[q]=a[q]});o.inf5ant=b}
+ return o}
+function enc(){var s=encodeURIComponent(JSON.stringify(snap(0)));if(s.length>MAXC)s=encodeURIComponent(JSON.stringify(snap(1)));return s.length>MAXC?"":s}
+function qget(){try{return JSON.parse(localStorage.getItem(SQ)||"{}")}catch(e){return{}}}
+function qset(o){try{localStorage.setItem(SQ,JSON.stringify(o))}catch(e){}}
+function ship(){var o=qget(),ks=Object.keys(o);if(!ks.length||RESULTS_URL.indexOf("http")!==0)return Promise.resolve();
+ return Promise.all(ks.map(function(k){var body=o[k];return fetch(RESULTS_URL,{method:"POST",mode:"no-cors",body:body,keepalive:body.length<60000}).then(function(){var c=qget();if(c[k]===body){delete c[k];qset(c)}}).catch(function(){})}))}
+function stage(){if(ENDING||!on()||SYNCBLOCK)return;var p=enc();if(!p)return;var o=qget();o[pk()]=RESULTS_KEY+"\nINF5|S|"+ME.c+"|"+ME.n.replace(/\|/g," ")+"|"+Date.now()+"|"+p;qset(o)}
+var SYNCBLOCK=true,_t;
+function later(){clearTimeout(_t);_t=setTimeout(function(){stage();ship()},4000)}
+var _sv=sv;sv=function(k,v){_sv(k,v);if(SK.indexOf(k)>=0&&!SYNCBLOCK)later()};
+var _push=push;push=function(){stage();var a=ship();return Promise.all([_push.apply(this,arguments),a]).then(function(r){return r[0]})};
+window.addEventListener("online",function(){ship()});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){stage();ship()}});
+/* злиття: числа — максимум, об'єкти — об'єднання, масиви — об'єднання унікальних, рядки — локальні */
+function dm(a,b){if(a==null)return b;if(b==null)return a;
+ if(typeof a==="number"&&typeof b==="number")return Math.max(a,b);
+ if(Array.isArray(a)&&Array.isArray(b)){var seen={},r=[];a.concat(b).forEach(function(x){var s=JSON.stringify(x);if(!seen[s]){seen[s]=1;r.push(x)}});return r.slice(-200)}
+ if(typeof a==="object"&&typeof b==="object"&&!Array.isArray(a)&&!Array.isArray(b)){var o={};Object.keys(a).concat(Object.keys(b)).forEach(function(k){if(!(k in o))o[k]=dm(a[k],b[k])});return o}
+ return a}
+function apply(R){var ch=0,L=snap(0);
+ Object.keys(R||{}).forEach(function(k){var m=dm(L[k],R[k]),js=JSON.stringify(m);if(js===JSON.stringify(L[k]))return;ch=1;
+  if(k==="infux"){var u=rj("infux")||{};u[pk()]=m;localStorage.setItem("infux",JSON.stringify(u))}
+  else if(k==="inf5ant"){var a=rj("inf5ant")||{};Object.keys(m).forEach(function(q){if(!(q in a))a[q]=m[q]});localStorage.setItem("inf5ant",JSON.stringify(a))}
+  else localStorage.setItem(k,js)});return ch}
+var done={};
+function pull(){if(!on())return;var key=pk();if(done[key])return;done[key]=1;
+ var flag="infpl:"+key;try{if(sessionStorage.getItem(flag)){SYNCBLOCK=false;return}}catch(e){}
+ var url=RESULTS_URL+"?st=1&c="+encodeURIComponent(ME.c)+"&n="+encodeURIComponent(ME.n);
+ var to=new Promise(function(r){setTimeout(function(){r(null)},5000)});
+ var f=fetch(url).then(function(x){return x.text()}).then(function(t){return JSON.parse(t)}).catch(function(){return null});
+ Promise.race([f,to]).then(function(d){try{sessionStorage.setItem(flag,"1")}catch(e){}
+  if(d&&d.p){var R=null;try{R=JSON.parse(decodeURIComponent(d.p))}catch(e){}
+   if(R&&apply(R)){try{note("Відновлено прогрес ✔")}catch(e){}setTimeout(function(){location.reload()},400);return}}
+  SYNCBLOCK=false;if(d)later()})}
+var _tp=topics;topics=function(){var r=_tp.apply(this,arguments);try{pull()}catch(e){}return r};
+})();
+
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbzovrMML1J9OOCn5MuH0Q-TPgoTdiA3vO67vzenVJbjDjwE_16_n9GwOPCCuUQCQoo/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
 var _pt;function queuePush(){clearTimeout(_pt);_pt=setTimeout(push,1200)}
