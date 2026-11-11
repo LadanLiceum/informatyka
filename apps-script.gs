@@ -53,12 +53,22 @@ function doPost(e) {
   return ContentService.createTextOutput("ok");
 }
 
+// Відповідь як JSON або (якщо є параметр cb) як JSONP — так застосунок читає її без обмежень CORS.
+function reply(e, obj) {
+  var cb = e && e.parameter && e.parameter.cb;
+  if (cb && /^[A-Za-z0-9_]{1,40}$/.test(cb)) {
+    return ContentService.createTextOutput(cb + "(" + JSON.stringify(obj) + ")").setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  if (typeof obj === "string") return ContentService.createTextOutput(obj);
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
 function doGet(e) {
   if (e && e.parameter && e.parameter.st) {
-    return ContentService.createTextOutput(JSON.stringify(lookupState(String(e.parameter.c || ""), String(e.parameter.n || ""), String(e.parameter.h || "")))).setMimeType(ContentService.MimeType.JSON);
+    return reply(e, lookupState(String(e.parameter.c || ""), String(e.parameter.n || ""), String(e.parameter.h || "")));
   }
   var tk = e && e.parameter && e.parameter.tk;
-  if (!TEACHER_KEY || tk !== TEACHER_KEY) return ContentService.createTextOutput("ok");
+  if (!TEACHER_KEY || tk !== TEACHER_KEY) return reply(e, "ok");
   var ss = SpreadsheetApp.getActiveSpreadsheet(), rows = [], det = [];
   ["K5", "K6", "K7", "K8", "K10", "K10B", "K11"].forEach(function (k) {
     var sh = ss.getSheetByName(SHEETS[k].name);
@@ -71,7 +81,7 @@ function doGet(e) {
   if (ds && ds.getLastRow() > 1) {
     det = ds.getRange(2, 1, ds.getLastRow() - 1, DET_HEAD.length).getValues();
   }
-  return ContentService.createTextOutput(JSON.stringify({ rows: rows, det: det })).setMimeType(ContentService.MimeType.JSON);
+  return reply(e, { rows: rows, det: det });
 }
 
 function save(ss, cfg, kind, cls, name, vals) {
