@@ -1645,7 +1645,7 @@ var _es5=endScr;endScr=function(a,b,c,e){if(CUR9>500&&CUR9<600&&ME&&ME.c.charAt(
 function lk5(t,s){return "<button class='mb lock' disabled><span class='ic'>🔒</span><span><b>"+t+"</b><br><span class='sub'>"+s+"</span></span></button>"}
 var _tp5=topics;topics=function(){var r=_tp5();if(ME&&ME.c.charAt(0)=="5"){CUR9=0;useB5();var bs=document.querySelectorAll("#app .mb"),old=null;Array.prototype.forEach.call(bs,function(b){if((b.getAttribute("onclick")||"")=="menuA()")old=b;else if(b.parentNode)b.parentNode.removeChild(b)});
  if(old){old.insertAdjacentHTML("beforebegin",TP5.map(function(t,k){return mb(t.c,t.i,t.t,(t.b-t.a+1)+" уроків · читалки · ігри · тести","section5("+(k+1)+")")}).join(""));
-  var t=old.querySelector("b");if(t)t.textContent="Бонус: Лабіринт Байта та алгоритми"}}return r};
+  old.parentNode.removeChild(old)}}return r};
 
 /* ---------- звіт учителю ---------- */
 function dAll5(cls,name){var r=[],k;for(k in LES){k=+k;if(k<=500||k>=600)continue;var l=dLine(cls,name,k,k-500);if(l)r.push(l)}return r.join("\n")}
