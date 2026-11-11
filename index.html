@@ -14334,6 +14334,942 @@ if(typeof LES!="undefined"&&LES[724])LES[724].g.push({type:"finale",title:"Фі�
  {mode:"opt",tp:"Віконні проєкти",q:"Фінальний удар! Після клацання програма має відкрити вікно з повідомленням про помилку. Що вписати замість ___?",code:["from tkinter.messagebox import *","def oops(event):","    ___('Помилка', 'Файл не знайдено')","root.bind('<1>', oops)"],opts:["showerror","showinfo","geometry"],a:0,why:"showerror відкриває вікно з повідомленням про помилку."}]});
 })();
 
+/* ===== 5 клас · офісні ігри (Minecraft-скін, інтерфейс як Word/PowerPoint) — спільна бібліотека O5 ===== */
+(function(){
+var css=".o5{--ac:#2b579a;font-family:ui-monospace,Consolas,'Courier New',monospace}.o5 *{box-sizing:border-box;border-radius:0}"+
+".o5 .win{background:#fff;border:4px solid #111;box-shadow:inset 4px 4px 0 #fff8,inset -4px -4px 0 #0003,0 5px 0 #0007;margin:8px 0;overflow:hidden}"+
+".o5 .tb{display:flex;align-items:center;gap:6px;padding:5px 8px;color:#fff;font-size:12px;font-weight:800;background:var(--ac)}.o5 .tb i{margin-left:auto;font-style:normal;letter-spacing:3px}"+
+".o5 .tabs{display:flex;gap:2px;padding:4px 5px 0;background:#bdbdbd;font-size:11px;font-weight:800;flex-wrap:wrap}.o5 .tabs span{padding:4px 8px;color:#333}.o5 .tabs .on{background:#fff;color:var(--ac);box-shadow:0 -3px 0 var(--ac) inset}"+
+".o5 .rib{display:flex;gap:5px;padding:6px;background:#fff;border-top:1px solid #ccc;border-bottom:1px solid #ccc;flex-wrap:wrap;align-items:center}"+
+".o5 .rb{min-width:30px;min-height:30px;padding:2px 8px;border:3px solid #111;background:#c6c6c6;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #7a7a7a;color:#222;font:800 12px ui-monospace,Consolas,monospace;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}"+
+".o5 .rb.on{background:#8fd14f;box-shadow:inset 3px 3px 0 #c9f59a,inset -3px -3px 0 #4a8a1f}.o5 .rb.hint{outline:3px solid #ffd800;outline-offset:1px}.o5 .rb:active{transform:translateY(2px)}"+
+".o5 .doc{background:#e6e6e6;padding:8px}.o5 .pg{background:#fff;border:1px solid #bbb;box-shadow:0 2px 5px #0003;position:relative;color:#222;line-height:1.5}"+
+".o5 .say{display:flex;gap:6px;align-items:flex-start;margin:8px 0}.o5 .say .c{font-size:30px}.o5 .say .b{flex:1;border:3px solid #111;background:#c6c6c6;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #7a7a7a;padding:6px 9px;font-size:12px;font-weight:700;line-height:1.35;color:#222}"+
+".o5 .say .b.ok{background:#b8f08a}.o5 .say .b.bad{background:#ffb3b3}"+
+".o5 .pill{display:inline-block;background:#444;color:#fff;border:2px solid #111;box-shadow:inset 2px 2px 0 #777;padding:1px 7px;font-size:11px;font-weight:800}"+
+".o5 .go{display:block;width:100%;margin:8px 0;padding:11px;border:4px solid #111;background:#5a9e2a;box-shadow:inset 4px 4px 0 #8ed84a,inset -4px -4px 0 #356012,0 5px 0 #000a;color:#fff;font:900 15px ui-monospace,Consolas,monospace;text-shadow:2px 2px 0 #222;text-transform:uppercase;letter-spacing:.5px;text-align:center;cursor:pointer}"+
+".o5 .go[disabled]{opacity:.5}.o5 .hud{display:flex;justify-content:space-between;gap:6px;margin:4px 0}.o5 .hud b{background:#555;border:3px solid #111;box-shadow:inset 3px 3px 0 #8b8b8b,inset -3px -3px 0 #373737;color:#fff;text-shadow:2px 2px 0 #222;padding:2px 9px;font-size:12px}"+
+".o5 .tsk{background:#c6c6c6;border:3px solid #111;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #7a7a7a;padding:6px 9px;font-size:12px;font-weight:700;color:#222;line-height:1.6}"+
+"@keyframes o5sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}.o5 .shake{animation:o5sh .3s}"+
+"@keyframes o5pop{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}.o5 .pop{animation:o5pop .35s}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+/* вікно Office: app — назва, ac — колір, tabs — масив назв вкладок (перша активна), rib — HTML стрічки, body — HTML */
+function win(app,ac,tabs,rib,body){return "<div class='win' style='--ac:"+ac+"'><div class='tb'>"+app+"<i>– ▢ ✕</i></div><div class='tabs'>"+tabs.map(function(t,i){return "<span"+(i?"":" class='on'")+">"+t+"</span>"}).join("")+"</div><div class='rib'>"+rib+"</div>"+body+"</div>"}
+function rb(id,t,cls){return "<div class='rb "+(cls||"")+"' id='"+id+"' role='button'>"+t+"</div>"}
+/* замінити одну просту гру (тип s_*) в уроці k на нову гру g; ідемпотентно */
+var Q=[];function rep(k,g){Q.push([k,g])}
+function flush(){Q.forEach(function(x){var L=LES[x[0]];if(!L||!L.g)return;var i=-1;for(var j=0;j<L.g.length;j++){if(/^s_/.test(L.g[j].type)){i=j;break}}if(i<0)i=0;L.g[i]=x[1]});Q=[]}
+window.O5={flush:flush,esc:esc,win:win,rb:rb,rep:rep,PP:"#c43e1c",WD:"#2b579a"};
+})();
+
+/* ===== 5 клас · Тема «Комп’ютерні презентації» · ігри: layout (515), txtfmt (516), photo (517, 518) — інтерфейс як PowerPoint у Minecraft-скіні ===== */
+(function(){
+var O=window.O5;if(!O)return;
+var css=`
+.o5g .say .b{min-height:50px}
+.o5 .o5s{position:relative;width:100%;aspect-ratio:16/9;background:#fff}
+.o5 .o5s>*{position:absolute}
+.o5 .o5ph{border:2px dashed #8a8a8a;color:#7a7f95;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;padding:2px;overflow:hidden;line-height:1.1}
+.o5 .o5ph.t{border-color:#c43e1c;color:#c43e1c;font-size:12px}
+.o5 .o5ph.clk{cursor:pointer;background:#fff;font-size:11px}
+.o5 .o5ph.sel{background:#ffe9a8;border-style:solid;border-color:#111;box-shadow:0 0 0 3px #ffd800}
+.o5 .o5ph.ok{background:#b8f08a;border-style:solid;border-color:#2a7a12}
+.o5 .o5ph.bad{background:#ffb3b3;border-style:solid;border-color:#b00020}
+.o5 .o5em{left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;color:#888;font-size:11px;font-weight:800;text-align:center;padding:6px}
+.o5 .o5ths{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+.o5 .o5th{min-width:0;border:3px solid #111;background:#c6c6c6;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #7a7a7a;padding:3px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.o5 .o5th .o5s{border:1px solid #888}.o5 .o5th span{display:block;font-size:10px;font-weight:800;line-height:1.1;text-align:center;margin-top:3px;color:#222;word-break:break-word}
+.o5 .o5th.sel{background:#ff7ac0;box-shadow:0 0 0 3px #ffd800}.o5 .o5th.ok{background:#8fd14f}.o5 .o5th.bad{background:#ff8f8f}
+.o5 .o5nm{position:absolute;right:4px;bottom:3px;font-size:10px;padding:1px 6px}
+.o5 .o5tk{margin-top:6px}
+.o5 .o5sl{position:relative;width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#fff6b8,#ffd84a);border:3px solid #111;overflow:hidden;--k:.45;font-family:'Segoe UI',Arial,sans-serif}
+.o5 .o5sl .tfb{position:absolute;left:5%;width:90%;padding:2px 4px;border:2px solid transparent;cursor:pointer;line-height:1.2;color:#222;word-break:break-word;-webkit-tap-highlight-color:transparent}
+.o5 .o5sl .tfb.sel{border:2px dashed #2b79d8;background:rgba(80,140,255,.28)}
+.o5 .o5sm{width:112px;flex:none;--k:.16;border-width:2px}.o5 .o5sm .tfb{cursor:default;padding:0 1px}
+.o5 .o5smw{display:flex;gap:8px;align-items:flex-start;margin-top:6px}
+.o5 .o5smw .cap{font-size:10px;font-weight:900;color:#c43e1c;text-align:center;margin-bottom:2px}
+.o5 .o5chk{font-size:12px;font-weight:700;line-height:1.5;color:#222}
+.o5 .o5smw .o5chk{flex:1;min-width:0}
+.o5 .o5chk div{display:flex;gap:5px}.o5 .o5chk .ok{color:#1b7a12}
+.o5 .o5grp{font-size:9px;font-weight:900;color:#555;width:100%}
+.o5 .rb svg{display:block}
+.o5 .rb.sz{min-width:40px;cursor:default;background:#e9e9e9}
+.o5 .rb.bad{background:#ff8f8f}
+.o5 .o5st{position:relative;overflow:hidden;width:100%;background:#fff;border:3px solid #111;touch-action:none;user-select:none;-webkit-user-select:none}
+.o5 .o5pw{position:absolute;left:0;top:0;width:300px;height:200px;transform-origin:0 0}
+.o5 .o5tg{position:absolute;border:3px dashed #2a9a12;background:rgba(80,200,60,.12);color:#2a7a12;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.o5 .o5tg.ok{background:rgba(80,200,60,.4);border-style:solid}
+.o5 .o5pb{position:absolute;cursor:move}
+.o5 .o5pc{position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;outline:1px solid #666}
+.o5 .o5pf{position:absolute;background:linear-gradient(#bfe9ff 0,#e8f7ff 68%,#6dc03a 68%,#6dc03a 80%,#8b5a2b 80%);line-height:1}
+.o5 .o5pf i{position:absolute;font-style:normal}
+.o5 .o5pg{position:absolute;opacity:.35;pointer-events:none;background:linear-gradient(#bfe9ff 0,#e8f7ff 68%,#6dc03a 68%,#6dc03a 80%,#8b5a2b 80%);line-height:1}
+.o5 .o5pg i{position:absolute;font-style:normal}
+.o5 .o5nr .o5hd.rot{display:none}
+.o5 .o5jk{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#ffd0d0 0 6px,#ffb0b0 6px 12px);color:#b00020;font-weight:900;font-size:.2em;text-align:center}
+.o5 .o5hd{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;touch-action:none;z-index:3}
+.o5 .o5hd:after{content:'';position:absolute;left:8px;top:8px;width:14px;height:14px;background:#fff;border:3px solid #c43e1c}
+.o5 .o5hd.s:after{background:#ffd800;border-color:#111}
+.o5 .o5hd.rot:after{border-radius:50%!important;background:#fff;border-color:#2b79d8}
+.o5 .o5hd.rot:before{content:'';position:absolute;left:14px;top:20px;width:2px;height:26px;background:#2b79d8}
+.o5 .o5cr .o5hd.c,.o5 .o5cr .o5hd.rot{display:none}
+.o5 .o5cr .o5hd.s:after{background:#111;border-color:#fff}
+.o5 .o5pl{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.o5 .o5pl .pill.okk{background:#2a7a12}.o5 .o5pl .pill.no{background:#b00020}
+`;
+var stl=document.createElement("style");stl.textContent=css;document.head.appendChild(stl);
+var E=O.esc;
+function sh(a){return window.shuffle?window.shuffle(a):a}
+function norm(a){a=((a%360)+360)%360;return a>180?a-360:a}
+
+/* ---------- спільний рушій раундів: 3 життя, пояснення «чому», кнопка .go = перевірити / далі ---------- */
+function runner(g,tag,build){
+ var N=g.rounds.length,i=0,hp=3,sc=0;
+ function show(){
+  var rd=g.rounds[i],done=false,bad=0,last=i==N-1;
+  fr9(g.title,g.hint||"","<div class='o5 o5g' id='o5g'><div class='hud'><b id='o5h'></b><b>"+tag+" "+(i+1)+" / "+N+"</b></div><div id='o5m'></div><div class='say'><div class='c'>⛏️</div><div class='b' id='o5s'></div></div><button class='go' id='o5go'></button></div>");
+  var root=document.getElementById("o5g"),H=document.getElementById("o5h"),S=document.getElementById("o5s"),GO=document.getElementById("o5go");
+  function hud(){H.textContent=new Array(hp+1).join("❤️")+new Array(4-hp).join("🖤")}hud();
+  function alive(){return document.body.contains(root)}
+  function end(){var fin=last||hp<=0;GO.disabled=false;GO.textContent=fin?"Результат →":"Далі →";GO.onclick=function(){if(!alive())return;if(fin)fin9(sc,N);else{i++;show()}}}
+  function shake(){root.classList.remove("shake");void root.offsetWidth;root.classList.add("shake")}
+  var idle=0;
+  var a={root:root,nudge:function(msg){idle++;if(idle>2)a.miss(msg+" Не поспішай: порожні підтвердження коштують життя.");else a.say(msg)},M:document.getElementById("o5m"),onEnd:null,alive:alive,
+   say:function(t,k){S.className="b "+(k||"");S.innerHTML=t},
+   go:function(label,fn){GO.textContent=label;GO.disabled=false;GO.onclick=function(){if(alive()&&!done)fn()}},
+   miss:function(msg){if(done)return;hp--;bad++;hud();shake();a.say("❌ "+msg+(hp<=0?" Життя скінчилися.":""),"bad");if(hp<=0){done=true;if(a.onEnd)a.onEnd(false);end()}},
+   ans:function(ok,why,retry){if(done)return;
+    if(ok){if(!bad)sc++;done=true;a.say("✅ "+why,"ok");if(a.onEnd)a.onEnd(true);end();return}
+    hp--;bad++;hud();shake();
+    if(hp<=0||!retry){done=true;a.say("❌ "+why+(hp<=0?" Життя скінчилися.":""),"bad");if(a.onEnd)a.onEnd(false);end()}else a.say("❌ "+why,"bad")}};
+  build(rd,a,i);
+ }
+ show();
+}
+
+/* ================= 515 · РЕЖИСЕР СЛАЙДІВ ================= */
+var LAY={
+ title:{n:"Титульний слайд",p:[["t",10,24,80,26,"Заголовок слайда","t"],["s",22,56,56,17,"Підзаголовок"]]},
+ content:{n:"Заголовок і об’єкт",p:[["t",8,7,84,20,"Заголовок слайда","t"],["c",8,33,84,57,"Клацніть, щоб додати текст"]]},
+ two:{n:"Два об’єкти",p:[["t",8,7,84,20,"Заголовок слайда","t"],["a",8,33,40,57,"🖼️ Об’єкт"],["b",52,33,40,57,"🖼️ Об’єкт"]]},
+ titleonly:{n:"Лише заголовок",p:[["t",8,7,84,20,"Заголовок слайда","t"]]},
+ blank:{n:"Пустий слайд",p:[]}
+};
+function slide(key,o){o=o||{};var L=LAY[key],h="<div class='o5s'>";
+ if(!L)h+="<div class='o5em'>Обери макет з ескізів унизу ⬇</div>";
+ else{if(!L.p.length&&o.lab)h+="<div class='o5em'>Пустий слайд: жодних полів</div>";
+  L.p.forEach(function(p){h+="<div class='o5ph "+(p[6]||"")+(o.click?" clk":"")+"' data-p='"+p[0]+"' style='left:"+p[1]+"%;top:"+p[2]+"%;width:"+p[3]+"%;height:"+p[4]+"%'>"+(o.lab?p[5]:"")+"</div>"})}
+ return h+"</div>"}
+GM.layout=function(g){runner(g,"Слайд",function(rd,a){
+ var k=rd.k,M=a.M,sel=null;
+ var tabs=["Основне","Вставлення","Дизайн","Показ слайдів"];
+ if(k=="pick"){
+  var opts=sh(rd.opts.slice());
+  M.innerHTML=O.win("📊 Презентація","#c43e1c",tabs,O.rb("o5r1","Створити слайд ▾","")+O.rb("o5r2","Розмітка слайда ▾",""),"<div class='doc'><div class='pg' id='o5pv'></div><div class='tsk o5tk'>Завдання: «"+E(rd.task)+"»</div></div>")+
+   "<div class='o5ths'>"+opts.map(function(x){return "<div class='o5th' data-k='"+x+"'>"+slide(x)+"<span>"+LAY[x].n+"</span></div>"}).join("")+"</div>";
+  var pv=M.querySelector("#o5pv");pv.innerHTML=slide(null);
+  [].forEach.call(M.querySelectorAll(".rb"),function(b){b.onclick=function(){a.say("Макети — в ескізах унизу. Клацни той, що пасує до завдання.")}});
+  [].forEach.call(M.querySelectorAll(".o5th"),function(t){t.onclick=function(){if(!a.alive())return;sel=t.getAttribute("data-k");[].forEach.call(M.querySelectorAll(".o5th"),function(x){x.classList.toggle("sel",x===t)});pv.innerHTML=slide(sel,{lab:1})+"<span class='pill o5nm'>"+LAY[sel].n+"</span>"}});
+  a.say("Вибери ескіз макета, що пасує до завдання, і підтверди.");
+  a.onEnd=function(){[].forEach.call(M.querySelectorAll(".o5th"),function(t){var kk=t.getAttribute("data-k");t.classList.remove("sel");if(kk==rd.ans)t.classList.add("ok");else if(kk==sel)t.classList.add("bad")})};
+  a.go("Підтвердити макет ✔",function(){if(!sel){a.nudge("Спочатку клацни ескіз макета.");return}
+   var ok=sel==rd.ans;a.ans(ok,rd.why+(ok?"":" Правильний макет — «"+LAY[rd.ans].n+"»."))});
+ }else if(k=="ph"){
+  M.innerHTML=O.win("📊 Презентація","#c43e1c",tabs,O.rb("o5r1","Створити слайд ▾","")+"<span class='pill'>Макет: "+LAY[rd.lay].n+"</span>","<div class='doc'><div class='pg' id='o5pv'>"+slide(rd.lay,{lab:1,click:1})+"</div><div class='tsk o5tk'>Завдання: «"+E(rd.task)+"»</div></div>");
+  var phs=[].slice.call(M.querySelectorAll(".o5ph"));
+  phs.forEach(function(p){p.onclick=function(){if(!a.alive())return;sel=p.getAttribute("data-p");phs.forEach(function(x){x.classList.toggle("sel",x===p)})}});
+  M.querySelector(".rb").onclick=function(){a.say("Тут нічого натискати не треба: клацни по рамці на слайді.")};
+  a.say("Клацни по покажчику місця заповнення на слайді. Це рамка, куди вводять текст або вставляють об’єкт.");
+  a.onEnd=function(){phs.forEach(function(p){var id=p.getAttribute("data-p");p.classList.remove("sel");if(rd.ans.indexOf(id)>=0)p.classList.add("ok");else if(id==sel)p.classList.add("bad")})};
+  a.go("Підтвердити вибір ✔",function(){if(!sel){a.nudge("Спочатку клацни по потрібній рамці на слайді.");return}
+   var ok=rd.ans.indexOf(sel)>=0;a.ans(ok,rd.why)});
+ }else{ /* btn */
+  var bts=sh(rd.btns.slice());
+  M.innerHTML=O.win("📊 Презентація","#c43e1c",tabs,"<span class='o5grp'>Група «Слайди»</span>"+bts.map(function(b,j){return O.rb("o5b"+j,b[0],"")}).join(""),"<div class='doc'><div class='pg' id='o5pv'>"+slide(rd.lay,{lab:1})+"</div><div class='tsk o5tk'>Завдання: «"+E(rd.task)+"»</div></div>");
+  var rbs=[].slice.call(M.querySelectorAll(".rb")),pick=-1;
+  rbs.forEach(function(b,j){b.onclick=function(){if(!a.alive())return;pick=j;rbs.forEach(function(x){x.classList.toggle("on",x===b)})}});
+  a.say("Обери кнопку на стрічці й підтверди.");
+  a.onEnd=function(){rbs.forEach(function(b,j){b.classList.remove("on");if(bts[j][1])b.classList.add("on");else if(j==pick)b.classList.add("bad")})};
+  a.go("Підтвердити кнопку ✔",function(){if(pick<0){a.nudge("Спочатку клацни кнопку на стрічці.");return}
+   var b=bts[pick];a.ans(!!b[1],b[1]?rd.why:(b[2]||"Не та кнопка.")+" "+rd.why)});
+ }
+})};
+
+/* ================= 516 · ТЕКСТ НА СЛАЙДІ ================= */
+var DEFT={b:0,i:0,u:0,c:"k",s:28,a:"l"};
+var COL={k:["#222","Чорний"],r:["#d02020","Червоний"],b:["#1a56d0","Синій"]};
+var ALN={l:["За лівим краєм","left"],c:["По центру","center"],r:["За правим краєм","right"],j:["За шириною","justify"]};
+var SZ=[24,28,32,36,40,44];
+function aSvg(t){var L={l:[[0,14],[0,9],[0,14],[0,7]],c:[[0,14],[3,8],[0,14],[4,6]],r:[[0,14],[5,9],[0,14],[7,7]],j:[[0,14],[0,14],[0,14],[0,14]]}[t];
+ return "<svg width='16' height='14' viewBox='0 0 14 14'>"+L.map(function(x,j){return "<rect x='"+x[0]+"' y='"+(j*3.6)+"' width='"+x[1]+"' height='2' fill='#222'/>"}).join("")+"</svg>"}
+function boxStyle(s,top){return "top:"+top+"%;text-align:"+ALN[s.a][1]+";color:"+COL[s.c][0]+";font-size:calc(var(--k)*"+s.s+"*1px);font-weight:"+(s.b?800:400)+";font-style:"+(s.i?"italic":"normal")+";text-decoration:"+(s.u?"underline":"none")}
+function slideT(boxes,sts,selI,small){var h="<div class='o5sl"+(small?" o5sm":"")+"'>";
+ boxes.forEach(function(b,j){h+="<div class='tfb"+(j===selI?" sel":"")+"' data-i='"+j+"' style='"+boxStyle(sts[j],b.top)+"'>"+E(b.t)+"</div>"});return h+"</div>"}
+var ATT={b:"Напівжирний",i:"Курсив",u:"Підкреслений"};
+function lineTxt(k,v,box,multi){var p=multi?box.nm+": ":"";
+ if(k=="b"||k=="i"||k=="u")return p+ATT[k];if(k=="c")return p+"Колір шрифту — "+COL[v][1].toLowerCase();if(k=="s")return p+"Розмір "+v+" пт";return p+"Вирівнювання — "+ALN[v][0].toLowerCase()}
+GM.txtfmt=function(g){runner(g,"Слайд",function(rd,a){
+ var M=a.M,boxes=rd.boxes,sts=boxes.map(function(){return Object.assign({},DEFT)}),tg=boxes.map(function(b){return Object.assign({},DEFT,b.tg)}),sel=-1,multi=boxes.length>1;
+ var lines=[];boxes.forEach(function(b,j){["b","i","u","c","s","a"].forEach(function(k){if(tg[j][k]!==DEFT[k])lines.push({j:j,k:k,t:lineTxt(k,tg[j][k],b,multi)})})});
+ function mk(id,t,tt){return "<div class='rb' data-x='"+id+"' title='"+tt+"' role='button' aria-label='"+tt+"'>"+t+"</div>"}
+ var rib="<span class='o5grp'>Шрифт · Абзац</span>"+mk("b","<b>Ж</b>","Напівжирний")+mk("i","<i>К</i>","Курсив")+mk("u","<u>Ч</u>","Підкреслений")+
+  mk("ck","<span style='color:#222'>A</span>","Колір шрифту: чорний")+mk("cr","<span style='color:#d02020'>A</span>","Колір шрифту: червоний")+mk("cb","<span style='color:#1a56d0'>A</span>","Колір шрифту: синій")+"<i style='flex-basis:100%;height:0'></i>"+
+  mk("s-","A−","Зменшити розмір шрифту")+"<div class='rb sz' id='o5sz'>28</div>"+mk("s+","A+","Збільшити розмір шрифту")+
+  mk("al",aSvg("l"),"За лівим краєм")+mk("ac",aSvg("c"),"По центру")+mk("ar",aSvg("r"),"За правим краєм")+mk("aj",aSvg("j"),"За шириною");
+ M.innerHTML=O.win("📊 Презентація","#c43e1c",["Основне","Вставлення","Дизайн","Показ слайдів"],rib,"<div class='doc'><div id='o5sd'></div><div class='o5smw'><div><div class='cap'>ЗРАЗОК</div>"+slideT(boxes,tg,-1,1)+"</div><div class='o5chk' id='o5ck'></div></div></div>");
+ var sd=M.querySelector("#o5sd"),ck=M.querySelector("#o5ck"),szp=M.querySelector("#o5sz");
+ function draw(){sd.innerHTML=slideT(boxes,sts,sel);
+  [].forEach.call(sd.querySelectorAll(".tfb"),function(t){t.onclick=function(){if(!a.alive())return;sel=+t.getAttribute("data-i");draw();a.say("Текст виділено. Тепер застосовуй кнопки стрічки.")}});
+  var s=sel>=0?sts[sel]:null;szp.textContent=s?s.s:"—";
+  [].forEach.call(M.querySelectorAll(".rb[data-x]"),function(b){var x=b.getAttribute("data-x"),on=false;if(s){on=(x=="b"&&s.b)||(x=="i"&&s.i)||(x=="u"&&s.u)||(x=="ck"&&s.c=="k")||(x=="cr"&&s.c=="r")||(x=="cb"&&s.c=="b")||(x=="al"&&s.a=="l")||(x=="ac"&&s.a=="c")||(x=="ar"&&s.a=="r")||(x=="aj"&&s.a=="j")}b.classList.toggle("on",!!on)});
+  ck.innerHTML=lines.map(function(l){var ok=sts[l.j][l.k]===tg[l.j][l.k];return "<div class='"+(ok?"ok":"")+"'><span>"+(ok?"☑":"☐")+"</span><span>"+E(l.t)+"</span></div>"}).join("")}
+ var NM={b:"Напівжирний (Ж)",i:"Курсив (К)",u:"Підкреслений (Ч)",ck:"Колір шрифту: чорний",cr:"Колір шрифту: червоний",cb:"Колір шрифту: синій","s-":"Зменшити розмір шрифту","s+":"Збільшити розмір шрифту",al:"За лівим краєм",ac:"По центру",ar:"За правим краєм",aj:"За шириною"};
+ [].forEach.call(M.querySelectorAll(".rb[data-x]"),function(b){b.onclick=function(){if(!a.alive())return;var x=b.getAttribute("data-x");
+  if(sel<0){a.say("Спочатку ВИДІЛИ текст: клацни по ньому на слайді.","bad");return}
+  var s=sts[sel];
+  if(x=="b"||x=="i"||x=="u")s[x]=s[x]?0:1;else if(x[0]=="c")s.c=x[1];else if(x=="s-")s.s=SZ[Math.max(0,SZ.indexOf(s.s)-1)];else if(x=="s+")s.s=SZ[Math.min(SZ.length-1,SZ.indexOf(s.s)+1)];
+  else s.a=x[1];
+  draw();a.say("⛏️ "+NM[x]+(x[0]=="s"?" → "+s.s+" пт":"")+".")}});
+ draw();
+ a.say("Завдання: «"+E(rd.task)+"». Виділи текст і став кнопками за зразком і списком.");
+ a.go("Перевірити слайд ✔",function(){
+  var miss=[],extra=[];
+  lines.forEach(function(l){if(sts[l.j][l.k]!==tg[l.j][l.k])miss.push(l.t)});
+  boxes.forEach(function(b,j){["b","i","u","c","s","a"].forEach(function(k){if(tg[j][k]===DEFT[k]&&sts[j][k]!==DEFT[k])extra.push((multi?b.nm+": ":"")+({b:"напівжирний",i:"курсив",u:"підкреслення",c:"колір",s:"розмір",a:"вирівнювання"})[k])})});
+  if(!miss.length&&!extra.length){a.ans(true,rd.why);return}
+  var m=(miss.length?"Ще треба: "+miss.join("; ")+". ":"")+(extra.length?"Зайве (у зразку цього немає): "+extra.join(", ")+". Перемикач вимикають повторним клацом; розмір і вирівнювання скидають до 28 пт і «За лівим краєм».":"");
+  a.ans(false,m,true)});
+})};
+
+/* ================= 517/518 · ФОТО-МАЙСТЕРНЯ ================= */
+var SW=300,SH=200,NW=200,NH=130;
+function rot2(x,y,deg){var r=deg*Math.PI/180,c=Math.cos(r),s=Math.sin(r);return {x:x*c-y*s,y:x*s+y*c}}
+GM.photo=function(g){runner(g,"Фото",function(rd,a){
+ var M=a.M,S0=rd.start,P,junk=rd.junk||"",inserted=!rd.ins,cropMode=false;
+ function init(){var w=S0.w;P={cx:S0.cx,cy:S0.cy,w:w,h:w*NH/NW,rot:S0.rot||0,l:0,t:0,r:0,b:0}}init();
+ function vis(){return {w:P.w*(1-P.l-P.r),h:P.h*(1-P.t-P.b)}}
+ var R=rd.rect,tc=R?{x:R.x+R.w/2,y:R.y+R.h/2}:null;
+ var T={
+  rot:function(){return Math.abs(norm(P.rot-(rd.rot||0)))<=4},
+  crop:function(){return junk=="r"?(P.r>=.3&&P.r<=.55&&P.l<=.06&&P.t<=.1&&P.b<=.1):(P.b>=.2&&P.b<=.45&&P.l<=.06&&P.t<=.06&&P.r<=.1)},
+  pos:function(){return Math.hypot(P.cx-tc.x,P.cy-tc.y)<=16},
+  fit:function(){var v=vis(),q=P.rot*Math.PI/180,bw=Math.abs(v.w*Math.cos(q))+Math.abs(v.h*Math.sin(q)),bh=Math.abs(v.w*Math.sin(q))+Math.abs(v.h*Math.cos(q));
+   return P.cx-bw/2>=R.x-5&&P.cx+bw/2<=R.x+R.w+5&&P.cy-bh/2>=R.y-5&&P.cy+bh/2<=R.y+R.h+5&&(bw>=.8*R.w||bh>=.8*R.h)},
+  size:function(){var p=P.w/NW*100;return p>=rd.sz[0]&&p<=rd.sz[1]},
+  dist:function(){return Math.abs((P.w/P.h)/(NW/NH)-1)<=.05},
+  ins:function(){return inserted}
+ };
+ function ribHTML(){if(!inserted)return "<span class='o5grp'>Вставлення ⇒ групи «Ілюстрації» та «Зображення»</span>"+rd.ins.map(function(x,j){return O.rb("o5i"+j,x[0],"")}).join("");
+  return "<span class='o5grp'>Формат зображення ⇒ Упорядкування · Розмір</span>"+(rd.btns.indexOf("crop")>=0?O.rb("o5c","✂ Обрізати",""):"")+(rd.btns.indexOf("rot")>=0?O.rb("o5r","↻ Повернути на 90°",""):"")+O.rb("o5z","⟲ Скинути","")}
+ M.innerHTML=O.win("📊 Презентація","#c43e1c",rd.ins?["Вставлення","Основне","Дизайн","Показ слайдів"]:["Формат зображення","Основне","Вставлення","Показ слайдів"],"<div id='o5rb' style='display:contents'></div>",
+  "<div class='doc'><div class='o5st' id='o5st'><div class='o5pw' id='o5pw'></div></div><div class='o5pl' id='o5pl'></div><div class='tsk o5tk o5chk' id='o5ck'></div></div>");
+ var st=M.querySelector("#o5st"),pw=M.querySelector("#o5pw"),pl=M.querySelector("#o5pl"),ckd=M.querySelector("#o5ck"),rbh=M.querySelector("#o5rb");
+ function fit(){var s=st.clientWidth/SW;st.style.height=(SH*s+6)+"px";pw.style.transform="scale("+s+")";return s}
+ fit();
+ var tgEl=null;if(R){tgEl=document.createElement("div");tgEl.className="o5tg";tgEl.style.cssText="left:"+R.x+"px;top:"+R.y+"px;width:"+R.w+"px;height:"+R.h+"px";tgEl.textContent="ЦІЛЬ";pw.appendChild(tgEl)}
+ var jk=junk=="r"?"<div class='o5jk' style='left:70%;top:0;width:30%;height:100%'>🧟<br>зайве</div>":junk=="b"?"<div class='o5jk' style='left:0;top:80%;width:100%;height:20%;flex-direction:row'>© зайве</div>":"";
+ var pb=document.createElement("div");pb.className="o5pb";
+ var HS=[["nw",0,0,"c"],["ne",100,0,"c"],["se",100,100,"c"],["sw",0,100,"c"],["n",50,0,"s"],["s",50,100,"s"],["e",100,50,"s"],["w",0,50,"s"]];
+ pb.innerHTML="<div class='o5pg' id='o5pg'></div><div class='o5pc'><div class='o5pf' id='o5pf'><i style='left:8%;top:"+(junk=="b"?"8%":"28%")+"'>⛏️</i>"+jk+"</div></div>"+
+  HS.map(function(h){return "<div class='o5hd "+h[3]+(h[3]=="s"?" s":"")+"' data-h='"+h[0]+"' style='left:"+h[1]+"%;top:"+h[2]+"%'></div>"}).join("")+"<div class='o5hd rot' data-h='rot' style='left:50%;top:-34px'></div>";
+ pw.appendChild(pb);var pf=pb.querySelector("#o5pf"),pg=pb.querySelector("#o5pg");pg.innerHTML=pf.innerHTML;if(rd.btns.indexOf("rot")<0)pb.classList.add("o5nr");
+ function draw(){var v=vis();
+  pb.style.cssText="left:"+(P.cx-v.w/2)+"px;top:"+(P.cy-v.h/2)+"px;width:"+v.w+"px;height:"+v.h+"px;transform:rotate("+P.rot+"deg);display:"+(inserted?"block":"none");
+  var f="left:"+(-P.l*P.w)+"px;top:"+(-P.t*P.h)+"px;width:"+P.w+"px;height:"+P.h+"px;";
+  pf.style.cssText=f+"font-size:"+(P.h*.4)+"px";pg.style.cssText=f+"font-size:"+(P.h*.4)+"px;"+(cropMode?"":"display:none");
+  pb.classList.toggle("o5cr",cropMode);
+  var pc=Math.round(P.w/NW*100),ang=Math.round(norm(P.rot)),cut=Math.round((1-(1-P.l-P.r)*(1-P.t-P.b))*100);
+  var ok=true,ls=rd.chk.map(function(c){var o=T[c[0]]();if(!o)ok=false;return "<div class='"+(o?"ok":"")+"'><span>"+(o?"☑":"☐")+"</span><span>"+E(c[1])+"</span></div>"}).join("");
+  ckd.innerHTML=ls;
+  pl.innerHTML="<span class='pill'>Кут "+ang+"°</span><span class='pill'>Розмір "+pc+"%</span><span class='pill'>Обрізано "+cut+"%</span><span class='pill "+(ok?"okk":"no")+"'>"+(ok?"✔ Усе готово":"Ще не готово")+"</span>";
+  if(tgEl)tgEl.classList.toggle("ok",inserted&&rd.chk.some(function(c){return c[0]=="pos"||c[0]=="fit"})&&ok);
+ }
+ function ribbon(){rbh.innerHTML=ribHTML();
+  [].forEach.call(rbh.querySelectorAll(".rb"),function(b){var id=b.id;
+   b.onclick=function(){if(!a.alive())return;
+    if(id.indexOf("o5i")==0){var x=rd.ins[+id.slice(3)];if(x[1]){inserted=true;a.say("✅ "+x[2]);ribbon();draw()}else a.miss(x[2]);return}
+    if(id=="o5r"){P.rot=norm(P.rot+90);draw();a.say("⛏️ Повернути на 90° — кнопка в групі «Упорядкування».")}
+    else if(id=="o5c"){cropMode=!cropMode;b.classList.toggle("on",cropMode);draw();a.say(cropMode?"⛏️ Режим обрізання: чорні маркери на сторонах зсувають межі кадру. Світла частина лишиться, бліда — зникне.":"⛏️ Обрізання вимкнено. Маркери знову змінюють розмір.")}
+    else if(id=="o5z"){init();cropMode=false;draw();ribbon();a.say("⛏️ Скинути: фото знову таке, як було.")}}});
+  var c=rbh.querySelector("#o5c");if(c)c.classList.toggle("on",cropMode)}
+ ribbon();draw();
+ a.say(rd.tip);
+ /* жести: pointer events (дотик і миша) */
+ var drag=null;
+ function W(e){var r=st.getBoundingClientRect(),k=st.clientWidth/SW;return {x:(e.clientX-r.left-st.clientLeft)/k,y:(e.clientY-r.top-st.clientTop)/k}}
+ st.addEventListener("pointerdown",function(e){if(!inserted||!a.alive())return;
+  var hd=e.target.closest&&e.target.closest(".o5hd"),mode=hd?hd.getAttribute("data-h"):(e.target.closest&&e.target.closest(".o5pb")?"move":null);
+  if(!mode)return;if(cropMode&&(mode.length==2||mode=="rot"))return;
+  e.preventDefault();fit();drag={m:mode,p0:W(e),P0:Object.assign({},P)};try{st.setPointerCapture(e.pointerId)}catch(x){}});
+ st.addEventListener("pointermove",function(e){if(!drag||!a.alive())return;e.preventDefault();var p=W(e),D=drag,Q=D.P0,m=D.m;
+  if(m=="move"){P.cx=Math.max(8,Math.min(SW-8,Q.cx+p.x-D.p0.x));P.cy=Math.max(8,Math.min(SH-8,Q.cy+p.y-D.p0.y))}
+  else if(m=="rot"){var an=Math.atan2(p.y-Q.cy,p.x-Q.cx)*180/Math.PI+90;P.rot=norm(Math.round(an/2)*2)}
+  else if(m.length==2){var d0=Math.hypot(D.p0.x-Q.cx,D.p0.y-Q.cy)||1,k=Math.hypot(p.x-Q.cx,p.y-Q.cy)/d0;k=Math.max(.15,Math.min(3,k));var nw=Math.max(30,Math.min(480,Q.w*k));k=nw/Q.w;P.w=nw;P.h=Q.h*k}
+  else if(cropMode){var d=rot2(p.x-D.p0.x,p.y-D.p0.y,-Q.rot),sx=0,sy=0;
+   if(m=="w"){var nl=Math.max(0,Math.min(.85-Q.r,Q.l+d.x/Q.w));P.l=nl;sx=(nl-Q.l)*Q.w/2}
+   else if(m=="e"){var nr=Math.max(0,Math.min(.85-Q.l,Q.r-d.x/Q.w));P.r=nr;sx=-(nr-Q.r)*Q.w/2}
+   else if(m=="n"){var nt=Math.max(0,Math.min(.85-Q.b,Q.t+d.y/Q.h));P.t=nt;sy=(nt-Q.t)*Q.h/2}
+   else{var nb=Math.max(0,Math.min(.85-Q.t,Q.b-d.y/Q.h));P.b=nb;sy=-(nb-Q.b)*Q.h/2}
+   var sh2=rot2(sx,sy,Q.rot);P.cx=Q.cx+sh2.x;P.cy=Q.cy+sh2.y}
+  else{var v=rot2(p.x-Q.cx,p.y-Q.cy,-Q.rot);
+   if(m=="e"||m=="w")P.w=Math.max(30,Math.min(480,2*Math.abs(v.x)/(1-Q.l-Q.r)));else P.h=Math.max(20,Math.min(400,2*Math.abs(v.y)/(1-Q.t-Q.b)))}
+  draw()});
+ function up(){drag=null}
+ st.addEventListener("pointerup",up);st.addEventListener("pointercancel",up);
+ a.go("Закріпити фото ✔",function(){
+  if(!inserted){a.nudge("Спочатку встав зображення на слайд — кнопкою на стрічці.");return}
+  var bad=rd.chk.filter(function(c){return !T[c[0]]()});
+  if(!bad.length){a.ans(true,rd.why);return}
+  var c=bad.filter(function(x){return x[2]})[0]||bad[0];a.ans(false,(c[2]||"Ще не виконано: "+c[1].toLowerCase()+".")+(bad.length>1?" Далі ще: "+bad.filter(function(x){return x!==c}).map(function(x){return x[1].toLowerCase()}).join("; ")+".":""),true)});
+})};
+
+/* ---------- іконки й заміна простих ігор в уроках ---------- */
+if(window.GI5){GI5.layout=["🎬","Режисер слайдів"];GI5.txtfmt=["🔤","Текст на слайді"];GI5.photo=["🖼️","Фото-майстерня"]}
+if(window.GI){GI.layout=["🎬","Режисер слайдів"];GI.txtfmt=["🔤","Текст на слайді"];GI.photo=["🖼️","Фото-майстерня"]}
+
+O.rep(515,{type:"layout",title:"Режисер слайдів: обери макет",hint:"Обери розмітку слайда за завданням. Три життя ❤️.",rounds:[
+ {k:"pick",task:"потрібен титульний слайд виступу: назва презентації та автор",ans:"title",opts:["title","content","two","titleonly","blank"],why:"Титульний слайд відкриває виступ: великий заголовок для назви та підзаголовок для автора й дати."},
+ {k:"pick",task:"порівняти два зображення: угорі заголовок, а під ним два місця для об’єктів поруч",ans:"two",opts:["content","two","title","blank","titleonly"],why:"Макет «Два об’єкти» має заголовок і два покажчики місця заповнення поруч."},
+ {k:"ph",lay:"two",task:"у макеті «Два об’єкти» клацни покажчик місця заповнення, куди вставити ДРУГЕ зображення (праворуч)",ans:["b"],why:"Покажчик місця заповнення — рамка на слайді, куди вводять текст або вставляють об’єкт. Друге зображення — у правий."},
+ {k:"btn",lay:"content",task:"слайд уже є, а потрібен інший вигляд. Яка кнопка змінює макет вибраного слайда?",btns:[["Створити слайд",0,"Ця кнопка додає НОВИЙ слайд, а не змінює наявний."],["Розмітка слайда",1],["Дублювати слайд",0,"Ця команда створює копію слайда."],["Видалити слайд",0,"Ця команда прибирає слайд."]],why:"Вибрати слайд ⇒ «Розмітка слайда» (вкладка Основне, група Слайди) ⇒ потрібний макет."}
+]});
+O.rep(516,{type:"txtfmt",title:"Текст на слайді: форматування",hint:"Клацни по тексту, щоб виділити, і застосуй кнопки стрічки за зразком і списком.",rounds:[
+ {task:"заголовок жирним і по центру",boxes:[{t:"Мої улюблені тварини",nm:"Заголовок",top:30,tg:{b:1,a:"c"}}],why:"Ж — напівжирний, «По центру» — вирівнювання абзацу. Обидві дії — вкладка Основне, групи Шрифт і Абзац."},
+ {task:"привітання: розмір 44 пт, червоним, курсивом",boxes:[{t:"Привіт, Майнкрафт!",nm:"Текст",top:28,tg:{i:1,c:"r",s:44}}],why:"Курсив (К), Колір шрифту й Розмір шрифту — це група Шрифт вкладки Основне. A+ збільшує розмір."},
+ {task:"абзац за шириною, підкреслений, розмір 24 пт",boxes:[{t:"Кіт ловить мишей. Пес охороняє дім. Папуга вміє говорити.",nm:"Абзац",top:20,tg:{u:1,a:"j",s:24}}],why:"«За шириною» вирівнює обидва краї абзацу, а підкреслення (Ч) і розмір — це групи Абзац і Шрифт."},
+ {task:"заголовок: жирний, по центру, 40 пт; список: синій, за правим краєм",boxes:[{t:"Мій клас",nm:"Заголовок",top:10,tg:{b:1,a:"c",s:40}},{t:"Кіт · Пес · Папуга",nm:"Список",top:50,tg:{c:"b",a:"r"}}],why:"Кожен об’єкт форматують окремо: спочатку виділяють його, потім застосовують кнопки. Так різний текст має різний вигляд."}
+]});
+var TIP1="Кутові маркери (квадратики) змінюють розмір пропорційно. Тягни за них від центру чи до центру.";
+O.rep(517,{type:"photo",title:"Фото-майстерня: вставлення й розмір",hint:"Вставляй зображення і міняй розмір маркерами. Тягни пальцем. Три життя ❤️.",rounds:[
+ {tip:"Вкладка Вставлення: яка кнопка вставляє фото? Обери її.",ins:[["Фігури",0,"Фігури — це намальовані готові форми, а не фото."],["Зображення",1,"Зображення вставлено, але воно завелике. "+TIP1],["Піктограми",0,"Піктограми — це значки, не фотографії."],["3D-моделі",0,"3D-модель — об’єкт, а не звичайне фото."]],
+  start:{w:260,cx:150,cy:100},rect:{x:20,y:40,w:140,h:100},btns:["reset"],chk:[["ins","Вставити зображення (Вставлення ⇒ Зображення)"],["fit","Помістити фото повністю в рамку «ЦІЛЬ»"],["dist","Не спотворити пропорції фото"]],why:"Вставлення ⇒ Зображення. Кутові маркери змінюють розмір пропорційно, тому фото не спотворюється."},
+ {tip:"Перетягни фото в рамку «ЦІЛЬ»: торкнись фото й веди.",start:{w:120,cx:215,cy:135},rect:{x:20,y:30,w:120,h:78},btns:["reset"],chk:[["pos","Перетягнути фото в рамку «ЦІЛЬ»"]],why:"Графічні об’єкти переміщують так само, як текстові: перетягуванням за саме зображення."},
+ {tip:"Збільш фото до розміру рамки, але не спотворюй: бічні маркери (жовті) розтягують лише в один бік!",start:{w:100,cx:150,cy:100},rect:{x:50,y:35,w:200,h:130},btns:["reset"],chk:[["fit","Збільшити фото до рамки «ЦІЛЬ» і вмістити в неї"],["dist","Не спотворити пропорції (кутові маркери!)","Фото спотворилося: бічні маркери розтягують лише висоту або ширину. Натисни «Скинути» й тягни за кутовий маркер."]],why:"Маркери в кутах змінюють висоту й ширину разом, а маркери посередині сторін можуть спотворити зображення."},
+ {tip:"Зменш фото приблизно вдвічі (40–60 %) і постав у рамку праворуч.",start:{w:260,cx:110,cy:110},rect:{x:176,y:34,w:104,h:76},sz:[40,60],btns:["reset"],chk:[["size","Розмір 40–60 % від початкового"],["pos","Перетягнути фото в рамку «ЦІЛЬ»"]],why:"Розмір міняють маркерами. Пропорційно — за кути, а потім фото переміщують у потрібне місце слайда."}
+]});
+O.rep(518,{type:"photo",title:"Фото-майстерня: редагування",hint:"Повертай, обрізай і став на місце. Тягни пальцем. Три життя ❤️.",rounds:[
+ {tip:"Тягни круглий маркер обертання (угорі над фото), щоб повернути його рівно (кут 0°).",start:{w:150,cx:150,cy:105,rot:-18},btns:["rot","reset"],chk:[["rot","Повернути фото рівно (кут 0°)"]],why:"Маркер обертання повертає об’єкт навколо центру. Рівне фото має кут 0°."},
+ {tip:"Фото лежить на боці. Поверни його на 90° кнопкою або маркером.",start:{w:150,cx:150,cy:100,rot:-90},btns:["rot","reset"],chk:[["rot","Повернути фото рівно (кут 0°)"]],why:"Кнопка «Повернути» (група Упорядкування) повертає на 90° за один клац."},
+ {tip:"Натисни ✂ Обрізати й зсунь чорний маркер на правій стороні, щоб зникло зайве праворуч (зомбі).",start:{w:170,cx:150,cy:100},junk:"r",btns:["crop","reset"],chk:[["crop","Обрізати зайве праворуч (🧟), лишивши кирку"]],why:"Обрізання прибирає зайві частини зображення, а решта лишається цілою. Чорні маркери з’являються після кнопки «Обрізати»."},
+ {tip:"Три кроки: поверни рівно, обріж зайве знизу (© зайве) й постав у рамку «ЦІЛЬ».",start:{w:150,cx:95,cy:110,rot:12},junk:"b",rect:{x:170,y:30,w:110,h:90},btns:["crop","rot","reset"],chk:[["rot","Повернути фото рівно (кут 0°)"],["crop","Обрізати зайве знизу (© зайве)"],["pos","Перетягнути фото в рамку «ЦІЛЬ»"]],why:"Редагування — це комбінація дій: повернути, обрізати, перемістити. Підсумок перевіряють у режимі Показ слайдів."}
+]});
+})();
+
+/* ===== 5 клас · g5ob: 519 «Стрічка слайдів» (GM.sorter), 520 «Критик слайдів» (GM.critic), 521 «Знайди об’єкт» (GM.objhunt) ===== */
+(function(){
+var O=window.O5;if(!O)return;var esc=O.esc;
+var css=".o5.g5b{background:linear-gradient(#8fc5ff 0,#7ab8ff 55%,#8b5a2b 55%);border:4px solid #111;box-shadow:0 5px 0 #0007;padding:8px;margin:6px 0}"+
+".o5.g5b .ttl{text-align:center;color:#fff;font:900 14px ui-monospace,Consolas,monospace;text-shadow:2px 2px 0 #222;text-transform:uppercase;margin:6px 0 2px;line-height:1.25}"+
+".o5.g5b button{font-family:inherit}"+
+".o5.g5b .go{margin:8px 0 2px}.o5.g5b .go[disabled]{opacity:.5}"+
+".o5.g5b .ord{margin-top:6px;background:#fff;border:3px solid #2b2f55;padding:4px 8px;font-size:11px;font-weight:800;color:#222;line-height:1.5}"+
+".o5.g5b .sg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:7px;background:#e6e6e6;min-height:100px}"+
+".o5.g5b .th{all:unset;box-sizing:border-box;position:relative;display:block;height:86px;border:3px solid #111;background:#fff;text-align:center;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;box-shadow:0 3px 0 #0004}"+
+".o5.g5b .th i{position:absolute;left:0;top:0;background:#2b2f55;color:#fff;font:900 10px ui-monospace,Consolas,monospace;padding:1px 5px;font-style:normal}"+
+".o5.g5b .th .em{display:block;font-size:30px;line-height:1;padding-top:17px}.o5.g5b .th .cp5{display:block;font:800 10px/1.1 ui-monospace,Consolas,monospace;color:#222;padding:3px 2px}"+
+".o5.g5b .th.sel{outline:3px solid #ff4fa3;transform:rotate(-3deg);z-index:2}.o5.g5b .th.ok{outline:3px solid #2fb52a}.o5.g5b .th.no{outline:3px solid #e01f48}.o5.g5b .th.lift{opacity:.3}.o5.g5b .th.gh{opacity:.92;transform:rotate(-4deg);box-shadow:0 6px 0 #0006;z-index:999;pointer-events:none;cursor:grabbing}"+
+".o5.g5b .stg{height:104px;border:4px solid #111;background:#1d2340;color:#fff;text-align:center;padding-top:10px}.o5.g5b .stg .em{display:block;font-size:42px;line-height:1.1}.o5.g5b .stg b{display:block;font-size:13px;margin-top:4px}"+
+".o5.g5b .tmr{height:10px;background:#333;border:2px solid #111;margin:6px 0 2px}.o5.g5b .tmr i{display:block;height:100%;background:#5a9e2a}.o5.g5b .tmr.lo i{background:#e01f48}"+
+".o5.g5b .opl{display:flex;flex-direction:column;gap:6px;padding:6px;background:#fff}.o5.g5b .op{all:unset;box-sizing:border-box;display:block;padding:7px 9px;border:3px solid #111;background:#c6c6c6;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #7a7a7a;font:800 12px/1.3 ui-monospace,Consolas,monospace;color:#222;cursor:pointer;-webkit-tap-highlight-color:transparent}"+
+".o5.g5b .op.ok{background:#8fd14f}.o5.g5b .op.bad{background:#ff9a9a}.o5.g5b .op[disabled]{cursor:default}"+
+".o5.g5b .slw{margin:0 auto;overflow:hidden}.o5.g5b .sl5{position:relative;width:288px;height:162px;transform-origin:0 0;border:1px solid #888;box-shadow:0 2px 5px #0004;overflow:hidden}"+
+".o5.g5b .el{all:unset;position:absolute;display:block;box-sizing:border-box;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}"+
+".o5.g5b .el.f{outline:3px solid #2fb52a;outline-offset:-3px}.o5.g5b .el.x{outline:3px solid #e01f48;outline-offset:-3px}.o5.g5b .el.m{outline:3px dashed #ff9800;outline-offset:-3px}"+
+".o5.g5b .cnt{padding:4px 8px;font-size:11px;font-weight:800;color:#222;background:#fff}.o5.g5b .cnt b{color:#1b9a2e}"+
+".o5.g5b .chs{display:flex;gap:5px;flex-wrap:wrap}.o5.g5b .chs .pill{background:#888}.o5.g5b .chs .pill.on{background:#1b9a2e}"+
+".o5.g5b .dpg{background:#fff;border:1px solid #bbb;box-shadow:0 2px 5px #0003;position:relative;padding:10px 10px 16px;margin:0 0 8px;min-height:90px;color:#111;line-height:1.5}.o5.g5b .dpg.sel{outline:4px solid #4a90e2;background:#dbeaff}"+
+".o5.g5b .pgn{position:absolute;right:6px;bottom:2px;font-size:9px;color:#888}"+
+".o5.g5b .dpa{margin:0 0 8px;font-family:ui-monospace,Consolas,monospace}.o5.g5b .dln{white-space:nowrap}"+
+".o5.g5b .dwd{all:unset;display:inline;cursor:pointer;-webkit-tap-highlight-color:transparent}.o5.g5b .dwd.b{font-weight:900}"+
+".o5.g5b .c{white-space:pre}.o5.g5b .c.sel{background:#8ec1ff}"+
+".o5.g5b .lvs{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0}.o5.g5b .lvs .rb{min-height:34px;width:auto;flex:1 1 auto;margin:0}.o5.g5b .lvs .rb.on{background:#ff4fa3;color:#fff;box-shadow:inset 3px 3px 0 #ff9ad0,inset -3px -3px 0 #b01c70}"+
+".o5.g5b .prop{background:#fff;border:3px solid #2b2f55;padding:5px 8px;font-size:11px;font-weight:800;color:#222;line-height:1.45;min-height:44px}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+function hearts(n){n=Math.max(0,n);return new Array(n+1).join("❤️")+(n<3?new Array(4-n).join("🖤"):"")}
+function frame(g,id,hint){fr9(g.title,g.hint||hint,"<div class='o5 g5b' id='"+id+"'></div>");return document.getElementById(id)}
+function mkAlive(root){return function(){return !!root&&document.body.contains(root)}}
+function say(root,m,cls){var b=root.querySelector(".say .b");if(b){b.className="b "+(cls||"");b.textContent=m}}
+function sayH(root,m,cls){var b=root.querySelector(".say .b");if(b){b.className="b "+(cls||"");b.innerHTML=m}}
+function sayBox(m){return "<div class='say'><div class='c'>⛏️</div><div class='b'>"+m+"</div></div>"}
+function hudH(hp,l){return "<div class='hud'><b>"+hearts(hp)+"</b><b>"+l+"</b></div>"}
+function goB(t){return "<button class='go' type='button'>"+t+"</button>"}
+function shk(el){if(!el)return;el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake")}
+
+/* ---------------- 519 · Стрічка слайдів ---------------- */
+GM.sorter=function(g){
+ var R=g.rounds,n=R.length,ri=0,hp=3,sc=0,mis=0,order=[],sel=-1,chk=null,solved=false,over=false,tp=0,tm=null,si=0,left=0,mode="";
+ var root=frame(g,"g5b_s","Розклади слайди в логічному порядку: тапни слайд, потім місце, куди його перемістити, — або перетягни. Далі — виступ під таймер."),alive=mkAlive(root);
+ function q(s){return root.querySelector(s)}
+ function setHud(l){var h=q(".hud");if(h)h.outerHTML=hudH(hp,l)}
+ function fin(){clearInterval(tm);fin9(sc,n*2)}
+ function endGame(msg){over=true;clearInterval(tm);say(root,msg,"bad");var b=q(".go");b.disabled=false;b.textContent="Результат";mode="end"}
+ function nextRound(){clearInterval(tm);ri++;if(ri>=n)return fin();R[ri].k=="show"?startShow():startOrder()}
+ /* --- впорядкування ескізів --- */
+ function startOrder(){var r=R[ri];mis=0;sel=-1;chk=null;solved=false;mode="check";
+  var o=r.s.map(function(x,i){return i}),t=0;do{o=shuffle(o)}while(o.every(function(v,i){return v==i})&&++t<30);order=o;
+  root.innerHTML=hudH(hp,"Раунд "+(ri+1)+"/"+n)+"<div class='ttl'>"+esc(r.t)+"</div>"+
+   O.win("🅿 Сортувальник слайдів",O.PP,["Показ","Перехід","Вигляд"],"<span class='pill'>🗂️ Слайдів: "+r.s.length+"</span><span class='pill'>⏱ Показ без помилок</span>","<div class='doc' style='padding:0'><div class='sg'></div></div>")+
+   "<div class='ord'></div>"+sayBox(esc(r.say||"Слайди перемішались. Тапни слайд, потім місце, куди його перемістити, — або перетягни мініатюру."))+goB("Перевірити порядок ✔");
+  var sg=q(".sg");paint(-1);
+  sg.onpointerdown=function(e){var th=e.target.closest&&e.target.closest(".th");if(!th||solved||over)return;var p0=+th.dataset.p,x0=e.clientX,y0=e.clientY,gh=null,drag=false;
+   function mv(ev){if(!alive())return up({type:"pointercancel"});if(!drag&&Math.abs(ev.clientX-x0)+Math.abs(ev.clientY-y0)>10){drag=true;th.classList.add("lift");gh=th.cloneNode(true);gh.className="th gh";gh.style.cssText="position:fixed;width:"+th.offsetWidth+"px;height:"+th.offsetHeight+"px;margin:0";root.appendChild(gh)}
+    if(drag){gh.style.left=(ev.clientX-th.offsetWidth/2)+"px";gh.style.top=(ev.clientY-th.offsetHeight/2)+"px";if(ev.cancelable)ev.preventDefault()}}
+   function up(ev){window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);if(gh&&gh.parentNode)gh.parentNode.removeChild(gh);tp=Date.now();
+    if(ev.type=="pointercancel"||!alive()||solved||over){if(alive())paint(-1);return}
+    if(drag){var t=document.elementFromPoint(ev.clientX,ev.clientY),tt=t&&t.closest&&t.closest(".th");if(tt&&tt.parentNode===sg&&+tt.dataset.p!==p0)mov(p0,+tt.dataset.p);else paint(-1)}else tap(p0)}
+   window.addEventListener("pointermove",mv,{passive:false});window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)};
+  sg.onclick=function(e){if(Date.now()-tp<700)return;var th=e.target.closest&&e.target.closest(".th");if(th&&!solved&&!over)tap(+th.dataset.p)};
+  q(".go").onclick=goClick}
+ function paint(moved){var r=R[ri],sg=q(".sg");if(!sg)return;
+  sg.innerHTML=order.map(function(k,p){var s=r.s[k];return "<button type='button' class='th"+(p===sel?" sel":"")+(p===moved?" pop":"")+(chk?(chk[p]?" ok":" no"):"")+"' data-p='"+p+"'><i>"+(p+1)+"</i><span class='em'>"+s[0]+"</span><span class='cp5'>"+esc(s[1])+"</span></button>"}).join("");
+  q(".ord").textContent="Порядок: "+order.map(function(k){return r.s[k][0]}).join(" → ")}
+ function tap(p){chk=null;if(sel<0)sel=p;else if(sel===p)sel=-1;else{mov(sel,p);return}paint(-1)}
+ function mov(a,b){var v=order.splice(a,1)[0];order.splice(b,0,v);sel=-1;chk=null;paint(b)}
+ function checkOrder(){var r=R[ri];var ok=order.every(function(k,i){return k==i});sel=-1;
+  if(ok){solved=true;chk=order.map(function(){return true});paint(-1);sc+=mis?1:2;say(root,r.why,"ok");var nx=ri<n-1?(R[ri+1].k=="show"?"Почати виступ ▶":"Далі →"):"Результат";q(".go").textContent=nx;mode="next";setHud("Раунд "+(ri+1)+"/"+n)}
+  else{mis++;hp--;chk=order.map(function(k,i){return k==i});paint(-1);setHud("Раунд "+(ri+1)+"/"+n);shk(q(".sg"));var bad=0;for(var i=0;i<order.length;i++)if(order[i]!=i){bad=i;break}
+   var m="Не зовсім. Слайд «"+r.s[order[bad]][1]+"» стоїть не на своєму місці. "+(r.hint||"");if(hp<=0)endGame("Життя закінчилися. "+m);else say(root,m,"bad")}}
+ function goClick(){if(mode=="check")checkOrder();else if(mode=="next")nextRound();else if(mode=="end")fin();else if(mode=="ans"){si++;si<R[ri].s.length?slide():(sc+=mis?1:2,nextRound())}else if(mode=="skip"){}}
+ /* --- режим показу з таймером: вправа виступу --- */
+ function startShow(){si=0;mis=0;slide()}
+ function slide(){var r=R[ri],s=r.s[si],T=r.time||10;solved=false;mode="skip";left=T*1000;clearInterval(tm);
+  root.innerHTML=hudH(hp,"Слайд "+(si+1)+"/"+r.s.length)+"<div class='ttl'>"+esc(r.t)+"</div>"+
+   O.win("🅿 Показ слайдів",O.PP,["Показ слайдів","Esc — вийти"],"<span class='pill'>▶ Виступ</span><span class='pill' id='g5b_tl'>⏱ "+T+" с</span>",
+   "<div class='doc' style='padding:6px'><div class='stg'><span class='em'>"+s[0]+"</span><b>"+esc(s[1])+"</b></div><div class='tmr'><i style='width:100%'></i></div></div><div class='tsk' style='margin:0'>"+esc(s[2])+"</div><div class='opl'>"+
+   shuffle(s[3].map(function(o,i){return i})).map(function(i){return "<button type='button' class='op' data-i='"+i+"'>"+esc(s[3][i][0])+"</button>"}).join("")+"</div>")+
+   sayBox("Показ іде! Обери, як діяти, поки не вийшов час.")+goB("Обери відповідь");
+  var go=q(".go");go.disabled=true;go.onclick=goClick;
+  Array.prototype.forEach.call(root.querySelectorAll(".op"),function(b){b.onclick=function(){answer(+b.dataset.i)}});
+  tm=setInterval(function(){if(!alive()){clearInterval(tm);return}left-=100;var i=q(".tmr i"),t=q(".tmr");if(i)i.style.width=Math.max(0,left/(T*10))+"%";if(t&&left<=3000)t.classList.add("lo");var l=q("#g5b_tl");if(l)l.textContent="⏱ "+Math.ceil(Math.max(0,left)/1000)+" с";if(left<=0){clearInterval(tm);answer(-1)}},100)}
+ function answer(i){if(solved||over)return;solved=true;clearInterval(tm);var r=R[ri],s=r.s[si],ok=i>=0&&s[3][i][1];
+  Array.prototype.forEach.call(root.querySelectorAll(".op"),function(b){b.disabled=true;var k=+b.dataset.i;if(s[3][k][1])b.classList.add("ok");else if(k===i)b.classList.add("bad")});
+  var go=q(".go");go.disabled=false;
+  if(ok){say(root,s[4],"ok")}else{mis++;hp--;setHud("Слайд "+(si+1)+"/"+r.s.length);var m=(i<0?"Час вийшов! ":"Не те. ")+s[4];if(hp<=0)return endGame("Життя закінчилися. "+m);say(root,m,"bad")}
+  mode="ans";go.textContent=si<r.s.length-1?"Далі →":"Результат"}
+ R[0].k=="show"?startShow():startOrder();
+};
+
+/* ---------------- 520 · Критик слайдів ---------------- */
+var CAT={c:"Мало контрасту",v:"Забагато тексту",f:"Дрібний шрифт",o:"Перевантаження"};
+GM.critic=function(g){
+ var R=g.rounds,n=R.length,ri=0,hp=3,sc=0,lost=0,found={},tried={},nf=0,tot=0,mode="",over=false;
+ var root=frame(g,"g5b_c","Тапай по слайду: знайди три недоліки дизайну. Помилковий тап по гарному елементу — мінус ❤️."),alive=mkAlive(root);
+ function q(s){return root.querySelector(s)}
+ function setHud(){var h=q(".hud");if(h)h.outerHTML=hudH(hp,"🔍 "+(ri+1)+"/"+n)}
+ function chips(){var a=[],k;for(k in found)a.push(found[k]);var s="";for(var i=0;i<tot;i++)s+=a[i]?"<span class='pill on'>✔ "+CAT[a[i]]+"</span>":"<span class='pill'>? ...</span>";q(".chs").innerHTML=s;q(".cnt").innerHTML="Знайдено недоліків: <b>"+nf+"</b> / "+tot}
+ function start(){var r=R[ri];found={};tried={};nf=0;lost=0;mode="submit";tot=r.els.filter(function(e){return e.f}).length;
+  root.innerHTML=hudH(hp,"🔍 "+(ri+1)+"/"+n)+"<div class='ttl'>Знайди недоліки дизайну</div>"+
+   O.win("🅿 Презентація",O.PP,["Дизайн","Основне","Показ"],"<div class='chs'></div>",
+   "<div class='doc' style='padding:4px'><div class='slw'><div class='sl5' style='background:"+r.bg+"'>"+r.els.map(function(e,i){return "<button type='button' class='el' data-i='"+i+"' style='left:"+e.x+"px;top:"+e.y+"px;width:"+e.w+"px;height:"+e.h+"px;"+(e.s||"")+"'>"+e.c+"</button>"}).join("")+"</div></div></div><div class='cnt'></div>")+
+   sayBox(esc(r.say||"Знайди недоліки: колір, обсяг тексту, розмір шрифту, перевантаження. Тапай на слайді!"))+goB("Здати перевірку ✔");
+  var dw=q(".doc"),sw=Math.min(1,(dw.clientWidth-8)/288);q(".slw").style.cssText="width:"+Math.round(288*sw)+"px;height:"+Math.round(162*sw)+"px";q(".sl5").style.transform="scale("+sw+")";chips();q(".sl5").onclick=tapEl;q(".go").onclick=goClick}
+ function tapEl(e){if(over||mode!="submit")return;var el=e.target.closest&&e.target.closest(".el");if(!el)return;var i=+el.dataset.i,d=R[ri].els[i];if(found[i]||tried[i])return;
+  if(d.f){found[i]=d.f;nf++;el.classList.add("f");chips();sayH(root,"<b>✔ "+CAT[d.f]+".</b> "+esc(d.why),"ok");if(nf==tot){var b=q(".go");b.textContent="Здати: все знайдено ✔"}}
+  else{tried[i]=1;hp--;lost++;el.classList.add("x");setHud();shk(el);if(hp<=0)return endGame("Тут усе гаразд: "+d.why+" Життя закінчилися.");say(root,"Тут усе гаразд: "+d.why,"bad")}}
+ function endGame(m){over=true;mode="end";say(root,m,"bad");var b=q(".go");b.textContent="Результат"}
+ function goClick(){
+  if(mode=="end")return fin9(sc,n*2);
+  if(mode=="next"){ri++;return ri>=n?fin9(sc,n*2):start()}
+  if(mode=="submit"){var r=R[ri],miss=[];r.els.forEach(function(e,i){if(e.f&&!found[i])miss.push(i)});
+   if(!miss.length){sc+=lost?1:2;mode="next";say(root,"Чудово! Усі недоліки знайдено. "+(r.sum||"Гарний слайд: контрастний, з коротким текстом і великим шрифтом."),"ok")}
+   else{hp--;setHud();miss.forEach(function(i){var el=q(".el[data-i='"+i+"']");if(el)el.classList.add("m")});var m="Пропущено: "+miss.map(function(i){return CAT[r.els[i].f]+" — "+r.els[i].why}).join(" ");
+    if(hp<=0)return endGame(m+" Життя закінчилися.");say(root,m,"bad");mode="next"}
+   var b=q(".go");b.textContent=ri<n-1?"Далі →":"Результат"}}
+ start();
+};
+
+/* ---------------- 521 · Знайди об’єкт ---------------- */
+var LV={c:"Символ",w:"Слово",l:"Рядок",p:"Абзац",g:"Сторінка"},LVO=["c","w","l","p","g"];
+function wordTxt(t){return t.replace(/^\*/,"").replace(/[.,!?:;«»"]/g,"")}
+GM.objhunt=function(g){
+ var R=g.rounds,n=R.length,ri=0,ti=0,hp=3,sc=0,done=0,total=0,lvl="w",sel=null,tries=0,T=null,mode="",over=false;
+ R.forEach(function(r){total+=r.tasks.length});
+ var root=frame(g,"g5b_o","Тапни по документу й вибери, що саме виділяти: символ, слово, рядок, абзац чи сторінку. Внизу видно властивості виділеного об’єкта."),alive=mkAlive(root);
+ function q(s){return root.querySelector(s)}
+ function qa(s){return Array.prototype.slice.call(root.querySelectorAll(s))}
+ function setHud(){var h=q(".hud");if(h)h.outerHTML=hudH(hp,"🎯 "+(done+1>total?total:done+1)+"/"+total)}
+ function resolve(r,t){var res={lvl:t.lvl,g:0,p:0,l:0,w:0,c:0};
+  r.pages.forEach(function(pg,gi){pg.forEach(function(pa,pi){pa.lines.forEach(function(ln,li){var ws=ln.split(" ");
+   if(t.lvl=="g"&&gi===t.pg){res.g=gi}
+   if((t.lvl=="p")&&li===0&&ln===t.find){res.g=gi;res.p=pi}
+   if(t.lvl=="l"&&ln.replace(/\*/g,"")===t.find){res.g=gi;res.p=pi;res.l=li}
+   ws.forEach(function(w,wi){var tx=wordTxt(w);if(t.lvl=="w"&&tx.toLowerCase()===t.find){res.g=gi;res.p=pi;res.l=li;res.w=wi}
+    if(t.lvl=="c"){var s=w.replace(/^\*/,"");var k=s.indexOf(t.find);if(k>=0){res.g=gi;res.p=pi;res.l=li;res.w=wi;res.c=k}}})})})});return res}
+ function build(r){return r.pages.map(function(pg,gi){return "<div class='dpg' data-g='"+gi+"'>"+pg.map(function(pa,pi){
+   return "<div class='dpa' style='text-align:"+(pa.al=="по центру"?"center":pa.al=="по правому краю"?"right":"left")+";font-size:"+Math.round((pa.sz||14)*.86)+"px;font-weight:"+(pa.b?900:500)+"'>"+pa.lines.map(function(ln,li){
+    var ws=ln.split(" ");return "<div class='dln'>"+ws.map(function(w,wi){var b=w.charAt(0)=="*",s=b?w.slice(1):w,last=wi==ws.length-1,h="";
+     for(var k=0;k<s.length;k++)h+="<span class='c' data-g='"+gi+"' data-p='"+pi+"' data-l='"+li+"' data-w='"+wi+"' data-c='"+k+"'>"+esc(s.charAt(k))+"</span>";
+     if(!last)h+="<span class='c' data-g='"+gi+"' data-p='"+pi+"' data-l='"+li+"' data-w='"+wi+"' data-c='"+s.length+"'> </span>";
+     return "<button type='button' class='dwd"+(b?" b":"")+"'>"+h+"</button>"}).join("")+"</div>"}).join("")+"</div>"}).join("")+"<span class='pgn'>стор. "+(gi+1)+" з "+r.pages.length+"</span></div>"}).join("")}
+ function matches(c,s,l){var d=c.dataset;if(+d.g!==s.g)return false;if(l=="g")return true;if(+d.p!==s.p)return false;if(l=="p")return true;if(+d.l!==s.l)return false;if(l=="l")return true;if(+d.w!==s.w)return false;if(l=="w")return true;return +d.c===s.c}
+ function paint(){qa(".c").forEach(function(c){c.classList.toggle("sel",!!sel&&matches(c,sel,lvl))});qa(".dpg").forEach(function(p){p.classList.toggle("sel",!!sel&&lvl=="g"&&+p.dataset.g===sel.g)});
+  qa(".lvs .rb").forEach(function(b){b.classList.toggle("on",b.dataset.l==lvl)});props()}
+ function selText(){var r=R[ri],pg=r.pages[sel.g],pa=pg[sel.p],ln=pa.lines[sel.l],ws=ln.split(" "),w=ws[sel.w];if(lvl=="g")return pg.map(function(p){return p.lines.join(" ")}).join(" ");if(lvl=="p")return pa.lines.join(" ");if(lvl=="l")return ln.replace(/\*/g,"");if(lvl=="w")return wordTxt(w);return w.replace(/^\*/,"").charAt(sel.c)}
+ function props(){var el=q(".prop");if(!sel){el.innerHTML="Властивості: тапни по тексту, щоб виділити об’єкт.";return}
+  var r=R[ri],pg=r.pages[sel.g],pa=pg[sel.p],ln=pa.lines[sel.l],ws=ln.split(" "),w=ws[sel.w],f="Calibri · "+(pa.sz||14)+" пт",h;
+  if(lvl=="c"){var ch=w.replace(/^\*/,"").charAt(sel.c);h="Символ «"+esc(ch)+"» · шрифт "+f+" · напівжирний: "+(w.charAt(0)=="*"||pa.b?"так":"ні")+" · колір: чорний"}
+  else if(lvl=="w"){var t=wordTxt(w);h="Слово «"+esc(t)+"» · "+t.length+" симв. · шрифт "+f+" · напівжирний: "+(w.charAt(0)=="*"||pa.b?"так":"ні")}
+  else if(lvl=="l"){h="Рядок "+(sel.l+1)+" з "+pa.lines.length+" в абзаці · слів: "+ws.length+" · символів: "+ln.replace(/\*/g,"").length}
+  else if(lvl=="p"){h="Абзац "+(sel.p+1)+" · рядків: "+pa.lines.length+" · вирівнювання: "+(pa.al||"по лівому краю")+" · відступ першого рядка: "+(pa.fi||"немає")+" · інтервал: "+(pa.sp||"1,0")}
+  else{h="Сторінка "+(sel.g+1)+" з "+r.pages.length+" · A4 · книжкова · поля: 2 см · абзаців: "+pg.length}
+  el.innerHTML="<span style='color:#2b579a'>Властивості:</span> "+h}
+ function startRound(){var r=R[ri];ti=0;nextTask(true)}
+ function nextTask(newDoc){var r=R[ri];T=r.tasks[ti];T.res=resolve(r,T);sel=null;tries=0;mode="check";lvl=T.lvl=="g"?"w":"w";
+  if(newDoc){root.innerHTML=hudH(hp,"🎯 1/"+total)+"<div class='ttl'></div>"+
+   O.win("W "+esc(r.t),O.WD,["Основне","Вставлення","Макет","Рецензування"],"<span class='pill'>Ж</span><span class='pill'><i>К</i></span><span class='pill'><u>Ч</u></span><span class='pill'>≡</span>","<div class='doc' id='g5b_doc'>"+build(r)+"</div>")+
+   "<div class='lvs'>"+LVO.map(function(k){return "<button type='button' class='rb' data-l='"+k+"'>"+LV[k]+"</button>"}).join("")+"</div><div class='prop'></div>"+sayBox("")+goB("Перевірити: це воно ✔");
+   q("#g5b_doc").onclick=tapDoc;qa(".lvs .rb").forEach(function(b){b.onclick=function(){if(over||mode!="check")return;lvl=b.dataset.l;paint()}});q(".go").onclick=goClick}
+  q(".ttl").textContent="Знайди: "+LV[T.lvl].toUpperCase();sayH(root,esc(T.txt),"");setHud();q(".go").textContent="Перевірити: це воно ✔";paint()}
+ function tapDoc(e){if(over||mode!="check")return;var c=e.target.closest&&e.target.closest(".c");if(!c&&e.target.querySelector)c=e.target.querySelector(".c");
+  if(c){var d=c.dataset;sel={g:+d.g,p:+d.p,l:+d.l,w:+d.w,c:+d.c}}else{var pg=e.target.closest&&e.target.closest(".dpg");if(pg&&lvl=="g")sel={g:+pg.dataset.g,p:0,l:0,w:0,c:0};else return}
+  paint()}
+ function sameAt(a,b,l){if(a.g!==b.g)return false;if(l=="g")return true;if(a.p!==b.p)return false;if(l=="p")return true;if(a.l!==b.l)return false;if(l=="l")return true;if(a.w!==b.w)return false;if(l=="w")return true;return a.c===b.c}
+ function endGame(m){over=true;mode="end";say(root,m,"bad");q(".go").textContent="Результат"}
+ function goClick(){
+  if(mode=="end")return fin9(sc,total);
+  if(mode=="next"){done++;ti++;var r=R[ri];if(ti<r.tasks.length)return nextTask(false);ri++;if(ri>=n)return fin9(sc,total);ti=0;return nextTask(true)}
+  if(mode!="check")return;
+  if(!sel){say(root,"Спершу виділи об’єкт: тапни по тексту документа.","bad");return}
+  var ok=lvl==T.lvl&&sameAt(sel,T.res,T.lvl);
+  if(ok){if(!tries)sc++;mode="next";say(root,"✔ "+T.why,"ok");var last=ri==n-1&&ti==R[ri].tasks.length-1;q(".go").textContent=last?"Результат":"Далі →"}
+  else{tries++;hp--;var m=lvl!=T.lvl?"Ти вибрав «"+LV[lvl]+"», а тут потрібен «"+LV[T.lvl]+"». ":"Виділено «"+esc(selText()).slice(0,40)+"», а це не той об’єкт. Перечитай завдання.";setHud();shk(q("#g5b_doc"));
+   if(hp<=0)return endGame(m+" Життя закінчилися.");say(root,m,"bad")}}
+ startRound();
+};
+
+/* ---------------- підключення до уроків і іконки ---------------- */
+function icon(t,e,nm){try{if(typeof GI5!="undefined")GI5[t]=[e,nm]}catch(_){}try{if(typeof GI!="undefined")GI[t]=[e,nm]}catch(_){}}
+icon("sorter","🎞️","Стрічка слайдів");icon("critic","🔍","Критик слайдів");icon("objhunt","🎯","Знайди об’єкт");
+var S=function(e,t,w){return [e,t]};
+O.rep(519,{type:"sorter",title:"Стрічка слайдів",hint:"Розклади слайди в логічному порядку: тапни слайд, потім місце — або перетягни. Потім — виступ під таймер.",rounds:[
+ {k:"order",t:"Життя курчати",s:[["🥚","Яйце"],["🐣","Вилуплення"],["🐥","Курча"],["🐔","Курка"]],hint:"Історія розвивається в часі: від початку до кінця.",why:"Так! Історія йде за часом: яйце → вилуплення → курча → курка. Логічний порядок слайдів допомагає слухачам."},
+ {k:"order",t:"Презентація про космос",s:[["🪐","Титульний слайд"],["📋","План"],["🌍","Планети"],["✅","Висновки"],["📚","Використані джерела"]],hint:"Спершу титульний слайд і план, потім основне, наприкінці — висновки й джерела.",why:"Так! Структура презентації: титульний слайд, основні слайди, висновки, а в кінці — слайд з використаними джерелами."},
+ {k:"order",t:"Готуємось до виступу",s:[["📝","Записати текст"],["🎤","Репетирувати"],["⏱️","Оцінити тривалість"],["▶️","Показ слайдів"]],hint:"Спершу готуємо й репетируємо, а показ — наприкінці.",why:"Так! Спочатку продумай текст, відрепетируй і оціни тривалість — і лише потім виступай у режимі Показ слайдів."},
+ {k:"show",t:"Вправа виступу",time:10,s:[
+  ["👋","Привіт! Я Стів","Ти починаєш виступ. Як говорити?",[["Голосно, чітко й повільно",1],["Тихо й дуже швидко",0],["Бурмотіти собі під ніс",0]],"Говори голосно, чітко й повільно, упевнено — тоді тебе почують і зрозуміють."],
+  ["🪐","Найбільша планета — Юпітер","Треба звернути увагу слухачів на головне на слайді. Що використати?",[["Лазерний вказівник",1],["Читати весь текст підряд",0],["Стати спиною до слухачів",0]],"Указка чи лазерний вказівник привертають увагу до важливого об’єкта."],
+  ["📄","Слайд із довгим текстом","Слайд повний тексту. Як виступати?",[["Розповідати своїми словами: слайд — це план",1],["Зачитати все слово в слово",0],["Мовчки чекати, поки прочитають",0]],"Не читай усе зі слайдів: слайд — це лише план, а думки висловлюй своїми словами."],
+  ["🔴","Лазерний вказівник ще працює","Показ іде, а лазерний вказівник уже не потрібен. Як завершити інструмент?",[["Натиснути Esc",1],["Натиснути F5",0],["Вимкнути комп’ютер",0]],"Клавіша Esc завершує інструмент (і вихід із показу). F5 запускає показ з початку."]]}]});
+O.rep(520,{type:"critic",title:"Критик слайдів",hint:"Тапай по слайду й знайди три недоліки дизайну. Тап по гарному елементу — мінус ❤️.",rounds:[
+ {bg:"#fff3b0",els:[
+  {x:8,y:8,w:272,h:26,f:"c",s:"color:#ffe56a;font:900 15px ui-monospace,monospace;text-align:center;line-height:26px",c:"Мій проєкт про космос",why:"жовтий текст на світло-жовтому тлі майже не видно. Колір тексту має сильно відрізнятися від тла."},
+  {x:8,y:42,w:178,h:80,f:"v",s:"color:#333;font:11px/1.15 ui-monospace,monospace;padding:2px",c:"Космос — це дуже великий простір. Космос починається над Землею. Там багато зірок і планет. Космос вивчають учені. Космос цікавий, дуже цікавий. Космос — це Всесвіт, у якому є все.",why:"суцільна стіна тексту. Слайд — це план, а не весь текст: залиш кілька ключових слів."},
+  {x:8,y:134,w:178,h:20,f:"f",s:"color:#333;font:7px/1.2 ui-monospace,monospace",c:"Джерела: сайт-1.com, сайт-2.com, сайт-3.com, енциклопедія",why:"занадто дрібний шрифт. Текст на слайді має бути завбільшки не менше 24 пт."},
+  {x:196,y:44,w:84,h:74,s:"font-size:52px;text-align:center;line-height:74px",c:"🪐",why:"картинка доречна й пасує до теми."},
+  {x:196,y:128,w:84,h:26,s:"color:#1d2340;font:900 12px ui-monospace,monospace;text-align:center;line-height:26px",c:"Слайд 1",why:"короткий підпис, добре читається."}]},
+ {bg:"#fff",els:[
+  {x:8,y:6,w:272,h:28,s:"color:#1d2340;font:900 17px ui-monospace,monospace;text-align:center;line-height:28px",c:"Мої улюблені тварини",why:"заголовок великий, темний на світлому тлі: читається добре."},
+  {x:8,y:42,w:132,h:56,f:"f",s:"color:#222;font:7px/1.25 ui-monospace,monospace",c:"• Собака — найкращий друг людини<br>• Кіт любить спати на сонці<br>• Хом’як запасає їжу в щоках<br>• Папуга вміє повторювати слова",why:"крихітний шрифт: з другого ряду класу це не прочитати. Потрібно не менше 24 пт."},
+  {x:150,y:42,w:132,h:96,f:"o",s:"background:linear-gradient(90deg,#ff4fa3,#ffd800,#39d353,#4aa3ff);font-size:20px;line-height:1.1;text-align:center;padding:2px;text-shadow:2px 2px #f00",c:"🐶🐱🐹<br><span style='font:900 14px serif;color:#00f'>ТВАРИНИ!!!</span><br>🐰🐢🦜<br><span style='font:900 11px cursive;color:#fff'>супер-супер</span>",why:"забагато картинок, кольорів і шрифтів: увага розпорошується. Краще 1–2 доречні зображення в єдиному стилі."},
+  {x:8,y:112,w:132,h:42,f:"c",s:"color:#d9d9d9;font:12px ui-monospace,monospace;line-height:42px;text-align:center",c:"Автор: Оля, 5-А",why:"світло-сірий текст на білому майже зливається з тлом. Потрібен контраст."},
+  {x:150,y:142,w:132,h:16,s:"color:#555;font:10px ui-monospace,monospace;text-align:right",c:"Слайд 2",why:"це лише номер слайда."}]},
+ {bg:"#1b1f3a",els:[
+  {x:8,y:6,w:190,h:28,s:"color:#fff;font:900 15px ui-monospace,monospace;line-height:28px",c:"Безпека в інтернеті",why:"заголовок білий на темному: читається добре."},
+  {x:8,y:40,w:124,h:64,f:"c",s:"color:#3a3f6a;font:900 12px/1.4 ui-monospace,monospace",c:"• Пароль нікому не казати<br>• Не відкривати дивні листи<br>• Питати дорослих",why:"темно-синій текст на темно-синьому тлі майже не видно. Потрібен контраст."},
+  {x:140,y:40,w:142,h:114,f:"v",s:"color:#fff;font:9px/1.2 ui-monospace,monospace",c:"Інтернет — це чудово, але в ньому є небезпеки. Не повідомляй пароль нікому, навіть друзям. Перш ніж відкрити лист від незнайомця, подумай. Якщо щось здається дивним, одразу скажи дорослим. Не публікуй свою адресу й номер телефону. Не вір усьому, що пишуть.",why:"забагато тексту, його ніхто не прочитає. Слайд — це план: залиш кілька коротких тез."},
+  {x:8,y:112,w:124,h:42,f:"o",s:"background:linear-gradient(90deg,#f0f,#ff0,#0ff,#f80);font-size:16px;line-height:42px;text-align:center;letter-spacing:2px",c:"🛡️🔒💻📱🔑",why:"строката смуга з купою значків відволікає від змісту. Менше прикрас — більше користі."},
+  {x:204,y:4,w:76,h:32,s:"font-size:26px;text-align:center;line-height:32px",c:"🔒",why:"невелика доречна піктограма, яка пасує до теми."}]},
+ {bg:"#e8f7ff",els:[
+  {x:8,y:6,w:272,h:18,f:"f",s:"color:#1d2340;font:900 8px ui-monospace,monospace;text-align:center;line-height:18px",c:"Мій улюблений гурток — малювання",why:"заголовок має бути найбільшим на слайді, а тут він дрібний. Потрібно не менше 24 пт."},
+  {x:8,y:30,w:120,h:60,s:"color:#1d2340;font:800 13px/1.4 ui-monospace,monospace",c:"• Малюю олівцем<br>• Малюю фарбами<br>• Ходжу двічі на тиждень",why:"короткі тези великим темним шрифтом: добре."},
+  {x:134,y:30,w:148,h:60,f:"o",s:"background:repeating-linear-gradient(45deg,#ff4fa3 0 8px,#ffd800 8px 16px,#4aa3ff 16px 24px);text-align:center;line-height:1.1;padding:3px",c:"<span style='font:900 15px cursive;color:#fff;text-shadow:2px 2px #000'>ГУРТОК!!!</span><br><span style='font:900 13px serif;color:#a00'>★ МАЛЮВАННЯ ★</span><br>🎨🖌️🖍️✏️🌈",why:"купа різних шрифтів, кольорів і прикрас. Обери єдиний стиль і менше ефектів."},
+  {x:8,y:96,w:272,h:60,f:"v",s:"color:#333;font:8px/1.2 ui-monospace,monospace",c:"Гурток малювання працює вже кілька років. Ми вивчаємо кольори, тіні, перспективу, пейзажі, портрети, натюрморти, графіку, акварель, гуаш, пастель, олівці. Щороку проводимо виставку, а також беремо участь у конкурсах міста й області. Керівник — вчитель образотворчого мистецтва.",why:"суцільний довгий абзац: слухачі його не читатимуть. Залиш головну думку, решту розкажеш голосом."}]}
+ ]});
+O.rep(521,{type:"objhunt",title:"Знайди об’єкт",hint:"Тапни по документу, вибери рівень виділення (символ, слово, рядок, абзац, сторінка) і підтверди. Внизу видно властивості об’єкта.",rounds:[
+ {t:"Кіт.docx",pages:[[
+  {lines:["Кіт сидить на вікні.","Він *дивиться *на *птахів!"],fi:"немає",sp:"1,15"},
+  {al:"за шириною",fi:"1,25 см",sp:"1,15",lines:["Зранку мама дає йому молоко.","Потім кіт довго спить на сонці.","Це його улюблений час доби."]},
+  {fi:"немає",sp:"1,15",lines:["Увечері всі грають."]}]],
+  tasks:[{lvl:"c",find:"!",txt:"Тапни по знаку оклику, потім вибери «Символ». Символ — найменший об’єкт тексту.",why:"Це символ: найменший об’єкт тексту. Його властивості — шрифт, розмір, колір, накреслення."},
+   {lvl:"w",find:"молоко",txt:"Знайди слово «молоко». Тапни по ньому й вибери «Слово».",why:"Це слово: набір символів між пропусками."}]},
+ {t:"Запрошення.docx",pages:[[
+  {al:"по центру",sz:20,b:1,fi:"немає",sp:"1,0",lines:["Запрошення"]},
+  {al:"за шириною",fi:"1,25 см",sp:"1,15",lines:["Запрошую всіх на свято.","Відбудеться воно в суботу","о 15:00 у нашому класі."]},
+  {al:"по правому краю",fi:"немає",sp:"1,0",lines:["Ваш клас"]}]],
+  tasks:[{lvl:"w",find:"суботу",txt:"Виділи слово «суботу» — тоді гості не переплутають день.",why:"Слово виділяється двома клацаннями миші; його властивості — як у символів: шрифт, розмір, колір."},
+   {lvl:"l",find:"Відбудеться воно в суботу",txt:"Виділи цілий рядок «Відбудеться воно в суботу».",why:"Рядок — це все, що вміщується в одному рядку тексту на екрані."}]},
+ {t:"Правила.docx",pages:[[
+  {al:"по центру",sz:18,b:1,fi:"немає",sp:"1,0",lines:["*Правила *безпеки"]},
+  {al:"за шириною",fi:"1,25 см",sp:"1,15",lines:["Не повідомляй пароль нікому.","Пароль має бути складним."]},
+  {al:"за шириною",fi:"1,25 см",sp:"1,15",lines:["Не відкривай підозрілі листи.","Спитай дорослих, якщо сумніваєшся.","Це допоможе уникнути біди."]}]],
+  tasks:[{lvl:"l",find:"Пароль має бути складним.",txt:"Знайди рядок «Пароль має бути складним.» і виділи його.",why:"Це рядок. Він закінчується там, де текст переноситься на новий."},
+   {lvl:"p",find:"Не відкривай підозрілі листи.",txt:"Виділи абзац, що починається словами «Не відкривай підозрілі листи».",why:"Це абзац: частина тексту до натискання Enter. Властивості абзацу — відступи, вирівнювання, інтервал."}]},
+ {t:"Мій клас.docx",pages:[[
+  {al:"по центру",sz:18,b:1,fi:"немає",sp:"1,0",lines:["*Мій *клас"]},
+  {al:"за шириною",fi:"1,25 см",sp:"1,15",lines:["У нашому класі 22 учні.","Ми дружимо й допомагаємо","одне одному."]}],[
+  {al:"по центру",sz:18,b:1,fi:"немає",sp:"1,0",lines:["*Наші *успіхи"]},
+  {al:"за шириною",fi:"1,25 см",sp:"1,15",lines:["Ми перемогли в конкурсі.","Усі отримали грамоти."]}]],
+  tasks:[{lvl:"p",find:"Ми перемогли в конкурсі.",txt:"Знайди абзац про конкурс і виділи його.",why:"Абзац — об’єкт із відступами, вирівнюванням і міжрядковим інтервалом."},
+   {lvl:"g",pg:1,txt:"Виділи всю другу сторінку: вибери «Сторінка» й тапни по другому аркушу.",why:"Сторінка — об’єкт із розміром аркуша, орієнтацією та полями."}]}
+ ]});
+})();
+
+/* ===== 5 клас · Word: Редактор-детектив (523), Буфер-кур’єр (524), Знайди і заміни (525) ===== */
+(function(){
+var O=window.O5;if(!O||typeof GM==="undefined")return;
+var E=O.esc;
+function $i(id){return document.getElementById(id)}
+function hearts(l){var s="";for(var i=0;i<3;i++)s+=i<l?"❤️":"🖤";return s}
+function say(id,t,k){var e=$i(id);if(!e)return;e.className="b "+(k||"");e.innerHTML=t}
+function sayBox(id,t){return "<div class='say'><div class='c'>⛏️</div><div class='b' id='"+id+"'>"+t+"</div></div>"}
+var css=".o5 .sp-pg{padding:10px 10px 12px;font-size:14px;line-height:2;min-height:240px;word-wrap:break-word}"+
+".o5 .sp-t{background:none;border:0;padding:0 1px;margin:0;font:inherit;color:#222;cursor:pointer;text-decoration-line:underline;text-decoration-thickness:2px;text-underline-offset:3px;-webkit-tap-highlight-color:transparent}"+
+".o5 .sp-o{text-decoration-style:wavy;text-decoration-color:#e11d1d}.o5 .sp-g{text-decoration-style:double;text-decoration-color:#1d4fe1}.o5 .sp-t.sel{background:#dbe9ff}"+
+".o5 .sp-ok{background:#d7f7b8;padding:0 2px;font-weight:800}"+
+".o5 .sp-m{position:absolute;z-index:5;width:200px;background:#fff;border:3px solid #111;box-shadow:4px 4px 0 #0006}"+
+".o5 .sp-m button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #ccc;background:#fff;padding:7px 9px;font:800 13px ui-monospace,Consolas,monospace;color:#222;cursor:pointer}"+
+".o5 .sp-m button:active,.o5 .sp-m button:hover{background:#cfe3ff}.o5 .sp-m .sp-x{font-weight:600;color:#555}"+
+".o5 .lgd{font-size:11px;line-height:1.5}.o5 .lgd u{text-decoration-thickness:2px;text-underline-offset:2px}"+
+".o5 .cl-t{font-size:11px;font-weight:800;color:#2b579a;margin:2px 0}.o5 .cl-pg{padding:6px 4px;font-size:14px;line-height:2;margin-bottom:6px;min-height:48px;border:2px solid #bbb}"+
+".o5 .cl-pg.act{border-color:#2b579a}"+
+".o5 .cl-w{background:none;border:0;margin:0;padding:3px 2px;font:inherit;color:#222;cursor:pointer;-webkit-tap-highlight-color:transparent}.o5 .cl-w.on{background:#9cc7ff}"+
+".o5 .cl-s{display:inline-block;vertical-align:middle;width:12px;height:22px;border:0;background:none;padding:0;margin:0;cursor:pointer;position:relative}"+
+".o5 .cl-s:after{content:'';position:absolute;left:5px;top:3px;width:2px;height:16px;background:#bbb;opacity:.45}"+
+"@keyframes o5bl{50%{opacity:0}}.o5 .cl-s.on:after{width:3px;left:4px;background:#111;opacity:1;animation:o5bl 1s steps(1) infinite}"+
+".o5 .rib .rb{min-height:34px}.o5 .rb[disabled]{opacity:.45}"+
+".o5 .fr-pg{padding:10px;font-size:14px;line-height:1.9;min-height:110px}.o5 .fr-pg .fm2{background:#ffe94a}.o5 .fr-pg .fm1{background:#98e66a}.o5 .fr-pg .fm3{background:#ff9d2e;font-weight:800}"+
+".o5 .fr-d{color:#222;text-shadow:none;margin:6px;border:3px solid #111;background:#f0f0f0;box-shadow:4px 4px 0 #0005;padding:6px;font-size:12px}.o5 .fr-d .tt{font-weight:800;color:#2b579a;margin-bottom:4px}"+
+".o5 .fr-r{display:flex;gap:6px;align-items:center;margin:4px 0}.o5 .fr-r span{width:92px;font-weight:800}.o5 .fr-in{color:#111;flex:1;background:#fff;border:2px solid #555;padding:3px 6px;font-weight:800;min-height:26px}"+
+".o5 .fr-b{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.o5 .fr-b .rb{flex:1 1 40%}.o5 .fr-b .gr{background:#8fd14f}.o5 .fr-st{margin-top:6px;font-weight:800;font-size:11px;color:#333}";
+css+=".o5 .sp-pg,.o5 .cl-pg,.o5 .fr-pg{display:block;gap:0}.o5 .sp-pg,.o5 .fr-pg{margin:0}.o5 .hud{flex-wrap:wrap}.o5 .hud b{white-space:nowrap}.o5 .sp-t,.o5 .sp-m button,.o5 .cl-w,.o5 .cl-s{box-shadow:none;text-shadow:none;border-radius:0}.o5 .sp-t,.o5 .cl-w{width:auto}.o5 .sp-m button{width:100%;border-width:0 0 1px;border-style:solid;border-color:#ccc}"+
+".o5 button.rb{width:auto;margin:0;text-shadow:none;border-radius:0;text-align:center;color:#222}.o5 button.rb.on{background:#8fd14f}.o5 button.rb[disabled]{opacity:.45}.o5 .fr-b button.rb{flex:1 1 40%}"+
+".o5 button.go{text-shadow:2px 2px 0 #222;color:#fff}.o5 .pg,.o5 .pg *{text-align:left!important}.o5 .sp-m{text-align:left}.o5 .cl-pg,.o5 .sp-pg,.o5 .fr-pg{text-shadow:none}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+
+/* ================= 523 · Редактор-детектив ================= */
+GM.spell=function(g){var R=g.rounds,n=R.length,ri=0,sc=0,lives=3;
+ function show(){var rd=R[ri],tk=[],over=false,open=-1,found=0;
+  rd.t.forEach(function(p){if(typeof p!="string")tk.push({w:p.w,k:p.k,f:p.f,v:p.v,why:p.why,u:p.u,done:false})});
+  var total=tk.length;
+  fr9(g.title,g.hint,"<div class='o5'><div class='hud'><b id='sphl'></b><b id='sphf'></b></div>"+
+   O.win("Документ1","#2b579a",["Рецензування","Основне","Макет"],"<button class='rb on hint' id='spab'>ABC Правопис</button><span class='pill'>Раунд "+(ri+1)+" / "+n+"</span>","<div class='doc'><div class='pg sp-pg' id='sppg'></div></div>")+
+   "<div class='tsk lgd'><u style='text-decoration-style:wavy;text-decoration-color:#e11d1d'>слово</u> — орфографічна помилка (червона хвиляста)<br><u style='text-decoration-style:double;text-decoration-color:#1d4fe1'>слово</u> — граматична, у тому числі пунктуація (подвійна синя)</div>"+
+   sayBox("spsay","Тапни слово з підкресленням — з’явиться контекстне меню. Обери правильний варіант.")+"</div>");
+  gs9((ri+1)+" / "+n+" · ✅ "+sc);
+  function hud(){$i("sphl").textContent=hearts(lives);$i("sphf").textContent="🕵️ "+found+" / "+total}
+  function ul(it){return it.k=="d"?(it.u||"o"):it.k}
+  function render(){var pg=$i("sppg");if(!pg)return;var k=0,h="";
+   rd.t.forEach(function(p){if(typeof p=="string"){h+=E(p).replace(/\n/g,"<br>");return}var it=tk[k];
+    if(it.done)h+="<span class='sp-ok'>"+E(it.k=="d"?it.w:it.f)+"</span>";
+    else h+="<button class='sp-t sp-"+ul(it)+(open==k?" sel":"")+"' data-k='"+k+"'>"+E(it.w)+"</button>";k++});
+   if(open>=0){var it=tk[open];h+="<div class='sp-m' id='spm'>"+it.v.map(function(v,j){return "<button data-j='"+j+"'>"+E(v)+"</button>"}).join("")+"<button class='sp-x' data-j='s'>Пропустити</button><button class='sp-x' data-j='d'>Додати до словника</button></div>"}
+   pg.innerHTML=h;
+   if(open>=0){var b=pg.querySelector("[data-k='"+open+"']"),m=$i("spm"),pr=pg.getBoundingClientRect(),br=b.getBoundingClientRect();
+    var l=Math.max(0,Math.min(br.left-pr.left,pr.width-m.offsetWidth-4)),t=br.bottom-pr.top+2;
+    if(t+m.offsetHeight>pr.height)t=br.top-pr.top-m.offsetHeight-2;t=Math.max(0,Math.min(t,pr.height-m.offsetHeight));
+    m.style.left=l+"px";m.style.top=t+"px"}
+   hud()}
+  function endRound(){over=true;sc++;gs9((ri+1)+" / "+n+" · ✅ "+sc);say("spsay","✅ Усі помилки знайдено! "+(rd.sum||"")+" Остаточно текст перевіряє людина.","ok");
+   nxt9(ri<n-1?"Далі →":"Результат",function(){ri++;ri<n?show():fin9(sc,n)})}
+  function lose(){over=true;say("spsay","💥 Життя скінчились. Редактор-детектив відпочиває — спробуй ще раз.","bad");nxt9("Результат",function(){fin9(sc,n)})}
+  function pick(j){var it=tk[open],ok=false,txt;
+   if(it.k=="d"){ok=(j=="s"||j=="d");txt=it.v[j]}else if(j!="s"&&j!="d")ok=it.v[j]==it.f;
+   var kk=open;open=-1;
+   if(ok){it.done=true;found++;render();say("spsay","✅ "+it.why,"ok");if(tk.every(function(x){return x.done}))endRound()}
+   else{lives--;render();var pg=$i("sppg");pg.classList.remove("shake");void pg.offsetWidth;pg.classList.add("shake");
+    var w=it.k=="d"?"Це слово написано правильно, виправляти його не треба. "+it.why:(j=="s"||j=="d")?"Тут справді помилка — «Пропустити» її залишить. "+it.why:"Цей варіант не підходить до речення. "+it.why;
+    say("spsay","❌ "+w,"bad");if(lives<=0)lose()}}
+  $i("sppg").onclick=function(e){if(over)return;var m=e.target.closest("[data-j]");if(m){pick(m.getAttribute("data-j"));return}
+   var t=e.target.closest("[data-k]");if(!t){if(open>=0){open=-1;render()}return}var k=+t.getAttribute("data-k");open=open==k?-1:k;render()};
+  $i("spab").onclick=function(){if(!over)say("spsay","Правопис вимкнути не можна 🙂 Залишилось підкреслених слів: <b>"+(total-found)+"</b>. Тапни слово — відкриється меню.")};
+  render()}
+ show()};
+
+/* ================= 524 · Буфер-кур’єр ================= */
+GM.clip=function(g){var R=g.rounds,n=R.length,ri=0,sc=0,lives=3;
+ function show(){var rd=R[ri],D=[rd.d1.slice(),rd.d2.slice()],sel=null,cur=null,clip=null,moves=rd.lim,hist=[],over=false;
+  fr9(g.title,g.hint,"<div class='o5'><div class='hud'><b id='clhl'></b><b id='clhm'></b><b id='clhb'></b></div>"+
+   O.win("Документ 1 ↔ Документ 2","#2b579a",["Основне","Вставлення"],
+    "<button class='rb' id='clcut'>✂ Вирізати</button><button class='rb' id='clcp'>⧉ Копіювати</button><button class='rb' id='clps'>📋 Вставити</button><button class='rb' id='clun'>↩ Ctrl+Z</button>",
+    "<div class='doc'><div class='cl-t'>Документ 1</div><div class='pg cl-pg' id='cld0'></div><div class='cl-t'>Документ 2</div><div class='pg cl-pg' id='cld1'></div></div>")+
+   "<div class='tsk'>🎯 Ціль. Документ 1: «"+E(rd.g1)+"»<br>Документ 2: «"+E(rd.g2)+"»</div>"+
+   sayBox("clsay",rd.start||"Тапни слово, щоб виділити. Фрагмент із кількох слів: тапни перше, а потім останнє слово. Тонка смужка між словами — місце курсора.")+"</div>");
+  gs9((ri+1)+" / "+n+" · ✅ "+sc);
+  function tx(a){return a.join(" ")}
+  function hud(){$i("clhl").textContent=hearts(lives);$i("clhm").textContent="🔁 ходи "+moves;var c=clip?tx(clip):"буфер порожній";$i("clhb").textContent="📋 «"+(c.length>11?c.slice(0,10)+"…":c)+"»"}
+  function render(){for(var d=0;d<2;d++){var h="";for(var k=0;k<=D[d].length;k++){h+="<button class='cl-s"+(cur&&cur.d==d&&cur.i==k?" on":"")+"' data-d='"+d+"' data-s='"+k+"' aria-label='курсор'></button>";
+     if(k<D[d].length)h+="<button class='cl-w"+(sel&&sel.d==d&&k>=sel.a&&k<=sel.b?" on":"")+"' data-d='"+d+"' data-w='"+k+"'>"+E(D[d][k])+"</button>"}
+    var p=$i("cld"+d);p.innerHTML=h;p.className="pg cl-pg"+(((sel&&sel.d==d)||(cur&&cur.d==d))?" act":"")}
+   ["clcut","clcp","clps","clun"].forEach(function(i){$i(i).disabled=over});hud()}
+  function snap(){hist.push({D:[D[0].slice(),D[1].slice()]})}
+  function finish(ok){over=true;render();
+   if(ok){sc++;gs9((ri+1)+" / "+n+" · ✅ "+sc);say("clsay","✅ Ціль досягнуто! "+rd.why,"ok");nxt9(ri<n-1?"Далі →":"Результат",function(){ri++;ri<n?show():fin9(sc,n)})}
+   else{lives--;if(lives<=0){say("clsay","💥 Ходи скінчились, а життів більше немає. Кур’єр поспішає на перерву!","bad");nxt9("Результат",function(){fin9(sc,n)})}
+    else{say("clsay","⏱ Ходи скінчились, а ціль не досягнуто. Хід можна було заощадити: "+rd.tip+" Спробуй ще раз.","bad");nxt9("Ще раз ↻",show)}}}
+  function after(msg){var ok=tx(D[0])==rd.g1&&tx(D[1])==rd.g2;
+   if(ok){finish(true);return}
+   if(moves<=0){finish(false);return}
+   var m=msg;if(tx(D[0])==rd.g1&&tx(D[1])!=rd.g2)m="⚠️ Текст у Документі 1 правильний, але зі старого місця зник фрагмент. "+rd.keep;
+   render();say("clsay",m,m.indexOf("⚠️")==0?"bad":"")}
+  function bad(t){say("clsay","☝️ "+t,"bad")}
+  function selTxt(){return tx(D[sel.d].slice(sel.a,sel.b+1))}
+  $i("clcut").onclick=function(){if(over)return;if(!sel){bad("Спершу виділи фрагмент: тапни слово. Операції виконують над виділеним.");return}
+   snap();clip=D[sel.d].slice(sel.a,sel.b+1);D[sel.d].splice(sel.a,clip.length);cur={d:sel.d,i:sel.a};sel=null;moves--;after("✂ Вирізати: фрагмент зник із документа й тепер лежить у буфері обміну.")};
+  $i("clcp").onclick=function(){if(over)return;if(!sel){bad("Спершу виділи фрагмент: тапни слово.");return}
+   clip=D[sel.d].slice(sel.a,sel.b+1);moves--;after("⧉ Копіювати: фрагмент лишився на місці, а його копія потрапила в буфер обміну.")};
+  $i("clps").onclick=function(){if(over)return;if(!clip){bad("Буфер обміну порожній. Спершу виріж або скопіюй фрагмент.");return}
+   if(sel){snap();D[sel.d].splice.apply(D[sel.d],[sel.a,sel.b-sel.a+1].concat(clip));cur={d:sel.d,i:sel.a+clip.length};sel=null;moves--;after("📋 Вставити: виділений текст замінився вмістом буфера. Курсор був би кращим — перевір, чи це те, що треба.");return}
+   if(!cur){bad("Спершу постав курсор: тапни тонку смужку між словами, куди вставити.");return}
+   snap();D[cur.d].splice.apply(D[cur.d],[cur.i,0].concat(clip));cur.i+=clip.length;moves--;after("📋 Вставити: фрагмент з’явився там, де був курсор. У буфері він залишився — можна вставити ще раз.")};
+  $i("clun").onclick=function(){if(over)return;if(!hist.length){bad("Поки нічого скасовувати.");return}
+   var h=hist.pop();D=h.D;sel=null;moves--;after("↩ Ctrl + Z: текст повернувся до попереднього стану, а вміст буфера обміну не змінився.")};
+  var box=$i("cld0").parentNode;
+  box.onclick=function(e){if(over)return;var w=e.target.closest("[data-w]"),s=e.target.closest("[data-s]");
+   if(w){var d=+w.getAttribute("data-d"),k=+w.getAttribute("data-w");cur=null;
+    if(sel&&sel.d==d&&sel.open){sel={d:d,a:Math.min(sel.an,k),b:Math.max(sel.an,k),an:sel.an,open:false}}else sel={d:d,a:k,b:k,an:k,open:true};
+    render();say("clsay","Виділено: «"+E(selTxt())+"». "+(sel.open?"Потрібно більше слів? Тапни останнє слово фрагмента. Або обери кнопку.":"Тепер обери дію на Стрічці."))}
+   else if(s){cur={d:+s.getAttribute("data-d"),i:+s.getAttribute("data-s")};sel=null;render();say("clsay","Курсор у Документі "+(cur.d+1)+". Тепер можна вставити фрагмент із буфера.")}};
+  render()}
+ show()};
+
+/* ================= 525 · Знайди і заміни ================= */
+GM.findrep=function(g){var R=g.rounds,n=R.length,ri=0,sc=0,lives=3;
+ function show(){var rd=R[ri],over=false,S;
+  function init(){S={text:rd.text,marks:[],cur:-1,nrep:0,cs:false,wh:false,more:false,hist:[]}}init();
+  fr9(g.title,g.hint,"<div class='o5'><div class='hud'><b id='frhl'></b><b id='frhf'></b></div>"+
+   O.win("Документ1","#2b579a",["Основне","Вставлення","Макет"],"<button class='rb' id='frfd'>🔍 Знайти</button><span class='rb on hint'>⇄ Замінити</span><span class='pill'>Ctrl+H</span><button class='rb' id='frun'>↩ Ctrl+Z</button>",
+    "<div class='doc'><div class='pg fr-pg' id='frpg'></div><div class='fr-d' id='frdl'></div></div>")+
+   "<div class='tsk'>🎯 "+rd.task+"</div>"+sayBox("frsay",rd.start||"Спершу подивись, скільки збігів підсвітилось. Тоді вирішуй, яку кнопку натиснути.")+
+   "<button class='go' id='frgo'>Перевірити ✔</button></div>");
+  gs9((ri+1)+" / "+n+" · ✅ "+sc);
+  function re(){var f=rd.find.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),src=S.wh?"(?<![\\p{L}\\p{N}’])"+f+"(?![\\p{L}\\p{N}’])":f;return new RegExp(src,"gu"+(S.cs?"":"i"))}
+  function matches(){var m=[],r=re(),x;while((x=r.exec(S.text))){m.push({s:x.index,e:x.index+x[0].length});if(!x[0].length)r.lastIndex++}return m}
+  function render(){var ms=matches(),t=S.text,c=new Array(t.length+1).fill(0),i,j;
+   S.marks.forEach(function(m){for(j=m[0];j<m[1];j++)c[j]=1});
+   ms.forEach(function(m){for(j=m.s;j<m.e;j++)c[j]=m.s==S.cur?3:2});
+   var h="",run="",cl=-1;for(i=0;i<=t.length;i++){var k=i<t.length?c[i]:-2;if(k!=cl){if(run)h+=(cl>0?"<span class='fm"+cl+"'>"+E(run)+"</span>":E(run));run="";cl=k}if(i<t.length)run+=t.charAt(i)}
+   $i("frpg").innerHTML=h;
+   $i("frdl").innerHTML="<div class='tt'>Знайти й замінити</div><div class='fr-r'><span>Знайти:</span><div class='fr-in'>"+E(rd.find)+"</div></div><div class='fr-r'><span>Замінити на:</span><div class='fr-in'>"+E(rd.rep)+"</div></div>"+
+    "<div class='fr-b'><button class='rb' data-a='next'>Знайти далі</button><button class='rb' data-a='rep'>Замінити</button><button class='rb gr' data-a='all'>Замінити все</button><button class='rb' data-a='more'>Більше "+(S.more?"▴":"▾")+"</button></div>"+
+    (S.more?"<div class='fr-b'><button class='rb"+(S.cs?" on":"")+"' data-a='cs'>"+(S.cs?"☑":"☐")+" Враховувати регістр</button><button class='rb"+(S.wh?" on":"")+"' data-a='wh'>"+(S.wh?"☑":"☐")+" Лише слово цілком</button></div>":"")+
+    "<div class='fr-st'>Знайдено: "+ms.length+" · Замінено: "+S.nrep+"</div>";
+   $i("frhl").textContent=hearts(lives);$i("frhf").textContent="🔎 Знайдено: "+ms.length;
+   ["frfd","frun","frgo"].forEach(function(x){$i(x).disabled=over});$i("frdl").querySelectorAll("button").forEach(function(b){b.disabled=over})}
+  function snap(){S.hist.push({text:S.text,marks:S.marks.map(function(m){return m.slice()}),cur:S.cur,nrep:S.nrep})}
+  function replaceRanges(rs){var out="",pos=0,delta=0,nm=[];
+   var old=S.marks.filter(function(m){return !rs.some(function(r){return m[0]<r.e&&m[1]>r.s})}).map(function(m){var d=0;rs.forEach(function(r){if(r.e<=m[0])d+=rd.rep.length-(r.e-r.s)});return [m[0]+d,m[1]+d]});
+   rs.forEach(function(r){out+=S.text.slice(pos,r.s)+rd.rep;nm.push([r.s+delta,r.s+delta+rd.rep.length]);delta+=rd.rep.length-(r.e-r.s);pos=r.e});
+   out+=S.text.slice(pos);S.text=out;S.marks=old.concat(nm);S.nrep+=rs.length}
+  function nextFrom(ms,p){for(var i=0;i<ms.length;i++)if(ms[i].s>=p)return ms[i].s;return ms.length?ms[0].s:-1}
+  function act(a){if(over)return;var ms=matches(),m;
+   if(a=="more"){S.more=!S.more;render();return}
+   if(a=="cs"||a=="wh"){S[a]=!S[a];S.cur=-1;render();var k=matches().length;say("frsay",(a=="cs"?"Регістр: ":"Лише слово цілком: ")+(S[a]?"увімкнено":"вимкнено")+". Тепер збігів: <b>"+k+"</b>. Подивись, які саме підсвітились.");return}
+   if(a=="next"){if(!ms.length){say("frsay","Збігів немає.","bad");return}S.cur=nextFrom(ms,S.cur<0?0:S.cur+1);render();say("frsay","🔎 Знайти далі: поточний збіг виділено помаранчевим. Хочеш його змінити — натисни «Замінити», не хочеш — шукай далі.");return}
+   if(a=="rep"){m=ms.filter(function(x){return x.s==S.cur})[0];
+    if(!m){if(!ms.length){say("frsay","Збігів немає.","bad");return}S.cur=nextFrom(ms,0);render();say("frsay","Спершу «Замінити» лише знаходить збіг і виділяє його. Натисни ще раз — і він зміниться.");return}
+    snap();replaceRanges([m]);S.cur=nextFrom(matches(),m.s+rd.rep.length);render();say("frsay","⇄ Замінено один збіг. Далі виділено наступний. Не треба міняти — натисни «Знайти далі».");return}
+   if(a=="all"){if(!ms.length){say("frsay","Збігів немає.","bad");return}snap();replaceRanges(ms);S.cur=-1;render();say("frsay","⇄ Замінити все: змінено збігів — <b>"+ms.length+"</b>. Прочитай текст: чи не зачепило зайве? Тоді «Перевірити».");return}}
+  $i("frdl").onclick=function(e){var b=e.target.closest("[data-a]");if(b)act(b.getAttribute("data-a"))};
+  $i("frfd").onclick=function(){if(over)return;var k=matches().length;say("frsay","🔍 Знайти (Ctrl + F) лише показує збіги: їх <b>"+k+"</b>. Текст не змінюється.")};
+  $i("frun").onclick=function(){if(over)return;if(!S.hist.length){say("frsay","Поки нічого скасовувати.","bad");return}var h=S.hist.pop();S.text=h.text;S.marks=h.marks;S.cur=h.cur;S.nrep=h.nrep;render();say("frsay","↩ Заміну скасовано (Ctrl + Z).")};
+  $i("frgo").onclick=function(){if(over)return;
+   if(S.text==rd.target){over=true;sc++;gs9((ri+1)+" / "+n+" · ✅ "+sc);render();say("frsay","✅ Текст правильний! "+rd.why,"ok");nxt9(ri<n-1?"Далі →":"Результат",function(){ri++;ri<n?show():fin9(sc,n)});return}
+   lives--;var why=(rd.bad||[]).some(function(b){return S.text.indexOf(b)>=0})?rd.badWhy:matches().length&&S.nrep<rd.need?"Не всі потрібні збіги замінено. Подивись, що ще підсвічено, і зроби заміну.":"Текст не збігається із завданням: замінено не те, що треба. Перевір, які збіги потрібно змінити.";
+   if(lives<=0){over=true;render();say("frsay","💥 "+why+" Життя скінчились.","bad");nxt9("Результат",function(){fin9(sc,n)});return}
+   over=true;render();say("frsay","❌ "+why+" Документ повернуто до початку — спробуй ще раз.","bad");nxt9("Ще раз ↻",show)};
+  render()}
+ show()};
+
+/* ---------- іконки та дані ---------- */
+if(typeof GI5!="undefined"){GI5.spell=["🕵️","Редактор-детектив"];GI5.clip=["📋","Буфер-кур’єр"];GI5.findrep=["🔎","Знайди і заміни"]}
+if(typeof GI!="undefined"&&typeof GI5!="undefined"){GI.spell=GI5.spell;GI.clip=GI5.clip;GI.findrep=GI5.findrep}
+
+O.rep(523,{type:"spell",title:"Редактор-детектив: виправ помилки",hint:"Word підкреслює слова з помилками. Знайди їх усі й виправ через контекстне меню — але не чіпай правильні слова!",rounds:[
+{t:["Мій улюблений ",{w:"предмт",k:"o",f:"предмет",v:["предмети","предмет","предмета"],why:"Пропущена літера «е» — слово «предмет»."}," — інформатика. Ми вивчаємо ",{w:"прогаму",k:"o",f:"програму",v:["програми","програма","програму"],why:"Пропущена літера «р» — слово «програму»."}," ",{w:"Paint",k:"d",v:["Print","Point"],u:"o",why:"Paint — назва програми. Word її не знає, тому підкреслив. Вибери «Додати до словника» або «Пропустити»."}," і малюємо в ній. Кожен ",{w:"урк",k:"o",f:"урок",v:["уроки","урок","уроку"],why:"Пропущена літера «о» — слово «урок»."}," цікавий."],sum:"Червона хвиляста лінія — орфографія."},
+{t:["Учні Ладанського ліцею сидять за ",{w:"комп’тером",k:"o",f:"комп’ютером",v:["комп’ютерами","комп’ютером","комп’ютери"],why:"Пропущена літера «ю»: «комп’ютером»."},". Вони пишуть ",{w:"реферт",k:"o",f:"реферат",v:["реферати","реферат","реферату"],why:"Пропущена літера «а»: «реферат»."}," про програму ",{w:"Scratch",k:"d",v:["Scratchy","Scrap"],u:"o",why:"Scratch — це назва програми, вона написана правильно. Її можна додати до словника."},", а ",{w:"Ладанського",k:"d",v:["Ладанських","Ладанське"],u:"o",why:"Це назва місцевості, форма слова правильна. Можна пропустити або додати до словника."}," ліцей їх хвалить."],sum:"Не кожне підкреслене слово — помилка: Word не знає власних назв."},
+{t:["Сьогодні в нас ",{w:"урок. ми",k:"g",f:"урок. Ми",v:["Урок. ми","урок, Ми","урок. Ми"],why:"Нове речення починається з великої літери: «Ми»."}," вчимось редагувати текст. Я люблю ",{w:"Word але",k:"g",f:"Word, але",v:["Word. але","Word, але","Word: але"],why:"Перед «але» ставимо кому."}," Excel теж цікавий. Ми малюємо ",{w:"та та",k:"g",f:"та",v:["та, та","і та","та"],why:"Слово «та» повторилося двічі — зайве лишаємо одне."}," пишемо. ",{w:"Чи ти зберіг файл.",k:"g",f:"Чи ти зберіг файл?",v:["Чи ти зберіг файл!","Чи ти зберіг файл,","Чи ти зберіг файл?"],why:"Питальне речення закінчується знаком питання."}],sum:"Подвійна синя лінія — граматика й пунктуація."},
+{t:["Word і ",{w:"Excel",k:"d",v:["Exceed","Excess"],u:"o",why:"Excel — назва програми Office, помилки немає."}," — програми Office. Червона хвиляста лінія вказує на ",{w:"орфографчну",k:"o",f:"орфографічну",v:["орфографічна","орфографічну","орфографічної"],why:"Пропущена літера «і»: «орфографічну»."}," ",{w:"помилку ,",k:"g",f:"помилку,",v:["помилку.","помилку,","помилку:"],why:"Пробіл перед комою зайвий: кому пишемо одразу після слова."}," а подвійна синя — на граматичну. Клацни правою кнопкою й вибери ",{w:"варіат",k:"o",f:"варіант",v:["варіанти","варіанту","варіант"],why:"Пропущена літера «н»: «варіант»."}," із меню."],sum:"Пам’ятай: правопис перевіряє помічник, а рішення приймаєш ти."}
+]});
+
+O.rep(524,{type:"clip",title:"Буфер-кур’єр: перенеси текст",hint:"Збери в Документі 1 потрібний текст за мінімум ходів. Операції — над виділеним фрагментом, вставлення — туди, де курсор.",rounds:[
+{d1:["Кіт","любить","пити"],d2:["Тепле","молоко."],g1:"Кіт любить пити молоко.",g2:"Тепле молоко.",lim:4,why:"Копіювання лишає оригінал на місці й кладе копію в буфер обміну; Вставити ставить її там, де курсор.",keep:"Вирізати переносить фрагмент, а тут оригінал має лишитись. Натисни Ctrl+Z і скористайся копіюванням.",tip:"виділити слово, «Копіювати», курсор у кінець Документа 1, «Вставити»."},
+{d1:["Потім","відкрий","браузер.","Спершу","увімкни","комп’ютер."],d2:["Нотатки","до","уроку."],g1:"Спершу увімкни комп’ютер. Потім відкрий браузер.",g2:"Нотатки до уроку.",lim:4,why:"Вирізати + Вставити = переміщення: зі старого місця фрагмент зник, а в новому з’явився.",keep:"Нотатки не чіпай.",tip:"виділити перше речення (перше й останнє слово), «Вирізати», курсор у кінець, «Вставити»."},
+{d1:[],d2:["Ура!"],g1:"Ура! Ура! Ура!",g2:"Ура!",lim:6,why:"Після вставлення фрагмент залишається в буфері обміну, тому його можна вставляти скільки завгодно разів.",keep:"Вирізання забирає слово з Документа 2. Скористайся копіюванням.",tip:"один раз скопіювати й тричі вставити."},
+{d1:["Я","вмію","і"],d2:["друкувати","малювати."],g1:"Я вмію друкувати і малювати.",g2:"друкувати малювати.",lim:6,why:"Кожне нове копіювання замінює вміст буфера обміну: у ньому завжди лише останній фрагмент.",keep:"Слова в Документі 2 мають лишитися. Скопіюй, а не виріж.",tip:"спершу «друкувати» (між «вмію» та «і»), потім «малювати.» (у кінці)."}
+]});
+
+O.rep(525,{type:"findrep",title:"Знайди і заміни: акуратна заміна",hint:"Відкрито вікно Замінити (Ctrl + H). Підсвічені збіги можна міняти всі разом або по одному. Стережись частин чужих слів!",rounds:[
+{task:"Скрізь заміни ім’я «Оля» на «Олена».",text:"Оля прийшла до класу. Оля відкрила ноутбук. Потім Оля набрала текст у Word.",find:"Оля",rep:"Олена",target:"Олена прийшла до класу. Олена відкрила ноутбук. Потім Олена набрала текст у Word.",need:3,why:"«Замінити все» змінює всі збіги одразу — це швидше, ніж правити вручну.",bad:[],badWhy:""},
+{task:"Заміни слово «рис» на «плов», але слова «Рисунок» і «рисове» мають лишитися.",text:"На обід був рис. Рисунок Оля намалювала після обіду. На столі лежав рис і хліб, а ще — рисове поле на картині.",find:"рис",rep:"плов",target:"На обід був плов. Рисунок Оля намалювала після обіду. На столі лежав плов і хліб, а ще — рисове поле на картині.",need:2,why:"Збіг може бути частиною довшого слова. Допомагає «Більше» ⇒ «Лише слово цілком» або вибіркова заміна: «Знайти далі» й «Замінити».",bad:["пловунок","пловове"],badWhy:"«Замінити все» змінило й частини довших слів: «Рисунок» і «рисове». Спробуй «Більше» ⇒ «Лише слово цілком» або замінюй по одному."},
+{task:"Заміни ім’я «Лев» на «Левко». Тварина «лев» і слово «лева» мають лишитись.",text:"Лев сидить за комп’ютером. У зоопарку лев відпочиває. Увечері Лев пише реферат про лева.",find:"Лев",rep:"Левко",target:"Левко сидить за комп’ютером. У зоопарку лев відпочиває. Увечері Левко пише реферат про лева.",need:2,why:"«Враховувати регістр» розрізняє велику й малу літеру: ім’я Лев і тварина лев — різні слова.",bad:["Левкоа","зоопарку Левко"],badWhy:"Word знайшов і «лев», і частину слова «лева», бо за замовчуванням регістр не враховується. У «Більше» увімкни «Враховувати регістр»."},
+{task:"Заміни «Word» на «Excel» лише в понеділок і середу. У вівторок має лишитись Word.",text:"У понеділок вивчаємо Word. У вівторок вивчаємо Word і Paint. У середу знову Word.",find:"Word",rep:"Excel",target:"У понеділок вивчаємо Excel. У вівторок вивчаємо Word і Paint. У середу знову Excel.",need:2,why:"Вибіркова заміна: «Знайти далі» пропускає збіг, «Замінити» змінює поточний.",bad:["вівторок вивчаємо Excel"],badWhy:"«Замінити все» змінило й вівторок. Для вибіркової заміни скористайся «Знайти далі» та «Замінити»."}
+]});
+})();
+
+// g5od — 5 клас: «Стиліст тексту» (526), «Верстальник сторінки» (527, 528)
+(function(){
+var O=window.O5;if(!O||typeof GM=="undefined")return;
+var esc=O.esc,WD=O.WD;
+function hearts(h){return new Array(h+1).join("❤️")+new Array(4-h).join("🖤")}
+function fmt(x){return String(+x.toFixed(2)).replace(".",",")}
+var css=".o5 .hg{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:4px;align-items:center}.o5 .hl{flex:0 0 100%;font-size:10px;color:#666;font-weight:800;text-transform:uppercase}"+
+".o5 .hcap{font-size:10px;font-weight:800;color:#555;margin:4px 0 3px}.o5 .hpg{padding:7px 8px 5px}"+
+".o5 .hb{display:flex;gap:4px;align-items:flex-start;margin:2px 0}.o5 .hm{flex:0 0 24px;min-height:24px;color:#2b579a;font-style:normal;font-weight:800;border:2px solid #c6c6c6;text-align:center;font-size:12px;line-height:20px;cursor:pointer;user-select:none}"+
+".o5 .hb.cur .hm{background:#2b579a;color:#fff;border-color:#111}.o5 .hp{flex:1;min-width:0;color:#222}.o5 .hw{cursor:pointer;padding:2px 0}.o5 .hw.hsel{background:#b9d3ff;box-shadow:0 0 0 1px #2b579a}"+
+".o5 .hck div{padding:2px 0;line-height:1.35}.o5 .hck .ok{color:#1b7a22}.o5 .hck .no{color:#c0183a}.o5 .rb.sq{min-width:30px;padding:2px 4px}.o5 .rb.wide{flex:1 1 90px}.o5 .rb.ml{justify-content:flex-start;text-align:left;flex:1 1 100%}"+
+".o5 .hstage{display:flex;justify-content:center;align-items:center;min-height:200px;background:#e6e6e6;padding:8px}.o5 .hpaper{background:#fff;position:relative;box-shadow:0 2px 6px #0005;overflow:hidden;flex:none}"+
+".o5 .hgd{position:absolute;border:1px dashed #2b579a}.o5 .hob{position:absolute;border:2px solid #2b579a;background:#cfe3ff;color:#2b579a;font:900 11px ui-monospace,monospace;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}"+
+".o5 .hob.bad{border-color:#d11;background:#ffd6d6;color:#d11}.o5 .hbar{position:absolute;height:3px;background:#bbb}.o5 .hnum{position:absolute;font:800 8px ui-monospace,monospace;color:#222;line-height:8px}"+
+".o5 .hmenu{background:#fff;border-top:2px solid #111;padding:5px;display:flex;flex-wrap:wrap;gap:4px}.o5 .hpx .tabs span{padding:7px 10px;cursor:pointer}.o5 .hstat{margin:4px 0}.o5 .hrow{display:flex;gap:5px;align-items:center;flex-wrap:wrap;padding:4px 6px}.o5 .hrow>b{flex:0 0 74px;font-size:11px}.o5 .hrow .cnt{min-width:34px;text-align:center;font-weight:900;font-size:15px}"+
+".o5 .hv{background:#fff;color:#222}.o5 .hv b,.o5 .hg b,.o5 .hcap,.o5 .hck div{color:#222;text-shadow:none}.o5 .hck .ok{color:#1b7a22}.o5 .hck .no{color:#c0183a}.o5 .hwarn{color:#d11;font-weight:800;font-size:11px;margin:3px 0;text-align:center}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+function say(t,k){return "<div class='say'><div class='c'>⛏️</div><div class='b "+(k||"")+"'>"+t+"</div></div>"}
+function setSay(root,t,k){var b=root.querySelector(".say .b");if(b){b.className="b "+(k||"");b.innerHTML=t}}
+function shake(root){var w=root.querySelector(".win");if(!w)return;w.classList.add("shake");setTimeout(function(){if(document.body.contains(w))w.classList.remove("shake")},400)}
+
+/* ============================== СТИЛІСТ ТЕКСТУ ============================== */
+var FN=[["Times New Roman","'Times New Roman',Times,serif"],["Arial","Arial,Helvetica,sans-serif"],["Courier New","'Courier New',Courier,monospace"]];
+var AN={l:"за лівим краєм",c:"по центру",r:"за правим краєм",j:"за шириною"},AJ={l:"left",c:"center",r:"right",j:"justify"},SZ=[10,12,14,18,24],IV=[1,1.5,2],SC=.8;
+var HINT={f:"Шрифт змінюють у групі Шрифт (вкладка Основне).",z:"Розмір шрифту задають у пунктах — група Шрифт.",b:"Ж — напівжирний, це накреслення символів.",i:"К — курсив, це накреслення символів.",u:"Ч — підкреслений, це накреслення символів.",al:"Вирівнювання — властивість абзацу, група Абзац.",iv:"Міжрядковий інтервал — властивість абзацу, група Абзац."};
+function ff(n){for(var i=0;i<3;i++)if(FN[i][0]==n)return FN[i][1];return FN[1][1]}
+function aic(k){var w=k=="j"?[12,12,12,12]:[12,8,12,6],s="";w.forEach(function(x,j){var X=k=="r"?12-x:k=="c"?(12-x)/2:0;s+="<rect x='"+(1+X)+"' y='"+(1+j*3)+"' width='"+x+"' height='2' fill='#222'/>"});return "<svg width='14' height='14' viewBox='0 0 14 14'>"+s+"</svg>"}
+function mkB(rd){return rd.B.map(function(t){return{al:"l",iv:1,ws:t.split(" ").map(function(w){return{w:w,f:"Arial",z:12,b:0,i:0,u:0}})}})}
+function cp(B){return JSON.parse(JSON.stringify(B))}
+function setP(B,b,p,v,w){var bl=B[b];if(p=="al"||p=="iv")bl[p]=v;else bl.ws.forEach(function(x,k){if(w==null||w==k)x[p]=v})}
+function getOk(B,r){var bl=B[r[0]],p=r[1];if(p=="al"||p=="iv")return bl[p]==r[2];return bl.ws.every(function(x,k){return (r[3]==null||r[3]==k)?x[p]==r[2]:true})}
+function pageHtml(B,sel,ed){return B.map(function(bl,bi){var sp=bl.ws.map(function(x,wi){var on=sel&&sel.b==bi&&(sel.w<0||sel.w==wi);return "<span "+(ed?"data-b='"+bi+"' data-w='"+wi+"' ":"")+"class='hw"+(on?" hsel":"")+"' style='font-family:"+ff(x.f)+";font-size:"+(x.z*SC).toFixed(1)+"px;"+(x.b?"font-weight:900;":"")+(x.i?"font-style:italic;":"")+(x.u?"text-decoration:underline;":"")+"'>"+esc(x.w)+"</span>"}).join(" ");
+ return "<div class='hb"+(ed&&sel&&sel.b==bi?" cur":"")+"'>"+(ed?"<i class='hm' data-b='"+bi+"'>¶</i>":"")+"<div class='hp' style='text-align:"+AJ[bl.al]+";line-height:"+(bl.iv*1.15)+"'>"+sp+"</div></div>"}).join("")}
+GM.styler=function(g){var R=g.rounds,n=R.length,i=0,sc=0,hp=3;
+ function show(){var rd=R[i],B=mkB(rd),T=cp(B),sel=null,und=[],done=false,res=null;
+  rd.R.forEach(function(r){setP(T,r[0],r[1],r[2],r[3])});
+  var ribF="<div class='hg'><div class='hl'>Шрифт</div>"+FN.map(function(f,k){return O.rb("hs_f"+k,"<span style='font-family:"+f[1]+"'>"+f[0]+"</span>","wide")}).join("")+"</div>"+
+   "<div class='hg'>"+SZ.map(function(z){return O.rb("hs_z"+z,z,"sq")}).join("")+O.rb("hs_b","<b>Ж</b>","sq")+O.rb("hs_i","<i>К</i>","sq")+O.rb("hs_u","<u>Ч</u>","sq")+"</div>"+
+   "<div class='hg'><div class='hl'>Абзац</div>"+["l","c","r","j"].map(function(k){return O.rb("hs_al_"+k,aic(k),"sq")}).join("")+IV.map(function(v){return O.rb("hs_iv"+v*10,"↕"+fmt(v),"sq")}).join("")+O.rb("hs_undo","↩","sq")+"</div>";
+  var body="<div class='doc'><div class='hcap'>ЗРАЗОК — зроби так само</div><div class='pg hpg' id='hs_smp'></div><div class='hcap'>ТВІЙ ДОКУМЕНТ (тапни слово або ¶)</div><div class='pg hpg' id='hs_doc'></div></div>";
+  fr9(g.title,g.hint||"Порівняй свій документ зі зразком і оформи його: виділи слово чи абзац, потім обирай кнопки на стрічці.","<div class='o5' id='hs_root'><div class='hud'><b id='hs_hp'></b><b>⭐ "+(i+1)+" / "+n+"</b></div><div class='tsk'><b>"+esc(rd.task)+"</b></div>"+
+   O.win("W "+esc(rd.t),WD,["Основне","Вставлення","Макет"],ribF,body)+"<div class='tsk hstat' id='hs_st'></div><div class='tsk hck' id='hs_ck'></div>"+say("Тапни слово або ¶ (весь абзац), потім обирай кнопки у групах Шрифт і Абзац. Порівняй із зразком — і тисни «Порівняти».")+"<button class='go' id='hs_go'>Порівняти ✔</button></div>");
+  var root=document.getElementById("hs_root");
+  function ck(){root.querySelector("#hs_ck").innerHTML=rd.R.map(function(r,k){var c=res?(res[k]?"ok":"no"):"";return "<div class='"+c+"'>"+(res?(res[k]?"☑ ":"✗ "):"☐ ")+esc(r[4])+"</div>"}).join("")}
+  function stat(){var el=root.querySelector("#hs_st");if(!sel){el.innerHTML="Нічого не виділено";return}var bl=B[sel.b],x=bl.ws[sel.w<0?0:sel.w];el.innerHTML="<b>"+(sel.w<0?"Абзац "+(sel.b+1):"Слово «"+esc(x.w)+"»")+":</b> шрифт "+x.f+" · "+x.z+" пт · "+(x.b?"Ж ":"")+(x.i?"К ":"")+(x.u?"Ч ":"")+(x.b||x.i||x.u?"":"звичайний ")+"· "+AN[bl.al]+" · інтервал "+fmt(bl.iv)}
+  function draw(){root.querySelector("#hs_smp").innerHTML=pageHtml(T,null,false);root.querySelector("#hs_doc").innerHTML=pageHtml(B,sel,true);root.querySelector("#hs_hp").textContent=hearts(hp);gs9((i+1)+" / "+n+" · "+hearts(hp)+(sc?" · ✅ "+sc:""));stat();ck();
+   var cur=sel?B[sel.b].ws[sel.w<0?0:sel.w]:null;
+   FN.forEach(function(f,k){root.querySelector("#hs_f"+k).classList.toggle("on",!!cur&&cur.f==f[0])});SZ.forEach(function(z){root.querySelector("#hs_z"+z).classList.toggle("on",!!cur&&cur.z==z)});
+   ["b","i","u"].forEach(function(p){root.querySelector("#hs_"+p).classList.toggle("on",!!cur&&!!cur[p])});
+   ["l","c","r","j"].forEach(function(k){root.querySelector("#hs_al_"+k).classList.toggle("on",!!sel&&B[sel.b].al==k)});IV.forEach(function(v){root.querySelector("#hs_iv"+v*10).classList.toggle("on",!!sel&&B[sel.b].iv==v)})}
+  function apply(p,v){if(!sel){setSay(root,"Спершу виділи! Торкнись слова або значка ¶ (весь абзац), а потім натискай кнопку.","bad");return}
+   und.push(cp(B));var bl=B[sel.b];if(p=="al"||p=="iv")setP(B,sel.b,p,v);else{var ws=sel.w<0?bl.ws:[bl.ws[sel.w]];if(v=="tg"){v=ws.every(function(x){return x[p]})?0:1}setP(B,sel.b,p,v,sel.w<0?null:sel.w)}
+   res=null;setSay(root,"Є! "+(p=="al"||p=="iv"?"Це властивість абзацу — вона діє на весь абзац.":"Це властивість символів — діє на виділене."));draw()}
+  root.onclick=function(e){var t=e.target.closest&&e.target.closest("[id^='hs_'],[data-b]");if(!t||done)return;
+   if(t.hasAttribute("data-b")){sel={b:+t.getAttribute("data-b"),w:t.hasAttribute("data-w")?+t.getAttribute("data-w"):-1};draw();return}
+   var id=t.id,m;if(id=="hs_go"){go();return}if(id=="hs_undo"){if(und.length){B=und.pop();res=null;draw()}return}
+   if(m=/^hs_f(\d)$/.exec(id))apply("f",FN[+m[1]][0]);else if(m=/^hs_z(\d+)$/.exec(id))apply("z",+m[1]);else if(m=/^hs_([biu])$/.exec(id))apply(m[1],"tg");else if(m=/^hs_al_(\w)$/.exec(id))apply("al",m[1]);else if(m=/^hs_iv(\d+)$/.exec(id))apply("iv",+m[1]/10)}
+  function go(){res=rd.R.map(function(r){return getOk(B,r)});var bad=res.map(function(x,k){return x?-1:k}).filter(function(k){return k>=0});
+   var extra=false;B.forEach(function(bl,bi){["al","iv"].forEach(function(p){if(bl[p]!=T[bi][p]&&!rd.R.some(function(r){return r[0]==bi&&r[1]==p}))extra=true});bl.ws.forEach(function(x,wi){["f","z","b","i","u"].forEach(function(p){if(x[p]!=T[bi].ws[wi][p]&&!rd.R.some(function(r){return r[0]==bi&&r[1]==p&&(r[3]==null||r[3]==wi)}))extra=true})})});
+   if(!bad.length&&!extra){done=true;sc++;draw();setSay(root,"🎉 Документ збігається зі зразком! "+rd.why,"ok");root.querySelector("#hs_go").disabled=true;nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)});return}
+   hp--;draw();var msg=bad.length?"Ще не збігається: «"+esc(rd.R[bad[0]][4])+"». "+HINT[rd.R[bad[0]][1]]:"Є зайве форматування — зміни лише те, що є в списку (кнопка ↩ скасує дію).";
+   if(hp<=0){done=true;setSay(root,"💥 Кріпери перемогли — життя скінчилися. "+msg,"bad");root.querySelector("#hs_go").disabled=true;nxt9("Результат",function(){fin9(sc,n)})}else{setSay(root,"❌ -1 ❤️. "+msg,"bad");shake(root)}}
+  draw()}
+ show()};
+
+/* ============================== ВЕРСТАЛЬНИК СТОРІНКИ ============================== */
+var SZS={A4:[21,29.7],A5:[14.8,21]},MG={normal:{n:"Звичайні",t:2,b:2,l:3,r:1.5},narrow:{n:"Вузькі",t:1.27,b:1.27,l:1.27,r:1.27},wide:{n:"Широкі",t:2.54,b:2.54,l:5.08,r:5.08},mirror:{n:"Дзеркальні",t:2.54,b:2.54,l:3.18,r:2.54}},NM={none:"без номерів",bc:"внизу по центру",tr:"вгорі праворуч"};
+function dim(S){var d=SZS[S.sz];return S.or=="L"?[d[1],d[0]]:[d[0],d[1]]}
+function usable(S){var d=dim(S),M=MG[S.m];return[d[0]-M.l-M.r,d[1]-M.t-M.b]}
+function fits(S,o){if(!o)return true;var u=usable(S);return o.w<=u[0]+1e-6&&o.h<=u[1]+1e-6}
+function paper(S,o){var d=dim(S),M=MG[S.m],s=6.2,W=d[0]*s,H=d[1]*s,l=M.l*s,t=M.t*s,r=M.r*s,b=M.b*s,ok=fits(S,o.obj),h="<div class='hpaper' style='width:"+W+"px;height:"+H+"px'><div class='hgd' style='left:"+l+"px;top:"+t+"px;right:"+r+"px;bottom:"+b+"px'></div>";
+ if(o.obj)h+="<div class='hob"+(ok?"":" bad")+"' style='left:"+l+"px;top:"+t+"px;width:"+o.obj.w*s+"px;height:"+o.obj.h*s+"px'>"+o.obj.txt+"</div>";
+ else{var y=t+4,k=0;while(y<H-b-3){var w=(W-l-r)*((k%5==4)?.6:1);h+="<div class='hbar' style='left:"+l+"px;top:"+y+"px;width:"+w+"px'></div>";y+=6;k++}}
+ if(S.num=="bc")h+="<div class='hnum' style='left:0;right:0;text-align:center;bottom:"+Math.max(1,(b-8)/2)+"px'>"+(o.pn||1)+"</div>";
+ if(S.num=="tr")h+="<div class='hnum' style='right:"+Math.max(2,r/2)+"px;top:"+Math.max(1,(t-8)/2)+"px'>"+(o.pn||1)+"</div>";
+ return "<div class='hstage'>"+h+"</div></div>"}
+GM.pagesetup=function(g){var R=g.rounds,n=R.length,i=0,sc=0,hp=3;
+ function show(){var rd=R[i],pr=rd.kind=="p",done=false,res=null,S=pr?null:JSON.parse(JSON.stringify(rd.init)),P=pr?{cp:rd.cp0||1,pg:"all",a:1,b:2,or:rd.or0||"P",perm:0,cur:1}:null,tab="mk",menu="";
+  fr9(g.title,g.hint||"Налаштуй сторінку так, щоб виконати завдання. Дивись на попередній перегляд — він покаже, що вийде.","<div class='o5 hpx' id='hp_root'><div class='hud'><b id='hp_hp'></b><b>"+(pr?"🖨":"📐")+" "+(i+1)+" / "+n+"</b></div><div class='tsk'><b>"+esc(rd.task)+"</b></div>"+
+   "<div class='win' style='--ac:"+WD+"'><div class='tb'>W "+esc(rd.t)+"<i>– ▢ ✕</i></div><div class='tabs' id='hp_tabs'></div><div class='rib' id='hp_rib'></div><div id='hp_menu'></div><div id='hp_view' class='hv'></div></div><div class='tsk hstat' id='hp_st'></div><div class='tsk hck' id='hp_ck'></div>"+say(pr?"Подивись у перегляді, що буде надруковано, налаштуй параметри — і тисни «Друкувати». Зайвий друк — це марнування паперу.":"Відкривай Поля, Орієнтацію, Розмір на вкладці Макет. Червоний колір у перегляді означає, що об’єкт не вміщається.")+"<button class='go' id='hp_go'>"+(pr?"Друкувати 🖨️":"Готово ✔")+"</button></div>");
+  var root=document.getElementById("hp_root");function $h(id){return root.querySelector("#"+id)}
+  function seq(a,b){var r=[];for(var k=a;k<=b;k++)r.push(k);return r}
+  function pages(){return P.pg=="all"?seq(1,rd.N):P.pg=="cur"?[P.cur]:seq(P.a,P.b)}
+  function rngTxt(a){return a.length==1?"сторінка "+a[0]:"сторінки "+a[0]+"–"+a[a.length-1]}
+  function ck(){$h("hp_ck").innerHTML=rd.need.map(function(r,k){var c=res?(res[k]?"ok":"no"):"";return "<div class='"+c+"'>"+(res?(res[k]?"☑ ":"✗ "):"☐ ")+esc(r[2])+"</div>"}).join("")}
+  function opt(id,t,on,cls){return O.rb(id,t,(on?"on ":"")+(cls||""))}
+  function draw(){$h("hp_hp").textContent=hearts(hp);gs9((i+1)+" / "+n+" · "+hearts(hp)+(sc?" · ✅ "+sc:""));ck();
+   if(!pr){var u=usable(S),M=MG[S.m];
+    $h("hp_tabs").innerHTML="<span class='"+(tab=="mk"?"on":"")+"' id='hp_t_mk'>Макет</span><span class='"+(tab=="vs"?"on":"")+"' id='hp_t_vs'>Вставлення</span>";
+    $h("hp_rib").innerHTML=tab=="mk"?"<div class='hg'><div class='hl'>Параметри сторінки</div>"+O.rb("hp_m","Поля ▾",menu=="m"?"on":"")+O.rb("hp_o","Орієнтація ▾",menu=="o"?"on":"")+O.rb("hp_s","Розмір ▾",menu=="s"?"on":"")+"</div>":"<div class='hg'><div class='hl'>Колонтитули</div>"+O.rb("hp_n","Номер сторінки ▾",menu=="n"?"on":"")+"</div>";
+    var mh="";if(menu=="m")mh=Object.keys(MG).map(function(k){var x=MG[k];return opt("hp_m_"+k,"<b>"+x.n+"</b>&nbsp; В "+fmt(x.t)+" · Н "+fmt(x.b)+" · Л "+fmt(x.l)+" · П "+fmt(x.r)+" см",S.m==k,"ml")}).join("");
+    if(menu=="o")mh=opt("hp_o_P","Книжкова",S.or=="P","ml")+opt("hp_o_L","Альбомна",S.or=="L","ml");
+    if(menu=="s")mh=Object.keys(SZS).map(function(k){return opt("hp_s_"+k,"<b>"+k+"</b>&nbsp; "+fmt(SZS[k][0])+" × "+fmt(SZS[k][1])+" см",S.sz==k,"ml")}).join("");
+    if(menu=="n")mh=["none","bc","tr"].map(function(k){return opt("hp_n_"+k,k=="none"?"Видалити номери сторінок":"Номер "+NM[k],S.num==k,"ml")}).join("");
+    $h("hp_menu").innerHTML=mh?"<div class='hmenu'>"+mh+"</div>":"";
+    $h("hp_view").innerHTML=paper(S,{obj:rd.obj,pn:1})+(fits(S,rd.obj)?"":"<div class='hwarn'>⚠ Не вміщається в поля! Червоне виходить за межі.</div>");
+    $h("hp_st").innerHTML="<b>"+S.sz+"</b> · "+(S.or=="P"?"книжкова":"альбомна")+" · поля «"+M.n+"» · номери: "+NM[S.num]+"<br>Місце для тексту: "+fmt(u[0])+" × "+fmt(u[1])+" см"+(rd.obj?" · об’єкт: "+rd.obj.w+" × "+rd.obj.h+" см":"")}
+   else{var pl=pages(),wide=rd.wide==P.cur,S2={or:P.or,sz:"A4",m:"normal",num:"bc"},o={pn:P.cur,obj:wide?{w:24,h:10,txt:"ТАБЛИЦЯ"}:null};
+    $h("hp_tabs").innerHTML="<span class='on'>Файл ⇒ Друк</span>";
+    $h("hp_rib").innerHTML="<div class='hg'><div class='hl'>Попередній перегляд</div>"+O.rb("hp_prev","◀","sq")+"<b style='font-size:12px'>Сторінка "+P.cur+" з "+rd.N+"</b>"+O.rb("hp_next","▶","sq")+"</div>";
+    $h("hp_menu").innerHTML="";
+    $h("hp_view").innerHTML=paper(S2,o)+(wide&&!fits(S2,o.obj)?"<div class='hwarn'>⚠ Таблиця виходить за межі сторінки!</div>":"")+
+     "<div class='hrow'><b>Принтер</b><span class='pill'>🖨️ Принтер класу</span>"+(rd.perm?O.rb("hp_perm",P.perm?"🙋 Дозвіл є ✔":"🙋 Запитати дозвіл","wide"+(P.perm?" on":"")):"")+"</div>"+
+     "<div class='hrow'><b>Копії</b>"+O.rb("hp_cm","−","sq")+"<span class='cnt'>"+P.cp+"</span>"+O.rb("hp_cpl","+","sq")+"</div>"+
+     "<div class='hrow'><b>Сторінки</b>"+opt("hp_pa","Усі",P.pg=="all")+opt("hp_pc","Поточна",P.pg=="cur")+opt("hp_pr","Діапазон",P.pg=="rng")+"</div>"+
+     (P.pg=="rng"?"<div class='hrow'><b>від</b>"+O.rb("hp_am","−","sq")+"<span class='cnt'>"+P.a+"</span>"+O.rb("hp_ap","+","sq")+"<b style='flex:0 0 22px;text-align:center'>до</b>"+O.rb("hp_bm","−","sq")+"<span class='cnt'>"+P.b+"</span>"+O.rb("hp_bp","+","sq")+"</div>":"")+
+     "<div class='hrow'><b>Орієнтація</b>"+opt("hp_oP","Книжкова",P.or=="P")+opt("hp_oL","Альбомна",P.or=="L")+"</div>";
+    $h("hp_st").innerHTML="Буде надруковано: <b>"+rngTxt(pl)+"</b> · копій: <b>"+P.cp+"</b> · аркушів: <b>"+pl.length*P.cp+"</b> · "+(P.or=="P"?"книжкова":"альбомна")}}
+  function evalS(){return rd.need.map(function(r){return r[0]=="fit"?fits(S,rd.obj):S[r[0]]==r[1]})}
+  function evalP(){var pl=pages(),w=rd.want;return rd.need.map(function(r){var k=r[0];if(k=="cp")return P.cp==w.cp;if(k=="pg")return pl.join()==w.pg.join();if(k=="or")return P.or==w.or;if(k=="perm")return !!P.perm;return false})}
+  function go(){res=pr?evalP():evalS();var bad=res.map(function(x,k){return x?-1:k}).filter(function(k){return k>=0});
+   if(!bad.length){done=true;sc++;draw();$h("hp_go").disabled=true;setSay(root,(pr?"🖨️ Друкуємо: "+pages().length*P.cp+" арк. ":"🎉 Сторінку налаштовано! ")+rd.why,"ok");nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)});return}
+   hp--;draw();var b0=rd.need[bad[0]],msg=(pr?"Так не можна друкувати: ":"Ще не готово: ")+"«"+esc(b0[2])+"». "+(rd.tips&&rd.tips[b0[0]]||"");
+   if(hp<=0){done=true;setSay(root,"💥 Кріпери перемогли — життя скінчилися. "+msg,"bad");$h("hp_go").disabled=true;nxt9("Результат",function(){fin9(sc,n)})}else{setSay(root,"❌ -1 ❤️. "+msg,"bad");shake(root)}}
+  root.onclick=function(e){var t=e.target.closest&&e.target.closest("[id^='hp_']");if(!t||done)return;var id=t.id,m;res=null;
+   if(id=="hp_go"){go();return}
+   if(!pr){if(id=="hp_t_mk"){tab="mk";menu=""}else if(id=="hp_t_vs"){tab="vs";menu=""}
+    else if(m=/^hp_([mosn])$/.exec(id))menu=menu==m[1]?"":m[1];
+    else if(m=/^hp_m_(\w+)$/.exec(id)){S.m=m[1];menu=""}else if(m=/^hp_o_(\w)$/.exec(id)){S.or=m[1];menu=""}else if(m=/^hp_s_(\w+)$/.exec(id)){S.sz=m[1];menu=""}else if(m=/^hp_n_(\w+)$/.exec(id)){S.num=m[1];menu=""}
+    draw();return}
+   if(id=="hp_prev")P.cur=Math.max(1,P.cur-1);else if(id=="hp_next")P.cur=Math.min(rd.N,P.cur+1);else if(id=="hp_cm")P.cp=Math.max(1,P.cp-1);else if(id=="hp_cpl")P.cp=Math.min(9,P.cp+1);
+   else if(id=="hp_pa")P.pg="all";else if(id=="hp_pc")P.pg="cur";else if(id=="hp_pr")P.pg="rng";
+   else if(id=="hp_am")P.a=Math.max(1,P.a-1);else if(id=="hp_ap"){P.a=Math.min(rd.N,P.a+1);if(P.b<P.a)P.b=P.a}else if(id=="hp_bm"){P.b=Math.max(1,P.b-1);if(P.a>P.b)P.a=P.b}else if(id=="hp_bp")P.b=Math.min(rd.N,P.b+1);
+   else if(id=="hp_oP")P.or="P";else if(id=="hp_oL")P.or="L";else if(id=="hp_perm"){P.perm=1;draw();setSay(root,"Учитель дозволив друкувати. Тепер налаштуй параметри друку.","ok");return}
+   draw()}
+  draw()}
+ show()};
+if(typeof GI5!="undefined"){GI5.styler=["🎨","Стиліст тексту"];GI5.pagesetup=["📐","Верстальник сторінки"]}
+if(typeof GI!="undefined"){GI.styler=["🎨","Стиліст тексту"];GI.pagesetup=["📐","Верстальник сторінки"]}
+
+/* ============================== ДАНІ ============================== */
+O.rep(526,{type:"styler",title:"Стиліст тексту",hint:"Оформ документ за зразком: виділи слово або абзац і застосуй шрифт, розмір, Ж/К/Ч, вирівнювання чи інтервал.",rounds:[
+ {t:"Запрошення",task:"Оформ запрошення за зразком",B:["Запрошення","Запрошуємо всіх друзів на шкільне свято осені. Відбудеться у суботу о 15:00 в актовому залі.","Ваш клас"],
+  R:[[0,"al","c",null,"Заголовок — по центру"],[0,"b",1,null,"Заголовок — напівжирний (Ж)"],[2,"al","r",null,"Підпис — за правим краєм"]],
+  why:"Заголовок виділяють напівжирним і ставлять по центру, підпис — праворуч. Напівжирне — властивість символів, вирівнювання — властивість абзацу."},
+ {t:"Оголошення",task:"Зроби оголошення таким, як зразок",B:["Оголошення","Гурток запрошує новачків. Збираємось щовівторка о 14:30 у кабінеті інформатики. Приходьте!","Гурток «Піксель»"],
+  R:[[0,"z",18,null,"Заголовок — розмір 18 пт"],[0,"b",1,null,"Заголовок — напівжирний (Ж)"],[0,"al","c",null,"Заголовок — по центру"],[1,"al","j",null,"Основний текст — за шириною"],[1,"u",1,6,"Лише слово «14:30» — підкреслене (Ч)"]],
+  why:"Розмір вимірюють у пунктах. Щоб підкреслити лише одне слово, його виділяють окремо, а вирівнювання діє на весь абзац."},
+ {t:"Реферат",task:"Оформ реферат за зразком",B:["Піксельне мистецтво","Піксельна графіка складається з маленьких квадратиків — пікселів. Кожен піксель має свій колір, а разом вони утворюють малюнок.","Виконав учень 5 класу"],
+  R:[[0,"f","Times New Roman",null,"Заголовок — шрифт Times New Roman"],[0,"b",1,null,"Заголовок — напівжирний (Ж)"],[0,"al","c",null,"Заголовок — по центру"],[1,"f","Times New Roman",null,"Текст — шрифт Times New Roman"],[1,"al","j",null,"Текст — за шириною"],[1,"iv",1.5,null,"Текст — міжрядковий інтервал 1,5"],[2,"al","r",null,"Підпис — за правим краєм"],[2,"i",1,null,"Підпис — курсив (К)"]],
+  why:"Шрифт, розмір, Ж/К/Ч — це символи; вирівнювання та інтервал — абзац. Інтервал 1,5 зручний для читання з паперу."},
+ {t:"Меню",task:"Оформ меню шахтаря за зразком",B:["Меню шахтаря","Сніданок: хліб, яблуко й чай. Обід: суп, картопля та риба. Вечеря: пиріг і молоко.","Смачного!","Увага: страви можуть містити горіхи."],
+  R:[[0,"f","Courier New",null,"Заголовок — шрифт Courier New"],[0,"z",24,null,"Заголовок — розмір 24 пт"],[0,"al","c",null,"Заголовок — по центру"],[1,"iv",2,null,"Основний текст — інтервал 2"],[1,"al","j",null,"Основний текст — за шириною"],[2,"i",1,null,"«Смачного!» — курсив (К)"],[2,"al","r",null,"«Смачного!» — за правим краєм"],[3,"b",1,0,"Тільки слово «Увага:» — напівжирне (Ж)"]],
+  why:"Спершу виділяй, потім форматуй. Символи й абзаци форматують окремо — на стрічці це групи Шрифт і Абзац."}
+]});
+var TP1={or:"Орієнтацію змінюють командою Макет ⇒ Орієнтація.",fit:"Поля забирають місце: порівняй розмір об’єкта з «Місцем для тексту».",m:"Поля задають командою Макет ⇒ Поля.",sz:"Розмір аркуша — Макет ⇒ Розмір.",num:"Номер сторінки — Вставлення ⇒ Колонтитули ⇒ Номер сторінки."};
+O.rep(527,{type:"pagesetup",title:"Верстальник сторінки",hint:"Налаштуй параметри сторінки: поля, орієнтацію, розмір аркуша. Червоний колір у перегляді — об’єкт виходить за межі.",rounds:[
+ {kind:"s",t:"Афіша",task:"Афіша шириною 26 см має вміститися на аркуші А4.",obj:{w:26,h:14,txt:"АФІША"},init:{or:"P",sz:"A4",m:"normal",num:"none"},tips:TP1,
+  need:[["or","L","Орієнтація — альбомна"],["fit",1,"Афіша 26 см вміщається між полями"]],
+  why:"Альбомна сторінка завширшки 29,7 см, але Звичайні поля залишають лише 25,2 см. Вузькі поля залишають 27,2 см — афіша вміщається."},
+ {kind:"s",t:"Реферат",task:"Реферат на А4 книжкою: ліве поле 3 см для підшивання й номери сторінок унизу по центру.",obj:null,init:{or:"P",sz:"A5",m:"narrow",num:"none"},tips:TP1,
+  need:[["sz","A4","Розмір аркуша — А4"],["m","normal","Ліве поле 3 см — поля «Звичайні»"],["num","bc","Номер сторінки — внизу по центру"]],
+  why:"Ліве поле роблять ширшим для підшивання, а номери додають через Вставлення ⇒ Колонтитули ⇒ Номер сторінки."},
+ {kind:"s",t:"Листівка",task:"Листівка 12 × 17 см друкується на аркуші А5, книжкова орієнтація. Вона має вміститись.",obj:{w:12,h:17,txt:"ЛИСТІВКА"},init:{or:"L",sz:"A4",m:"normal",num:"none"},tips:TP1,
+  need:[["sz","A5","Розмір аркуша — А5"],["or","P","Орієнтація — книжкова"],["fit",1,"Листівка вміщається між полями"]],
+  why:"На А5 (14,8 × 21 см) листівка 12 см у ширину вміщається лише з Вузькими полями: 14,8 − 2,54 = 12,26 см."},
+ {kind:"s",t:"Таблиця",task:"Широка таблиця 25 см на А4. Номер сторінки — вгорі праворуч. Усе має вміститись.",obj:{w:25,h:12,txt:"ТАБЛИЦЯ"},init:{or:"P",sz:"A4",m:"wide",num:"none"},tips:TP1,
+  need:[["or","L","Орієнтація — альбомна"],["num","tr","Номер сторінки — вгорі праворуч"],["fit",1,"Таблиця 25 см вміщається між полями"]],
+  why:"Широкі й Дзеркальні поля тут «з’їдають» зайве. Підходять Звичайні (25,2 см) або Вузькі (27,2 см) поля в альбомній орієнтації."}
+]});
+var TP2={cp:"Кількість копій — скільки примірників надрукується.",pg:"Які сторінки друкувати: Усі, Поточна (та, що в перегляді) або Діапазон.",or:"Орієнтацію можна змінити прямо у вікні друку.",perm:"Принтер вмикають лише з дозволу вчителя."};
+O.rep(528,{type:"pagesetup",title:"Верстальник: друкування",hint:"Файл ⇒ Друк: перегляни документ, вибери копії та сторінки й натисни «Друкувати». Помилка — це витрачений папір!",rounds:[
+ {kind:"p",t:"Звіт",task:"Надрукуй весь звіт (5 сторінок) у 3 примірниках.",N:5,want:{cp:3,pg:[1,2,3,4,5]},tips:TP2,
+  need:[["cp",3,"Кількість копій — 3"],["pg",0,"Сторінки — усі"]],why:"Кількість копій — скільки примірників; параметр «Усі» друкує весь документ."},
+ {kind:"p",t:"Звіт",task:"Надрукуй лише сторінки 2–3, одну копію. Папір економимо!",N:5,want:{cp:1,pg:[2,3]},tips:TP2,
+  need:[["cp",1,"Кількість копій — 1"],["pg",0,"Діапазон — сторінки 2–3"]],why:"Діапазон сторінок дозволяє друкувати лише потрібне й не витрачати папір і фарбу."},
+ {kind:"p",t:"Таблиця",task:"У перегляді на сторінці 3 таблиця виходить за межі. Виправ це в параметрах друку й надрукуй усі 4 сторінки у 2 копіях.",N:4,wide:3,want:{cp:2,pg:[1,2,3,4],or:"L"},tips:TP2,
+  need:[["or",0,"Орієнтація — альбомна (таблиця вміщається)"],["cp",2,"Кількість копій — 2"],["pg",0,"Сторінки — усі"]],why:"Перегляд допомагає помітити помилку до друку: в альбомній орієнтації широка таблиця вміщається."},
+ {kind:"p",t:"Правила",task:"Спершу запитай дозвіл учителя 🙋. Потім надрукуй лише сторінку 4 (перейди на неї в перегляді й вибери «Поточна»), 1 копія.",N:6,perm:1,want:{cp:1,pg:[4]},tips:TP2,
+  need:[["perm",0,"Є дозвіл учителя"],["cp",1,"Кількість копій — 1"],["pg",0,"Сторінка — лише 4 (поточна)"]],why:"Друкуй лише з дозволу вчителя, лише потрібні сторінки — і не торкайся внутрішніх деталей принтера."}
+]});
+})();
+
 window.EXPL=window.EXPL||{};
 EXPL[501]=["Коли верх екрана на рівні очей, шия не нахиляється й не напружується.","Так очі бачать усе зображення без напруги, а на близькій відстані вони швидко втомлюються.","Часті короткі вправи кожні 15–20 хвилин знімають втому очей; через 5 хвилин рано, через дві години пізно.","Несправність усуває лише вчитель: самотужки зняти кришку чи смикати дроти небезпечно для тебе й для техніки.","Дощ — це явище природи, а стілець і олівець є предметами.","Об’єкт — це все, що існує навколо нас: і предмети, які можна взяти, і явища, які ми лише спостерігаємо.","Властивості описують, який об’єкт, і дозволяють відрізнити його від інших; дія чи назва — це не властивість.","Жовтий — це колір, тобто значення властивості «колір»; діаметр — інша властивість, а футбол — назва гри.","Однотипні об’єкти мають однакові властивості, але різні їх значення, наприклад колір чи розмір.","Програмні об’єкти існують у програмах, наприклад кнопка, вікно чи малюнок, і не обмежуються іграми.","Клацнувши правою кнопкою миші на об’єкті, відкриваємо контекстне меню зі списком дій над ним.","Прибране робоче місце лишає порядок для інших і допомагає берегти техніку."];
 EXPL[502]=["Інформація виникає тоді, коли людина сприйняла повідомлення й зрозуміла його; сам звук чи текст ще не є інформацією.","Дані — це повідомлення в зручному для зберігання й опрацювання вигляді, а не лише числа чи файли.","Інформаційні процеси охоплюють усі три дії: передавання, зберігання й опрацювання, а не якусь одну.","Приймач отримує повідомлення; той, хто його створює, — це джерело, а шлях передавання — канал.","Канал зв’язку — це середовище, яким повідомлення йде від джерела до приймача, наприклад повітря чи дріт.","Візуальні повідомлення ми бачимо, тому їх сприймає орган зору; слух і нюх сприймають інші види.","У телепередачі поєднано зображення та звук, тож це два способи сприйняття одразу, а запах і смак — прості.","Носії зберігають повідомлення, як папір чи флешпам’ять; дощ — це явище, а телебачення — спосіб передавання.","Опрацювання змінює повідомлення, і в результаті виходить нове, а не втрата чи проста копія.","Переклад змінює повідомлення, тож це опрацювання, а надсилання листа — передавання, і зошит у рюкзаку просто лежить.","Кожна людина розуміє повідомлення по-своєму, залежно від того, що вона знає і які в неї досвід та мислення.","Азбука Брайля складається з рельєфних крапок, які читають пальцями, тож вона допомагає людям із порушеним зором."];
@@ -14498,6 +15434,7 @@ EXPL[1211]=["Цифрова гігієна — це здорові й безпе
 EXPL[1212]=["Авторське право діє автоматично з моменту створення твору, реєструвати його не обов’язково.","Плагіат — коли чужий текст чи ідею видають за власні, не вказавши автора.","CC BY дозволяє користуватися твором, якщо зазначено автора; авторство при цьому не передається.","Фабрикація — це вигадані дані, результати чи джерела, яких насправді не було.","Чесно — прямо сказати, що ШІ використано, і перевірити факти, бо він може помилятися.","Персональні дані дають змогу впізнати людину: ім’я, адреса, фото; шпалери чи назва програми — ні.","Інтелектуальна власність — це результати творчості, які охороняє закон, наприклад тексти й музика.","Плагіат — це видавання чужої праці за власну, тобто крадіжка авторства.","Ліцензія — це дозвіл автора на використання його твору на певних умовах.","CC BY — вид ліцензії, за якою твір можна використовувати, якщо вказати автора.","Open source — програма, код якої відкритий, тож його можна дивитися, а часто й змінювати.","Персональні дані — відомості, за якими можна ідентифікувати конкретну людину."];
 
 /* пояснення після відповіді: EXPL[урок]=[рядок на кожне питання тесту]; q.e показують quizG та міні-ігри */
+if(window.O5)O5.flush();
 (function(){var st=document.createElement("style");st.textContent=".xpl{margin:8px 0;padding:9px 11px;border-radius:12px;background:#fff8d6;border:2px solid #f0c040;color:#3b3200;font-size:13.5px;line-height:1.4;font-weight:600}";document.head.appendChild(st);
 if(typeof EXPL=="undefined")return;var m=window.EXPM={};for(var k in EXPL){var L=LES[k];if(!L||!L.q)continue;L.q.forEach(function(q,i){if(EXPL[k][i]){q.e=EXPL[k][i];m[q.q]=q.e}})}
 for(var k in LES){var L=LES[k];(L.big||[]).forEach(function(q){if(!q.e&&m[q.q])q.e=m[q.q]})}})();
