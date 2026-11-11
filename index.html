@@ -9721,7 +9721,7 @@ function fam(q){var t=String(q.q);if(/▁{2,}|_{2,}/.test(t))return "c";if(/^Щ�
 function nn(q){return norm(q.a[0])}
 function claim(q,a){var t=String(q.q);if(/▁{2,}|_{2,}/.test(t))return t.replace(/▁{2,}|_{2,}/,a);return t+" → "+a}
 function okText(q){var t=String(q.q);if(/^\s*Що з цього підходить|Порядок дій|ПЕРШИЙ|ПІСЛЯ|код\s+(великої\s+|малої\s+)?(букви|літери|символу|цифри)|коди?\s+цифр|ASCII.*(код|—)/i.test(t))return false;if(/^\s*Правда\s+чи/i.test(t))return false;return String(q.a[0]).length<=60}
-function hangW(q){var a=String(q.a[0]),w=a,k=null;if(a.length>14||/\s/.test(a)){k=keyOf(a);if(!k)return null;w=k.word}var t=w.toLowerCase().replace(/[^a-zа-яіїєґ0-9]/g,"");if(t.length<4)return null;var st=t.slice(0,Math.max(4,t.length-2));if(q.q.toLowerCase().replace(/[^a-zа-яіїєґ0-9 ]/g,"").indexOf(st)>=0)return null;return 1}
+function hangW(q){var a=String(q.a[0]).trim(),w=a;if(a.length>14||/\s/.test(a))return null;var t=w.toLowerCase().replace(/[^a-zа-яіїєґ0-9]/g,"");if(t.length<4)return null;var st=t.slice(0,Math.max(4,t.length-2));if(q.q.toLowerCase().replace(/[^a-zа-яіїєґ0-9 ]/g,"").indexOf(st)>=0)return null;return 1}
 var ENDS=["ами","ями","ові","еві","ого","ому","ої","ою","ею","ям","ам","ах","ях","ом","ем","ів","їв","ей","ий","ій","а","я","у","ю","і","ї","и","е","є","о","ь"];
 function stm(s){for(var i=0;i<ENDS.length;i++){var e=ENDS[i];if(s.length-e.length>=4&&s.slice(-e.length)===e)return s.slice(0,-e.length)}return s}
 function lv(a,b){var m=a.length,n=b.length,d=[],i,j;for(i=0;i<=m;i++)d[i]=[i];for(j=1;j<=n;j++)d[0][j]=j;for(i=1;i<=m;i++)for(j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a.charAt(i-1)===b.charAt(j-1)?0:1));return d[m][n]}
