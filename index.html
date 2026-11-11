@@ -735,7 +735,10 @@ function tlock(n,k){var o=(B.sc||{})[n];return !!(o&&o[k]!==undefined)}
 function tlockMsg(){try{note("Тест уже пройдено. Повторно його можна пройти після завершення сесії.")}catch(e){}}
 function playQ(n,key){var qs=key=="big"?LES[n].big:LES[n].q;CUR9=n;if(tlock(n,key)){tlockMsg();return lesson9(n)}LAST9=function(){if(tlock(n,key)){tlockMsg();return lesson9(n)}quizG(qs,function(s){CURK=key},"again9","menu9")};LAST9()}
 var NORD=0;/* NORD=1: читалка не враховується (звіт у таблицю) */
-function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k;for(k in o)v.push(o[k]);if(B.rd[n]&&!NORD)v.push(100);return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/v.length):0}
+function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k,L=LES[n],c=0;for(k in o){v.push(o[k]);c++}if(B.rd[n]&&!NORD){v.push(100);c++}
+ /* знаменник = усі завдання уроку (ігри, тест, великий тест, читалка якщо враховується); непройдене = 0 балів */
+ var tot=c;if(L){var t=(L.g||[]).length+(L.q&&L.q.length?1:0)+(L.big&&L.big.length?1:0)+(!NORD&&L.r&&L.r.length?1:0);if(t>tot)tot=t}
+ return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/tot):0}
 function lessonItems(n){var L=LES[n],h="",cl=["a","c","d","b"],c=0;
  if(L.r)h+=mb("a","📖","Читалка",L.r.length+" "+(L.r.length<5?"сторінки":"сторінок")+" з малюнками"+(B.rd[n]?" · ✓":""),"openR("+n+")");
  (L.g||[]).forEach(function(g,i){if(g.hide)return;if(g.type=="fn"){h+=mb(cl[c++%4],g.icon,g.title,g.sub,g.fn+"()");return}var t=GI[g.type];h+=mb(cl[c++%4],t[0],g.title,t[1]+" · "+bst(n,"g"+i),"playG("+n+","+i+")")});

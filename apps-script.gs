@@ -126,6 +126,7 @@ function saveDetail(ss, list) {
     for (var j = 0; j < 10; j++) {
       var nv = vals[j], ov = r[3 + j];
       if (nv === "-") { if (ov === "") r[3 + j] = "-"; continue; }
+      if (j === 9) { r[3 + j] = nv; continue; } // «Загалом» — похідне, перераховується з нуля
       r[3 + j] = (typeof ov === "number" && ov > nv) ? ov : nv;
     }
     r[13] = now; r[14] = titles;
