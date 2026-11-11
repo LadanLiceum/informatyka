@@ -12623,7 +12623,7 @@ function tchView(d){var rows=d.rows||[],det=d.det||[],r=document.getElementById(
    if(!d.det){t.innerHTML="<p class='mut'>Скрипт у таблиці ще старий: вставте оновлений код і зробіть нове розгортання.</p>";return}
    if(!L.length){t.innerHTML="<p class='mut'>Для цього класу ще немає детальних результатів.</p>";return}
    var by={};L.forEach(function(x){(by[x[1]]=by[x[1]]||[]).push(x)});
-   function tot(x){var t=x[12];if(t===""||t==null||isNaN(+t)){var ns=[],q;for(q=4;q<=11;q++)if(x[q]!==""&&x[q]!=="-"&&!isNaN(+x[q]))ns.push(+x[q]);t=ns.length?ns.reduce(function(a,b){return a+b},0)/ns.length:""}return t}
+   function tot(x){var ns=[],q;for(q=4;q<=11;q++)if(x[q]!=="-"&&x[q]!==""&&x[q]!=null&&!isNaN(+x[q]))ns.push(+x[q]);return ns.length?ns.reduce(function(a,b){return a+b},0)/ns.length:""}
    function tv(v){return(v===""||v==="-"||v==null||isNaN(+v))?"":String(Math.round(+v*10)/10)}
    function tm(x){var u=x[13]?new Date(x[13]).getTime():0;return isNaN(u)?0:u}
    var hn=["","","","Читалка","Гра 1","Гра 2","Гра 3","Гра 4","Гра 5","Гра 6","Тест","Великий тест"];
