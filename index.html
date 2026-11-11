@@ -12758,6 +12758,11 @@ function pull(){if(!ME||ME.t)return;if(!ME.p){return}if(!on())return;var key=pk(
  check(function(ok,msg){if(!ok){ME=null;try{localStorage.removeItem("inf5me")}catch(e){}who();return}try{sessionStorage.setItem(flag,"1")}catch(e){}SYNCBLOCK=false;later()},0)}
 var _tp=topics;topics=function(){if(ME&&!ME.t&&!ME.p&&CK[ME.c]){var m=ME;ME=null;who();var nm=document.getElementById("nm"),cl=document.getElementById("cl");if(nm)nm.value=m.n;if(cl)cl.value=m.c;var e=document.getElementById("er");if(e)e.textContent="Додай PIN (4 цифри) — він повертає твій прогрес на інших пристроях.";return}var r=_tp.apply(this,arguments);try{pull()}catch(e){}return r};
 })();
+/* Посилання з QR: ?c=8-А&k=КОД — підставляє клас і код у форму входу (потім адресу очищено) */
+(function(){var _w=who,P={};try{(location.search||"").replace(/^\?/,"").split("&").forEach(function(x){var a=x.split("=");if(a[0])P[a[0]]=decodeURIComponent((a[1]||"").replace(/\+/g," "))})}catch(e){}
+if(!P.k&&!P.c)return;
+who=function(){var r=_w.apply(this,arguments);try{var ky=document.getElementById("ky"),cl=document.getElementById("cl");if(ky&&P.k&&!ky.value)ky.value=P.k;if(cl&&P.c){for(var i=0;i<cl.options.length;i++)if(cl.options[i].value===P.c){cl.value=P.c;break}}}catch(e){}return r};
+try{history.replaceState(null,"",location.pathname)}catch(e){}})();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
