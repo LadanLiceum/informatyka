@@ -55,7 +55,7 @@ function doPost(e) {
 function doGet(e) {
   var tk = e && e.parameter && e.parameter.tk;
   if (!TEACHER_KEY || tk !== TEACHER_KEY) return ContentService.createTextOutput("ok");
-  var ss = SpreadsheetApp.getActiveSpreadsheet(), rows = [];
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), rows = [], det = [];
   ["K5", "K6", "K7", "K8", "K10", "K10B", "K11"].forEach(function (k) {
     var sh = ss.getSheetByName(SHEETS[k].name);
     if (!sh || sh.getLastRow() < 2) return;
@@ -63,7 +63,11 @@ function doGet(e) {
       rows.push({ k: k, c: r[0], n: r[1], d: r[2], a: r[3], u: r[4] });
     });
   });
-  return ContentService.createTextOutput(JSON.stringify({ rows: rows })).setMimeType(ContentService.MimeType.JSON);
+  var ds = ss.getSheetByName(DET_NAME);
+  if (ds && ds.getLastRow() > 1) {
+    det = ds.getRange(2, 1, ds.getLastRow() - 1, DET_HEAD.length).getValues();
+  }
+  return ContentService.createTextOutput(JSON.stringify({ rows: rows, det: det })).setMimeType(ContentService.MimeType.JSON);
 }
 
 function save(ss, cfg, kind, cls, name, vals) {

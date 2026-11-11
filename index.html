@@ -12601,16 +12601,40 @@ var _tp=topics;topics=function(){REV=0;var r=_tp.apply(this,arguments);try{panel
 window.uxTch=function(){var k="";try{k=localStorage.getItem("inftk")||""}catch(e){}
  var a=document.getElementById("app");a.innerHTML="<div class='top'><button class='sm' onclick='who()'>← Назад</button></div><div class='card'><h2>👩‍🏫 Мій клас</h2><p class='mut'>Підсумок із таблиці результатів. Потрібен ключ вчителя (змінна TEACHER_KEY у скрипті таблиці).</p><input id='tk' type='password' placeholder='Ключ вчителя' value='"+esc(k)+"' autocomplete='off'><button class='pri' id='tkb'>Показати</button><div id='tkr' class='mut' style='margin-top:10px'></div></div>";
  var go=function(){var v=document.getElementById("tk").value.trim(),r=document.getElementById("tkr");if(!v)return;try{localStorage.setItem("inftk",v)}catch(e){}r.textContent="Завантаження…";
-  fetch(RESULTS_URL+"?tk="+encodeURIComponent(v)).then(function(x){return x.text()}).then(function(t){var d;try{d=JSON.parse(t)}catch(e){r.textContent="Не вдалося: невірний ключ або TEACHER_KEY не задано в скрипті (чи скрипт не оновлено).";return}tchView(d.rows||[])}).catch(function(){r.textContent="Немає зв’язку. Спробуй пізніше."})};
+  fetch(RESULTS_URL+"?tk="+encodeURIComponent(v)).then(function(x){return x.text()}).then(function(t){var d;try{d=JSON.parse(t)}catch(e){r.textContent="Не вдалося: невірний ключ або TEACHER_KEY не задано в скрипті (чи скрипт не оновлено).";return}tchView(d)}).catch(function(){r.textContent="Немає зв’язку. Спробуй пізніше."})};
  document.getElementById("tkb").onclick=go;if(k)go()};
-function tchView(rows){var r=document.getElementById("tkr"),cl={},i;rows.forEach(function(x){(cl[x.c]=cl[x.c]||[]).push(x)});var cs=Object.keys(cl).sort();
+function tchView(d){var rows=d.rows||[],det=d.det||[],r=document.getElementById("tkr"),cl={},i,names={};
+ det.forEach(function(x){(cl[x[0]]=cl[x[0]]||{})[x[1]]=1});rows.forEach(function(x){cl[x.c]=cl[x.c]||{}});
+ var cs=Object.keys(cl).sort();
  if(!cs.length){r.textContent="Поки що немає результатів.";return}
- r.innerHTML="<select id='tkc'>"+cs.map(function(c){return "<option>"+esc(c)+"</option>"}).join("")+"</select><div id='tkt'></div>";
- var draw=function(){var c=document.getElementById("tkc").value,L=cl[c].slice().sort(function(a,b){return String(a.n).localeCompare(String(b.n),"uk")}),h="<table style='width:100%;border-collapse:collapse;margin-top:8px;font-size:14px'><tr><th align=left>Учень</th><th>Уроків</th><th>Сер. бал</th><th>Був</th></tr>",now=Date.now();
-  L.forEach(function(x){var days=x.u?Math.floor((now-new Date(x.u).getTime())/864e5):null,warn=(+x.a<50&&+x.d>0)||(days!==null&&days>=14);
-   h+="<tr style='border-top:1px solid rgba(128,128,128,.3)"+(warn?";background:rgba(255,120,80,.18)":"")+"'><td>"+esc(x.n)+"</td><td align=center>"+esc(x.d)+"</td><td align=center>"+Math.round(+x.a)+"%</td><td align=center>"+(days===null?"—":days===0?"сьогодні":days+" дн.")+"</td></tr>"});
-  document.getElementById("tkt").innerHTML=h+"</table><p class='mut'>Підсвічено: середній бал нижче 50% або не заходив 14+ днів. Береться найкращий результат учня.</p>"};
- document.getElementById("tkc").onchange=draw;draw()}
+ r.innerHTML="<div class='tkb'><button id='tkv1' class='sm'>Деталі (12 балів)</button> <button id='tkv2' class='sm'>Підсумок</button></div><select id='tkc'>"+cs.map(function(c){return "<option>"+esc(c)+"</option>"}).join("")+"</select> <select id='tks'></select><div id='tkt' style='overflow-x:auto;-webkit-overflow-scrolling:touch'></div>";
+ var view=d.det?1:2;
+ function col(v){if(v===""||v==="-"||v==null)return "<td align=center style='opacity:.4'>"+(v===""?"":"–")+"</td>";var n=+v,bg=n>=10?"rgba(60,200,110,.28)":n>=6?"rgba(255,200,60,.28)":"rgba(255,100,80,.30)";return "<td align=center style='background:"+bg+";font-weight:700'>"+(Math.round(n*10)/10)+"</td>"}
+ function fd(u){if(!u)return "—";var t=new Date(u);if(isNaN(t))return "—";return ("0"+t.getDate()).slice(-2)+"."+("0"+(t.getMonth()+1)).slice(-2)+" "+("0"+t.getHours()).slice(-2)+":"+("0"+t.getMinutes()).slice(-2)}
+ function fill(){var c=document.getElementById("tkc").value,s=document.getElementById("tks"),cur=s.value,ns=Object.keys(cl[c]||{}).sort(function(a,b){return a.localeCompare(b,"uk")});
+  s.innerHTML="<option value=''>Усі учні</option>"+ns.map(function(n){return "<option"+(n===cur?" selected":"")+">"+esc(n)+"</option>"}).join("")}
+ function draw(){var c=document.getElementById("tkc").value,st=document.getElementById("tks").value,h,t=document.getElementById("tkt"),now=Date.now();
+  document.getElementById("tkv1").style.opacity=view==1?1:.5;document.getElementById("tkv2").style.opacity=view==2?1:.5;
+  if(view==1){
+   var L=det.filter(function(x){return x[0]===c&&(!st||x[1]===st)});
+   if(!d.det){t.innerHTML="<p class='mut'>Скрипт у таблиці ще старий: вставте оновлений код і зробіть нове розгортання.</p>";return}
+   if(!L.length){t.innerHTML="<p class='mut'>Для цього класу ще немає детальних результатів.</p>";return}
+   L.sort(function(a,b){return String(a[1]).localeCompare(String(b[1]),"uk")||(+a[2])-(+b[2])});
+   var used=[];for(i=3;i<=11;i++)if(L.some(function(x){return x[i]!==""&&x[i]!=="-"}))used.push(i);
+   var hn=["","","","Чит.","Гра 1","Гра 2","Гра 3","Гра 4","Гра 5","Гра 6","Тест","Вел. тест"];
+   h="<table style='border-collapse:collapse;margin-top:8px;font-size:12px;min-width:100%' class='tkd'><tr><th align=left>Учень</th><th>Урок</th>"+used.map(function(k){return "<th>"+hn[k]+"</th>"}).join("")+"<th>Заг.</th><th>Оновл.</th></tr>";
+   L.forEach(function(x){var tot=x[12];if(tot===""||tot==null){var ns=[];for(i=3;i<=11;i++)if(x[i]!==""&&x[i]!=="-"&&!isNaN(+x[i]))ns.push(+x[i]);tot=ns.length?ns.reduce(function(a,b){return a+b},0)/ns.length:""}
+    h+="<tr style='border-top:1px solid rgba(128,128,128,.3)'><td style='max-width:92px;hyphens:none;-webkit-hyphens:none;overflow-wrap:anywhere;line-height:1.15'>"+esc(x[1])+"</td><td align=center><b>"+esc(x[2])+"</b></td>"+used.map(function(k){return col(x[k])}).join("")+col(tot)+"<td style='white-space:nowrap;font-size:11px;opacity:.7'>"+fd(x[13])+"</td></tr>"});
+   t.innerHTML=h+"</table><p class='mut'>Бали за 12-бальною шкалою, найкращий результат. «–» — такого завдання в уроці немає. Колір: червоний до 6, жовтий 6–9, зелений від 10.</p>"}
+  else{
+   var R=rows.filter(function(x){return x.c===c&&(!st||x.n===st)}).sort(function(a,b){return String(a.n).localeCompare(String(b.n),"uk")});
+   h="<table style='width:100%;border-collapse:collapse;margin-top:8px;font-size:14px'><tr><th align=left>Учень</th><th>Уроків</th><th>Сер. бал</th><th>Був</th></tr>";
+   R.forEach(function(x){var days=x.u?Math.floor((now-new Date(x.u).getTime())/864e5):null,warn=(+x.a<50&&+x.d>0)||(days!==null&&days>=14);
+    h+="<tr style='border-top:1px solid rgba(128,128,128,.3)"+(warn?";background:rgba(255,120,80,.18)":"")+"'><td>"+esc(x.n)+"</td><td align=center>"+esc(x.d)+"</td><td align=center>"+Math.round(+x.a)+"%</td><td align=center>"+(days===null?"—":days===0?"сьогодні":days+" дн.")+"</td></tr>"});
+   t.innerHTML=h+"</table><p class='mut'>Підсвічено: середній бал нижче 50% або не заходив 14+ днів.</p>"}}
+ document.getElementById("tkc").onchange=function(){fill();draw()};document.getElementById("tks").onchange=draw;
+ document.getElementById("tkv1").onclick=function(){view=1;draw()};document.getElementById("tkv2").onclick=function(){view=2;draw()};
+ fill();draw()}
 function panel(){if(!ME||ME.t)return;var app=document.getElementById("app");if(!app||app.querySelector(".uxp"))return;var hero=app.querySelector(".hero11,.h7,.term,.hero");if(!hero)return;
  var m=me(),t=today(),n=m.cnt[t]||0,live=(m.day===t||m.day===yest())?(m.st||0):0,h="";
  var dots="";for(var i=0;i<GOAL;i++)dots+="<i class='"+(i<n?"on":"")+"'></i>";
@@ -12638,7 +12662,8 @@ var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.
 /* --- випадкова затримка відправки, щоб розтягти пік навантаження на таблицю --- */
 var _fl=flush;flush=function(){if(ENDING)return _fl();return new Promise(function(res){setTimeout(function(){_fl().then(res,function(){res([false])})},Math.floor(Math.random()*4000))})};
 /* --- стилі --- */
-var css=".uxtl{text-align:center;margin:26px 0 8px}.uxtl button{background:none!important;border:0!important;box-shadow:none!important;color:inherit;opacity:.45;font-size:13px;text-decoration:underline;padding:6px 10px;width:auto;cursor:pointer}.uxtl button:hover{opacity:.8}"+
+var css=".tkd td,.tkd th{padding:4px 3px}.tkd th{font-size:11px}"+
+".uxtl{text-align:center;margin:26px 0 8px}.uxtl button{background:none!important;border:0!important;box-shadow:none!important;color:inherit;opacity:.45;font-size:13px;text-decoration:underline;padding:6px 10px;width:auto;cursor:pointer}.uxtl button:hover{opacity:.8}"+
 ".uxp{margin:10px 0;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);display:flex;flex-direction:column;gap:8px;font-size:15px}"+
 ".uxr{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.uxs b,.uxg b{font-size:17px}.uxg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin:0 2px;border:2px solid currentColor;opacity:.45;vertical-align:-1px}.uxg i.on{background:#ffd23f;border-color:#ffd23f;opacity:1}"+
 ".uxp button{display:block;width:100%;text-align:left;margin:0;padding:11px 12px;font:inherit;font-size:15px;border-radius:12px;cursor:pointer}.uxc{background:#2ecc71;color:#06280f;border:0;font-weight:700;animation:uxpl 2.4s ease-in-out infinite}.uxc b{font-weight:800}.uxm{background:rgba(255,255,255,.14);color:inherit;border:2px solid rgba(255,255,255,.3)}"+
