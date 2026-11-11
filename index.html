@@ -13198,9 +13198,30 @@ var css=[
 ".post{background:#fff;color:"+k+";border:4px solid "+k+";border-radius:16px;padding:12px;margin:10px 0}.post .ph{display:flex;align-items:center;gap:9px}.post .av{width:34px;height:34px;border-radius:50%;background:#ffce1f;border:3px solid "+k+";display:flex;align-items:center;justify-content:center}.post small{display:block;color:#6a6f98}.post p{color:"+k+"!important;margin-top:8px;font-weight:800}",
 ".lt{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.tool{margin:0!important;padding:8px 11px!important;font-size:.95em}.tool.used{opacity:.5}",
 ".clue{background:#fff3b8;color:"+k+";border:3px dashed "+k+";border-radius:12px;padding:8px 10px;margin:6px 0;font-weight:800}",
-".vd{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.vd .blk{margin:0;text-align:center;padding:12px 4px}"
+".vd{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.vd .blk{margin:0;text-align:center;padding:12px 4px}",
+/* шапки завдань, відступи, вирівнювання (7 клас): прибрано майнкрафтівський «камінь» */
+"body.g5.g7 .gbn{position:relative;display:flex;align-items:center;height:72px;margin:0 0 14px;border-radius:18px!important;border:4px solid "+k+"!important;background:linear-gradient(135deg,var(--a1,#2f8bff),var(--a2,#8a4dff))!important;box-shadow:0 4px 0 "+k+",inset 0 3px 0 rgba(255,255,255,.4)!important;image-rendering:auto;overflow:hidden;animation:none!important}",
+"body.g5.g7 .gbn::before{content:'';position:absolute;left:-20%;top:-60%;width:70%;height:200%;background:rgba(255,255,255,.14);transform:rotate(18deg)}",
+"body.g5.g7 .gbn::after{display:none!important}",
+"body.g5.g7 .gbn svg{display:block!important;position:absolute;right:8px;top:0;height:100%;width:auto;max-width:60%}body.g5.g7 .gbn svg circle{display:inline!important}body.g5.g7 .gbn svg text{filter:none}",
+"body.g5.g7 .gbn .gt{position:relative;margin-left:14px;border-radius:99px!important;background:rgba(10,18,60,.6)!important;border:2px solid rgba(255,255,255,.55)!important;padding:5px 13px!important;font-size:12px!important;letter-spacing:.8px!important;animation:none!important;color:#fff!important}",
+"body.g5.g7 .card>h2{margin:0 0 6px;text-shadow:0 2px 0 rgba(10,18,60,.65)!important;text-align:left}",
+"body.g5.g7 .card>p.mut{color:#e3edff!important;margin:2px 0 14px;font-weight:700;line-height:1.35;text-shadow:0 1px 0 rgba(10,18,60,.45)}",
+"body.g5.g7 .fun{background:#fff3b8!important;color:"+k+"!important;border:3px solid "+k+"!important;border-radius:16px!important;box-shadow:0 4px 0 "+k+"!important;padding:14px 12px!important;margin:6px 0 16px!important;text-shadow:none!important;text-align:center;line-height:1.35}body.g5.g7 .fun b,body.g5.g7 .fun u{color:"+k+"}",
+"body.g5.g7 .blk,body.g5.g7 .tk{display:flex!important;align-items:center;justify-content:center;text-align:center!important;min-height:54px;padding:10px 12px;line-height:1.2;overflow-wrap:anywhere}",
+"body.g5.g7 .grid3,body.g5.g7 .two2{gap:12px!important;align-items:stretch}",
+"body.g5.g7 .card .blk{margin-top:0;margin-bottom:10px}body.g5.g7 .grid3 .blk,body.g5.g7 .two2 .blk{margin-bottom:0}",
+"body.g5.g7 .card>div>.blk,body.g5.g7 .card>div>div>.blk{margin-bottom:10px}",
+"body.g5.g7 .card #fb,body.g5.g7 .card p.mut:last-child{min-height:1.3em;margin:10px 0 0;text-align:center}",
+"body.g5.g7 .qchip,body.g5.g7 .tool{display:inline-flex;align-items:center;justify-content:center;text-align:center}"
 ].join("\n");
 var st=document.createElement("style");st.textContent=css;try{document.head.appendChild(st)}catch(e){}
+/* 7 клас: плитки й «seq» у читалках — яскраві картки замість сірого каменю, текст переноситься */
+var TC7=["#2f8bff,#5b4bff","#ff4fa3,#c92c8a","#ff9b1f,#f0651a","#2fd02a,#12a35a","#8a4dff,#5b2fd6","#00b4ff,#0a86d8"];
+function esc7(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function picTiles7(it){var cols=it.length>6?4:3;return "<div class='tl7' style='grid-template-columns:repeat("+cols+",1fr)'>"+it.map(function(c,i){var c0=String(c[0]),w=/[a-zа-яіїєґ]/i.test(c0),g=TC7[i%TC7.length].split(",");return "<div style='background:linear-gradient(180deg,"+g[0]+","+g[1]+")'><b class='"+(w?"w":"")+"'>"+esc7(c0)+"</b><small>"+esc7(c[1])+"</small></div>"}).join("")+"</div>"}
+var _p7=pic;pic=function(v){if(document.body.classList.contains("g7")&&v&&typeof v!="string"){if(v[0]=="tiles")return picTiles7(v[1]);if(v[0]=="seq")return picFlow(v[1])}return _p7(v)};
+var st2=document.createElement("style");st2.textContent=".tl7{display:grid;gap:8px;margin:2px 0}.tl7>div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:76px;padding:8px 4px;border:3px solid "+k+";border-radius:14px;box-shadow:0 3px 0 "+k+",inset 0 3px 0 rgba(255,255,255,.35);color:#fff;text-align:center;overflow:hidden}.tl7 b{font-size:22px;line-height:1.1;text-shadow:0 2px 0 rgba(10,18,60,.5)}.tl7 b.w{font:900 15px/1.15 ui-monospace,Consolas,monospace;overflow-wrap:anywhere}.tl7 small{font-size:11px;line-height:1.15;font-weight:800;text-shadow:0 1px 0 rgba(10,18,60,.55);overflow-wrap:anywhere}";try{document.head.appendChild(st2)}catch(e){}
 /* без слів про Майнкрафт у підказках 7 класу */
 try{new MutationObserver(function(){if(!document.body.classList.contains("g7"))return;var f=document.getElementById("fb");if(f&&f.textContent.indexOf("Кріпери")==0)f.textContent=f.textContent.replace("Кріпери перемогли","Помилки перемогли")}).observe(document.getElementById("app")||document.body,{subtree:true,childList:true,characterData:true})}catch(e){}
 })();
@@ -13218,7 +13239,7 @@ GM.vbox=function(g){var R=shuffle(g.rounds.slice()),i=0,tot=0,ok=0;R.forEach(fun
   gs9((i+1)+" / "+R.length+" · ✅ "+ok);
   function draw(){document.getElementById("vc").innerHTML=codeBox(rd.code,st<rd.code.length?st:-1);
    document.getElementById("vt").innerHTML=rd.vars.map(function(v){return "<div class='vv'><small>"+esc(v)+"</small><b>"+esc(vals[v])+"</b></div>"}).join("")}
-  function ask(){draw();if(st>=rd.code.length){document.getElementById("vq").innerHTML="Програму виконано!";document.getElementById("vo").innerHTML="";nxt9(i<R.length-1?"Далі →":"Результат",function(){i++;i<R.length?show():fin9(ok,tot)});return}
+  function ask(){if(!document.getElementById("vc"))return;draw();if(st>=rd.code.length){document.getElementById("vq").innerHTML="Програму виконано!";document.getElementById("vo").innerHTML="";nxt9(i<R.length-1?"Далі →":"Результат",function(){i++;i<R.length?show():fin9(ok,tot)});return}
    var v=rd.code[st].split("=")[0].trim(),o=shuffle(rd.steps[st].slice()),c=rd.steps[st][0],hit=false;
    document.getElementById("vq").innerHTML="Яке значення матиме <code>"+esc(v)+"</code> після цього рядка?";
    var box=document.getElementById("vo");box.innerHTML="";
