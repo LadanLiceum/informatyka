@@ -12564,10 +12564,10 @@ mkAch(7);
 /* ===== UX: «Продовжити», стрік і ціль дня, повтор помилок, стани карток, підказка при невдачах, нагорода ===== */
 (function(){
 var REV=0;
-var JN=0;window.jget=function(qs,cb){var n="jp"+(++JN)+"_"+Math.floor(Math.random()*1e6),done=0,sc=document.createElement("script");
+var JN=0;window.jget=function(kind,parts,cb){var n="jp"+(++JN)+"_"+Math.floor(Math.random()*1e6),done=0,sc=document.createElement("script");
  function fin(d,e){if(done)return;done=1;try{delete window[n]}catch(x){window[n]=undefined}if(sc.parentNode)sc.parentNode.removeChild(sc);cb(d,e)}
- window[n]=function(d){fin(d,0)};sc.onerror=function(){fin(null,1)};setTimeout(function(){fin(null,1)},8000);
- sc.src=RESULTS_URL+"?"+qs+"&cb="+n;document.head.appendChild(sc)};
+ window[n]=function(d){fin(d,0)};sc.onerror=function(){fin(null,1)};setTimeout(function(){fin(null,1)},9000);
+ sc.src=RESULTS_URL+"?q="+encodeURIComponent([n,kind].concat(parts).map(function(x){return String(x).replace(/\|/g," ")}).join("|"));document.head.appendChild(sc)};
 var UK="infux",U={};try{U=JSON.parse(localStorage.getItem(UK))||{}}catch(e){}
 function usv(){try{localStorage.setItem(UK,JSON.stringify(U))}catch(e){}}
 function key(){return ME?(ME.c||"")+"|"+(ME.n||""):"-"}
@@ -12613,7 +12613,7 @@ var _tp=topics;topics=function(){REV=0;var r=_tp.apply(this,arguments);try{panel
 window.uxTch=function(){var k="";try{k=localStorage.getItem("inftk")||""}catch(e){}
  var a=document.getElementById("app");a.innerHTML="<div class='top'><button class='sm' onclick='who()'>← Назад</button></div><div class='card'><h2>👩‍🏫 Мій клас</h2><p class='mut'>Підсумок із таблиці результатів. Потрібен ключ вчителя (змінна TEACHER_KEY у скрипті таблиці).</p><input id='tk' type='password' placeholder='Ключ вчителя' value='"+esc(k)+"' autocomplete='off'><button class='pri' id='tkb'>Показати</button><div id='tkr' class='mut' style='margin-top:10px'></div></div>";
  var go=function(){var v=document.getElementById("tk").value.trim(),r=document.getElementById("tkr");if(!v)return;try{localStorage.setItem("inftk",v)}catch(e){}r.textContent="Завантаження…";
-  jget("tk="+encodeURIComponent(v),function(d,err){if(!d||typeof d!=="object"){r.textContent=err?"Немає зв’язку. Спробуй пізніше.":"Не вдалося: невірний ключ або TEACHER_KEY не задано в скрипті (чи скрипт не оновлено).";return}tchView(d)})};
+  jget("tk",[v],function(d,err){if(!d||typeof d!=="object"){r.textContent=err?"Немає зв’язку. Спробуй пізніше.":"Не вдалося: невірний ключ або TEACHER_KEY не задано в скрипті (чи скрипт не оновлено).";return}tchView(d)})};
  document.getElementById("tkb").onclick=go;if(k)go()};
 function tchView(d){var rows=d.rows||[],det=d.det||[],r=document.getElementById("tkr"),cl={},i,names={};
  det.forEach(function(x){(cl[x[0]]=cl[x[0]]||{})[x[1]]=1});rows.forEach(function(x){cl[x.c]=cl[x.c]||{}});
@@ -12733,7 +12733,7 @@ function dlg(h){var o=document.createElement("div");o.className="sess-ov";o.inne
 function rm(o){if(o&&o.parentNode)o.parentNode.removeChild(o)}
 function ask(title,txt,yes,no,cb){var o=dlg("<h2>"+title+"</h2><p>"+txt+"</p><button class='pri' id='sy-y'>"+yes+"</button><button id='sy-n'>"+no+"</button>");o.querySelector("#sy-y").onclick=function(){rm(o);cb(true)};o.querySelector("#sy-n").onclick=function(){rm(o);cb(false)}}
 function alert_(m){try{note(m)}catch(e){}var o=dlg("<h2>Увага</h2><p>"+esc(m)+"</p><button class='pri' id='sy-o'>Зрозуміло</button>");o.querySelector("#sy-o").onclick=function(){rm(o)}}
-function fetchSt(){return new Promise(function(res){jget("st=1&c="+encodeURIComponent(ME.c)+"&n="+encodeURIComponent(ME.n)+"&h="+encodeURIComponent(ME.p),function(d,err){if(!d||typeof d!=="object"){DIAG=err?"немає зв’язку зі скриптом":"скрипт відповів неочікувано";res(null)}else res(d)})})}
+function fetchSt(){return new Promise(function(res){jget("st",[ME.c,ME.n,ME.p],function(d,err){if(!d||typeof d!=="object"){DIAG=err?"немає зв’язку зі скриптом":"скрипт відповів неочікувано";res(null)}else res(d)})})}
 /* перевірка імені+PIN на сервері; cb(ok,msg) */
 function check(cb,login){fetchSt().then(function(d){
  if(!d||!d.s){if(login)alert_("PIN не перевірено: "+(DIAG||"сервер не відповів"));cb(true);return}                       /* нема зв’язку — пускаємо, звіримось пізніше */

@@ -70,6 +70,18 @@ function doGet(e) {
 }
 
 function doGet_(e) {
+  var q = e && e.parameter && e.parameter.q; // формат: cb|st|клас|ім'я|pin  або  cb|tk|ключ
+  if (q) {
+    var qp = String(q).split("|");
+    e.parameter.cb = qp[0];
+    if (qp[1] === "st") { e.parameter.st = "1"; e.parameter.c = qp[2] || ""; e.parameter.n = qp[3] || ""; e.parameter.h = qp[4] || ""; }
+    else if (qp[1] === "tk") { e.parameter.tk = qp[2] || ""; }
+  }
+  var dbg = e && e.parameter && e.parameter.dbg;
+  if (dbg === "1") return ContentService.createTextOutput("V3-plain");
+  if (dbg === "2") return ContentService.createTextOutput(JSON.stringify({ x: 1 })).setMimeType(ContentService.MimeType.JSON);
+  if (dbg === "3") return ContentService.createTextOutput("sheet:" + SpreadsheetApp.getActiveSpreadsheet().getName());
+  if (dbg === "4") return ContentService.createTextOutput(JSON.stringify(lookupState("x", "test", "1")));
   if (e && e.parameter && e.parameter.st) {
     return reply(e, lookupState(String(e.parameter.c || ""), String(e.parameter.n || ""), String(e.parameter.h || "")));
   }
