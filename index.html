@@ -1381,7 +1381,7 @@ function next(o){if(!alive(o))return;clrP(o);var r=Math.random(),W=o.el.clientWi
 
 function mount(a){var o={el:document.createElement("div")};o.el.className="cp";
  o.el.innerHTML="<div class='sun'></div><div class='hint'>Торкнись котика тричі — почнеться гра</div><div class='hud'></div><div class='hl'></div><div class='hl b'></div><div class='cl'></div><div class='cl b'></div><div class='pf'><i></i><i></i><i></i><i></i></div><div class='gr'></div><div class='fl' style='left:16%'>🌼</div><div class='fl' style='left:57%'>🌸</div><div class='fl' style='left:84%'>🌼</div><div class='ball'></div><div class='bub'></div><div class='cc'>"+SVG+"<i class='sh'></i></div>";
- o.cat=o.el.querySelector(".cc");o.ball=o.el.querySelector(".ball");o.bub=o.el.querySelector(".bub");CUR=o;a.appendChild(o.el);fit(o);face(o);
+ o.cat=o.el.querySelector(".cc");o.ball=o.el.querySelector(".ball");o.bub=o.el.querySelector(".bub");CUR=o;a.insertBefore(o.el,a.querySelector(".uxtl")||a.querySelector(".abt")||null);fit(o);face(o);
  o.cat.onclick=function(){if(!alive(o))return;var tn=Date.now();o.taps=(o.taps||[]).filter(function(x){return tn-x<1700});o.taps.push(tn);if(o.taps.length>=3){o.taps=[];return startGame(o)}o.cat.classList.remove("jump");void o.cat.offsetWidth;o.cat.classList.add("jump");say(o,SAY[Math.floor(Math.random()*SAY.length)])};
  var tk=setInterval(function(){if(!alive(o)){clearInterval(tk);return}var c=o.cat.getBoundingClientRect().left-o.el.getBoundingClientRect().left;if(!isNaN(c))X=c},150);
  setTimeout(function(){next(o)},400)}
@@ -1422,7 +1422,7 @@ function check(muts){var a=document.getElementById("app");if(!a)return;
  clearTimeout(pend);pend=setTimeout(function(){var a=document.getElementById("app");if(!a)return;
   var has=a.querySelector(".cp");
   if(!wantCat(a)){if(has)has.parentNode.removeChild(has);return}
-  if(!has)mount(a);else{var _ls=a.lastElementChild;if(_ls!==has&&!(_ls&&_ls.className==="uxtl"&&_ls.previousElementSibling===has))a.appendChild(has);fit(CUR)}},60)}
+  if(!has)mount(a);else{var _t=a.querySelector(".uxtl")||a.querySelector(".abt");if(_t&&has.nextElementSibling!==_t)a.insertBefore(has,_t);else if(!_t&&a.lastElementChild!==has)a.appendChild(has);fit(CUR)}},60)}
 try{new MutationObserver(check).observe(document.getElementById("app")||document.body,{childList:true,subtree:true})}catch(e){}
 window.addEventListener("resize",function(){if(CUR&&document.body.contains(CUR.el))fit(CUR)});
 setTimeout(function(){check()},200);
@@ -12671,7 +12671,7 @@ function panel(){if(!ME||ME.t)return;var app=document.getElementById("app");if(!
  if(nm)h+="<button class='uxm' onclick='uxRev()'>🔁 Повтор помилок <b>("+nm+")</b></button>";
  h+="</div>";hero.insertAdjacentHTML("afterend",h)}
 /* --- косметика карток: стани, дубль підзаголовка, «почни тут» --- */
-function cosm(){try{var app=document.getElementById("app");if(!app)return;var tl=app.querySelector(".uxtl");if(tl&&app.lastElementChild!==tl)app.appendChild(tl);var inL=false,top=app.querySelector(".top .mut");if(top&&/Урок\s+\d+\s+з/.test(top.textContent))inL=true;
+function cosm(){try{var app=document.getElementById("app");if(!app)return;var tl=app.querySelector(".uxtl");var ab=app.querySelector(".abt");if(tl&&(ab?ab.previousElementSibling!==tl:app.lastElementChild!==tl))app.insertBefore(tl,ab||null);var inL=false,top=app.querySelector(".top .mut");if(top&&/Урок\s+\d+\s+з/.test(top.textContent))inL=true;
  var mbs=app.querySelectorAll(".mb:not(.lock)"),first=null,i,b,s,bt,tx,mm,st;
  for(i=0;i<mbs.length;i++){b=mbs[i];s=b.querySelector(".sub");bt=b.querySelector("b");if(!s)continue;tx=s.textContent;
   if(bt&&tx.indexOf(bt.textContent)===0&&tx.length>bt.textContent.length+3&&!s.getAttribute("data-ux")){s.textContent=tx.slice(bt.textContent.length).replace(/^\s*[·:—-]\s*/,"");tx=s.textContent}
@@ -12684,7 +12684,7 @@ var pend=0;new MutationObserver(function(){if(pend)return;pend=1;setTimeout(func
 if(document.readyState!=="loading")startObs();else document.addEventListener("DOMContentLoaded",startObs);
 /* --- прихована для учнів кнопка «Мій клас» під екраном входу --- */
 var _pQ=playQ;playQ=function(){REV=0;return _pQ.apply(this,arguments)};var _pG=playG;playG=function(){REV=0;return _pG.apply(this,arguments)};
-var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button></div>");var mv=function(){var l=document.querySelector("#app .uxtl"),ap=document.getElementById("app");if(l&&ap&&ap.lastElementChild!==l)ap.appendChild(l)};setTimeout(mv,80);setTimeout(mv,500);setTimeout(mv,1500)}catch(e){}return r};
+var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button></div>");var mv=function(){var l=document.querySelector("#app .uxtl"),ap=document.getElementById("app");var ab=ap&&ap.querySelector(".abt");if(l&&ap&&(ab?ab.previousElementSibling!==l:ap.lastElementChild!==l))ap.insertBefore(l,ab||null)};setTimeout(mv,80);setTimeout(mv,500);setTimeout(mv,1500)}catch(e){}return r};
 /* --- випадкова затримка відправки, щоб розтягти пік навантаження на таблицю --- */
 var _fl=flush;flush=function(){if(ENDING)return _fl();return new Promise(function(res){setTimeout(function(){_fl().then(res,function(){res([false])})},Math.floor(Math.random()*4000))})};
 /* --- стилі --- */
@@ -12781,7 +12781,8 @@ function open(){var o=document.createElement("div");o.className="sess-ov";
  +"<button class='pri' id='abx'>Закрити</button></div>";
  document.body.appendChild(o);o.querySelector("#abx").onclick=function(){o.parentNode.removeChild(o)};o.onclick=function(e){if(e.target===o)o.parentNode.removeChild(o)}}
 function add(){var a=document.getElementById("app");if(!a||a.querySelector(".abt"))return;var d=document.createElement("div");d.className="abt";
- d.innerHTML="© 2026 Б. Голуб · Ладанський ліцей · <button type='button'>Джерела й подяки</button>";d.querySelector("button").onclick=open;a.appendChild(d)}
+ d.innerHTML="© 2026 Б. Голуб · Ладанський ліцей · <button type='button'>Джерела й подяки</button>";d.querySelector("button").onclick=open;a.appendChild(d);keep(a,d)}
+var moves=0;function keep(a,d){function mv(){if(moves>40||d.parentNode!==a||a.lastElementChild===d)return;moves++;a.appendChild(d)}setTimeout(mv,200);setTimeout(mv,900);setTimeout(mv,2200);try{var mo=new MutationObserver(function(){mv()});mo.observe(a,{childList:true})}catch(e){}}
 var _w=who;who=function(){var r=_w.apply(this,arguments);try{add()}catch(e){}return r};
 var _t=topics;topics=function(){var r=_t.apply(this,arguments);try{add()}catch(e){}return r};
 })();
