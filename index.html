@@ -12750,7 +12750,7 @@ function pull(){if(!ME||ME.t)return;if(!ME.p){return}if(!on())return;var key=pk(
 var _tp=topics;topics=function(){if(ME&&!ME.t&&!ME.p&&CK[ME.c]){var m=ME;ME=null;who();var nm=document.getElementById("nm"),cl=document.getElementById("cl");if(nm)nm.value=m.n;if(cl)cl.value=m.c;var e=document.getElementById("er");if(e)e.textContent="Додай PIN (4 цифри) — він повертає твій прогрес на інших пристроях.";return}var r=_tp.apply(this,arguments);try{pull()}catch(e){}return r};
 })();
 
-var RESULTS_URL="https://script.google.com/macros/s/AKfycbyHtpRvMVbpciaWGfSargPQp4CM-izqtyE81ECelPfQ3FU6-WFP84uEDlTQRF0FVPCe/exec",RESULTS_KEY="inf-x7k29";
+var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
 var _pt;function queuePush(){clearTimeout(_pt);_pt=setTimeout(push,1200)}
 var OUTK="inf5q";
