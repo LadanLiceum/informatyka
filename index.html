@@ -12624,13 +12624,14 @@ function tchView(d){var rows=d.rows||[],det=d.det||[],r=document.getElementById(
    if(!L.length){t.innerHTML="<p class='mut'>Для цього класу ще немає детальних результатів.</p>";return}
    var by={};L.forEach(function(x){(by[x[1]]=by[x[1]]||[]).push(x)});
    function tot(x){var t=x[12];if(t===""||t==null||isNaN(+t)){var ns=[],q;for(q=4;q<=11;q++)if(x[q]!==""&&x[q]!=="-"&&!isNaN(+x[q]))ns.push(+x[q]);t=ns.length?ns.reduce(function(a,b){return a+b},0)/ns.length:""}return t}
+   function tv(v){return(v===""||v==="-"||v==null||isNaN(+v))?"":String(Math.round(+v*10)/10)}
    function tm(x){var u=x[13]?new Date(x[13]).getTime():0;return isNaN(u)?0:u}
    var hn=["","","","Читалка","Гра 1","Гра 2","Гра 3","Гра 4","Гра 5","Гра 6","Тест","Великий тест"];
    h=Object.keys(by).sort(function(a,b){return a.localeCompare(b,"uk")}).map(function(nm){
     var A=by[nm].sort(function(a,b){return tm(b)-tm(a)||(+b[2])-(+a[2])}),ts=A.map(tot).filter(function(v){return v!==""}),avg=ts.length?ts.reduce(function(a,b){return a+b},0)/ts.length:"";
     var inner=A.map(function(x){var tt=String(x[14]||"").split("; "),cells="",k,t2=tot(x);
      for(k=3;k<=11;k++){if(x[k]===""||x[k]==="-")continue;var lbl=hn[k];if(k>=4&&k<=9){var m=tt.filter(function(z){return z.indexOf((k-3)+" — ")===0})[0];if(m)lbl=m.replace(/^\d+ — /,"")}cells+="<div class='tkg'><span>"+esc(lbl)+"</span>"+col(x[k]).replace(/^<td/,"<b").replace("</td>","</b>")+"</div>"}
-     return "<details class='tkl'><summary><b>Урок "+esc(x[2])+"</b><span class='tkz'>"+(t2===""?"":"бал "+(Math.round(t2*10)/10))+"</span><span class='tkd2'>"+fd(x[13])+"</span></summary><div class='tkgs'>"+cells+"</div></details>"}).join("");
+     return "<details class='tkl'><summary><b>Урок "+esc(x[2])+"</b><span class='tkz'>"+(tv(x[10])?"Тест <b>"+tv(x[10])+"</b> · ":"")+(tv(x[11])?"Вел. <b>"+tv(x[11])+"</b> · ":"")+(t2===""?"":"Заг. <b>"+(Math.round(t2*10)/10)+"</b>")+"</span><span class='tkd2'>"+fd(x[13])+"</span></summary><div class='tkgs'>"+cells+"</div></details>"}).join("");
     return "<details class='tks'"+(st?" open":"")+"><summary><b>"+esc(nm)+"</b><span class='tkz'>"+A.length+" ур."+(avg===""?"":" · сер. "+(Math.round(avg*10)/10))+"</span></summary>"+inner+"</details>"}).join("");
    t.innerHTML=h+"<p class='mut'>Нові уроки зверху. Натисни на учня чи урок, щоб розгорнути. Бали за 12-бальною шкалою, найкращий результат; читалка в середній бал не входить. Колір: червоний до 6, жовтий 6–9, зелений від 10.</p>"}
   else{
