@@ -12764,6 +12764,28 @@ if(!P.k&&!P.c)return;
 who=function(){var r=_w.apply(this,arguments);try{var ky=document.getElementById("ky"),cl=document.getElementById("cl");if(ky&&P.k&&!ky.value)ky.value=P.k;if(cl&&P.c){for(var i=0;i<cl.options.length;i++)if(cl.options[i].value===P.c){cl.value=P.c;break}}}catch(e){}return r};
 try{history.replaceState(null,"",location.pathname)}catch(e){}})();
 
+/* ===== «Про застосунок»: скромний підвал + компактне вікно «Джерела та подяки» ===== */
+(function(){
+var CSS=".abt{margin:18px auto 10px;padding:8px 12px;text-align:center;font-size:12px;line-height:1.5;opacity:.75;max-width:520px}.abt button{all:unset;cursor:pointer;text-decoration:underline;text-underline-offset:2px;font-weight:700}"
++".abm{max-width:420px!important;text-align:left!important;max-height:86vh;overflow:auto}.abm h2{text-align:center}.abm ul{margin:0 0 12px;padding-left:18px}.abm li{font-size:13.5px;line-height:1.4;margin:0 0 7px}.abm .mut{color:inherit!important;font-size:12px;opacity:.7;text-align:center;margin:0 0 10px}";
+var st=document.createElement("style");st.textContent=CSS;document.head.appendChild(st);
+function open(){var o=document.createElement("div");o.className="sess-ov";
+ o.innerHTML="<div class='sess-b abm' role='dialog'><h2>Про застосунок</h2><p class='mut'>Некомерційний навчальний проєкт Ладанського ліцею. Автор: Богдан Голуб.</p>"
+ +"<ul><li><b>Зміст.</b> Уроки складено за навчальною програмою, підручниками з інформатики (зокрема Й. Ривкінд та співавт.) власними календарними планами та власними напрацюваннями автора — лише для освітніх цілей.</li>"
+ +"<li><b>Скріншоти програм</b> (PowerPoint, Word, Scratch тощо) і <b>фотографії</b> в читанках використано як навчальну ілюстрацію; усі права належать їхнім правовласникам.</li>"
+ +"<li><b>Шрифти:</b> Nunito, Rubik, Press Start 2P (SIL Open Font License).</li>"
+ +"<li><b>Оформлення</b> класів оригінальне й не пов’язане з Mojang, Microsoft та іншими брендами; назви належать їхнім власникам.</li>"
+ +"<li><b>Інструменти ШІ.</b> Під час розробки застосовувалося штучне інтелектуальне асистування (код, редагування текстів). Концепція, структура, добір змісту й остаточні рішення належать автору.</li>"
+ +"</ul>"
+ +"<p class='mut'>Для звернень правовласників: <a href='mailto:Bohdan_Holub@outlook.com' style='color:inherit;font-weight:700'>Bohdan_Holub@outlook.com</a></p>"
+ +"<button class='pri' id='abx'>Закрити</button></div>";
+ document.body.appendChild(o);o.querySelector("#abx").onclick=function(){o.parentNode.removeChild(o)};o.onclick=function(e){if(e.target===o)o.parentNode.removeChild(o)}}
+function add(){var a=document.getElementById("app");if(!a||a.querySelector(".abt"))return;var d=document.createElement("div");d.className="abt";
+ d.innerHTML="© 2026 Б. Голуб · Ладанський ліцей · <button type='button'>Джерела й подяки</button>";d.querySelector("button").onclick=open;a.appendChild(d)}
+var _w=who;who=function(){var r=_w.apply(this,arguments);try{add()}catch(e){}return r};
+var _t=topics;topics=function(){var r=_t.apply(this,arguments);try{add()}catch(e){}return r};
+})();
+
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
 var _pt;function queuePush(){clearTimeout(_pt);_pt=setTimeout(push,1200)}
