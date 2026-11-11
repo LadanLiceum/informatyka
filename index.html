@@ -18358,6 +18358,737 @@ if(typeof GI5!="undefined"){GI5.fork5=["🛡️","Розвилка Крафте�
 if(typeof GI!="undefined"){GI.fork5=["🛡️","Розвилка Крафтера"];GI.sensor=["👁️","Датчики-чуття"];GI.maze5=["👹","Лабіринт Зеленого підривника"]}
 })();
 
+/* ===== 6 клас · ігри «як у програмі»: бібліотека O6 + вікно «Слово» (список, таблиця, обтікання) – уроки 609, 610, 611, 612 ===== */
+(function(){
+var O=window.O5;if(!O||typeof GM==="undefined")return;
+var css=`
+.o6 .o6d{background:#fff;border:1px solid #bbb;padding:6px 8px;color:#222;font:600 13px/1.5 'Segoe UI',Arial,sans-serif}
+.o6 .ln{display:flex;gap:6px;padding:2px 4px;border:2px solid transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;min-height:26px;align-items:center}
+.o6 .ln.sel{background:#cfe0ff;border-color:#2b79d8}
+.o6 .ln b{min-width:22px;text-align:right;color:#2b579a}
+.o6 .ln.l1{padding-left:28px}
+.o6 .tbl{display:grid;gap:0;margin:6px 0;font:700 12px 'Segoe UI',Arial,sans-serif;color:#222}
+.o6 .tbl>div{border:2px solid #111;padding:4px 3px;min-height:34px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;background:#fff;-webkit-tap-highlight-color:transparent;word-break:break-word}
+.o6 .tbl>div.sel{background:#cfe0ff;outline:3px solid #2b79d8;outline-offset:-3px}
+.o6 .tbl>div.fl{background:#ffe27a}.o6 .tbl>div.fl.sel{background:#b9cdf0}
+.o6 .tbl>div.mk{border:none;background:transparent;color:#2b579a;font-size:13px;min-height:24px;padding:0}
+.o6 .tbl>div.mk.sel{background:#cfe0ff;outline:none}
+.o6 .pup{border:3px solid #111;background:#fff;box-shadow:0 4px 0 #0005;padding:6px;margin:4px 0}
+.o6 .gr{display:grid;grid-template-columns:repeat(8,1fr);gap:3px;max-width:240px}
+.o6 .gr i{aspect-ratio:1;border:2px solid #777;background:#fff;cursor:pointer;display:block}
+.o6 .gr i.on{background:#8fd14f;border-color:#2a7a12}
+.o6 .opt{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.o6 .opt .rb{flex:1 1 40%;min-height:38px;text-align:center}
+.o6 .opt .rb.ok{background:#8fd14f}.o6 .opt .rb.bad{background:#ff8f8f}
+.o6 .wp{position:relative;font:600 12px/1.45 'Segoe UI',Arial,sans-serif;color:#222;padding:6px;min-height:150px;overflow:hidden}
+.o6 .pic{width:58px;height:50px;background:linear-gradient(#bfe9ff 60%,#6dc03a 60%);border:2px solid #111;font-size:30px;text-align:center;line-height:46px}
+.o6 .stk{position:relative;height:120px;background:#f3f3f3;border:1px solid #bbb;margin:4px 0}
+.o6 .stk>div{position:absolute;border:3px solid #111;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.o6 .stk>div.sel{outline:3px dashed #ffd800;outline-offset:2px}
+.o6 .tip{font-size:11px;font-weight:800;color:#555;margin:2px 0}
+.o6 .cd{display:inline-block;margin:2px;padding:2px 6px;border:2px solid #111;background:#eee;font-weight:800;font-size:12px}
+`;
+var stl=document.createElement("style");stl.textContent=css;document.head.appendChild(stl);
+var E=O.esc;
+function sh(a){return window.shuffle?window.shuffle(a):a}
+
+/* ---------- спільний рушій раундів (як у g5oa): 3 життя, пояснення «чому», кнопка .go ---------- */
+function runner(g,tag,build){
+ var N=g.rounds.length,i=0,hp=3,sc=0;
+ function show(){
+  var rd=g.rounds[i],done=false,bad=0,last=i==N-1;
+  fr9(g.title,g.hint||"","<div class='o5 o6 o5g' id='o5g'><div class='hud'><b id='o5h'></b><b>"+tag+" "+(i+1)+" / "+N+"</b></div><div id='o5m'></div><div class='say'><div class='c'>🛠️</div><div class='b' id='o5s'></div></div><button class='go' id='o5go'></button></div>");
+  var root=document.getElementById("o5g"),H=document.getElementById("o5h"),S=document.getElementById("o5s"),GO=document.getElementById("o5go");
+  function hud(){H.textContent=new Array(hp+1).join("❤️")+new Array(4-hp).join("🖤")}hud();
+  function alive(){return document.body.contains(root)}
+  function end(){var fin=last||hp<=0;GO.disabled=false;GO.textContent=fin?"Результат →":"Далі →";GO.onclick=function(){if(!alive())return;if(fin)fin9(sc,N);else{i++;show()}}}
+  function shake(){root.classList.remove("shake");void root.offsetWidth;root.classList.add("shake")}
+  var idle=0;
+  var a={root:root,nudge:function(msg){idle++;if(idle>2)a.miss(msg+" Не поспішай: порожні підтвердження коштують життя.");else a.say(msg)},M:document.getElementById("o5m"),onEnd:null,alive:alive,done:function(){return done},
+   say:function(t,k){S.className="b "+(k||"");S.innerHTML=t},
+   go:function(label,fn){GO.textContent=label;GO.disabled=false;GO.onclick=function(){if(alive()&&!done)fn()}},
+   miss:function(msg){if(done)return;hp--;bad++;hud();shake();a.say("❌ "+msg+(hp<=0?" Життя скінчилися.":""),"bad");if(hp<=0){done=true;if(a.onEnd)a.onEnd(false);end()}},
+   ans:function(ok,why,retry){if(done)return;
+    if(ok){if(!bad)sc++;done=true;a.say("✅ "+why,"ok");if(a.onEnd)a.onEnd(true);end();return}
+    hp--;bad++;hud();shake();
+    if(hp<=0||!retry){done=true;a.say("❌ "+why+(hp<=0?" Життя скінчилися.":""),"bad");if(a.onEnd)a.onEnd(false);end()}else a.say("❌ "+why,"bad")}};
+  build(rd,a,i);
+ }
+ show();
+}
+/* вибір з варіантів: список [[текст, правильно?, пояснення-помилка]], k – підпис */
+function pick(a,M,list,why,after){
+ var o=sh(list.map(function(x,i){return {t:x[0],ok:x[1],e:x[2],i:i}}));
+ M.insertAdjacentHTML("beforeend","<div class='opt'>"+o.map(function(x,j){return "<div class='rb' role='button' data-j='"+j+"'>"+x.t+"</div>"}).join("")+"</div>");
+ var bs=M.querySelectorAll(".opt .rb");
+ [].forEach.call(bs,function(b){b.onclick=function(){if(a.done())return;var x=o[+b.getAttribute("data-j")];if(x.ok){b.classList.add("ok");a.ans(true,why)}else{b.classList.add("bad");a.ans(false,x.e||"Це не те.",true)}}});
+}
+window.O6={runner:runner,pick:pick,sh:sh,E:E,win:O.win,rb:O.rb};
+var WD="#2b579a",TABS=["Основне","Вставлення","Макет"];
+function W(title,tabs,rib,body){return O.win(title,WD,tabs||TABS,rib,body)}
+
+/* ================= 609 · СПИСОК-КРАФТ (вікно «Слово») ================= */
+var LET="абвгд";
+GM.list6=function(g){runner(g,"Завдання",function(rd,a){
+ var L=rd.lines.map(function(t,i){var s=rd.init&&rd.init[i]||[0,0];return {t:t,m:s[0],l:s[1]}}),sel={};
+ var M=a.M;
+ M.innerHTML=W("📝 Слово",null,O.rb("b1","• Маркери")+O.rb("b2","1. Нумерація")+O.rb("b3","→ Збільшити відступ")+O.rb("b4","← Зменшити відступ")+O.rb("b5","✕ Без списку")+O.rb("b6","☑ Усе"),"<div class='doc'><div class='o6d' id='dc'></div></div>");
+ var D=document.getElementById("dc");
+ function draw(){var cnt=[0,0],h="";L.forEach(function(x,i){var p="";
+   if(x.m==="n"){cnt[x.l]++;p=x.l?LET.charAt((cnt[x.l]-1)%5)+")":cnt[0]+"."}else if(x.m==="b")p=x.l?"◦":"•";else cnt[x.l]=0;
+   if(x.m!=="n"&&x.l===0)cnt[1]=0;
+   h+="<div class='ln"+(sel[i]?" sel":"")+(x.l?" l1":"")+"' data-i='"+i+"'><b>"+p+"</b><span>"+E(x.t)+"</span></div>"});
+  D.innerHTML=h;[].forEach.call(D.querySelectorAll(".ln"),function(e){e.onclick=function(){if(a.done())return;var i=+e.getAttribute("data-i");sel[i]=!sel[i];draw()}})}
+ draw();
+ function S(){return L.filter(function(x,i){return sel[i]})}
+ function need(){if(!S().length){a.nudge("Спочатку виділи рядки: торкнись потрібних абзаців (або кнопки «Усе»).");return false}return true}
+ function kind(m){return function(){if(a.done()||!need())return;var s=S(),all=s.every(function(x){return x.m===m});s.forEach(function(x){x.m=all?0:m;if(!x.m)x.l=0});draw()}}
+ document.getElementById("b1").onclick=kind("b");document.getElementById("b2").onclick=kind("n");
+ document.getElementById("b5").onclick=function(){if(a.done()||!need())return;S().forEach(function(x){x.m=0;x.l=0});draw()};
+ document.getElementById("b3").onclick=function(){if(a.done()||!need())return;var s=S();if(s.some(function(x){return !x.m})){a.say("Рівень міняють лише в абзаців списку. Спочатку зроби їх списком.");return}s.forEach(function(x){x.l=1});draw()};
+ document.getElementById("b4").onclick=function(){if(a.done()||!need())return;S().forEach(function(x){x.l=0});draw()};
+ document.getElementById("b6").onclick=function(){if(a.done())return;var all=L.every(function(x,i){return sel[i]});L.forEach(function(x,i){sel[i]=!all});draw()};
+ a.say("Завдання: "+rd.task);
+ a.go("Перевірити ✔",function(){
+  if(!L.some(function(x,i){var s0=rd.init&&rd.init[i]||[0,0];return x.m!==s0[0]||x.l!==s0[1]})){a.nudge("Ще нічого не змінено. Виділи рядки й обери кнопку на стрічці.");return}
+  var bi=-1;L.forEach(function(x,i){if(bi<0&&(x.m!==rd.tg[i][0]||x.l!==rd.tg[i][1]))bi=i});
+  if(bi<0){a.ans(true,rd.why);return}
+  var x=L[bi],t=rd.tg[bi],nm={0:"без списку",b:"маркований",n:"нумерований"};
+  a.ans(false,"Рядок «"+E(x.t)+"»: "+(x.m!==t[0]?"має бути "+nm[t[0]]+" елемент":"має бути інший рівень вкладеності")+". "+(rd.hint||""),true)});
+})};
+GM.list6.TT="Список-крафт";
+
+/* ================= 610 · ТАБЛИЦЯ-ІНВЕНТАР (вставлення, виділення, клавіші) ================= */
+GM.tbl6=function(g){runner(g,"Завдання",function(rd,a){
+ var M=a.M,k=rd.k;
+ if(k=="grid"){
+  var open=false,cs=0,rs=0;
+  M.innerHTML=W("📝 Слово",["Основне","Вставлення","Макет"],O.rb("t1","▦ Таблиця ▾","hint"),"<div class='doc'><div class='o6d' id='dc'><b>"+E(rd.doc)+"</b><div id='pp'></div></div></div>");
+  var P=document.getElementById("pp");
+  function pop(){if(!open){P.innerHTML="";return}
+   var h="<div class='pup'><div class='tip'>Схема: торкнись клітинки – виділиться ділянка зліва вгорі</div><div class='gr'>";
+   for(var r=0;r<6;r++)for(var c=0;c<8;c++)h+="<i data-r='"+r+"' data-c='"+c+"' class='"+(r<rs&&c<cs?"on":"")+"'></i>";
+   h+="</div><div class='tip' id='sz'>"+(cs?cs+" стовпці × "+rs+" рядки":"Таблиця")+"</div></div>";P.innerHTML=h;
+   [].forEach.call(P.querySelectorAll("i"),function(e){e.onclick=function(){if(a.done())return;cs=+e.getAttribute("data-c")+1;rs=+e.getAttribute("data-r")+1;pop()}})}
+  document.getElementById("t1").onclick=function(){if(a.done())return;open=!open;pop()};
+  a.say("Завдання: "+rd.task+" Вкладка «Вставлення» ⇒ «Таблиця».");
+  a.go("Вставити таблицю ✔",function(){
+   if(!open||!cs){a.nudge("Відкрий список кнопки «Таблиця» й виділи на схемі потрібну кількість стовпців і рядків.");return}
+   if(cs===rd.c&&rs===rd.r)a.ans(true,rd.why);else a.ans(false,"Ти виділив "+cs+" стовпці × "+rs+" рядки, а потрібно "+rd.c+" × "+rd.r+". Стовпці – по горизонталі, рядки – по вертикалі.",true)});
+ }else if(k=="sel"){
+  var s={},R=rd.data.length,C=rd.data[0].length;
+  M.innerHTML=W("📝 Слово",["Основне","Вставлення","Макет"],"<span class='tip'>Виділення об’єктів таблиці</span>","<div class='doc'><div class='o6d' id='dc'></div></div>");
+  var Dd=document.getElementById("dc");
+  function dr(){var h="<div class='tbl' style='grid-template-columns:24px repeat("+C+",1fr)'><div class='mk"+(s.all?" sel":"")+"' data-t='all'>✥</div>";
+   for(var c=0;c<C;c++)h+="<div class='mk' data-t='c"+c+"'>▼</div>";
+   for(var r=0;r<R;r++){h+="<div class='mk' data-t='r"+r+"'>▶</div>";for(var c2=0;c2<C;c2++)h+="<div class='"+(s[r+","+c2]?"sel":"")+"' data-t='x"+r+","+c2+"'>"+E(rd.data[r][c2])+"</div>"}
+   Dd.innerHTML=h+"</div>";
+   [].forEach.call(Dd.querySelectorAll("[data-t]"),function(e){e.onclick=function(){if(a.done())return;var t=e.getAttribute("data-t"),n={};
+    if(t=="all"){for(var r=0;r<R;r++)for(var c=0;c<C;c++)n[r+","+c]=1;n.all=1}
+    else if(t.charAt(0)=="c"){var cc=+t.slice(1);for(var r2=0;r2<R;r2++)n[r2+","+cc]=1}
+    else if(t.charAt(0)=="r"){var rr=+t.slice(1);for(var c3=0;c3<C;c3++)n[rr+","+c3]=1}
+    else n[t.slice(1)]=1;s=n;dr()}})}
+  dr();
+  a.say("Завдання: "+rd.task+" Виділяй за маркерами: ▼ – стовпець, ▶ – рядок, ✥ – уся таблиця.");
+  a.go("Перевірити виділення ✔",function(){
+   var cur=Object.keys(s).filter(function(x){return x!="all"}).sort().join("|");
+   if(!cur){a.nudge("Спочатку виділи потрібний об’єкт таблиці.");return}
+   var want=rd.tg.map(function(x){return x.join(",")}).sort().join("|");
+   if(cur===want)a.ans(true,rd.why);else a.ans(false,rd.err||"Виділено не те. Для кожного об’єкта таблиці своє місце виділення.",true)});
+ }else{
+  M.innerHTML=W("📝 Слово",["Основне","Вставлення","Макет"],"<span class='tip'>Робота з клавіатурою</span>","<div class='doc'><div class='o6d'>"+rd.pic+"</div></div>");
+  a.say("Питання: "+rd.task);
+  pick(a,M,rd.opts,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});
+ }
+})};
+GM.tbl6.TT="Таблиця-інвентар";
+
+/* ================= 611 · ТАБЛИЦЯ-ІНВЕНТАР: МАКЕТ (об’єднання, рядки, заливка) ================= */
+GM.merge6=function(g){runner(g,"Завдання",function(rd,a){
+ var M=a.M,R=rd.data.length,C=rd.data[0].length,sel={},id=0,reg=[];
+ for(var r=0;r<R;r++)for(var c=0;c<C;c++)reg.push({r0:r,c0:c,r1:r,c1:c,t:rd.data[r][c],f:0});
+ M.innerHTML=W("📝 Слово",["Основне","Макет","Конструктор"],O.rb("m1","⊞ Об’єднати клітинки")+O.rb("m2","➕ Вставити знизу")+O.rb("m3","🎨 Заливка")+O.rb("m4","✕ Зняти виділення"),"<div class='doc'><div class='o6d' id='dc'></div></div>");
+ var D=document.getElementById("dc");
+ function key(x){return x.r0+","+x.c0+","+x.r1+","+x.c1}
+ function draw(){var h="<div class='tbl' style='grid-template-columns:repeat("+C+",1fr)'>";
+  reg.forEach(function(x,i){h+="<div class='"+(sel[i]?"sel ":"")+(x.f?"fl":"")+"' data-i='"+i+"' style='grid-area:"+(x.r0+1)+"/"+(x.c0+1)+"/"+(x.r1+2)+"/"+(x.c1+2)+"'>"+E(x.t)+"</div>"});
+  D.innerHTML=h+"</div>";[].forEach.call(D.querySelectorAll("[data-i]"),function(e){e.onclick=function(){if(a.done())return;var i=+e.getAttribute("data-i");sel[i]=!sel[i];draw()}})}
+ draw();
+ function S(){return reg.filter(function(x,i){return sel[i]})}
+ function need(){if(!S().length){a.nudge("Спочатку виділи клітинки: торкайся їх по черзі.");return false}return true}
+ document.getElementById("m4").onclick=function(){if(a.done())return;sel={};draw()};
+ document.getElementById("m1").onclick=function(){if(a.done()||!need())return;var s=S();if(s.length<2){a.say("Для об’єднання виділи щонайменше дві суміжні клітинки.");return}
+  var r0=Math.min.apply(0,s.map(function(x){return x.r0})),c0=Math.min.apply(0,s.map(function(x){return x.c0})),r1=Math.max.apply(0,s.map(function(x){return x.r1})),c1=Math.max.apply(0,s.map(function(x){return x.c1}));
+  var area=0;s.forEach(function(x){area+=(x.r1-x.r0+1)*(x.c1-x.c0+1)});
+  if(area!==(r1-r0+1)*(c1-c0+1)){a.say("Об’єднати можна лише суміжні клітинки, що утворюють прямокутник.");return}
+  var txt=s.map(function(x){return x.t}).filter(function(t){return t}).join(" ");
+  reg=reg.filter(function(x,i){return !sel[i]});reg.push({r0:r0,c0:c0,r1:r1,c1:c1,t:txt,f:0});sel={};
+  reg.sort(function(p,q){return p.r0-q.r0||p.c0-q.c0});draw();a.say("Клітинки об’єднано: текст усіх клітинок перейшов в одну.")};
+ document.getElementById("m2").onclick=function(){if(a.done()||!need())return;var s=S(),rr=Math.max.apply(0,s.map(function(x){return x.r1}));
+  reg.forEach(function(x){if(x.r0>rr){x.r0++;x.r1++}else if(x.r0<=rr&&x.r1>rr)x.r1++});
+  var cov={};reg.forEach(function(x){if(x.r0<=rr+1&&x.r1>=rr+1)for(var c=x.c0;c<=x.c1;c++)cov[c]=1});
+  for(var c=0;c<C;c++)if(!cov[c])reg.push({r0:rr+1,c0:c,r1:rr+1,c1:c,t:"",f:0});
+  R++;sel={};reg.sort(function(p,q){return p.r0-q.r0||p.c0-q.c0});draw();a.say("Рядок додано нижче виділеного.")};
+ document.getElementById("m3").onclick=function(){if(a.done()||!need())return;var s=S(),all=s.every(function(x){return x.f});s.forEach(function(x){x.f=all?0:1});sel={};draw()};
+ a.say("Завдання: "+rd.task);
+ a.go("Перевірити ✔",function(){
+  var m=reg.filter(function(x){return x.r0!==x.r1||x.c0!==x.c1}).map(key).sort().join("|"),want=(rd.merges||[]).map(function(x){return x.join(",")}).sort().join("|");
+  var fl=reg.filter(function(x){return x.f}).map(key).sort().join("|"),wf=(rd.fills||[]).map(function(x){return x.join(",")}).sort().join("|");
+  if(m===""&&!fl&&R===rd.data.length){a.nudge("Таблицю ще не змінено.");return}
+  if(R!==rd.R)a.ans(false,"Рядків має бути "+rd.R+", а зараз "+R+". Кнопка «Вставити знизу» (вкладка Макет) додає рядок під виділеним.",true);
+  else if(m!==want)a.ans(false,rd.err||"Об’єднано не ті клітинки. Виділи саме ті, що мають стати однією, й обери «Об’єднати клітинки».",true);
+  else if(fl!==wf)a.ans(false,"Заливка стоїть не там, де треба: виділи об’єднану клітинку й обери «Заливка».",true);
+  else a.ans(true,rd.why)});
+})};
+GM.merge6.TT="Таблиця-інвентар: макет";
+
+/* ================= 612 · СЛОВО: ОБТІКАННЯ ТЕКСТОМ І ПОРЯДОК ФІГУР ================= */
+var TX="Крафтер збудував у селі невеликий дім. Поруч росте сад, а за садом тече чиста річка. Увечері сусіди збираються на лавці й обговорюють новини.";
+var WR=[["inl","У тексті"],["sq","Навколо рамки"],["bh","За текстом"],["fr","Перед текстом"],["tb","Зверху та знизу"]];
+function wrapPrev(m,pos){var pic="<div class='pic'>🏡</div>",t=TX;
+ if(m=="inl")return "<div class='wp'>"+t.slice(0,40)+" <span class='pic' style='display:inline-block;vertical-align:middle;width:40px;height:34px;line-height:30px;font-size:22px'>🏡</span> "+t.slice(40)+"</div>";
+ if(m=="sq")return "<div class='wp'><div style='float:"+pos+";margin:"+(pos=="left"?"0 8px 4px 0":"0 0 4px 8px")+"'>"+pic+"</div>"+t+"</div>";
+ if(m=="bh")return "<div class='wp'><div style='position:absolute;left:"+(pos=="left"?"12":"150")+"px;top:20px;opacity:.35'>"+pic.replace("58px","90px")+"</div>"+t+" "+t.slice(0,60)+"</div>";
+ if(m=="fr")return "<div class='wp'>"+t+" "+t.slice(0,60)+"<div style='position:absolute;left:"+(pos=="left"?"12":"150")+"px;top:20px'>"+pic.replace("58px","90px")+"</div></div>";
+ if(m=="tb")return "<div class='wp'>"+t.slice(0,70)+"<div style='display:flex;justify-content:center;margin:4px 0'>"+pic+"</div>"+t.slice(70)+"</div>";
+ return "<div class='wp'>"+t+"</div>"}
+GM.wrap6=function(g){runner(g,"Завдання",function(rd,a){
+ var M=a.M;
+ if(rd.k=="wrap"){
+  var cur="inl",pos="left",open=false;
+  M.innerHTML=W("📝 Слово",["Основне","Вставлення","Формат зображення"],O.rb("w1","Обтікання текстом ▾")+O.rb("w2","◀ Ліворуч")+O.rb("w3","Праворуч ▶"),"<div class='doc'><div class='pg' id='pg'></div><div id='wl'></div></div>");
+  var Pg=document.getElementById("pg"),Wl=document.getElementById("wl");
+  function dr(){Pg.innerHTML=wrapPrev(cur,pos);
+   Wl.innerHTML=open?"<div class='pup'><div class='opt'>"+WR.map(function(w){return "<div class='rb"+(cur==w[0]?" on":"")+"' data-w='"+w[0]+"'>"+w[1]+"</div>"}).join("")+"</div></div>":"";
+   [].forEach.call(Wl.querySelectorAll("[data-w]"),function(e){e.onclick=function(){if(a.done())return;cur=e.getAttribute("data-w");open=false;dr()}})}
+  dr();
+  document.getElementById("w1").onclick=function(){if(a.done())return;open=!open;dr()};
+  document.getElementById("w2").onclick=function(){if(a.done())return;pos="left";dr()};
+  document.getElementById("w3").onclick=function(){if(a.done())return;pos="right";dr()};
+  a.say("Завдання: "+rd.task);
+  a.go("Перевірити ✔",function(){
+   if(cur==rd.tg&&(!rd.pos||pos==rd.pos))a.ans(true,rd.why);
+   else if(cur=="inl"&&rd.tg!="inl")a.nudge("Спочатку обери спосіб обтікання: кнопка «Обтікання текстом».");
+   else a.ans(false,cur!=rd.tg?"Зараз «"+WR.filter(function(w){return w[0]==cur})[0][1]+"». "+rd.err:"Спосіб обрано правильно, але положення на сторінці інше: "+(rd.pos=="left"?"ліворуч":"праворуч")+".",true)});
+ }else{
+  var ord=rd.start.slice(),cs=null,SH={A:["🔴 Коло","#d33","50%",10,20,70,70],B:["🟦 Квадрат","#2b79d8","0",45,10,80,80],C:["⭐ Зірка","#c9a300","0",85,25,70,70]};
+  M.innerHTML=W("📝 Слово",["Основне","Вставлення","Формат фігури"],O.rb("o1","▲ Перенести вперед")+O.rb("o2","▼ Перенести назад"),"<div class='doc'><div class='stk' id='sk'></div><div class='tip'>Порядок (знизу вгору): <span id='od'></span></div></div>");
+  var K=document.getElementById("sk");
+  function d2(){K.innerHTML=ord.map(function(f,i){var s=SH[f];return "<div data-f='"+f+"' class='"+(cs==f?"sel":"")+"' style='background:"+s[1]+";border-radius:"+s[2]+";left:"+s[3]+"px;top:"+s[4]+"px;width:"+s[5]+"px;height:"+s[6]+"px;z-index:"+(i+1)+"'>"+s[0].split(" ")[1]+"</div>"}).join("");
+   document.getElementById("od").textContent=ord.map(function(f){return SH[f][0].split(" ")[1]}).join(" → ");
+   [].forEach.call(K.querySelectorAll("[data-f]"),function(e){e.onclick=function(){if(a.done())return;cs=e.getAttribute("data-f");d2()}})}
+  d2();
+  function mv(dx){return function(){if(a.done())return;if(!cs){a.nudge("Спочатку торкнись фігури, порядок якої треба змінити.");return}var i=ord.indexOf(cs),j=i+dx;if(j<0||j>=ord.length)return;ord.splice(i,1);ord.splice(j,0,cs);d2()}}
+  document.getElementById("o1").onclick=mv(1);document.getElementById("o2").onclick=mv(-1);
+  a.say("Завдання: "+rd.task);
+  a.go("Перевірити ✔",function(){
+   if(ord.join("")==rd.start.join("")){a.nudge("Порядок ще не змінено.");return}
+   if(ord.join("")==rd.tg.join(""))a.ans(true,rd.why);else a.ans(false,rd.err,true)});
+ }
+})};
+GM.wrap6.TT="Слово: обтікання й порядок";
+
+if(window.GI5){GI5.list6=["📋","Список-крафт"];GI5.tbl6=["🧰","Таблиця-інвентар"];GI5.merge6=["🧱","Таблиця: макет"];GI5.wrap6=["🖼️","Обтікання й порядок"]}
+if(window.GI){GI.list6=["📋","Список-крафт"];GI.tbl6=["🧰","Таблиця-інвентар"];GI.merge6=["🧱","Таблиця: макет"];GI.wrap6=["🖼️","Обтікання й порядок"]}
+
+O.rep(609,{type:"list6",title:"Список-крафт: оформи список",hint:"Виділяй абзаци й обирай кнопки стрічки. Три життя ❤️.",rounds:[
+ {task:"кроки рецепта мають бути нумерованим списком – порядок дій важливий.",lines:["Взяти три яблука","Нарізати шматочками","Додати цукор і цинамон","Випікати 30 хвилин"],tg:[["n",0],["n",0],["n",0],["n",0]],why:"Коли порядок важливий (рецепт, інструкція), добирають нумерований список: номери показують послідовність."},
+ {task:"перелік інструментів – порядок неважливий. Зроби з нумерованого списку маркований.",lines:["Кирка","Лопата","Сокира","Відро"],init:[["n",0],["n",0],["n",0],["n",0]],tg:[["b",0],["b",0],["b",0],["b",0]],why:"Для переліку, де порядок не має значення, добирають маркований список: усі елементи рівнозначні."},
+ {task:"зроби багаторівневий список: яблука й груші – вкладені до «Фрукти», морква – до «Овочі».",lines:["Фрукти","Яблука","Груші","Овочі","Морква"],init:[["b",0],["b",0],["b",0],["b",0],["b",0]],tg:[["b",0],["b",1],["b",1],["b",0],["b",1]],hint:"Виділи вкладені рядки й натисни «Збільшити відступ».",why:"Багаторівневий список: «Збільшити відступ» робить елемент вкладеним на рівень глибше, «Зменшити» – повертає назад."},
+ {task:"заголовок і підпис лишаються звичайним текстом, а три кроки – нумеровані.",lines:["Інструкція: нова грядка","Розпушити землю","Посадити насіння","Полити водою","Готово!"],init:[["b",0],["b",0],["b",0],["b",0],["b",0]],tg:[[0,0],["n",0],["n",0],["n",0],[0,0]],why:"Не кожен абзац має бути в списку. Кнопка списку працює як вмикач: «Без списку» прибирає оформлення в обраних абзаців."}
+]});
+O.rep(610,{type:"tbl6",title:"Таблиця-інвентар: створення й виділення",hint:"Працюй зі стрічкою «Слова». Три життя ❤️.",rounds:[
+ {k:"grid",doc:"Розклад: потрібна таблиця",task:"вставити таблицю на 4 стовпці й 3 рядки.",c:4,r:3,why:"Вставлення ⇒ Таблиця ⇒ виділити на схемі стовпці й рядки ⇒ клацнути. Так вставляють таблицю до 10 стовпців і 8 рядків."},
+ {k:"sel",data:[["Предмет","Ціна","К-сть"],["Кирка","50","2"],["Меч","80","1"]],task:"виділи весь стовпець «Ціна».",tg:[[0,1],[1,1],[2,1]],err:"Стовпець виділяють над його верхньою межею: маркер ▼ над потрібним стовпцем.",why:"Стовпець виділяють над верхньою межею (вказівник – чорна стрілка вниз)."},
+ {k:"sel",data:[["Предмет","Ціна","К-сть"],["Кирка","50","2"],["Меч","80","1"]],task:"виділи рядок «Меч».",tg:[[2,0],[2,1],[2,2]],err:"Рядок виділяють зовні від його лівої межі: маркер ▶ біля потрібного рядка.",why:"Рядок виділяють зовні від лівої межі рядка."},
+ {k:"sel",data:[["Предмет","Ціна"],["Кирка","50"],["Меч","80"]],task:"виділи усю таблицю одним клацанням.",tg:[[0,0],[0,1],[1,0],[1,1],[2,0],[2,1]],err:"Вся таблиця виділяється маркером ✥ над лівим верхнім кутом.",why:"Маркер ✥ над лівим верхнім кутом виділяє всю таблицю."},
+ {k:"key",pic:"<table style='border-collapse:collapse;width:100%'><tr><td style='border:2px solid #111;padding:6px'>Кирка</td><td style='border:2px solid #111;padding:6px'>50</td></tr><tr><td style='border:2px solid #111;padding:6px'>Меч</td><td style='border:2px solid #111;padding:6px;background:#cfe0ff'>80 |</td></tr></table>",task:"курсор стоїть в останній (правій нижній) клітинці. Яка клавіша додасть новий порожній рядок у кінець таблиці?",opts:[["Tab",1],["Enter",0,"Enter створює новий абзац усередині клітинки."],["Delete",0,"Delete очищає вміст виділених об’єктів, а не додає рядок."],["Shift + Tab",0,"Shift + Tab – перехід до попередньої клітинки."]],why:"Tab у останній клітинці додає новий рядок. Tab – вперед, Shift + Tab – назад."}
+]});
+O.rep(611,{type:"merge6",title:"Таблиця-інвентар: макет",hint:"Виділяй клітинки й користуйся вкладкою «Макет». Три життя ❤️.",rounds:[
+ {data:[["Склад","",""],["Предмет","Ціна","К-сть"],["Кирка","50","2"]],R:3,merges:[[0,0,0,2]],task:"верхній рядок – заголовок «Склад». Об’єднай три клітинки верхнього рядка в одну.",why:"Макет ⇒ Об’єднати клітинки: клітинки стають однією, а текст усіх клітинок переходить у неї."},
+ {data:[["Предмет","Ціна"],["Кирка","50"],["","80"],["Меч","25"]],R:4,merges:[[1,0,2,0]],task:"кирка й сусідня порожня клітинка нижче мають стати однією клітинкою у стовпці «Предмет». Об’єднай їх.",err:"Виділи клітинку «Кирка» і порожню клітинку під нею, потім обери «Об’єднати клітинки».",why:"Об’єднувати можна клітинки не лише в рядку, а й у стовпці – головне, щоб вони були суміжними."},
+ {data:[["Предмет","Ціна"],["Кирка","50"],["Меч","80"]],R:4,merges:[],task:"додай новий рядок під останнім («Меч») – для нового предмета.",why:"Макет ⇒ Вставити: виділи рядок і вибери, куди додати: вище чи нижче."},
+ {data:[["Крафтерів склад","",""],["Предмет","Ціна","К-сть"]],R:2,merges:[[0,0,0,2]],fills:[[0,0,0,2]],task:"об’єднай верхній рядок і залий його кольором (кнопка «Заливка»).",why:"Спочатку об’єднали клітинки, потім виділили результат і зафарбували: Конструктор таблиць ⇒ Заливка."}
+]});
+O.rep(612,{type:"wrap6",title:"Слово: обтікання й порядок фігур",hint:"Обирай обтікання та порядок накладання. Три життя ❤️.",rounds:[
+ {k:"wrap",task:"картинка стоїть ліворуч, а текст огинає її з правого боку й знизу.",tg:"sq",pos:"left",err:"Тут текст має обтікати картинку – спосіб «Навколо рамки».",why:"«Навколо рамки» дозволяє тексту огинати об’єкт, а положення «Ліворуч» ставить його біля лівого краю."},
+ {k:"wrap",task:"картинка – водяний знак: вона має бути напівпрозорим тлом, а текст – читатися поверх неї.",tg:"bh",err:"Текст має лежати поверх картинки – тобто картинка позаду тексту.",why:"«За текстом» ставить об’єкт позаду тексту: ідеально для фону й водяних знаків."},
+ {k:"wrap",task:"картинка стоїть окремим рядком по центру, текст – тільки над нею й під нею.",tg:"tb",err:"Текст не має бути збоку від картинки: лише вище й нижче.",why:"«Зверху та знизу» залишає об’єкт сам у рядку, а текст переходить нижче."},
+ {k:"wrap",task:"картинка – як один великий символ у рядку тексту, вона рухається разом із ним.",tg:"inl",err:"Тут потрібен режим, у якому об’єкт є символом тексту.",why:"«У тексті» – режим за замовчуванням: об’єкт поводиться як символ у рядку й не рухається вільно."},
+ {k:"ord",start:["B","A","C"],tg:["A","B","C"],task:"червоне коло має лежати найнижче, над ним квадрат, а зверху – зірка. Зараз порядок інший.",err:"Знизу вгору має бути: коло, квадрат, зірка. Виділи фігуру й зсувай кнопками «Перенести вперед/назад».",why:"Кнопки «Перенести вперед» і «Перенести назад» змінюють порядок накладання: верхня фігура закриває нижні."},
+ {k:"ord",start:["A","C","B"],tg:["C","A","B"],task:"зірка має бути найнижче, над нею коло, а квадрат – зверху.",err:"Знизу вгору: зірка, коло, квадрат.",why:"Порядок накладання – це як шари прозорих аркушів: що вище в стопці, те більше видно."}
+]});
+})();
+
+/* ===== 6 клас · ігри «як у програмі» – вікна «Слайдер» (уроки 605, 607) та «Ілюстратор» (уроки 615, 618) ===== */
+(function(){
+var O=window.O5,Q=window.O6;if(!O||!Q||typeof GM==="undefined")return;
+var css=`
+.o6 .sld{position:relative;height:118px;background:linear-gradient(135deg,#fff6b8,#ffe58a);border:2px solid #111;overflow:hidden;margin:4px 0}
+.o6 .sld>div{position:absolute;font-size:34px;line-height:1}
+.o6 .sld>div u{position:absolute;right:-8px;top:-6px;text-decoration:none;font:900 11px sans-serif;background:#ffd800;border:2px solid #111;color:#111;padding:0 3px}
+.o6 .ap{background:#f3f3f3;border:2px solid #111;padding:4px;margin:4px 0}
+.o6 .ap .it{display:flex;gap:6px;align-items:center;background:#fff;margin:3px 0;padding:5px 6px;border:2px solid transparent;font:700 12px sans-serif;color:#222;cursor:pointer;min-height:32px}
+.o6 .ap .it.sel{border-color:#ff4fa3;background:#ffe9f4}
+.o6 .dlg{border:3px solid #111;background:#f0f0f0;padding:6px;font:700 12px/1.3 'Segoe UI',Arial,sans-serif;color:#222;margin:4px 0}
+.o6 .dlg h5{margin:6px 0 3px;font-size:11px;color:#c43e1c;text-transform:uppercase}
+.o6 .dlg .ch{display:flex;gap:6px;align-items:center;padding:6px 4px;cursor:pointer;min-height:32px;-webkit-tap-highlight-color:transparent}
+.o6 .dlg .ch i{width:18px;height:18px;border:2px solid #111;background:#fff;flex:none;font-style:normal;text-align:center;line-height:14px;font-size:14px;font-weight:900}
+.o6 .dlg .ch i.r{border-radius:50%}
+.o6 .dlg .ch.on i{background:#2b79d8;color:#fff}
+.o6 .zm{position:relative;width:100%;height:130px;overflow:hidden;background:#fff;border:3px solid #111}
+.o6 .zm>*{position:absolute}
+.o6 .zw{display:flex;gap:6px}.o6 .zw>div{flex:1;min-width:0}
+.o6 .zw .cap{font:900 12px sans-serif;text-align:center;color:#555;margin-bottom:2px}
+.o6 .zw .zm.pk{outline:3px solid #ffd800}
+.o6 .lp{background:#3a3a46;border:2px solid #111;padding:4px;margin:4px 0}
+.o6 .lp .ly{display:flex;align-items:center;gap:6px;background:#555;color:#fff;margin:3px 0;padding:5px 6px;font:700 12px sans-serif;min-height:34px;cursor:pointer;border:2px solid transparent}
+.o6 .lp .ly.sel{background:#8e44ad;border-color:#ffd800}
+.o6 .lp .ly .ey{font-size:16px;width:24px;text-align:center}
+.o6 .lp .ly.off{opacity:.55}
+.o6 .scn{position:relative;height:130px;background:linear-gradient(#9fd2ff,#e3f4ff 70%,#6dc03a 70%);border:2px solid #111;overflow:hidden}
+.o6 .scn>div{position:absolute;line-height:1}
+`;
+var stl=document.createElement("style");stl.textContent=css;document.head.appendChild(stl);
+var E=Q.E,PP="#c43e1c",KR="#8e44ad";
+function WP(rib,body){return O.win("🎞️ Слайдер",PP,["Анімація","Показ слайдів","Перехід"],rib,body)}
+function KW(tabs,rib,body){return O.win("🎨 Ілюстратор",KR,tabs,rib,body)}
+
+/* ================= 605 · АНІМАЦІЯ-ПОРЯДОК (вікно «Слайдер») ================= */
+GM.anim6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M;
+ if(rd.k=="order"){
+  var ord=rd.start.slice(),cs=null,IT={};rd.items.forEach(function(x){IT[x[0]]=x});
+  M.innerHTML=WP(O.rb("n1","▲ Раніше")+O.rb("n2","▼ Пізніше"),"<div class='doc'><div class='sld' id='sl'></div><div class='ap'><div class='tip'>Область анімації</div><div id='ar'></div></div></div>");
+  var SL=document.getElementById("sl"),AR=document.getElementById("ar");
+  function dr(){SL.innerHTML=ord.map(function(id,i){var x=IT[id];return "<div style='left:"+x[3]+"%;top:"+x[4]+"%'>"+x[1]+"<u>"+(i+1)+"</u></div>"}).join("");
+   AR.innerHTML=ord.map(function(id,i){var x=IT[id];return "<div class='it"+(cs==id?" sel":"")+"' data-id='"+id+"'><span class='cd'>"+(i+1)+"</span> ✨ "+x[1]+" "+E(x[2])+"</div>"}).join("");
+   [].forEach.call(AR.querySelectorAll(".it"),function(e){e.onclick=function(){if(a.done())return;cs=e.getAttribute("data-id");dr()}})}
+  dr();
+  function mv(d){return function(){if(a.done())return;if(!cs){a.nudge("Торкнись рядка ефекту в Області анімації, щоб вибрати його.");return}var i=ord.indexOf(cs),j=i+d;if(j<0||j>=ord.length)return;ord.splice(i,1);ord.splice(j,0,cs);dr()}}
+  document.getElementById("n1").onclick=mv(-1);document.getElementById("n2").onclick=mv(1);
+  a.say("Завдання: "+rd.task);
+  a.go("Переглянути ▶",function(){
+   if(ord.join()==rd.start.join()){a.nudge("Порядок ще не змінено. Вибери ефект в Області анімації й зсувай кнопками «Раніше» / «Пізніше».");return}
+   if(ord.join()==rd.tg.join())a.ans(true,rd.why);
+   else{var i=0;while(ord[i]==rd.tg[i])i++;a.ans(false,"На місці №"+(i+1)+" має з’являтися «"+E(IT[rd.tg[i]][2])+"», а в тебе – «"+E(IT[ord[i]][2])+"». Ефекти спрацьовують за номерами зверху вниз.",true)}})
+ }else{
+  M.innerHTML=WP(O.rb("g0","✨ Анімація","hint"),"<div class='doc'><div class='sld'>"+rd.pic+"</div></div>");
+  a.say(rd.task);Q.pick(a,M,rd.opts,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});
+ }
+})};
+GM.anim6.TT="Анімація-порядок";
+
+/* ================= 607 · НАЛАШТУВАННЯ ПОКАЗУ (вікно «Слайдер») ================= */
+var TYP=["Презентує доповідач (на весь екран)","Керований користувачем (вікно)","Автоматичний (весь екран)"];
+GM.show6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M,st={t:-1,loop:0,rng:0,time:0};
+ M.innerHTML=WP(O.rb("s1","⚙ Налаштувати показ слайдів","hint"),"<div class='doc'><div class='dlg' id='dg'></div></div>");
+ var D=document.getElementById("dg");
+ function row(k,v,on,txt,radio){return "<div class='ch"+(on?" on":"")+"' data-k='"+k+"' data-v='"+v+"'><i"+(radio?" class='r'":"")+">"+(on?(radio?"●":"✓"):"")+"</i>"+txt+"</div>"}
+ function dr(){D.innerHTML="<h5>Тип показу</h5>"+TYP.map(function(t,i){return row("t",i,st.t==i,t,1)}).join("")+
+  "<h5>Параметри показу</h5>"+row("loop",1,st.loop,"Безперервний цикл до натискання клавіші Esc")+
+  "<h5>Слайди</h5>"+row("rng",0,!st.rng,"Усі",1)+row("rng",1,st.rng,"З № "+rd.from+" до № "+rd.to,1)+
+  "<h5>Зміна слайдів</h5>"+row("time",0,!st.time,"Уручну",1)+row("time",1,st.time,"За часом",1);
+  [].forEach.call(D.querySelectorAll(".ch"),function(e){e.onclick=function(){if(a.done())return;var k=e.getAttribute("data-k"),v=+e.getAttribute("data-v");if(k=="loop")st.loop=st.loop?0:1;else st[k]=v;dr()}})}
+ dr();
+ document.getElementById("s1").onclick=function(){a.say("Вікно вже відкрито: «Налаштування показу слайдів».")};
+ a.say("Сценарій: "+rd.task);
+ a.go("ОК ✔",function(){
+  if(st.t<0){a.nudge("Спочатку обери тип показу.");return}
+  var tg=rd.tg,er=[];
+  if(st.t!=tg.t)er.push("тип показу має бути «"+TYP[tg.t]+"»");
+  if(!!st.loop!=!!tg.loop)er.push(tg.loop?"потрібен безперервний цикл до Esc":"безперервний цикл тут не потрібен");
+  if(!!st.rng!=!!tg.rng)er.push(tg.rng?"покажи лише частину слайдів":"покажи усі слайди");
+  if(!!st.time!=!!tg.time)er.push(tg.time?"зміна слайдів – за часом":"зміна слайдів – вручну");
+  if(!er.length)a.ans(true,rd.why);else a.ans(false,"Не збігається: "+er[0]+".",true)});
+})};
+GM.show6.TT="Слайдер: налаштування показу";
+
+/* ================= 615 · ВЕКТОР ЧИ РАСТР (вікно «Ілюстратор») ================= */
+function rasterEl(sz,fx,fy,z){var c=document.createElement("canvas");c.width=c.height=64;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,64,64);x.fillStyle="#2b6fd8";
+ for(var i=0;i<64;i++)for(var j=0;j<64;j++){if((i-32)*(i-32)+(j-32)*(j-32)<=26*26)x.fillRect(i,j,1,1)}
+ c.style.cssText="image-rendering:pixelated;width:"+sz*z+"px;height:"+sz*z+"px;left:"+(-(fx*sz*z-80))+"px;top:"+(-(fy*sz*z-65))+"px";return c}
+function vectorEl(sz,fx,fy,z){var d=document.createElement("div");d.style.cssText="width:"+sz*z+"px;height:"+sz*z+"px;left:"+(-(fx*sz*z-80))+"px;top:"+(-(fy*sz*z-65))+"px";
+ d.innerHTML="<svg viewBox='0 0 64 64' width='"+sz*z+"' height='"+sz*z+"'><circle cx='32' cy='32' r='26' fill='#2b6fd8'/></svg>";return d}
+GM.vec6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M,z=1,asked=false;
+ if(rd.k=="zoom"){
+  var ZS=[1,4,8];
+  M.innerHTML=KW(["Малювання","Вигляд","Файл"],O.rb("z1","🔍 ×1")+O.rb("z2","🔍 ×4")+O.rb("z3","🔍 ×8"),"<div class='doc'><div class='zw'><div><div class='cap'>Зображення А</div><div class='zm' id='za'></div></div><div><div class='cap'>Зображення Б</div><div class='zm' id='zb'></div></div></div><div class='tip'>Край кола – біля правого верхнього кута. Збільш і придивись.</div></div>");
+  function dr(){var A=document.getElementById("za"),B=document.getElementById("zb");A.innerHTML=B.innerHTML="";
+   var f=[.5+.4*Math.cos(-.78),.5+.4*Math.sin(-.78)];
+   (rd.rl?[vectorEl,rasterEl]:[rasterEl,vectorEl]).forEach(function(fn,i){(i?B:A).appendChild(fn(64,f[0],f[1],ZS[z]>1?ZS[z]*1.5:1.5))})}
+  dr();
+  [1,2,3].forEach(function(n){document.getElementById("z"+n).onclick=function(){if(a.done())return;z=n-1;if(z>0)asked=true;dr()}});
+  a.say("Завдання: "+rd.task);
+  var oA=rd.rl?"А – векторна, Б – растрова":"А – растрова, Б – векторна",oB=rd.rl?"А – растрова, Б – векторна":"А – векторна, Б – растрова";
+  M.insertAdjacentHTML("beforeend","<div class='opt'><div class='rb' data-r='1'>"+oA+"</div><div class='rb' data-r='0'>"+oB+"</div></div>");
+  [].forEach.call(M.querySelectorAll(".opt .rb"),function(b){b.onclick=function(){if(a.done())return;if(!asked){a.nudge("Спершу збільш зображення кнопками «×4» і «×8» та придивись до краю кола.");return}
+   if(b.getAttribute("data-r")=="1"){b.classList.add("ok");a.ans(true,rd.why)}else{b.classList.add("bad");a.ans(false,"Придивись до краю кола: у растрового при збільшенні видно квадратики-пікселі (пікселізація), а у векторного край лишається гладким.",true)}}});
+  a.go("Збільш і вибери ⬆",function(){a.nudge("Збільш зображення й обери відповідь.")});
+ }else{
+  M.innerHTML=KW(["Малювання","Вигляд","Файл"],O.rb("z0","📄 Файл"),"<div class='doc'><div class='o6d'>"+rd.pic+"</div></div>");
+  a.say(rd.task);Q.pick(a,M,rd.opts,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});
+ }
+})};
+GM.vec6.TT="Вектор чи растр";
+
+/* ================= 618 · ШАРИ-КАРТА СВІТУ (вікно «Ілюстратор») ================= */
+GM.layers6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M,ord=rd.start.slice(),vis={},cs=null,IT={};
+ rd.items.forEach(function(x){IT[x[0]]=x;vis[x[0]]=1});
+ M.innerHTML=KW(["Малювання","Шари","Фільтри"],O.rb("l1","▲ Шар вище")+O.rb("l2","▼ Шар нижче"),"<div class='doc'><div class='scn' id='sc'></div><div class='lp'><div class='tip' style='color:#ddd'>Панель «Шари» (верхній шар – зверху списку)</div><div id='lp'></div></div></div>");
+ var SC=document.getElementById("sc"),LP=document.getElementById("lp");
+ function dr(){SC.innerHTML=ord.map(function(id,i){var x=IT[id];return vis[id]?"<div style='left:"+x[3]+"px;top:"+x[4]+"px;font-size:"+x[5]+"px;z-index:"+(i+1)+"'>"+x[1]+"</div>":""}).join("");
+  LP.innerHTML=ord.slice().reverse().map(function(id){var x=IT[id];return "<div class='ly"+(cs==id?" sel":"")+(vis[id]?"":" off")+"' data-id='"+id+"'><span class='ey' data-e='"+id+"'>"+(vis[id]?"👁":"🚫")+"</span>"+x[1]+" "+E(x[2])+"</div>"}).join("");
+  [].forEach.call(LP.querySelectorAll(".ly"),function(e){e.onclick=function(ev){if(a.done())return;var id=e.getAttribute("data-id");if(ev.target.getAttribute("data-e"))vis[id]=!vis[id];else cs=id;dr()}})}
+ dr();
+ function mv(d){return function(){if(a.done())return;if(!cs){a.nudge("Спочатку торкнись назви шару на панелі «Шари».");return}var i=ord.indexOf(cs),j=i+d;if(j<0||j>=ord.length)return;ord.splice(i,1);ord.splice(j,0,cs);dr()}}
+ document.getElementById("l1").onclick=mv(1);document.getElementById("l2").onclick=mv(-1);
+ a.say("Завдання: "+rd.task+" Око 👁 вмикає й вимикає шар.");
+ a.go("Перевірити ✔",function(){
+  if(ord.join()==rd.start.join()&&Object.keys(vis).every(function(k){return vis[k]})){a.nudge("Шари ще не змінено. Торкайся назв шарів і використовуй кнопки або око.");return}
+  var er=null;
+  (rd.below||[]).forEach(function(p){if(!er&&ord.indexOf(p[0])>ord.indexOf(p[1]))er=p[2]});
+  (rd.hide||[]).forEach(function(id){if(!er&&vis[id])er="Шар «"+IT[id][2]+"» має бути прихований: вимкни його оком."});
+  Object.keys(vis).forEach(function(id){if(!er&&(rd.hide||[]).indexOf(id)<0&&!vis[id])er="Шар «"+IT[id][2]+"» мав лишитися видимим."});
+  if(!er)a.ans(true,rd.why);else a.ans(false,er,true)});
+})};
+GM.layers6.TT="Шари-карта світу";
+
+if(window.GI5){GI5.anim6=["✨","Анімація-порядок"];GI5.show6=["🎞️","Налаштування показу"];GI5.vec6=["🔍","Вектор чи растр"];GI5.layers6=["🗺️","Шари-карта світу"]}
+if(window.GI){GI.anim6=["✨","Анімація-порядок"];GI.show6=["🎞️","Налаштування показу"];GI.vec6=["🔍","Вектор чи растр"];GI.layers6=["🗺️","Шари-карта світу"]}
+
+O.rep(605,{type:"anim6",title:"Анімація-порядок: ефекти на слайді",hint:"Керуй Областю анімації. Три життя ❤️.",rounds:[
+ {k:"order",items:[["t","📌","Заголовок",8,8],["d","🐶","Пес",10,45],["c","🐱","Кіт",45,45]],start:["c","d","t"],tg:["t","d","c"],task:"спочатку має з’явитися заголовок, потім пес, наприкінці кіт.",why:"Ефекти спрацьовують за номерами в Області анімації. Кнопки «Раніше» і «Пізніше» змінюють номер ефекту на слайді."},
+ {k:"grp",pic:"<div style='left:20%;top:30%'>🎈</div>",task:"Повітряна куля має зникнути зі слайда в кінці розповіді. З якої групи обрати ефект?",opts:[["Вихід",1],["Вхід",0,"Вхід – об’єкт з’являється, а нам треба, щоб зник."],["Виокремлення",0,"Виокремлення змінює вигляд об’єкта, але він лишається."],["Шляхи переміщення",0,"Шлях переміщує об’єкт, а не прибирає його."]],why:"Вихід – об’єкт зникає зі слайда. Вхід – з’являється, Виокремлення – змінює вигляд, Шляхи переміщення – рухає."},
+ {k:"grp",pic:"<div style='left:10%;top:40%'>🚗</div><div style='left:70%;top:40%'>🏁</div>",task:"Машина має проїхати слайдом від старту до фінішу. Яка група ефектів потрібна?",opts:[["Шляхи переміщення",1],["Вхід",0,"Вхід лише показує об’єкт."],["Вихід",0,"Вихід прибирає об’єкт зі слайда."],["Виокремлення",0,"Виокремлення змінює вигляд, а не місце об’єкта."]],why:"Шляхи переміщення рухають об’єкт слайдом по траєкторії; її можна змінити зеленим і червоним маркерами."},
+ {k:"grp",pic:"<div style='left:20%;top:20%'>🐱<u>2</u></div><div style='left:60%;top:20%'>🐶<u>1</u></div>",task:"Кіт має з’явитися ОДНОЧАСНО з псом, без додаткового клацання. Яке значення «Початку» у групі Хронометраж вибрати для кота?",opts:[["З попередньою",1],["Після клацання",0,"Тоді кіт чекатиме ще одного клацання миші."],["Після попередньої",0,"Тоді кіт з’явиться ПІСЛЯ пса, а не одночасно."],["Затримка 5 с",0,"Затримка – це інтервал перед початком, а не подія початку."]],why:"«З попередньою» запускає ефект одночасно з попереднім. «Після попередньої» – відразу після нього, «Після клацання» – чекає клацання."},
+ {k:"order",items:[["m","🌅","Схід сонця",8,8],["b","🐓","Півень",10,45],["f","🐄","Корова",45,45],["h","🌾","Поле",70,45]],start:["h","m","f","b"],tg:["m","b","f","h"],task:"ранок на фермі: схід сонця, потім півень, потім корова, останнім поле.",why:"Порядок ефектів = порядок розповіді. Перевір його кнопкою «Переглянути»; усі ефекти спрацюють і під час показу."}
+]});
+O.rep(607,{type:"show6",title:"Налаштування показу слайдів",hint:"Заповни вікно налаштувань за сценарієм. Три життя ❤️.",rounds:[
+ {from:2,to:4,tg:{t:0,loop:0,rng:0,time:0},task:"учень доповідає перед класом і сам гортає слайди, показуючи всі.",why:"Виступ перед аудиторією: тип «Презентує доповідач», усі слайди, зміна вручну – доповідач керує темпом."},
+ {from:2,to:4,tg:{t:2,loop:1,rng:0,time:1},task:"презентація крутиться на екрані у вестибюлі школи без доповідача, показ ніколи не зупиняється.",why:"Без доповідача: автоматичний показ, безперервний цикл до Esc і зміна за часом."},
+ {from:3,to:5,tg:{t:0,loop:0,rng:1,time:0},task:"час виступу обмежений: треба показати лише слайди з № 3 до № 5, перемикаючи вручну.",why:"У блоці «Слайди» обирають діапазон «З № … до № …», якщо потрібна лише частина презентації."},
+ {from:2,to:4,tg:{t:1,loop:0,rng:0,time:0},task:"відвідувач виставки сам переглядає презентацію у вікні та гортає її кнопками.",why:"«Керований користувачем (вікно)» – демонстрація у вікні з елементами керування для переходу між слайдами."},
+ {from:2,to:4,tg:{t:0,loop:0,rng:0,time:1},task:"доповідач виступає, а слайди мають змінюватися самі за записаним часом.",why:"Для автоматичної зміни слайдів у блоці «Зміна слайдів» обирають «За часом»; тип показу лишається з доповідачем."}
+]});
+O.rep(615,{type:"vec6",title:"Вектор чи растр: збільш і дізнайся",hint:"Збільшуй зображення й розрізняй види графіки. Три життя ❤️.",rounds:[
+ {k:"zoom",rl:0,task:"яке з двох зображень растрове? Збільш до ×8 й придивись до краю кола.",why:"Растрове зображення складається з пікселів: при збільшенні видно мозаїку (пікселізація). Векторне описано фігурами, тому край лишається гладким."},
+ {k:"zoom",rl:1,task:"яке з двох зображень векторне? Збільш їх і порівняй краї.",why:"Векторне зображення складається з графічних примітивів і не пікселізується."},
+ {k:"q",pic:"Фотографія гір із відпустки зі складними переходами кольорів.",task:"який вид графіки найкраще підходить для фотографії?",opts:[["Растрова",1],["Векторна",0,"Реалістичні зображення, як-от фото, зазвичай растрові."]],why:"Для реалістичних зображень, як-от фотографій, добре підходить растрова графіка."},
+ {k:"q",pic:"Логотип школи, який друкують і на ручці, і на великому банері.",task:"яку графіку обрати, щоб логотип можна було збільшувати без втрати якості?",opts:[["Векторну",1],["Растрову",0,"Растровий логотип на банері пікселізується."]],why:"Якщо зображення треба збільшувати й легко редагувати його частини, обирають векторну графіку."},
+ {k:"q",pic:"Файл «герб.svg» і файл «фото.jpg».",task:"який із форматів – векторний?",opts:[["SVG",1],["JPEG",0,"JPEG – растровий формат із частковою втратою якості."],["BMP",0,"BMP – растровий формат без стиснення."],["PNG",0,"PNG – растровий формат без втрати якості."]],why:"SVG, AI і WMF – векторні формати. BMP, JPEG, GIF і PNG – растрові."},
+ {k:"q",pic:"Найменший елемент растрового зображення має розташування й колір.",task:"як називається цей елемент?",opts:[["Піксель",1],["Примітив",0,"Графічний примітив – елемент ВЕКТОРНОГО зображення."],["Шар",0,"Шар – прозорий аркуш, а не елемент зображення."],["Вузол",0,"Вузол – точка кривої, елемент векторного малюнка."]],why:"Піксель – найменший об’єкт растрового зображення; його видно при сильному збільшенні."}
+]});
+var SK={s:["s","☀️","Сонце",100,30,46],m:["m","⛰️","Гора",78,40,78],t:["t","🌳","Дерево",22,52,56],c:["c","☁️","Хмара",30,10,48],h:["h","🧍","Крафтер",20,78,34]};
+function IS(){return [].slice.call(arguments).map(function(k){return SK[k]})}
+O.rep(618,{type:"layers6",title:"Шари-карта світу: порядок і видимість",hint:"Керуй шарами: порядок і око. Три життя ❤️.",rounds:[
+ {items:IS("m","s"),start:["s","m"].reverse(),below:[["s","m","Сонце має ховатися ЗА горою: шар «Сонце» має бути нижче шару «Гора»."]],task:"сонце виглядає з-за гори: гора закриває його частину.",why:"Верхній шар закриває нижні. Щоб сонце було позаду гори, шар «Сонце» опускають нижче шару «Гора»."},
+ {items:IS("m","t","h"),start:["h","t","m"],below:[["m","t","Дерево має стояти перед горою: шар «Дерево» вище шару «Гора»."],["t","h","Крафтер має стояти перед деревом: шар «Крафтер» вище шару «Дерево»."]],task:"гора на задньому плані, перед нею дерево, а перед деревом стоїть Крафтер.",why:"Порядок шарів знизу вгору: фон, гора, дерево, Крафтер. Що вище в списку, то ближче до глядача."},
+ {items:IS("s","c","m"),start:["m","s","c"],below:[["s","m","Шар «Сонце» має бути нижче шару «Гора»."]],hide:["c"],task:"сонце видно повністю (без хмари), гора перед сонцем. Тимчасово сховай хмару.",why:"Око біля шару вмикає й вимикає його видимість; сам шар при цьому не видаляється й не змінюється."},
+ {items:IS("s","m","t","h","c"),start:["h","c","t","m","s"],below:[["s","m","Сонце має бути за горою."],["m","t","Дерево має бути перед горою."],["t","h","Крафтер має бути перед деревом."]],hide:["c"],task:"збери карту: сонце за горою, дерево перед горою, Крафтер перед деревом, а хмара прихована.",why:"Складений малюнок – це кілька шарів: порядок задає, що кого закриває, а око – що видно зараз."}
+]});
+})();
+
+/* ===== 6 клас · ігри «як у програмі» – вікно «Табличка» (уроки 625, 627, 629) ===== */
+(function(){
+var O=window.O5,Q=window.O6;if(!O||!Q||typeof GM==="undefined")return;
+var css=`
+.o6 .sh{display:grid;font:700 12px 'Segoe UI',Arial,sans-serif;color:#222;margin:4px 0;border:2px solid #111;background:#fff}
+.o6 .sh>div{border:1px solid #c8c8c8;padding:5px 3px;min-height:30px;display:flex;align-items:center;overflow:hidden;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.o6 .sh>div.h{background:#e6e6e6;justify-content:center;color:#444;cursor:default;font-size:11px}
+.o6 .sh>div.sel{background:#d8efdf;outline:2px solid #217346;outline-offset:-2px}
+.o6 .sh>div.tg{background:#fff3a0}
+.o6 .sh>div.tx{justify-content:flex-start}.o6 .sh>div.nm{justify-content:flex-end}
+.o6 .fb{display:flex;gap:4px;align-items:center;margin:4px 0}
+.o6 .fb b{background:#eee;border:2px solid #111;padding:4px 7px;font:800 12px monospace;min-width:44px;text-align:center;color:#222}
+.o6 .fb input,.o6 .fb .fx{flex:1;min-width:0;border:2px solid #111;padding:5px 6px;font:700 14px monospace;background:#fff;color:#222;min-height:32px;display:flex;align-items:center;overflow:hidden}
+.o6 .fb input{display:block}
+.o6 .kp{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.o6 .kp .rb{min-width:34px;min-height:36px;padding:2px 6px;font-size:14px}
+.o6 .th{display:flex;gap:6px;margin:6px 0}
+.o6 .th>div{flex:1;min-width:0;border:3px solid #111;background:#c6c6c6;box-shadow:inset 3px 3px 0 #fff,inset -3px -3px 0 #7a7a7a;text-align:center;padding:6px 2px;cursor:pointer;font:800 11px sans-serif;color:#222;-webkit-tap-highlight-color:transparent}
+.o6 .th>div span{display:block;font-size:34px;line-height:1.2}
+.o6 .th>div.sel{background:#ff7ac0;box-shadow:0 0 0 3px #ffd800}
+.o6 .ch2{background:#fff;border:2px solid #111;margin:4px 0}
+.o6 .ch2 svg{display:block;width:100%;height:auto}
+.o6 .ch2 [data-o]{cursor:pointer}
+.o6 .ch2 [data-o].sel>*{stroke:#e0007a;stroke-width:2.5}
+.o6 .ch2 [data-o].sel text{fill:#e0007a}
+`;
+var stl=document.createElement("style");stl.textContent=css;document.head.appendChild(stl);
+var E=Q.E,EX="#217346";
+function TW(rib,body){return O.win("📗 Табличка",EX,["Основне","Формули","Діаграма"],rib,body)}
+function addr(r,c){return String.fromCharCode(65+c)+(r+1)}
+function sheet(data,cls,tg,sel,C0){var C=data[0].length,h="<div class='sh' style='grid-template-columns:24px repeat("+C+",1fr)'><div class='h'></div>";
+ for(var c=0;c<C;c++)h+="<div class='h'>"+String.fromCharCode(65+c)+"</div>";
+ data.forEach(function(row,r){h+="<div class='h'>"+(r+1)+"</div>";row.forEach(function(v,c){var num=/^[-−]?\d+([,.]\d+)?%?$/.test(String(v));h+="<div data-r='"+r+"' data-c='"+c+"' class='"+(num?"nm":"tx")+(sel&&sel(r,c)?" sel":"")+(tg&&tg[0]==r&&tg[1]==c?" tg":"")+"'>"+E(v)+"</div>"})});
+ return h+"</div>"}
+
+/* ================= 625 · ТАБЛИЧКА: КЛІТИНКИ Й УВЕДЕННЯ ДАНИХ ================= */
+GM.cells6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M,k=rd.k;
+ if(k=="q"){M.innerHTML=TW(O.rb("c0","Поле Ім’я"),"<div class='doc'><div class='o6d'>"+rd.pic+"</div></div>");a.say(rd.task);Q.pick(a,M,rd.opts,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});return}
+ var data=rd.data.map(function(r){return r.slice()}),sel=null,anc=null,rg=null;
+ M.innerHTML=TW(O.rb("c0","Поле Ім’я"),"<div class='doc'><div class='fb'><b id='nb'>–</b>"+(k=="enter"?"<input id='fi' placeholder='введи дані' autocomplete='off'><div class='rb' id='ok' role='button'>✔ Ввід</div>":"<div class='fx' id='fx'></div>")+"</div><div id='sg'></div></div>");
+ var SG=document.getElementById("sg"),NB=document.getElementById("nb");
+ function inR(r,c){if(rg)return r>=rg[0]&&r<=rg[2]&&c>=rg[1]&&c<=rg[3];return sel&&sel[0]==r&&sel[1]==c}
+ function dr(){SG.innerHTML=sheet(data,"",null,inR);
+  NB.textContent=rg?addr(rg[0],rg[1])+":"+addr(rg[2],rg[3]):sel?addr(sel[0],sel[1]):"–";
+  [].forEach.call(SG.querySelectorAll("[data-r]"),function(e){e.onclick=function(){if(a.done())return;var r=+e.getAttribute("data-r"),c=+e.getAttribute("data-c");
+   if(k=="range"){if(!anc||rg){anc=[r,c];rg=null;sel=[r,c]}else{rg=[Math.min(anc[0],r),Math.min(anc[1],c),Math.max(anc[0],r),Math.max(anc[1],c)];sel=null}}
+   else{sel=[r,c]}
+   dr();if(k=="enter"){var fi=document.getElementById("fi");fi.value=data[r][c]||"";fi.focus&&0}}})}
+ dr();
+ if(k=="enter"){var fi=document.getElementById("fi");
+  function put(){if(a.done())return;if(!sel){a.nudge("Спочатку зроби клітинку поточною: торкнись її.");return}data[sel[0]][sel[1]]=fi.value;var r=sel[0],c=sel[1];if(r+1<data.length)sel=[r+1,c];dr();fi.value=""}
+  document.getElementById("ok").onclick=put;fi.onkeydown=function(e){if(e.key=="Enter")put()}}
+ a.say("Завдання: "+rd.task);
+ a.go("Перевірити ✔",function(){
+  if(k=="addr"){if(!sel){a.nudge("Торкнись клітинки на аркуші.");return}
+   if(sel[0]==rd.tg[0]&&sel[1]==rd.tg[1])a.ans(true,rd.why);else a.ans(false,"Зараз поточна клітинка "+addr(sel[0],sel[1])+", а потрібна "+rd.addr+". Адреса – літера стовпця й номер рядка.",true)}
+  else if(k=="range"){if(!rg){a.nudge("Торкнись першої, а потім останньої клітинки діапазону.");return}
+   if(rg.join()==rd.tg.join())a.ans(true,rd.why);else a.ans(false,"Виділено діапазон "+addr(rg[0],rg[1])+":"+addr(rg[2],rg[3])+", а потрібен "+rd.addr+". Діапазон – це адреси першої й останньої клітинок через двокрапку.",true)}
+  else{var v=(data[rd.tg[0]][rd.tg[1]]||"").trim();if(!v){a.nudge("У клітинці ще нічого немає: торкнись її, введи дані й натисни «Ввід».");return}
+   if(v===rd.val)a.ans(true,rd.why);else if(/\./.test(v))a.ans(false,"Дробову частину відокремлюють комою, а не крапкою: "+rd.val+".",true);else a.ans(false,"У клітинці «"+E(v)+"», а потрібно «"+rd.val+"». "+(rd.hint||""),true)}});
+})};
+GM.cells6.TT="Табличка: клітинки й дані";
+
+/* ================= 627 · РИНОК-КАЛЬКУЛЯТОР (формули) ================= */
+function evalF(f,data){var s=f.replace(/^=/,"").replace(/\s+/g,"");if(!s)return NaN;var bad=0;
+ s=s.replace(/([A-E])([1-9])/g,function(m,L,n){var v=data[+n-1]&&data[+n-1][L.charCodeAt(0)-65];v=String(v).replace(",",".").replace("%","/100");if(v===""||isNaN(eval(v)))bad=1;return "("+(bad?0:eval(v))+")"});
+ if(bad)return NaN;s=s.replace(/(\d+(?:,\d+)?)%/g,function(m,x){return "("+x.replace(",",".")+"/100)"}).replace(/,/g,".");
+ if(!/^[0-9+\-*\/().]+$/.test(s))return NaN;try{return Function("return "+s)()}catch(e){return NaN}}
+GM.shop6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M;
+ if(rd.k=="q"){M.innerHTML=TW(O.rb("c0","fx"),"<div class='doc'><div class='fb'><b>"+rd.cell+"</b><div class='fx'>"+E(rd.f)+"</div></div></div>");a.say(rd.task);Q.pick(a,M,rd.opts,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});return}
+ var f="",data=rd.data.map(function(r){return r.slice()}),T=rd.target;
+ var keys=["=","+","-","*","/","(",")","%",",","7","8","9","4","5","6","1","2","3","0","⌫"];
+ M.innerHTML=TW(O.rb("c0","Рядок формул"),"<div class='doc'><div class='fb'><b id='nb'>"+addr(T[0],T[1])+"</b><div class='fx' id='fx'></div></div><div id='sg'></div><div class='tip'>Торкайся клітинок, щоб вставити їхні адреси, і кнопок знаків.</div><div class='kp' id='kp'>"+keys.map(function(x){return "<div class='rb' role='button' data-k='"+x+"'>"+x+"</div>"}).join("")+"<div class='rb on' role='button' id='en'>✔ Ввід</div></div></div>");
+ var SG=document.getElementById("sg"),FX=document.getElementById("fx");
+ function dr(){FX.textContent=f;SG.innerHTML=sheet(data,"",T,null);
+  [].forEach.call(SG.querySelectorAll("[data-r]"),function(e){e.onclick=function(){if(a.done())return;var r=+e.getAttribute("data-r"),c=+e.getAttribute("data-c");if(f.charAt(0)!="="){a.say("Формула починається зі знака «=». Спочатку натисни «=».");return}if(r==T[0]&&c==T[1]){a.say("Ця клітинка – та, де ми пишемо формулу. Її адреса у формулі не потрібна.");return}f+=addr(r,c);dr()}})}
+ dr();
+ [].forEach.call(document.querySelectorAll("#kp [data-k]"),function(e){e.onclick=function(){if(a.done())return;var x=e.getAttribute("data-k");if(x=="⌫")f=f.slice(0,-1);else f+=x;dr()}});
+ document.getElementById("en").onclick=function(){if(a.done())return;
+  if(!f){a.nudge("Рядок формул порожній. Почни зі знака «=».");return}
+  if(f.charAt(0)!="="){a.ans(false,"Без знака «=» на початку програма вважає запис текстом, а не формулою. Формула завжди починається з «=».",true);f="";dr();return}
+  var v=evalF(f,data),refs=(f.match(/[A-E][1-9]/g)||[]).filter(function(x,i,s){return s.indexOf(x)==i}).sort().join();
+  if(isNaN(v)||!isFinite(v)){a.ans(false,"Формулу не вдалося обчислити (#ЗНАЧЕННЯ!): перевір знаки й дужки. Знак множення пропускати не можна: =2*A1, а не =2A1.",true);return}
+  if(Math.abs(v-rd.val)>1e-6){a.ans(false,"Формула дає "+(Math.round(v*100)/100)+", а має бути "+(Math.round(rd.val*100)/100)+". "+(rd.hint||"Перевір порядок дій і дужки."),true);return}
+  if(refs!==rd.refs.slice().sort().join()){a.ans(false,"Результат правильний, але у формулі мають бути адреси клітинок ("+rd.refs.join(", ")+"), а не числа: тоді результат оновиться при зміні даних.",true);return}
+  data[T[0]][T[1]]=String(Math.round(v*100)/100).replace(".",",");dr();a.ans(true,rd.why)};
+ a.say("Завдання: "+rd.task);a.go("Ввід ✔",function(){document.getElementById("en").onclick()});
+})};
+GM.shop6.TT="Ринок-калькулятор";
+
+/* ================= 629 · ДІАГРАМА-СТАТИСТИКА ================= */
+var CT={sec:["🥧","Секторна"],col:["📊","Стовпчаста"],gr:["📈","Графік"]};
+GM.chart6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M,k=rd.k;
+ if(k=="type"){var cur=null;
+  M.innerHTML=TW(O.rb("d0","📊 Діаграма","hint"),"<div class='doc'>"+sheet(rd.data,"")+"<div class='th' id='th'>"+["sec","col","gr"].map(function(x){return "<div data-t='"+x+"'><span>"+CT[x][0]+"</span>"+CT[x][1]+"</div>"}).join("")+"</div></div>");
+  [].forEach.call(M.querySelectorAll("[data-t]"),function(e){e.onclick=function(){if(a.done())return;cur=e.getAttribute("data-t");[].forEach.call(M.querySelectorAll("[data-t]"),function(x){x.classList.toggle("sel",x===e)})}});
+  a.say("Завдання: "+rd.task);
+  a.go("Побудувати ✔",function(){if(!cur){a.nudge("Обери тип діаграми: торкнись одного з варіантів.");return}
+   if(cur==rd.tg)a.ans(true,rd.why);else a.ans(false,rd.err[cur]||"Цей тип тут не найкращий.",true)});
+ }else if(k=="range"){var anc=null,rg=null;
+  M.innerHTML=TW(O.rb("d0","📊 Діаграма"),"<div class='doc'><div class='fb'><b id='nb'>–</b><div class='fx'>Діапазон даних</div></div><div id='sg'></div></div>");
+  var SG=document.getElementById("sg"),NB=document.getElementById("nb");
+  function inR(r,c){return rg?r>=rg[0]&&r<=rg[2]&&c>=rg[1]&&c<=rg[3]:anc&&anc[0]==r&&anc[1]==c}
+  function dr(){SG.innerHTML=sheet(rd.data,"",null,inR);NB.textContent=rg?addr(rg[0],rg[1])+":"+addr(rg[2],rg[3]):anc?addr(anc[0],anc[1]):"–";
+   [].forEach.call(SG.querySelectorAll("[data-r]"),function(e){e.onclick=function(){if(a.done())return;var r=+e.getAttribute("data-r"),c=+e.getAttribute("data-c");
+    if(!anc||rg){anc=[r,c];rg=null}else{rg=[Math.min(anc[0],r),Math.min(anc[1],c),Math.max(anc[0],r),Math.max(anc[1],c)]}dr()}})}
+  dr();a.say("Завдання: "+rd.task);
+  a.go("Виділено ✔",function(){if(!rg){a.nudge("Торкнись першої, а потім останньої клітинки діапазону.");return}
+   if(rg.join()==rd.tg.join())a.ans(true,rd.why);else a.ans(false,"Виділено "+addr(rg[0],rg[1])+":"+addr(rg[2],rg[3])+", а потрібно "+rd.addr+". "+rd.err,true)});
+ }else{var cs=null;
+  var bars=[["Ліс",70,"#2a9a12"],["Пустеля",30,"#e0a000"],["Море",50,"#2b79d8"]];
+  var svg="<svg viewBox='0 0 300 170'><g data-o='title'><text x='150' y='16' text-anchor='middle' font-size='13' font-weight='800' fill='#222'>Площа біомів</text></g>"+
+   "<g data-o='vaxis'><line x1='38' y1='28' x2='38' y2='130' stroke='#444'/><text x='34' y='34' text-anchor='end' font-size='9' fill='#444'>80</text><text x='34' y='82' text-anchor='end' font-size='9' fill='#444'>40</text><text x='34' y='130' text-anchor='end' font-size='9' fill='#444'>0</text></g>"+
+   "<g data-o='haxis'><line x1='38' y1='130' x2='220' y2='130' stroke='#444'/>"+bars.map(function(b,i){return "<text x='"+(70+i*58)+"' y='144' text-anchor='middle' font-size='9' fill='#444'>"+b[0]+"</text>"}).join("")+"</g>"+
+   "<g data-o='pt'>"+bars.map(function(b,i){var h=b[1]*1.25;return "<rect x='"+(54+i*58)+"' y='"+(130-h)+"' width='34' height='"+h+"' fill='"+b[2]+"'/>"}).join("")+"</g>"+
+   "<g data-o='leg'><rect x='232' y='50' width='62' height='56' fill='#fff' stroke='#888'/>"+bars.map(function(b,i){return "<rect x='238' y='"+(58+i*15)+"' width='8' height='8' fill='"+b[2]+"'/><text x='250' y='"+(66+i*15)+"' font-size='8.5' fill='#222'>"+b[0]+"</text>"}).join("")+"</g></svg>";
+  M.innerHTML=TW(O.rb("d0","Конструктор діаграм"),"<div class='doc'><div class='ch2'>"+svg+"</div></div>");
+  [].forEach.call(M.querySelectorAll("[data-o]"),function(e){e.onclick=function(){if(a.done())return;cs=e.getAttribute("data-o");[].forEach.call(M.querySelectorAll("[data-o]"),function(x){x.classList.toggle("sel",x===e)})}});
+  a.say("Завдання: "+rd.task);
+  a.go("Це воно ✔",function(){if(!cs){a.nudge("Торкнись потрібного об’єкта на діаграмі.");return}
+   if(cs==rd.tg)a.ans(true,rd.why);else a.ans(false,rd.err,true)});
+ }
+})};
+GM.chart6.TT="Діаграма-статистика";
+
+if(window.GI5){GI5.cells6=["📍","Клітинки й дані"];GI5.shop6=["🧮","Ринок-калькулятор"];GI5.chart6=["📊","Діаграма-статистика"]}
+if(window.GI){GI.cells6=["📍","Клітинки й дані"];GI.shop6=["🧮","Ринок-калькулятор"];GI.chart6=["📊","Діаграма-статистика"]}
+
+var S1=[["Товар","Ціна","К-сть","Вартість"],["Алмаз","50","3",""],["Залізо","10","8",""],["Золото","25","2",""]];
+O.rep(625,{type:"cells6",title:"Клітинки й дані: адреси та введення",hint:"Працюй з аркушем «Таблички». Три життя ❤️.",rounds:[
+ {k:"addr",data:S1,addr:"C3",tg:[2,2],task:"зроби поточною клітинку C3 (стовпець C, рядок 3).",why:"Адреса клітинки = літера стовпця + номер рядка. Поточну клітинку позначає табличний курсор у вигляді рамки."},
+ {k:"enter",data:[["Товар","Ціна"],["Алмаз",""],["Залізо",""]],tg:[1,1],val:"48,35",task:"введи в клітинку B2 ціну 48,35 і натисни «Ввід» (Enter).",hint:"Вводь число із комою.",why:"Число вводять із комою: 48,35. Після Enter поточною стає клітинка знизу."},
+ {k:"enter",data:[["Дата","Зміна"],["Пн",""],["Вт",""]],tg:[2,1],val:"-4",task:"температура впала: введи -4 у клітинку B3.",hint:"Перед від’ємним числом уводять знак мінус.",why:"Перед від’ємним числом вводять мінус: -4. Одиниці виміру після чисел зазвичай не вводять."},
+ {k:"range",data:S1,addr:"A2:D2",tg:[1,0,1,3],task:"виділи діапазон A2:D2 – увесь рядок із даними про алмаз: торкнись першої, а тоді останньої клітинки.",why:"Діапазон записують двома адресами через двокрапку: першої й останньої клітинок, наприклад A2:D2."},
+ {k:"q",pic:"У клітинці замість числа видно «#####».",task:"що робити, якщо в клітинці замість числа видно #####?",opts:[["Розширити стовпець (двічі клацнути на правій межі заголовка)",1],["Видалити число й ввести заново",0,"Число правильне, воно просто не вміщається в клітинку."],["Закрити книгу без збереження",0,"Це зайве: проблема лише в завузькому стовпці."]],why:"##### означає, що стовпець завузький для числа. Двічі клацни на правій межі його заголовка – ширина підлаштується."}
+]});
+var P1=[["Товар","Ціна","К-сть","Вартість"],["Алмаз","50","3",""],["Залізо","10","8",""],["Золото","25","2",""],["","","",""]];
+O.rep(627,{type:"shop6",title:"Ринок-калькулятор: формули",hint:"Склади формулу з адрес клітинок і знаків. Три життя ❤️.",rounds:[
+ {data:P1,target:[1,3],val:150,refs:["B2","C2"],task:"у D2 порахуй вартість алмазів: ціна × кількість.",hint:"Вартість = ціна × кількість.",why:"=B2*C2: формула починається зі знака =, замість чисел – адреси клітинок, а множення обов’язково позначають *."},
+ {data:P1,target:[2,3],val:80,refs:["B3","C3"],task:"у D3 порахуй вартість заліза: ціна × кількість.",why:"У рядку 3 – адреси рядка 3: =B3*C3. Адреси у формулах – не числа, тому при зміні даних результат перерахується."},
+ {data:[["Товар","Ціна","К-сть","Вартість"],["Алмаз","50","3","150"],["Залізо","10","8","80"],["Золото","25","2","50"],["Разом","","",""]],target:[4,3],val:280,refs:["D2","D3","D4"],task:"у D5 знайди загальну вартість – суму проміжних результатів D2, D3 і D4.",why:"=D2+D3+D4: у формулах можна використовувати адреси клітинок, у яких теж є формули – спочатку проміжні результати, потім кінцевий."},
+ {data:[["Товар","Ціна"],["Алмаз","50"],["Залізо","10"],["Золото","25"],["Середня","" ]],target:[4,1],val:85/3,refs:["B2","B3","B4"],task:"у B5 порахуй середню ціну: суму трьох цін поділи на 3.",hint:"Спочатку сума в дужках, потім ділення: дужки змінюють порядок дій.",why:"=(B2+B3+B4)/3: без дужок спочатку виконалося б ділення B4/3. Дужки змінюють порядок дій."},
+ {k:"q",cell:"D2",f:"=5B2",task:"у клітинці D2 записано =5B2, і з’являється повідомлення про помилку. У чому помилка?",opts:[["Пропущено знак множення: має бути =5*B2",1],["Не можна використовувати адреси",0,"Адреси клітинок у формулах якраз бажані."],["Формула має починатися з літери",0,"Формула починається зі знака =."]],why:"Знак множення у формулах пропускати не можна: =5*B2, а не =5B2."}
+]});
+var D1=[["Біом","Площа"],["Ліс","45"],["Пустеля","20"],["Море","35"]];
+O.rep(629,{type:"chart6",title:"Діаграма-статистика: тип і дані",hint:"Добери діаграму до даних. Три життя ❤️.",rounds:[
+ {k:"type",data:D1,tg:"sec",task:"45 % + 20 % + 35 % = 100 %. Покажи частку кожного біому в загальній площі.",err:{col:"Стовпчаста порівнює значення, а тут треба показати частки від цілого.",gr:"Графік показує зміну значень, а тут – частки в сумі."},why:"Секторну (кругову) діаграму будують, щоб показати частку кожного числа в загальній сумі."},
+ {k:"type",data:[["Клас","Учнів"],["6-А","24"],["6-Б","27"],["6-В","22"]],tg:"col",task:"порівняй кількість учнів у трьох класах: де найбільше, де найменше?",err:{sec:"Секторна показує частки від цілого, а нам треба порівняти значення.",gr:"Графік добре показує зміну в часі, а тут порівнюємо різні класи."},why:"Стовпчасту діаграму створюють, коли треба порівняти значення: видно найбільше й найменше."},
+ {k:"range",data:D1,addr:"A1:B4",tg:[0,0,3,1],err:"Діаграма будується за підписами й числами разом.",task:"виділи дані для діаграми разом із назвами біомів і заголовками: A1:B4.",why:"Перед створенням діаграми виділяють дані разом із підписами. Діапазон A1:B4 охоплює і назви, і площі."},
+ {k:"obj",tg:"leg",err:"Легенда – блок праворуч, що пояснює кольори рядів даних.",task:"торкнись легенди діаграми – блоку, що пояснює кольори.",why:"Легенда пояснює назви рядів даних і їхні кольори."},
+ {k:"obj",tg:"haxis",err:"Горизонтальна вісь – лінія внизу з підписами назв біомів.",task:"торкнись горизонтальної осі з підписами категорій.",why:"Горизонтальна вісь має підписи – зазвичай це назви стовпців таблиці."}
+]});
+})();
+
+/* ===== 6 клас · ігри «як у програмі» – вікно «Скетч-студія» (уроки 634, 637, 639) ===== */
+(function(){
+var O=window.O5,Q=window.O6;if(!O||!Q||typeof GM==="undefined")return;
+var css=`
+.o6 .bk{background:var(--c);color:#fff;border:2px solid #111;border-bottom-width:4px;padding:5px 7px;font:800 12px 'Segoe UI',Arial,sans-serif;margin-top:-1px;line-height:1.5;text-shadow:1px 1px 0 #0004}
+.o6 .bk.in{margin-left:16px}
+.o6 .slt{display:inline-block;min-width:96px;min-height:26px;padding:2px 8px;background:#fff;color:#222;border:3px dashed #888;font:800 12px sans-serif;text-shadow:none;cursor:pointer;vertical-align:middle;text-align:center;-webkit-tap-highlight-color:transparent}
+.o6 .slt.fi{border:3px solid #111;background:#e8f5ff}.o6 .slt.sel{border-color:#ffd800;background:#fff8c8}
+.o6 .cdn{display:inline-block;padding:2px 9px;background:#59c059;color:#fff;border:2px solid #2d8a2d;border-radius:12px;font:800 12px sans-serif;vertical-align:middle;cursor:default}
+.o6 .cdn.bt{cursor:pointer;background:#3fa83f;min-height:26px;line-height:20px;-webkit-tap-highlight-color:transparent}
+.o6 .stp{display:inline-flex;align-items:center;gap:2px;vertical-align:middle}
+.o6 .stp i{font-style:normal;background:#fff;color:#222;border:2px solid #111;min-width:26px;min-height:26px;text-align:center;font:900 14px/22px sans-serif;cursor:pointer;text-shadow:none;-webkit-tap-highlight-color:transparent}
+.o6 .stp b{background:#fff;color:#222;border:2px solid #111;min-width:28px;text-align:center;font:900 13px/22px sans-serif;text-shadow:none}
+.o6 .gd{display:grid;gap:2px;background:#8b5a2b;padding:4px;border:3px solid #111;margin:4px 0}
+.o6 .gd>div{aspect-ratio:1/.7;background:#a9733a;display:flex;align-items:center;justify-content:center;font-size:18px;max-height:34px}
+.o6 .gd>div.bad{background:#d96b6b}
+.o6 .pal{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0}
+.o6 .pal .rb{flex:1 1 44%;min-height:36px;background:#4c97ff;color:#fff;font-size:12px;text-align:center}
+.o6 .vr{display:flex;gap:5px;flex-wrap:wrap;margin:4px 0}
+.o6 .vr span{background:#ff8c1a;color:#fff;border:2px solid #111;padding:1px 8px;font:800 12px sans-serif}
+.o6 .trc{font:700 12px/1.5 monospace;background:#fff;color:#222;border:2px solid #111;padding:5px 7px;margin:4px 0;max-height:110px;overflow:auto}
+`;
+var stl=document.createElement("style");stl.textContent=css;document.head.appendChild(stl);
+var E=Q.E,CTL="#ffab19",VAR="#ff8c1a",MOV="#4c97ff",EVT="#ffbf00",LOOK="#9966ff";
+function SW(body){return O.win("🧩 Скетч-студія","#4c97ff",["Код","Образи","Звуки"],"",body)}
+
+/* ================= 634 · САД (вкладені цикли) ================= */
+var CMD={P:["посадити грядку",LOOK],F:["вперед на 1 клітинку",MOV],N:["на початок наступного ряду",MOV],B:["назад на 1 клітинку",MOV]};
+function runGarden(prog,fill,vals,R,C){var x=0,y=0,pl={},oob=0,steps=0,empty=0;
+ function ex(ns){ns.forEach(function(n){if(n.rep!==undefined){var t=n.rep=="?"?vals[n.id]:n.rep;for(var i=0;i<t;i++){if(++steps>400)return;ex(n.body)}}
+  else{var c=fill[n.id];if(!c){empty++;return}if(c=="P"){if(x<0||x>=C||y<0||y>=R)oob=1;else pl[x+","+y]=1}else if(c=="F")x++;else if(c=="B")x--;else{y++;x=0}}})}
+ ex(prog);return {pl:pl,oob:oob,empty:empty}}
+GM.garden6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M;
+ if(rd.k=="q"){M.innerHTML=SW("<div class='doc'><div class='o6d'>"+rd.pic+"</div></div>");a.say(rd.task);Q.pick(a,M,rd.opts,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});return}
+ var R=rd.R,C=rd.C,fill={},vals={},cs=null,id=0,prog=JSON.parse(JSON.stringify(rd.prog));
+ (function nu(ns){ns.forEach(function(n){n.id=id++;if(n.rep=="?")vals[n.id]=1;if(n.body)nu(n.body)})})(prog);
+ M.innerHTML=SW("<div class='doc'><div class='gd' id='gd' style='grid-template-columns:repeat("+C+",1fr)'></div><div id='pg'></div><div class='tip'>Торкнись порожнього місця в програмі, потім обери команду.</div><div class='pal' id='pl'></div></div>");
+ var GD=document.getElementById("gd"),PG=document.getElementById("pg"),PL=document.getElementById("pl");
+ function grid(res){var h="";for(var r=0;r<R;r++)for(var c=0;c<C;c++)h+="<div>"+(res&&res.pl[c+","+r]?"🌱":"")+"</div>";GD.innerHTML=h}
+ function bl(ns,d){return ns.map(function(n){
+  if(n.rep!==undefined)return "<div class='bk"+(d?" in":"")+"' style='--c:"+CTL+"'>повторити "+(n.rep=="?"?"<span class='stp'><i data-s='"+n.id+"' data-d='-1'>−</i><b>"+vals[n.id]+"</b><i data-s='"+n.id+"' data-d='1'>+</i></span>":n.rep)+" разів"+"<div style='margin-top:4px'>"+bl(n.body,1)+"</div></div>";
+  var c=fill[n.id];return "<div class='bk"+(d?" in":"")+"' style='--c:"+(c?CMD[c][1]:"#888")+"'><span class='slt"+(c?" fi":"")+(cs===n.id?" sel":"")+"' data-t='"+n.id+"'>"+(c?CMD[c][0]:"▢ вибери команду")+"</span></div>"}).join("")}
+ function dr(){PG.innerHTML="<div class='bk' style='--c:"+EVT+"'>коли 🚩 натиснуто</div>"+bl(prog,0);
+  [].forEach.call(PG.querySelectorAll("[data-t]"),function(e){e.onclick=function(){if(a.done())return;var t=+e.getAttribute("data-t");if(fill[t]&&cs===t){delete fill[t];cs=null}else cs=t;dr()}});
+  [].forEach.call(PG.querySelectorAll("[data-s]"),function(e){e.onclick=function(){if(a.done())return;var s=+e.getAttribute("data-s");vals[s]=Math.max(1,Math.min(9,vals[s]+(+e.getAttribute("data-d"))));dr()}})}
+ PL.innerHTML=rd.pal.map(function(c){return "<div class='rb' role='button' data-c='"+c+"'>"+CMD[c][0]+"</div>"}).join("");
+ [].forEach.call(PL.querySelectorAll(".rb"),function(e){e.onclick=function(){if(a.done())return;if(cs===null){a.nudge("Спочатку торкнись порожнього місця в програмі.");return}fill[cs]=e.getAttribute("data-c");
+  var nx=null;(function f(ns){ns.forEach(function(n){if(n.body)f(n.body);else if(nx===null&&!fill[n.id])nx=n.id})})(prog);cs=nx;dr()}});
+ grid();dr();
+ a.say("Завдання: "+rd.task);
+ a.go("Запустити ▶",function(){
+  var res=runGarden(prog,fill,vals,R,C);
+  if(res.empty){a.nudge("У програмі лишилися порожні місця. Заповни їх командами.");return}
+  grid(res);var want={};for(var r=0;r<R;r++)for(var c=0;c<C;c++)if(rd.tg(c,r))want[c+","+r]=1;
+  var nw=Object.keys(want).length,np=Object.keys(res.pl).length,ok=!res.oob&&nw==np&&Object.keys(want).every(function(k){return res.pl[k]});
+  if(ok)a.ans(true,rd.why);else a.ans(false,res.oob?"Виконавець вийшов за межі саду. Перевір, коли робити «вперед» і де потрібен перехід на новий ряд.":"Посаджено "+np+" грядок, а мало бути "+nw+" і саме там, де потрібно. "+(rd.hint||"Внутрішній цикл виконується повністю за кожного повторення зовнішнього."),true)});
+})};
+GM.garden6.TT="Сад";
+
+/* ================= 637 · ВКЛАДЕНІ РОЗГАЛУЖЕННЯ (вікно «Скетч-студія») ================= */
+var CD={d2:["n ділиться на 2",function(e){return e.n%2==0}],d3:["n ділиться на 3",function(e){return e.n%3==0}],d4:["n ділиться на 4",function(e){return e.n%4==0}],d5:["n ділиться на 5",function(e){return e.n%5==0}],
+ wk:["завтра робочий день",function(e){return e.day==0}],sat:["завтра субота",function(e){return e.day==1}],sun:["завтра неділя",function(e){return e.day==2}],
+ neg:["n < 0",function(e){return e.n<0}],zr:["n = 0",function(e){return e.n==0}],pos:["n > 0",function(e){return e.n>0}],
+ c50:["c > 50",function(e){return e.a+e.b>50}],c100:["c > 100",function(e){return e.a+e.b>100}],c30:["c > 30",function(e){return e.a+e.b>30}]};
+function runIf(node,sl,e){if(node.say!==undefined)return node.say;var cid=node.c.charAt(0)=="#"?sl[+node.c.slice(1)]:node.c;return runIf(CD[cid][1](e)?node.y:node.n,sl,e)}
+GM.ifelse6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M,sl={},ns=0;
+ (function cnt(n){if(n.say!==undefined)return;if(n.c.charAt(0)=="#")ns=Math.max(ns,+n.c.slice(1)+1);cnt(n.y);cnt(n.n)})(rd.prog);
+ for(var i=0;i<ns;i++)sl[i]=rd.opts[i][0];
+ function blk(n,d){if(n.say!==undefined)return "<div class='bk in' style='--c:"+LOOK+"'>сказати «"+E(n.say)+"»</div>";
+  var c=n.c.charAt(0)=="#"?"<span class='cdn bt' data-s='"+n.c.slice(1)+"'>"+CD[sl[+n.c.slice(1)]][0]+" ⟳</span>":"<span class='cdn'>"+CD[n.c][0]+"</span>";
+  return "<div class='bk"+(d?" in":"")+"' style='--c:"+CTL+"'>якщо "+c+" то<div style='margin-top:3px'>"+blk(n.y,1)+"</div>інакше<div style='margin-top:3px'>"+blk(n.n,1)+"</div></div>"}
+ var vh=rd.vars?"<div class='vr'>"+rd.vars.map(function(v){return "<span>"+v+"</span>"}).join("")+"</div>":"";
+ M.innerHTML=SW("<div class='doc'>"+vh+"<div id='pg'></div>"+(rd.k=="trace"?"":"<div class='tip'>Торкайся умови з ⟳, щоб змінити її.</div>")+"</div>");
+ var PG=document.getElementById("pg");
+ function dr(){PG.innerHTML="<div class='bk' style='--c:"+EVT+"'>коли 🚩 натиснуто</div>"+blk(rd.prog,0);
+  [].forEach.call(PG.querySelectorAll("[data-s]"),function(e){e.onclick=function(){if(a.done())return;var s=+e.getAttribute("data-s"),o=rd.opts[s],i=o.indexOf(sl[s]);sl[s]=o[(i+1)%o.length];dr()}})}
+ dr();
+ if(rd.k=="trace"){a.say("Виконай програму: "+rd.task);Q.pick(a,M,rd.ch,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});return}
+ a.say("Завдання: "+rd.task);
+ a.go("Перевірити ✔",function(){
+  var moved=false;for(var i=0;i<ns;i++)if(sl[i]!==rd.opts[i][0])moved=true;
+  if(!moved){a.nudge("Умови ще не змінено. Торкайся умов зі значком ⟳.");return}
+  var bad=null;rd.tests.forEach(function(t){if(!bad&&runIf(rd.prog,sl,t[0])!==t[1])bad=t});
+  if(!bad)a.ans(true,rd.why);else a.ans(false,"Перевір на прикладі: "+bad[2]+" – програма скаже «"+E(runIf(rd.prog,sl,bad[0]))+"», а має бути «"+E(bad[1])+"». Подумай, яку умову перевіряти першою (зовнішня), а яку в її гілці (внутрішня).",true)});
+})};
+GM.ifelse6.TT="Вкладені розгалуження";
+
+/* ================= 639 · ЦИКЛ З ПЕРЕДУМОВОЮ (змінні) ================= */
+function runUntil(init,cond,body,max){var v=JSON.parse(JSON.stringify(init)),n=0;while(!cond(v)){if(++n>max)return {inf:1,n:n,v:v};body(v)}return {n:n,v:v}}
+GM.until6=function(g){Q.runner(g,"Завдання",function(rd,a){
+ var M=a.M;
+ if(rd.k=="cond"){var op=0,num=1,OPS=[">","<","="];
+  M.innerHTML=SW("<div class='doc'><div class='vr'><span>"+rd.vn+" = 0</span></div><div id='pg'></div><div class='tip'>Змінюй знак порівняння й число в умові.</div></div>");
+  var PG=document.getElementById("pg");
+  function dr(){PG.innerHTML="<div class='bk' style='--c:"+EVT+"'>коли 🚩 натиснуто</div><div class='bk' style='--c:"+VAR+"'>надати "+rd.vn+" значення 0</div><div class='bk' style='--c:"+CTL+"'>повторити до <span class='cdn'>"+rd.vn+" <span class='stp'><i data-o='1'>"+OPS[op]+"</i></span> <span class='stp'><i data-n='-1'>−</i><b>"+num+"</b><i data-n='1'>+</i></span></span><div style='margin-top:4px'><div class='bk in' style='--c:"+VAR+"'>змінити "+rd.vn+" на "+rd.step+"</div></div></div>";
+   var o=PG.querySelector("[data-o]");o.onclick=function(){if(a.done())return;op=(op+1)%3;dr()};
+   [].forEach.call(PG.querySelectorAll("[data-n]"),function(e){e.onclick=function(){if(a.done())return;num=Math.max(0,Math.min(30,num+(+e.getAttribute("data-n"))));dr()}})}
+  dr();a.say("Завдання: "+rd.task);
+  a.go("Запустити ▶",function(){var f=[function(v){return v.k>num},function(v){return v.k<num},function(v){return v.k==num}][op];
+   var r=runUntil({k:0},f,function(v){v.k+=rd.step},60);
+   if(r.inf)a.ans(false,"Цикл нескінченний: умова ніколи не стає істинною, бо "+rd.vn+" змінюється на "+rd.step+" і ніколи не задовольняє «"+rd.vn+" "+OPS[op]+" "+num+"». Цикл закінчується, коли умова стає ТАК.",true);
+   else if(r.v.k==rd.tg)a.ans(true,rd.why);
+   else a.ans(false,"Цикл завершився, коли "+rd.vn+" = "+r.v.k+", а потрібно "+rd.tg+". Згадай: умова перевіряється ПЕРЕД кожним повторенням, а цикл завершується, коли вона стає ТАК.",true)});
+  return}
+ var P=rd.prog.map(function(t,i){return "<div class='bk"+(t.in?" in":"")+"' style='--c:"+(t.c||VAR)+"'>"+E(t.t)+"</div>"}).join("");
+ M.innerHTML=SW("<div class='doc'><div class='vr'>"+(rd.vars||[]).map(function(v){return "<span>"+v+"</span>"}).join("")+"</div><div class='bk' style='--c:"+EVT+"'>коли 🚩 натиснуто</div>"+P+(rd.tr?"<div class='trc' id='tr'></div><div class='rb' id='st' role='button' style='margin:4px 0'>Крок ▶ (показати хід)</div>":"")+"</div>");
+ if(rd.tr){var si=0;document.getElementById("st").onclick=function(){if(si<rd.tr.length){document.getElementById("tr").insertAdjacentHTML("beforeend",E(rd.tr[si++])+"<br>")}}}
+ a.say(rd.task);Q.pick(a,M,rd.opts,rd.why);a.go("Обери відповідь ⬆",function(){a.nudge("Торкнись однієї з відповідей.")});
+})};
+GM.until6.TT="Цикл з передумовою";
+
+if(window.GI5){GI5.garden6=["🌱","Сад: вкладені цикли"];GI5.ifelse6=["🔀","Вкладені розгалуження"];GI5.until6=["🔁","Цикл з передумовою"]}
+if(window.GI){GI.garden6=["🌱","Сад: вкладені цикли"];GI.ifelse6=["🔀","Вкладені розгалуження"];GI.until6=["🔁","Цикл з передумовою"]}
+
+var ALL=function(){return true};
+O.rep(634,{type:"garden6",title:"Сад: вкладені цикли",hint:"Склади програму з вкладених циклів і запусти її. Три життя ❤️.",rounds:[
+ {k:"gd",R:3,C:4,tg:ALL,pal:["P","F","N","B"],prog:[{rep:3,body:[{rep:4,body:[{},{}]},{}]}],task:"засади 3 ряди по 4 грядки. Зовнішній цикл – ряди, внутрішній – грядки в ряду.",why:"Внутрішній цикл виконується повністю за кожного повторення зовнішнього: 3 · 4 = 12 грядок. Після ряду – перехід на початок наступного."},
+ {k:"gd",R:2,C:5,tg:ALL,pal:["P","F","N"],prog:[{rep:"?",body:[{rep:"?",body:[{},{}]},{}]}],task:"засади 2 ряди по 5 грядок: задай кількість повторень обох циклів і заповни порожні місця.",hint:"Зовнішній цикл – кількість рядів, внутрішній – грядок у ряду.",why:"Повторення зовнішнього циклу – це ряди, внутрішнього – грядки в ряду. Така програма садить 2 · 5 = 10 грядок."},
+ {k:"gd",R:3,C:4,tg:function(c,r){return c%2==0},pal:["P","F","N","B"],prog:[{rep:3,body:[{rep:2,body:[{},{},{}]},{}]}],task:"у кожному з 3 рядів грядки мають бути через одну: стовпці 1 і 3 засаджені, 2 і 4 – порожні.",hint:"Через одну: посадити, а потім пройти вперед двічі.",why:"За один прохід внутрішнього циклу виконавець садить грядку й пропускає наступну: «посадити, вперед, вперед». Повтори 2 рази – 4 клітинки ряду."},
+ {k:"q",pic:"<div class='bk' style='--c:"+CTL+"'>повторити 5 разів<div class='bk in' style='--c:"+CTL+"'>повторити 6 разів<div class='bk in' style='--c:"+LOOK+"'>посадити грядку</div></div></div>",task:"скільки грядок посадить ця програма?",opts:[["30",1],["11",0,"5 + 6 – це додавання, а вкладені цикли множать: за кожне з 5 повторень внутрішній цикл виконається 6 разів."],["56",0,"Це не «5 і 6 поруч»: треба 5 · 6."],["6",0,"Так було б, якби зовнішній цикл виконався один раз."]],why:"Внутрішній цикл виконується повністю за кожного повторення зовнішнього: 5 · 6 = 30 команд «посадити»."}
+]});
+O.rep(637,{type:"ifelse6",title:"Вкладені розгалуження: склади й перевір",hint:"Обирай умови зовнішнього й внутрішнього розгалужень. Три життя ❤️.",rounds:[
+ {k:"fill",opts:[["d5","d2","d3","d4"],["d4","d3","d2","d5"]],prog:{c:"#0",y:{c:"#1",y:{say:"ділиться на 6"},n:{say:"не ділиться на 6"}},n:{say:"не ділиться на 6"}},tests:[[{n:12},"ділиться на 6","n = 12"],[{n:9},"не ділиться на 6","n = 9"],[{n:10},"не ділиться на 6","n = 10"],[{n:18},"ділиться на 6","n = 18"],[{n:15},"не ділиться на 6","n = 15"]],task:"число ділиться на 6, якщо воно ділиться і на 2, і на 3. Обери дві умови.",why:"Число ділиться на 6, коли виконуються обидві умови: зовнішня «ділиться на 2» і внутрішня «ділиться на 3». Якщо зовнішня хибна, внутрішнє розгалуження не виконується."},
+ {k:"fill",opts:[["sun","wk","sat"],["sun","sat","wk"]],prog:{c:"#0",y:{say:"будильник на 7:00"},n:{c:"#1",y:{say:"будильник на 8:00"},n:{say:"будильник на 9:00"}}},tests:[[{day:0},"будильник на 7:00","завтра робочий день"],[{day:1},"будильник на 8:00","завтра субота"],[{day:2},"будильник на 9:00","завтра неділя"]],task:"робочий день – 7:00, субота – 8:00, неділя – 9:00. Вибери умови: друге розгалуження стоїть у гілці «інакше» першого.",why:"Достатньо двох розгалужень: друге – у гілці «інакше» першого. Якщо день робочий, питання про суботу взагалі не перевіряється."},
+ {k:"trace",vars:["a = 20","b = 60","c = a + b = 80"],prog:{c:"c50",y:{c:"c100",y:{say:"дуже багато"},n:{say:"багато"}},n:{say:"мало"}},ch:[["багато",1],["дуже багато",0,"c = 80: умова c > 100 хибна, тож виконується гілка «інакше» внутрішнього розгалуження."],["мало",0,"Зовнішня умова c > 50 істинна (80 > 50), тому «мало» не виконається."],["нічого",0,"Одна з гілок завжди виконується: розгалуження повне."]],task:"що скаже програма, якщо a = 20 і b = 60?",why:"c = 80. Зовнішня умова c > 50 істинна, перевіряємо внутрішню: c > 100 хибна – тому «багато»."},
+ {k:"trace",vars:["a = 5","b = 10","c = a + b = 15"],prog:{c:"c50",y:{c:"c100",y:{say:"дуже багато"},n:{say:"багато"}},n:{say:"мало"}},ch:[["мало",1],["багато",0,"c = 15 не більше за 50, тож внутрішнє розгалуження взагалі не виконується."],["дуже багато",0,"15 далеко не більше за 100."],["нічого",0,"Гілка «інакше» зовнішнього розгалуження виконається."]],task:"що скаже програма, якщо a = 5 і b = 10?",why:"c = 15. Зовнішня умова c > 50 хибна, тому виконується гілка «інакше» зовнішнього розгалуження, а внутрішнє не перевіряється."},
+ {k:"fill",opts:[["pos","neg","zr"],["pos","zr","neg"]],prog:{c:"#0",y:{say:"від’ємне"},n:{c:"#1",y:{say:"нуль"},n:{say:"додатне"}}},tests:[[{n:-5},"від’ємне","n = -5"],[{n:0},"нуль","n = 0"],[{n:7},"додатне","n = 7"]],task:"програма має сказати, чи число від’ємне, нуль або додатне. Вибери умови.",why:"Зовнішня умова відокремлює від’ємні числа. У гілці «інакше» внутрішня розрізняє нуль і додатні числа."}
+]});
+O.rep(639,{type:"until6",title:"Цикл з передумовою: змінні й умова",hint:"Виконуй цикли «повторити до» крок за кроком. Три життя ❤️.",rounds:[
+ {k:"pred",vars:["a = 20"],prog:[{t:"надати a значення 20"},{t:"повторити до ⟨a > 100⟩",c:CTL},{t:"намалювати квадрат зі стороною a",in:1,c:MOV},{t:"змінити a на 20",in:1}],tr:["a = 20: умова a > 100 – Ні → квадрат №1, a = 40","a = 40: Ні → квадрат №2, a = 60","a = 60: Ні → квадрат №3, a = 80","a = 80: Ні → квадрат №4, a = 100","a = 100: 100 > 100 – Ні → квадрат №5, a = 120","a = 120: Так → цикл завершено"],task:"скільки квадратів намалює виконавець?",opts:[["5",1],["4",0,"Квадрат зі стороною 100 теж малюється: 100 > 100 – хибно, тож цикл іще триває."],["6",0,"Коли a = 120, умова a > 100 істинна, і цикл завершується до малювання."],["100",0,"100 – це сторона останнього квадрата, а не їх кількість."]],why:"Сторони 20, 40, 60, 80 і 100 – разом 5 квадратів. Умову перевіряють ПЕРЕД кожним повторенням."},
+ {k:"pred",vars:["a = 120"],prog:[{t:"надати a значення 120"},{t:"повторити до ⟨a > 100⟩",c:CTL},{t:"намалювати квадрат зі стороною a",in:1,c:MOV},{t:"змінити a на 20",in:1}],task:"скільки квадратів намалює виконавець, якщо спочатку a = 120?",opts:[["жодного",1],["1",0,"Умова перевіряється ПЕРЕД тілом циклу: 120 > 100 – так, і цикл не починається."],["5",0,"П’ять квадратів було б за a = 20."],["безліч",0,"Цикл не нескінченний: умова істинна одразу."]],why:"Якщо спочатку a більше за 100, умова одразу дає Так – і команди циклу не виконуються жодного разу."},
+ {k:"pred",vars:["s = 0","a = 5"],prog:[{t:"надати s значення 0"},{t:"надати a значення 5"},{t:"повторити до ⟨s > 40⟩",c:CTL},{t:"надати s значення s + a",in:1},{t:"змінити a на 5",in:1}],tr:["s = 0 → Ні: s = 5, a = 10","s = 5 → Ні: s = 15, a = 15","s = 15 → Ні: s = 30, a = 20","s = 30 → Ні: s = 50, a = 25","s = 50 > 40 → Так: цикл завершено"],task:"чому дорівнюватиме s після завершення циклу?",opts:[["50",1],["40",0,"s не зупиняється на 40: цикл завершується лише коли s стане більшим за 40, тобто 50."],["30",0,"Після s = 30 умова s > 40 ще хибна – тіло виконається ще раз."],["25",0,"25 – це значення a, а не s."]],why:"Після четвертого проходу s = 50 – це більше за 40, тож цикл завершується. Тіло виконалося 4 рази."},
+ {k:"cond",vn:"k",step:1,tg:10,task:"Крафтер збирає по 1 алмазу за прохід. Підбери умову «повторити до», щоб зібрати рівно 10 алмазів (k = 10).",why:"Цикл завершується, коли умова стає ТАК. Умови «k = 10» або «k > 9» зупинять збирання на 10."},
+ {k:"cond",vn:"k",step:2,tg:10,task:"тепер Крафтер збирає по 2 алмази за прохід. Підбери умову, щоб зібрати рівно 10.",why:"k міняється 0, 2, 4, 6, 8, 10. Умова «k = 10» спрацює, а «k = 9» – ні: k ніколи не дорівнює 9, і цикл був би нескінченний."},
+ {k:"pred",vars:["k = 0"],prog:[{t:"надати k значення 0"},{t:"повторити до ⟨k = 10⟩",c:CTL},{t:"змінити k на 3",in:1}],tr:["k = 0 → Ні: k = 3","k = 3 → Ні: k = 6","k = 6 → Ні: k = 9","k = 9 → Ні: k = 12","k = 12 → Ні: k = 15 … і так далі"],task:"цикл ніколи не закінчується. Чому?",opts:[["k набуває значень 3, 6, 9, 12 … і ніколи не дорівнює 10",1],["Бракує змінної k",0,"Змінну k створено й задано їй початкове значення."],["Умову перевіряють лише наприкінці",0,"У циклі з передумовою умову перевіряють ПЕРЕД кожним повторенням."]],why:"Умова k = 10 ніколи не стає істинною, бо k «перестрибує» 10. Такий цикл нескінченний. Надійніше писати нерівність, наприклад k > 9."}
+]});
+})();
+
 /* ===== 5–6 клас: піксельні SVG-іконки тем замість емодзі; без анімації появи блоків ===== */
 (function(){
 var PAL={K:"#1a1a1a",W:"#ffffff",G:"#8b8b8b",g:"#c6c6c6",B:"#2d9cf0",b:"#1a6bb5",L:"#8fd8ff",E:"#5ac83a",e:"#2f8f1f",Y:"#ffd23f",O:"#f28a1e",R:"#e0314f",P:"#a45be6",N:"#9a6a3a",n:"#5c3a1a",T:"#25295a",M:"#ff7ac0"};
