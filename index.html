@@ -734,7 +734,7 @@ function playG(n,i){var g=LES[n].g[i];CUR9=n;CG="g"+i;LAST9=function(){GM[g.type
 function tlock(n,k){var o=(B.sc||{})[n];return !!(o&&o[k]!==undefined)}
 function tlockMsg(){try{note("Тест уже пройдено. Повторно його можна пройти після завершення сесії.")}catch(e){}}
 function playQ(n,key){var qs=key=="big"?LES[n].big:LES[n].q;CUR9=n;if(tlock(n,key)){tlockMsg();return lesson9(n)}LAST9=function(){if(tlock(n,key)){tlockMsg();return lesson9(n)}quizG(qs,function(s){CURK=key},"again9","menu9")};LAST9()}
-var NORD=1;/* NORD=1: читалка ніде не враховується в середніх балах і відсотках */
+var NORD=0;/* NORD=1: читалка не враховується (звіт у таблицю) */
 function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k;for(k in o)v.push(o[k]);if(B.rd[n]&&!NORD)v.push(100);return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/v.length):0}
 function lessonItems(n){var L=LES[n],h="",cl=["a","c","d","b"],c=0;
  if(L.r)h+=mb("a","📖","Читалка",L.r.length+" "+(L.r.length<5?"сторінки":"сторінок")+" з малюнками"+(B.rd[n]?" · ✓":""),"openR("+n+")");
@@ -9039,7 +9039,7 @@ Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LE
 Object.keys(LES).forEach(function(k){var L=LES[k];if(L.big&&L.q)L.noq=true});
 
 /* у таблицю йде бал без читалки */
-(function(){var _cz=code;code=function(){var _o=NORD;NORD=1;try{return _cz()}finally{NORD=_o}}})();
+(function(){var _cz=code;code=function(){NORD=1;try{return _cz()}finally{NORD=0}}})();
 
 /* 11 клас: світи пригод за темами */
 (function(){var _w=GX.world;GX.world=function(n){if(n>1100){var k=n-1100,w=k<=6?"ocean":k<=16?"end":k<=21?"snow":k<=27?"desert":k<=35?"nether":"cave";return GX.W[w]}return _w(n)}})();
