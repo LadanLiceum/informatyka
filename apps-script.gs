@@ -64,6 +64,12 @@ function reply(e, obj) {
 }
 
 function doGet(e) {
+  try { return doGet_(e); } catch (err) {
+    return reply(e, { s: "err", m: String(err && err.message || err) + " @" + String(err && err.stack || "").split("\n")[0] });
+  }
+}
+
+function doGet_(e) {
   if (e && e.parameter && e.parameter.st) {
     return reply(e, lookupState(String(e.parameter.c || ""), String(e.parameter.n || ""), String(e.parameter.h || "")));
   }
