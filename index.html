@@ -4740,8 +4740,8 @@ LES[501]={
 r:[
 {t:"Заходимо в комп’ютерний клас",v:["tiles",[["🪑","Висота стільця й стола"],["🖥️","Екран на рівні очей"],["📏","Відстань 1,5 діагоналі"],["🙌","Лікті під кутом 90°"],["🧹","Чистий робочий стіл"],["🧼","Чисті руки"]]],
  p:"Комп’ютерна техніка потребує обережності. Правила однакові і в школі, і вдома. <b>Перш ніж увімкнути комп’ютер</b>, з дозволу вчителя займи своє місце й підлаштуй його під себе – так, як гравець готує інвентар перед виходом із дому.",
- k:["Верхня половина екрана – <b>на рівні очей</b>","Від очей до екрана – приблизно <b>1,5 діагоналі</b> монітора (для 19 дюймів – близько 72 см)","Руки в лікті утворюють кут, близький до <b>90°</b>, пальці вільно лежать на клавіатурі й миші","Спина спирається на спинку стільця, ноги – на підлогу або підставку"],
- f:"Для монітора з діагоналлю 19 дюймів рекомендована відстань до очей – близько 72 сантиметрів. Це довжина витягнутої руки.",fl:"Цікаво"},
+ k:["Верхня половина екрана – <b>на рівні очей</b>","Від очей до екрана – приблизно <b>довжина витягнутої руки</b> (близько 70 см)","Руки в лікті утворюють кут, близький до <b>90°</b>, пальці вільно лежать на клавіатурі й миші","Спина спирається на спинку стільця, ноги – на підлогу або підставку"],
+ f:"Рекомендована відстань від очей до монітора – приблизно довжина витягнутої руки, тобто близько 70 сантиметрів.",fl:"Цікаво"},
 {t:"Перевір місце й обладнання",v:["flow",["Прибери зайві речі зі столу","Перевір, чи чисті руки","Оглянь обладнання: чи немає пошкоджень","Про дефект – повідом учителя","З дозволу вчителя ввімкни комп’ютер"]],
  p:"Робоче місце має бути охайним: на ньому лише те, що потрібне для роботи. Екран, клавіатуру й мишу можна протирати <b>тільки спеціальною серветкою й лише з дозволу вчителя</b>. Помітив пошкодження – не торкайся, а відразу скажи вчителю.",
  k:["Зайві предмети зі столу прибрати","Руки чисті й сухі","Пошкоджене обладнання – відразу повідом учителя","Вмикати комп’ютер – тільки з дозволу вчителя"],
@@ -4966,7 +4966,7 @@ r:[
 {t:"Пристрої виведення даних",v:["tiles",[["🖥️","Монітор"],["🖨️","Принтер"],["📐","Плотер"],["🎧","Навушники"],["🔊","Колонки"],["📽️","Проєктор"]]],
  p:"Результати опрацювання комп’ютер виводить для користувача. Виведення <b>тексту й графіки</b>: монітор, принтер, плотер. Виведення <b>звуку</b>: навушники, колонки. Виведення <b>відео</b>: мультимедійні проєктори, сенсорні екрани. Деякі пристрої (монітор, проєктор, сенсорний екран) виводять і графіку, і відео.",
  k:["Монітор виводить графіку й відео","Принтер і плотер друкують на папері чи плівці","Навушники й колонки виводять звук"],
- f:"Дюйм (нід. duim – великий палець) – одиниця довжини. 1 дюйм = 25,4 мм. У дюймах міряють діагональ екрана.",fl:"Одиниця"},
+ f:"Плотер – це великий принтер для креслень і плакатів. Він друкує на довгих рулонах паперу шириною в кілька метрів.",fl:"Цікаво"},
 {t:"Процесор – головний пристрій",v:["flow",["Дані з клавіатури","Процесор опрацьовує","Результат на екрані"]],
  p:"Опрацювання даних у комп’ютері виконує <b>процесор</b> – пристрій, що забезпечує виконання комп’ютерних програм. Від швидкості його роботи залежить, наскільки швидко працює комп’ютер. Тому процесор називають основним пристроєм.",
  k:["Перший процесор у одній мікросхемі – Intel 4004 (1971 р.)","Він виконував 60 000 операцій за секунду й мав 46 команд","Сучасні процесори – понад 50 000 000 000 операцій за секунду"],
@@ -4980,7 +4980,7 @@ g:[
 {type:"sort",title:"Скрині: введення чи виведення?",buckets:["Введення","Виведення","Зберігання/Опрацювання"],items:[["Клавіатура",0,"Вводить текст."],["Монітор",1,"Виводить зображення."],["Мікрофон",0,"Вводить звук."],["Навушники",1,"Виводять звук."],["Принтер",1,"Друкує на папері."],["Процесор",2,"Опрацьовує дані."],["Флешка",2,"Зберігає дані."],["Сканер",0,"Вводить зображення."],["Проєктор",1,"Виводить відео."]]},
 {type:"pairs",title:"Крафт: пристрій – тип даних",items:[["Клавіатура","текст"],["Мікрофон","звук"],["Вебкамера","відео"],["Сканер","графіка"],["Колонки","виведення звуку"],["Плотер","друк креслень"]]},
 {type:"mine",title:"Шахта: пристрої",items:[["Розбий лише ПРИСТРОЇ ВВЕДЕННЯ",[["Клавіатура",1],["Монітор",0],["Миша",1],["Принтер",0],["Мікрофон",1],["Колонки",0]]],["Розбий лише ПРИСТРОЇ ЗБЕРІГАННЯ",[["Флешка",1],["Вінчестер",1],["SSD",1],["Монітор",0],["Процесор",0],["Мишка",0]]],["Розбий лише КОМУНІКАЦІЙНІ пристрої",[["Модем",1],["Маршрутизатор",1],["Комутатор",1],["Клавіатура",0],["Сканер",0],["Колонки",0]]]]},
-{type:"tf",title:"Правда чи хибно: складові комп’ютера",items:[["Процесор опрацьовує дані й виконує програми.",true,"Так, це основний пристрій."],["Монітор – пристрій введення даних.",false,"Монітор виводить дані."],["SSD – це твердотілий накопичувач на мікросхемах.",true,"Так."],["Сукупність носіїв даних комп’ютера – це його пам’ять.",true,"Так."],["Картридер призначений для друку.",false,"Він читає флешкарти."],["1 дюйм дорівнює 25,4 мм.",true,"Так."]]},
+{type:"tf",title:"Правда чи хибно: складові комп’ютера",items:[["Процесор опрацьовує дані й виконує програми.",true,"Так, це основний пристрій."],["Монітор – пристрій введення даних.",false,"Монітор виводить дані."],["SSD – це твердотілий накопичувач на мікросхемах.",true,"Так."],["Сукупність носіїв даних комп’ютера – це його пам’ять.",true,"Так."],["Картридер призначений для друку.",false,"Він читає флешкарти."]]},
 {type:"odd",title:"Знайди зайве: зелений підривник у списку",items:[[["Клавіатура","Миша","Сканер","Монітор"],3,"Монітор виводить, решта вводить."],[["Принтер","Плотер","Колонки","Мікрофон"],3,"Мікрофон вводить звук, решта виводить."],[["Флешка","SSD","Процесор","Вінчестер"],2,"Процесор опрацьовує, решта зберігає."],[["Модем","Роутер","Комутатор","Клавіатура"],3,"Клавіатура не комунікаційна."]]},
 {type:"cloze",title:"Табличка: складові комп’ютера",items:[["Англійською апаратні засоби називають ___.",["hardware","software","internet"],""],["Пристрій, що виконує програми й опрацьовує дані, – ___.",["процесор","монітор","принтер"],""],["Сукупність носіїв даних комп’ютера – це ___.",["пам’ять","процесор","клавіатура"],""],["Головна властивість носіїв даних – ___.",["ємність","колір","вага"],""],["Пристрій для читання карток – ___.",["картридер","принтер","роутер"],""]]}
 ],
@@ -11612,19 +11612,24 @@ function sk(n){return function(g){GX.sk=SK[n];var r=GM["_"+n](g);var p=document.
 
 /* ---------- Крот-бам ---------- */
 GM.whack=function(g){var N=6,qs=A.getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
- var C=100,cv=A.head(g.title,"З нір вилазять три істоти з літерами. Торкнись тієї, що відповідає ПРАВИЛЬНІЙ відповіді! Неправильна – мінус ❤️.","f");cv.width=C*3;cv.height=C*3;var ctx=cv.getContext("2d");
+ var C=100,cv=A.head(g.title,"Торкнись істоти з літерою ПРАВИЛЬНОЇ відповіді! Неправильна – мінус ❤️.","f");cv.width=360;cv.height=520;var ctx=cv.getContext("2d"),GX0=30,GRY=100,CARD=null;
  var _ad=document.getElementById("adp");if(_ad)_ad.parentNode.removeChild(_ad);
  var ops,mobs,qi=0,sc=0,lives=3,wrong=false,done=false,T=0,round=0,tl=0,MAXT=60;
  function spawn(){var cells=[0,1,2,3,4,5,6,7,8].sort(function(){return Math.random()-.5}).slice(0,ops.length);mobs=ops.map(function(o,k){return {c:cells[k],k:k,ok:o.ok,on:true,pop:0,kind:k}});tl=MAXT}
- function newQ(){ops=A.panel(qs[qi]);wrong=false;spawn();A.hud(qi,N,sc,lives)}
+ function wl(str,w,font,mx){ctx.font=font;var ws=String(str).split(" "),l=[],q="";ws.forEach(function(z){if(ctx.measureText(q?q+" "+z:z).width>w&&q){l.push(q);q=z}else q=q?q+" "+z:z});l.push(q);if(l.length>mx){l=l.slice(0,mx);l[mx-1]=l[mx-1].replace(/.{0,2}$/,"…")}return l}
+ function newQ(){ops=A.panel(qs[qi]);var ap=document.getElementById("ap");if(ap)ap.style.display="none";var n=ops.length,bw=(344-(n-1)*6)/n,ql=wl(qs[qi].q,300,"bold 13px monospace",3);CARD={ql:ql,h:26+ql.length*16,bw:bw,al:ops.map(function(o){return wl(o.t,bw-14,"11px monospace",3)})};wrong=false;spawn();A.hud(qi,N,sc,lives)}
+ function box(x,y,w,h){ctx.fillStyle="#000";ctx.fillRect(x,y,w,h);ctx.fillStyle="#fff";ctx.fillRect(x+2,y+2,w-4,h-4);ctx.fillStyle="#555";ctx.fillRect(x+4,y+4,w-6,h-6);ctx.fillStyle="#c6c6c6";ctx.fillRect(x+4,y+4,w-8,h-8)}
+ function ui(){if(!CARD)return;box(8,10,344,CARD.h);ctx.font="bold 13px monospace";ctx.textAlign="left";ctx.textBaseline="alphabetic";ctx.fillStyle="#222";CARD.ql.forEach(function(l,i){ctx.fillText(l,22,36+i*16)});
+  for(var i=0;i<ops.length;i++){var bx=8+i*(CARD.bw+6),by=520-90,bw=CARD.bw;box(bx,by,bw,82);ctx.fillStyle=COL[i];ctx.fillRect(bx+5,by+5,bw-10,5);A.letter(ctx,bx+bw/2,by+24,i,10);ctx.font="11px monospace";ctx.textAlign="center";ctx.textBaseline="alphabetic";ctx.fillStyle="#111";CARD.al[i].forEach(function(l,j){ctx.fillText(l,bx+bw/2,by+48+j*12)})}}
  newQ();
- function tap(cx,cy){if(done)return;var r=cv.getBoundingClientRect(),x=(cx-r.left)/r.width*cv.width,y=(cy-r.top)/r.height*cv.height,c=Math.floor(x/C)+3*Math.floor(y/C);
+ function tap(cx,cy){if(done)return;var r=cv.getBoundingClientRect(),x=(cx-r.left)/r.width*cv.width-GX0,y=(cy-r.top)/r.height*cv.height-GRY;if(x<0||y<0||x>=C*3||y>=C*3)return;var c=Math.floor(x/C)+3*Math.floor(y/C);
   for(var i=0;i<mobs.length;i++){var m=mobs[i];if(m.on&&m.c==c){m.on=false;if(m.ok){if(!wrong)sc++;A.snd("ok");qi++;if(qi>=N){done=true;A.over(cv,"LEVEL CLEAR!");A.hud(N-1,N,sc,lives);setTimeout(function(){fin9(sc,N)},1000)}else newQ()}else{wrong=true;lives--;A.snd("bad");A.fx();A.hud(qi,N,sc,lives);if(lives<=0){done=true;A.over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200)}}return}}}
  cv.addEventListener("pointerdown",function(e){e.preventDefault();if(!cv._st)return;tap(e.clientX,e.clientY)});
  function upd(dt){if(done)return;T+=dt;tl-=dt;mobs.forEach(function(m){m.pop=Math.min(1,m.pop+dt*5)});if(tl<=0){var alive=mobs.filter(function(m){return m.on&&m.ok}).length;spawn()}}
- function draw(){if(done)return;ctx.fillStyle="#5b9b3a";ctx.fillRect(0,0,cv.width,cv.height);for(var i=0;i<9;i++){var x=(i%3)*C,y=Math.floor(i/3)*C;ctx.fillStyle=(i%2)?"#4f8c33":"#5fa23f";ctx.fillRect(x,y,C,C);ctx.fillStyle="#3b2a14";ctx.beginPath();ctx.ellipse(x+C/2,y+C*.72,34,16,0,0,7);ctx.fill();ctx.fillStyle="#241608";ctx.beginPath();ctx.ellipse(x+C/2,y+C*.72,28,11,0,0,7);ctx.fill()}
+ function draw(){if(done)return;ctx.fillStyle="#2f5a22";ctx.fillRect(0,0,cv.width,cv.height);ctx.save();ctx.translate(GX0,GRY);ctx.fillStyle="#5b9b3a";ctx.fillRect(0,0,C*3,C*3);for(var i=0;i<9;i++){var x=(i%3)*C,y=Math.floor(i/3)*C;ctx.fillStyle=(i%2)?"#4f8c33":"#5fa23f";ctx.fillRect(x,y,C,C);ctx.fillStyle="#3b2a14";ctx.beginPath();ctx.ellipse(x+C/2,y+C*.72,34,16,0,0,7);ctx.fill();ctx.fillStyle="#241608";ctx.beginPath();ctx.ellipse(x+C/2,y+C*.72,28,11,0,0,7);ctx.fill()}
   mobs.forEach(function(m){if(!m.on)return;var x=(m.c%3)*C+C/2,y=Math.floor(m.c/3)*C+C*.72-m.pop*30;ctx.save();ctx.beginPath();ctx.rect((m.c%3)*C,Math.floor(m.c/3)*C,C,C*.72+8);ctx.clip();if(m.kind==0)creeper(ctx,x,y,46);else if(m.kind==1){head(ctx,x,y,46)}else{ctx.fillStyle="#f3a8b8";ctx.fillRect(x-23,y-23,46,46);ctx.fillStyle="#e58fa2";ctx.fillRect(x-9,y-2,18,14);ctx.fillStyle="#111";ctx.fillRect(x-14,y-10,6,6);ctx.fillRect(x+8,y-10,6,6)}ctx.restore();blk(ctx,x,y-34,m.k,11)});
-  var bw=cv.width-20;ctx.fillStyle="#000";ctx.fillRect(10,cv.height-12,bw,6);ctx.fillStyle="#fbbf24";ctx.fillRect(10,cv.height-12,Math.max(0,bw*tl/MAXT),6)}
+  var bw=C*3-20;ctx.fillStyle="#000";ctx.fillRect(10,C*3-12,bw,6);ctx.fillStyle="#fbbf24";ctx.fillRect(10,C*3-12,Math.max(0,bw*tl/MAXT),6);ctx.restore();ui()}
+ cv._g=function(){return {mobs:mobs,ops:ops}};
  A.loop(cv,upd,draw)};
 
 var st=document.createElement("style");var G="body.g5 ";
