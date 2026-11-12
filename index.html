@@ -14520,7 +14520,7 @@ CX6.forEach(function(c){GI[c[0]]=GI5[c[0]]=[c[2],c[1]]});
 Object.keys(LES).forEach(function(k){k=+k;if(k<=600||k>=700)return;var L=LES[k];if(!L||!L.g||L.cx6)return;L.cx6=1;var c=CX6[(k-601)%10],last=L.g.length-1;if(last>=0&&CXOLD[L.g[last].type])L.g[last]={type:c[0],title:c[1]}});
 /* нейтральні назви ігор для 8 класу */
 var GI8={},i;for(i in GI5)GI8[i]=GI5[i];for(i in GI)if(!GI8[i])GI8[i]=GI[i];
-GI8.t8_boss=["👾","Бос: Криптобот"];GI8.t8_bin=["🚪","Двійкові двері"];GI8.t8_1=["📻","Шифр-радист"];GI8.t8_2=["🖨️","Принтер кодів"];GI8.t8_3=["🎨","Піксель-художник"];GI8.t8_5=["🏗️","Контейнерний порт"];GI8.t8_6=["💬","Лічильник повідомлень"];GI8.t8_7=["🗜️","Стискач"];GI8.t8_8=["💾","Резервна копія"];GI8.t8_9=["📦","Архіватор-автомат"];GI8.t8_11=["⚙️","Тюнінг процесора"];GI8.t8_12=["🗄️","Склад пам'яті"];GI8.t8_15=["🏭","Друк-цех"];GI8.t8_17=["🛒","Збірка на бюджет"];GI8.t8_18=["🩺","Лікар ПК"];GI8.t8_19=["⏳","Машина часу"];GI8.dock=["🛰️","Стикування"];GI8.radar=["📡","Радар"];GI8.grav=["🪐","Гравітаційна гармата"];GI8.belt=["📦","Конвеєр"];GI8.boss8=["🛸","Бій із ШІ"];GI8.sim=["⚛️","Реактор"];GI8.ast=["☄️","Астероїди"];GI8.adv=["🌌","Пригода"];GI8.pac=["👾","Pac-Man"];GI8.inv=["🚀","Захисник"];
+GI8.t8_boss2=["👾","Бос: Мегазіп"];GI8.t8_boss3=["👾","Бос: Термобот"];GI8.t8_boss=["👾","Бос: Криптобот"];GI8.t8_bin=["🚪","Двійкові двері"];GI8.t8_1=["📻","Шифр-радист"];GI8.t8_2=["🖨️","Принтер кодів"];GI8.t8_3=["🎨","Піксель-художник"];GI8.t8_5=["🏗️","Контейнерний порт"];GI8.t8_6=["💬","Лічильник повідомлень"];GI8.t8_7=["🗜️","Стискач"];GI8.t8_8=["💾","Резервна копія"];GI8.t8_9=["📦","Архіватор-автомат"];GI8.t8_11=["⚙️","Тюнінг процесора"];GI8.t8_12=["🗄️","Склад пам'яті"];GI8.t8_15=["🏭","Друк-цех"];GI8.t8_17=["🛒","Збірка на бюджет"];GI8.t8_18=["🩺","Лікар ПК"];GI8.t8_19=["⏳","Машина часу"];GI8.dock=["🛰️","Стикування"];GI8.radar=["📡","Радар"];GI8.grav=["🪐","Гравітаційна гармата"];GI8.belt=["📦","Конвеєр"];GI8.boss8=["🛸","Бій із ШІ"];GI8.sim=["⚛️","Реактор"];GI8.ast=["☄️","Астероїди"];GI8.adv=["🌌","Пригода"];GI8.pac=["👾","Pac-Man"];GI8.inv=["🚀","Захисник"];
 GI8.sf_mine=["🛰️","Темна станція: дата-ядра"];GI8.sf_nether=["🌀","Втеча з планети"];GI8.sf_farm=["👾","Оборона модуля"];GI8.sf_craft=["🔧","Складальник пристроїв"];GI8.sf_dragon=["🤖","Бос: ШІ-ядро"];GI8.sf_redstone=["💡","Логічна схема"];GI8.sf_rails=["📦","Сортувальний конвеєр"];GI8.sf_build=["🚀","Верф: креслення корабля"];GI8.sf_archer=["🎯","Орбітальна гармата"];GI8.sf_dungeon=["🛸","Станція на трьох палубах"];
 ["sf_mine","sf_nether","sf_farm","sf_craft","sf_dragon","sf_redstone","sf_rails","sf_build","sf_archer","sf_dungeon"].forEach(function(t){GI[t]=GI5[t]=GI8[t]});
 GI8.pairs=["🔗","З’єднай пари"];GI8.seq=["🛰️","Склади порядок"];GI8.sort=["📡","Розсортуй"];GI8.tf=["✅","Правда чи ні"];GI8.cloze=["✍️","Заповни пропуск"];
@@ -20655,8 +20655,8 @@ mk("t8_19","Машина часу","⏳","Мандруй історією ком
  return {s:"Двері часу відчиняються лише раніше-пізніше!",q:"Що сталося <b>раніше</b>?",o:[first[0],second[0]],n:first[0]+" — "+first[1]+", "+second[0]+" — "+second[1]}});
 
 /* ---- БОС теми: Криптобот ---- */
-function bossSvg(ph,hp,st,N){
- var col=ph==1?"#ff3d81":ph==2?"#ff9a1f":"#ff2a2a",bd="M70 196Q54 70 180 60Q306 70 290 196L268 180L246 206L222 180L198 210L174 180L150 210L126 180L102 206L84 180Z";
+function bossSvg(ph,hp,st,sk){
+ var col=sk.c[ph-1],bd="M70 196Q54 70 180 60Q306 70 290 196L268 180L246 206L222 180L198 210L174 180L150 210L126 180L102 206L84 180Z";
  var rays="";for(var i=0;i<14;i++){var a=i*Math.PI/7;rays+="<path d='M180 120L"+(180+Math.cos(a)*420).toFixed(0)+" "+(120+Math.sin(a)*420).toFixed(0)+"'/>"}
  var hit=st=="hit",lau=st=="laugh";
  var eye=function(x,y,w,px){return "<rect x='"+x+"' y='"+y+"' width='"+w+"' height='"+w+"' fill='#fff' stroke='"+K+"' stroke-width='4'/>"+(hit?"<path d='M"+(x+8)+" "+(y+8)+"L"+(x+w-8)+" "+(y+w-8)+"M"+(x+w-8)+" "+(y+8)+"L"+(x+8)+" "+(y+w-8)+"' stroke='"+K+"' stroke-width='6'/>":"<rect x='"+(x+w*px)+"' y='"+(y+w*.42)+"' width='"+(w*.3)+"' height='"+(w*.3)+"' fill='"+K+"'/>")};
@@ -20664,35 +20664,37 @@ function bossSvg(ph,hp,st,N){
  var mouth=lau?"<path d='M112 156Q180 214 248 156Z' fill='"+K+"' stroke='"+K+"' stroke-width='4'/><path d='M132 160H228' stroke='#fff' stroke-width='7'/>":"<path d='M116 168L138 150L160 170L182 150L204 170L226 150L246 166' fill='none' stroke='"+K+"' stroke-width='6' stroke-linejoin='round'/>";
  var crack=ph>=2?"<path d='M200 62L188 92L210 104L194 138' fill='none' stroke='#fff' stroke-width='4'/>":"";
  var crack3=ph>=3?"<path d='M96 120L122 130L112 152M268 150L246 158L254 180' fill='none' stroke='#fff' stroke-width='4'/><circle cx='64' cy='96' r='6' fill='#ffd400' stroke='"+K+"' stroke-width='3'/><circle cx='300' cy='84' r='5' fill='#ffd400' stroke='"+K+"' stroke-width='3'/>":"";
- var pips="";for(var p=1;p<=3;p++)pips+="<rect x='"+(214+p*22)+"' y='38' width='16' height='10' fill='"+(p<=ph?"#ff3d81":"#fff")+"' stroke='"+K+"' stroke-width='3'/>";
- return "<svg class='bsv' viewBox='0 0 360 250'><rect width='360' height='250' fill='#1fb5ff'/><g stroke='"+K+"' stroke-width='2' opacity='.2'>"+rays+"</g><rect width='360' height='250' fill='url(#ht)'/>"
+ var pips="";for(var p=1;p<=3;p++)pips+="<rect x='"+(214+p*22)+"' y='38' width='16' height='10' fill='"+(p<=ph?col:"#fff")+"' stroke='"+K+"' stroke-width='3'/>";
+ return "<svg class='bsv' viewBox='0 0 360 250'><rect width='360' height='250' fill='"+sk.bg+"'/><g stroke='"+K+"' stroke-width='2' opacity='.2'>"+rays+"</g><rect width='360' height='250' fill='url(#ht)'/>"
  +"<path d='M150 0L120 214H240L210 0Z' fill='#fff' opacity='.18'/>"
  +"<g class='bsb'><g stroke='"+K+"' stroke-width='4' stroke-linejoin='round'><path d='"+bd+"' fill='#19d3ff' transform='translate(-7,2)' opacity='.85'/><path d='"+bd+"' fill='#ffd400' transform='translate(7,-1)' opacity='.7'/><path d='M130 66L108 24M232 66L254 18' stroke-width='5'/><circle cx='108' cy='22' r='9' fill='#ffd400'/><circle cx='254' cy='16' r='9' fill='#ffd400'/><path d='"+bd+"' fill='"+col+"'/><rect x='24' y='116' width='40' height='30' rx='10' fill='"+col+"'/><rect x='296' y='116' width='40' height='30' rx='10' fill='"+col+"'/>"+crack+eye(112,92,52,.3)+eye(194,100,60,.3)+brow+mouth+crack3+"</g></g>"
- +"<g class='sh'><rect x='10' y='8' width='196' height='28' fill='#ffd400' stroke='"+K+"' stroke-width='4'/></g><text x='108' y='28' font-size='17' text-anchor='middle' fill='"+K+"' font-weight='900'>КРИПТОБОТ</text>"
+ +"<g class='sh'><rect x='10' y='8' width='196' height='28' fill='#ffd400' stroke='"+K+"' stroke-width='4'/></g><text x='108' y='28' font-size='17' text-anchor='middle' fill='"+K+"' font-weight='900'>"+sk.n+"</text>"
  +pips+"<text x='214' y='34' font-size='10' fill='"+K+"' font-weight='900'>ФАЗА</text>"
  +"<g class='sh'><rect x='10' y='46' width='190' height='18' fill='#fff' stroke='"+K+"' stroke-width='4'/></g><rect x='13' y='49' width='"+Math.max(0,184*hp)+"' height='12' fill='"+col+"'/>"
  +"<rect y='222' width='360' height='28' fill='"+K+"'/><g fill='#555'>"+[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(function(i){return "<rect x='"+(i*24+4)+"' y='232' width='14' height='6'/>"}).join("")+"</g>"
  +(hit?"<g class='sh' transform='translate(306 96) rotate(10)'><polygon points='"+[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(function(i){var a=i*Math.PI/8,r=i%2?24:44;return (Math.cos(a)*r).toFixed(0)+","+(Math.sin(a)*r*.8).toFixed(0)}).join(" ")+"' fill='#ffd400' stroke='"+K+"' stroke-width='3'/><text y='6' font-size='17' text-anchor='middle' fill='#ff3d81' stroke='"+K+"' stroke-width='3' paint-order='stroke' font-weight='900'>БАМ!</text></g>":"")
  +(lau?"<g class='sh'><path d='M236 0H350V34H262L246 48L250 34H236Z' fill='#fff' stroke='"+K+"' stroke-width='3.5' transform='translate(0,4)'/></g><text x='292' y='30' font-size='15' text-anchor='middle' fill='"+K+"' font-weight='900'>ХА-ХА-ХА!</text>":"")
  +"</svg>"}
-var BCSS="<style>.bsx{border:4px solid #0d0d14;box-shadow:5px 5px 0 #0d0d14;background:#1fb5ff;margin:2px 0 10px;overflow:hidden}.bsv{display:block;width:100%;height:auto}.bsv .sh{filter:drop-shadow(3px 3px 0 #0d0d14)}.bsv text{font-family:inherit}.bsx.shk .bsb{animation:bshk .45s}.bsx.lgh .bsb{animation:blgh .6s}@keyframes bshk{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px) rotate(-1deg)}45%{transform:translateX(8px) rotate(1deg)}70%{transform:translateX(-5px)}}@keyframes blgh{0%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}60%{transform:translateY(3px)}}html body.g10c.g8 #app .bsa{display:grid;gap:10px;padding:0 10px 14px;background-image:radial-gradient(rgba(13,13,20,.28) 1.4px,transparent 1.5px);background-size:7px 7px}html body.g10c.g8 #app .bsa button{min-height:54px;background:#ffd400!important;border:4px solid #0d0d14!important;border-radius:30px!important;font-size:17px!important;font-weight:900;box-shadow:4px 4px 0 #0d0d14!important;position:relative;padding:8px 16px 8px 40px!important;text-align:left}html body.g10c.g8 #app .bsa button:before{content:'▶';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;color:#ff3d81}html body.g10c.g8 #app .bsa button.ok{background:#7dffb0!important}html body.g10c.g8 #app .bsa button.bad{background:#ff3d81!important;color:#fff}</style>";
-GM.t8_boss=function(g){X.run(g,{n:9,hint:"Бос Криптобот атакує питаннями. Кожна правильна відповідь пробиває його захист, помилка — він регоче. Здолай усі 3 фази!",wait:1500,draw:function(q,A){A.xq=null;tdefs();
+var BCSS="<style>.bsx{border:4px solid #0d0d14;box-shadow:5px 5px 0 #0d0d14;margin:2px 0 10px;overflow:hidden}.bsv{display:block;width:100%;height:auto}.bsv .sh{filter:drop-shadow(3px 3px 0 #0d0d14)}.bsv text{font-family:inherit}.bsx.shk .bsb{animation:bshk .45s}.bsx.lgh .bsb{animation:blgh .6s}@keyframes bshk{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px) rotate(-1deg)}45%{transform:translateX(8px) rotate(1deg)}70%{transform:translateX(-5px)}}@keyframes blgh{0%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}60%{transform:translateY(3px)}}html body.g10c.g8 #app .bsa{display:grid;gap:10px;padding:0 10px 14px;background-image:radial-gradient(rgba(13,13,20,.28) 1.4px,transparent 1.5px);background-size:7px 7px}html body.g10c.g8 #app .bsa button{min-height:54px;background:#ffd400!important;border:4px solid #0d0d14!important;border-radius:30px!important;font-size:17px!important;font-weight:900;box-shadow:4px 4px 0 #0d0d14!important;position:relative;padding:8px 16px 8px 40px!important;text-align:left}html body.g10c.g8 #app .bsa button:before{content:'▶';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;color:#ff3d81}html body.g10c.g8 #app .bsa button.ok{background:#7dffb0!important}html body.g10c.g8 #app .bsa button.bad{background:#ff3d81!important;color:#fff}</style>";
+function mkBoss(type,title,sk){GM[type]=function(g){X.run(g,{n:9,hint:"Бос "+sk.n+" атакує питаннями. Кожна правильна відповідь пробиває його захист, помилка — він регоче. Здолай усі 3 фази!",wait:1500,draw:function(q,A){A.xq=null;tdefs();
   var d=document.createElement("div");d.innerHTML=SC+BCSS;A.el.appendChild(d.childNodes[0]);A.el.appendChild(d.childNodes[0]);
   if(A.i==0)BS={ok:0};var N=A.n||9,ph=Math.min(3,1+Math.floor(A.i*3/9));
-  var fr=document.createElement("div");fr.className="bsx";fr.innerHTML=bossSvg(ph,1-BS.ok/9,"");A.el.appendChild(fr);
-  var pn=document.createElement("div");pn.className="thp";pn.style.background="#1fb5ff";fr.appendChild(pn);
+  var fr=document.createElement("div");fr.className="bsx";fr.innerHTML=bossSvg(ph,1-BS.ok/9,"",sk);A.el.appendChild(fr);
+  var pn=document.createElement("div");pn.className="thp";pn.style.background=sk.bg;fr.appendChild(pn);
   var qq=document.createElement("div");qq.className="thq";qq.innerHTML="<small>⚔️ Раунд "+(A.i+1)+" · фаза "+ph+"</small>"+q.q;pn.appendChild(qq);
   var bx=document.createElement("div");bx.className="bsa";pn.appendChild(bx);
   var ops=shuf(q.a.map(function(t,k){return {t:t,ok:k===0}})).slice(0,4);if(!ops.some(function(o){return o.ok}))ops[0]={t:q.a[0],ok:true};
   ops.forEach(function(o){var b=document.createElement("button");b.className="blk";b.textContent=o.t;b.onclick=function(){if(A.locked)return;A.locked=1;
    if(o.ok)BS.ok++;b.classList.add(o.ok?"ok":"bad");if(!o.ok)[].forEach.call(bx.children,function(x,j){if(ops[j].ok)x.classList.add("ok")});
-   var s=document.createElement("div");s.innerHTML=bossSvg(ph,1-BS.ok/9,o.ok?"hit":"laugh");fr.replaceChild(s.firstChild,fr.firstChild);fr.classList.add(o.ok?"shk":"lgh");
+   var s=document.createElement("div");s.innerHTML=bossSvg(ph,1-BS.ok/9,o.ok?"hit":"laugh",sk);fr.replaceChild(s.firstChild,fr.firstChild);fr.classList.add(o.ok?"shk":"lgh");
    A.done(o.ok,o.ok?1:0,o.ok?"Влучання!":"Правильно: "+q.a[0])};bx.appendChild(b)});
  }})};
+ window.GM[type]=(function(f){return function(g){window.BNT=type;return f(g)}})(GM[type]);
+ [window.GI,window.GI5,window.GI8].forEach(function(o){if(o)o[type]=["👾",title]})}
 var BS={ok:0};
-window.GM.t8_boss=(function(f){return function(g){window.BNT="t8_boss";return f(g)}})(GM.t8_boss);
-[window.GI,window.GI5,window.GI8].forEach(function(o){if(o)o.t8_boss=["👾","Бос: Криптобот"]});
-
+mkBoss("t8_boss","Бос: Криптобот",{n:"КРИПТОБОТ",bg:"#1fb5ff",c:["#ff3d81","#ff9a1f","#ff2a2a"]});
+mkBoss("t8_boss2","Бос: Мегазіп",{n:"МЕГАЗІП",bg:"#ff9a1f",c:["#9b4dff","#ff3d81","#ff2a2a"]});
+mkBoss("t8_boss3","Бос: Термобот",{n:"ТЕРМОБОТ",bg:"#ff3d81",c:["#1fb5ff","#9b4dff","#ffd400"]});
 /* заміни/реєстрація слотів */
 function slot(n,i,type,title){var L=LES[800+n];if(L&&L.g&&L.g[i]){L.g[i]={type:type,title:title}}}
 slot(4,3,"t8_bin","Двійкові двері");
@@ -20714,6 +20716,8 @@ slot(17,3,"t8_17","Збірка на бюджет");
 slot(18,3,"t8_18","Лікар ПК");
 slot(19,3,"t8_19","Машина часу");
 slot(6,4,"t8_boss","Бос: Криптобот");
+slot(10,4,"t8_boss2","Бос: Мегазіп");
+slot(20,4,"t8_boss3","Бос: Термобот");
 slot(10,3,"s_duel","Дуель: 2 варіанти");
 slot(20,3,"s_elim","Викресли хибні");
 })();
