@@ -12030,7 +12030,7 @@ function arena(g,cf){var N=cf.n||6,qs=GQ(CUR9,N);if(qs.length<2)return fin9(0,1)
   if(pad){if(mvx)tx=Math.max(16,Math.min(W-16,tx+mvx*200*dt));if(ct=="free"&&mvy)ty=Math.max(16,Math.min(H-16,ty+mvy*200*dt));px+=(tx-px)*Math.min(1,dt*10);if(ct=="free")py+=(ty-py)*Math.min(1,dt*10)}
   S.px=ct=="free"||ct=="lane"?px:lastp[0];S.py=ct=="free"||ct=="lane"?py:lastp[1];
   var d=dif();ob.concat(jk).forEach(function(o){if(!o.on)return;bh.u(o,dt,d,T,S);if(mut.indexOf("magnet")>=0&&cf.beh!="orbit"){o.x+=(S.px-o.x)*.22*dt;if(cf.beh=="pop"||cf.beh=="bounce"||cf.beh=="flee")o.y+=(S.py-o.y)*.22*dt}});
-  if(pad)ob.concat(jk).forEach(function(o){if(o.on&&vis(o)&&Math.hypot(o.x-px,o.y-py)<rad(o)+15)pick(o)});
+  if(pad&&qt>1.3)ob.concat(jk).forEach(function(o){if(o.on&&vis(o)&&Math.hypot(o.x-px,o.y-py)<rad(o)+15)pick(o)});
   bul.forEach(function(b){b.t+=dt;b.x+=b.vx*dt;b.y+=b.vy*dt;ob.concat(jk).forEach(function(o){if(!b.dead&&o.on&&vis(o)&&Math.hypot(o.x-b.x,o.y-b.y)<rad(o)+4){b.dead=1;pick(o)}})});bul=bul.filter(function(b){return !b.dead&&b.t<1.3});
   if(hold){hold.t+=dt;if(hold.t>=.55){var o=hold.o;hold=null;pick(o)}}
   if(mut.indexOf("fuse")>=0){fz+=dt;if(fz>9){fz=0;hurt();if(!done)next()}}}
