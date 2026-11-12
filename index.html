@@ -14663,7 +14663,7 @@ function rc(x,y,w,h,f,st,sw){return "<rect x='"+x+"' y='"+y+"' width='"+w+"' hei
 function sp(x,y,s,m,p){var o="";m.forEach(function(r,j){for(var i=0;i<r.length;i++){var c=r[i];if(c!=="."&&p[c])o+=rc(x+i*s,y+j*s,s,s,p[c])}});return o}
 var HR=["hhhhhhhh","hhhhhhhh","hsssssss","sbswwsbs","ssssssss","sssmmsss","ssssssss"],BD=[".tttttt.","tttttttt","stttttts","stttttts",".llll.ll"],HP={h:"#4a2e12",s:"#c49a73",b:"#3a6cd1",w:"#fff",m:"#8a5a3a",t:"#27a8a0",l:"#3b3b8a"};
 var HEART=[".kk.kk.","krrkrrk","krrrrrk",".krrrk.","..krk..","...k..."];
-function scene(pl,NO,fall,jump){var o="",i,j,pw=200/NO,hx=100+pl*pw-14+(pl>=NO?pw:0);
+function scene(pl,NO,fall,jump){var o="",i,j,pw=200/NO,hx=pl>=NO?296:100+pl*pw-14;
  o+="<defs><linearGradient id='bsk' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#3b9cff'/><stop offset='.7' stop-color='#bfe6ff'/><stop offset='1' stop-color='#ffe9c2'/></linearGradient><linearGradient id='blv' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#ff9f1c'/><stop offset='1' stop-color='#a61e00'/></linearGradient><clipPath id='bcl'><rect x='8' y='60' width='384' height='330'/></clipPath></defs>"+rc(8,60,384,330,"url(#bsk)");
  o+=rc(318,72,44,44,"#ffe27a")+rc(326,80,28,28,"#fff6b0");
  [[30,150],[190,168],[260,200]].forEach(function(c){o+=rc(c[0],c[1],56,10,"#fff")+rc(c[0]+10,c[1]-8,34,10,"#fff")});
@@ -14680,7 +14680,7 @@ function scene(pl,NO,fall,jump){var o="",i,j,pw=200/NO,hx=100+pl*pw-14+(pl>=NO?p
  if(pl<NO)o+=rc(100+pl*pw+1,256,pw-2,10,"none","#ffe27a",2);
  o+=rc(100,244,pl*pw,2,"#8a6a3a");
  o+="<g id='bfall'>"+(fall?rc(100+pl*pw+1,256,pw-2,10,"#b98f48","#000",2):"")+"</g>";
- o+="<g id='bhero' transform='translate("+hx+","+(jump?-8:0)+")'>"+sp(0,200,4,HR,HP)+sp(0,228,4,BD,HP)+"</g>";
+ o+="<g id='bhero' transform='translate("+hx+","+(jump?-8:0)+")'>"+sp(0,208,4,HR,HP)+sp(0,236,4,BD,HP)+"</g>";
  o+="</g></g>";
  return "<svg id='bsv' viewBox='8 60 384 330' width='100%' shape-rendering='crispEdges' style='display:block;border:3px solid #000'>"+o+"</svg>"}
 function pick(a,n){var f=a.filter(function(q){return !/^(Правда|Хибно)$/.test(q.a[0])&&!/[▁_]{2,}/.test(q.q)&&q.q.length<110});if(f.length>=n)a=f;return shuffle(a.slice()).slice(0,n)}
@@ -14695,10 +14695,13 @@ function game(g){var qs=pick(Q(14),6),NO=Math.min(6,qs.length);if(NO<2)return fi
   var ops=shuffle(q.a.slice(0,3)).map(function(t){return {t:t,ok:t===q.a[0]}}),box=document.getElementById("bo"),btn=document.getElementById("bgo"),ms=document.getElementById("bm");
   ops.forEach(function(o,k){var bt=document.createElement("button");bt.className="bo";bt.innerHTML="<u><s style='background:"+COL[k%4]+"'></s></u><span></span>";bt.lastChild.textContent=o.t;bt.onclick=function(){if(done)return;sel=o;[].forEach.call(box.children,function(x){x.className="bo"});bt.className="bo sel";btn.disabled=false;M.snd("click")};box.appendChild(bt);o.b=bt});
   btn.onclick=function(){if(done||!sel)return;done=true;btn.disabled=true;ops.forEach(function(x){if(x.ok)x.b.className="bo ok"});
-   if(sel.ok){pl++;qi++;ms.textContent="✔ Дошка лягла в міст!";ms.style.color="#27ae60";M.snd("ok");setTimeout(function(){if(!document.body.contains(b))return;if(pl>=NO){ms.textContent="🎉 Міст готовий! Скарб твій!";round(false,true);setTimeout(function(){fin9(pl,NO)},1600)}else round(false,true)},900)}
+   if(sel.ok){pl++;qi++;ms.textContent="✔ Дошка лягла в міст!";ms.style.color="#27ae60";M.snd("ok");setTimeout(function(){if(!document.body.contains(b))return;if(pl>=NO)finish(true);else round(false,true)},900)}
    else{lives--;sel.b.className="bo bad";ms.textContent="✖ Дошка впала в лаву. Правильна відповідь – зелена.";ms.style.color="#e74c3c";M.snd("bad");var f=document.getElementById("bfall");if(f)f.innerHTML="<rect x='"+(100+pl*(200/NO)+1)+"' y='256' width='"+(200/NO-2)+"' height='10' fill='#b98f48' stroke='#000' stroke-width='2'/>";
-    setTimeout(function(){if(!document.body.contains(b))return;if(lives<=0){ms.textContent="Міст обвалився…";setTimeout(function(){fin9(pl,NO)},1000)}else{qs.push(qs.splice(qi,1)[0]);round(false,false)}},2200)}};
+    setTimeout(function(){if(!document.body.contains(b))return;if(lives<=0)finish(false);else{qs.push(qs.splice(qi,1)[0]);round(false,false)}},2200)}};
  }
+ function finish(win){var b=document.getElementById("mbr");
+  b.innerHTML="<div class='bhd'><span>Міст через прірву</span>"+hearts(lives)+"</div><div style='position:relative'>"+scene(pl,NO,false,false)+"</div><div class='bpg'>Дощок: "+pl+" / "+NO+"<div><i style='width:"+Math.round(pl/NO*100)+"%'></i></div></div><div class='bm' style='font-size:16px;color:"+(win?"#27ae60":"#e74c3c")+"'>"+(win?"🎉 Міст готовий! Герой дійшов до скарбу!":"Міст обвалився… Дошок покладено: "+pl)+"</div><button class='bgo' id='bres'>ПОКАЗАТИ РЕЗУЛЬТАТ</button>";
+  M.snd(win?"ok":"bad");document.getElementById("bres").onclick=function(){fin9(pl,NO)}}
  round(false,false)}
 GM.m_c1=function(g){if(CUR9>=600&&CUR9<700)return game(g);return orig(g)};
 if(window.LES)[605,647].forEach(function(k){var L=LES[k];if(L&&L.g)L.g.forEach(function(g){if(g.type==="m_c1")g.title="Міст через прірву"})});
