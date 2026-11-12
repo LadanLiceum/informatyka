@@ -14720,6 +14720,8 @@ for(var k=601;k<=652;k++){var L=LES[k];if(!L||!L.g)continue;L.g.forEach(function
 var want=23,sel=[];cand.forEach(function(c,i){if(Math.floor((i+1)*want/cand.length)!==Math.floor(i*want/cand.length))sel.push(c)});
 var sel2=[];mcs.forEach(function(c,i){if(Math.floor((i+1)*4/mcs.length)!==Math.floor(i*4/mcs.length))sel2.push(c)});
 sel.concat(sel2).forEach(function(c){var L=LES[c[0]],t=nextS(L);if(!t)return;L.g[c[1]]={type:t,title:title(t)}});
+/* прибрати «стрілялки» (лучник, гарпун, гармата) – замінити на прості s_* */
+for(var k2=601;k2<=652;k2++){var L2=LES[k2];if(!L2||!L2.g)continue;L2.g.forEach(function(g,i){if(/^(mc_archer|m_b3|m_c3|m_a3|m_d2|m_e2|m_f2|m_g2)$/.test(g.type)){var t=nextS(L2);if(t)L2.g[i]={type:t,title:title(t)}}})}
 })();
 
 /* ===== універсальний банер-візуал для всіх ігор, кольорове розділення пар, кнопка «пуск», стилі нових ігор ===== */
