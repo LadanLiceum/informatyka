@@ -11967,6 +11967,63 @@ function draw(){if(G.done)return;var g=c.createLinearGradient(0,0,0,GY);g.addCol
 GM._bow=GM.arch;GM.bow=GM.arch;
 })();
 
+/* Вежа знань: будівлі з блоків */
+(function(){
+var S=4; // texel size
+function rn(x,y,k){var n=Math.sin(x*127.1+y*311.7+k*74.7)*43758.5453;return n-Math.floor(n)}
+function P(c,x,y,w,h,f){c.fillStyle=f;c.fillRect(x,y,w,h)}
+// 8x8 textures; returns color for texel (i,j) of block at world (bx,by)
+var TX={
+ grass:function(i,j,k){var r=rn(i,j,k);return j<2?(r<.5?'#6fbf3f':'#5aa832'):(r<.3?'#7a5230':r<.65?'#8a5c36':'#6d4628')},
+ grassTop:function(i,j,k){var r=rn(i,j,k);return r<.25?'#5aa832':r<.7?'#68b838':'#74c444'},
+ dirt:function(i,j,k){var r=rn(i,j,k);return r<.2?'#6d4628':r<.6?'#85593a':'#946540'},
+ stone:function(i,j,k){var r=rn(i,j,k);return r<.25?'#6a6a6a':r<.7?'#7d7d7d':'#8f8f8f'},
+ water:function(i,j,k){var r=rn(i,j,k);return r<.15?'#4a8df0':r<.7?'#2f6fd6':'#2a63c4'},
+ waterL:function(i,j,k){var r=rn(i,j,k);return r<.2?'#5b9bff':r<.7?'#3f7fe6':'#3873d4'},
+ planks:function(i,j,k){var r=rn(i,j,k);var b=(j%4==3)?'#7a5a2e':(r<.4?'#b8904f':'#c49c5a');return b},
+ log:function(i,j,k){var r=rn(i,j,k);return (i%3==0)?'#5a4222':(r<.5?'#7a5a32':'#6b4d29')},
+ logEnd:function(i,j,k){var d=Math.max(Math.abs(i-3.5),Math.abs(j-3.5));return d>3?'#5a4222':d>2?'#b58b4f':d>1?'#9c733f':'#b58b4f'},
+ leaves:function(i,j,k){var r=rn(i,j,k);return r<.3?'#2f7a1f':r<.65?'#3c9528':'#2b6c1b'},
+ sand:function(i,j,k){var r=rn(i,j,k);return r<.3?'#d9c98a':r<.7?'#e4d599':'#cdbb7c'},
+ cloud:function(i,j,k){return rn(i,j,k)<.25?'#e6eef7':'#ffffff'},
+ brick:function(i,j,k){return (j%4==3||(i+(j>>2)*4)%8==0)?'#a89a8a':'#9a4a3a'},
+ glass:function(i,j,k){return (i==0||j==0||i==7||j==7)?'#6a8aa8':(i==j||i+j==7)&&rn(i,j,2)<.8?'#c6e4f5':'#9ccbe6'}
+};
+function B(c,x,y,t,k,s){s=s||S/2;for(var i=0;i<8;i++)for(var j=0;j<8;j++){c.fillStyle=TX[t](i,j,k||0);c.fillRect(x+i*s,y+j*s,s+.5,s+.5)}}
+function T(c,t,x,y,sz,col,al){c.font='bold '+sz+'px monospace';c.textAlign=al||'left';c.fillStyle='#000';c.fillText(t,x+1,y+1);c.fillStyle=col||'#fff';c.fillText(t,x,y)}
+function pk2(ps){return function(i,j,k){var r=rn(i,j,k);return ps[r<.3?0:r<.7?1:2]}}
+TX.redR=pk2(['#a82020','#b83030','#901818']);TX.wool=pk2(['#f0f0f0','#e4e4e4','#ffffff']);TX.gold=pk2(['#ffd24a','#ffe070','#e8b830']);TX.door=pk2(['#5a3a1a','#6b4524','#4a2e14']);TX.sbr=function(i,j,k){return (j%4==3||(i+(j>>2)*4)%8==0)?'#6a6a6a':(rn(i,j,k)<.5?'#8a8a8a':'#7d7d7d')};
+var MAPC={S:'sbr',B:'sbr',P:'planks',L:'log',W:'glass',D:'door',R:'redR',H:'wool',G:'gold',T:'stone'};
+var BLD=[
+{n:'Замок',steps:[["SSSSSSSSSSSSSS","SSSSSSDDSSSSSS"],["SWSSSSDDSSSSWS","SSSSSSSSSSSSSS"],["SSST.T.T.T.SSS","SWS........SWS"],["SSS........SSS","SSS........SSS"],["TST........TST"],["RRR........RRR"],[".R..........R."]],hl:5},
+{n:'Маяк',steps:[["..SSSSSSSSSS..","..SSSSSSSSSS.."],["...HHHHHHHH...","...HHHHHHHH..."],["...RRRRRRRR...","...RRRRRRRR..."],["....HHHHHH....","....HHHHHH...."],["....RRRRRR....","....RRRRRR...."],["....WWWWWW....","....WWWWWW...."],["...RRRRRRRR...","......GG......"]],hl:7},
+{n:'Будиночок',steps:[[".LLLLLLLLLLLL."],[".PWPPPDDPPPWP.",".PWPPPDDPPPWP."],[".PPPPPPPPPPPP."],[".LLLLLLLLLLLL."],["..RRRRRRRRRR..","...RRRRRRRR..."],["....RRRRRR...."],[".....RRRR.SS..","......RR..SS.."]],hl:3}];
+function scene(cv,b,h){var c=cv.getContext('2d'),Wd=280,H=340,BS=16,GY=290;
+ var g=c.createLinearGradient(0,0,0,GY);g.addColorStop(0,'#7ec0ff');g.addColorStop(1,'#cfe9ff');c.fillStyle=g;c.fillRect(0,0,Wd,H);
+ P(c,220,30,26,26,'#fff3a6');for(var i=0;i<3;i++)B(c,20+i*18,60+(i%2)*8,'cloud',i,2.2);for(var i=0;i<3;i++)B(c,150+i*18,40+(i%2)*10,'cloud',i+4,2.2);
+ // hills
+ c.fillStyle='#7cc050';for(var x=0;x<Wd;x+=10){var hh=26+12*Math.sin(x/38)+8*Math.sin(x/17);c.fillRect(x,GY-hh,10,hh)}
+ for(var x=0;x<Wd;x+=BS){B(c,x,GY,'grassTop',x,2);B(c,x,GY+BS,'dirt',x,2);B(c,x,GY+2*BS,'dirt',x+3,2);B(c,x,GY+3*BS,'stone',x,2)}
+ // trees
+ [[2,GY-44],[256,GY-52]].forEach(function(t){P(c,t[0]+12,t[1]+28,8,24,'#5a4222');for(var a=0;a<2;a++)for(var q=0;q<2;q++)B(c,t[0]+a*16-4,t[1]+q*16,'leaves',a+q*2+t[0],2)});
+ var rows=[],stepOf=[];b.steps.forEach(function(st,si){st.forEach(function(r){rows.push(r);stepOf.push(si)})});
+ var ox=(Wd-14*BS)/2;
+ // lighthouse beam
+ if(b.n=='Маяк'&&h==7){c.globalAlpha=.22;c.fillStyle='#fff7a0';c.beginPath();c.moveTo(ox+7*BS,GY-11.5*BS);c.lineTo(Wd,GY-11.5*BS-70);c.lineTo(Wd,GY-11.5*BS+30);c.closePath();c.fill();c.globalAlpha=1}
+ rows.forEach(function(r,ri){var y=GY-(ri+1)*BS;for(var i=0;i<14;i++){var ch=r[i];if(ch=='.')continue;if(stepOf[ri]<h){B(c,ox+i*BS,y,MAPC[ch],i+ri*3,2);P(c,ox+i*BS,y,BS,1,'rgba(255,255,255,.18)');P(c,ox+i*BS,y+BS-1,BS,1,'rgba(0,0,0,.2)')}else{c.globalAlpha=.22;P(c,ox+i*BS+1,y+1,BS-2,BS-2,'#fff');c.globalAlpha=1}}});
+ // flag for castle
+ if(b.n=='Замок'&&h==7){P(c,ox+1*BS+6,GY-11*BS-30,3,32,'#ddd');P(c,ox+1*BS+9,GY-11*BS-30,16,10,'#d02020')}
+ // title + progress
+ P(c,10,10,Wd-20,34,'#000');P(c,12,12,Wd-24,30,'#fff');P(c,14,14,Wd-28,26,'#555');P(c,14,14,Wd-30,24,'#c6c6c6');T(c,b.n,Wd/2-60,34,14,'#222','center');
+ for(var s=0;s<7;s++)P(c,Wd/2-14+s*13+0,20,10,12,s<h?'#3ad06a':'#8a8a8a');
+ T(c,h+'/7',Wd-34,34,12,'#222','center');
+ // blocks to give
+ if(h<7){var nb=0}
+}
+
+GX.twN=BLD.length;GX.twScene=function(cv,bi,h){cv.width=280;cv.height=340;scene(cv,BLD[bi],h)};GX.twName=function(bi){return BLD[bi].n};
+})();
+
 /* 8 клас: сай-фай аркади (стикування, радар, гармата, конвеєр, бій з ШІ, реактор, астероїди) */
 (function(){
 var COL=["#ff4d8d","#22d3ee","#fbbf24"],LET=["A","B","C"];
@@ -12279,7 +12336,7 @@ GM.s_scratch=function(g){run(g,{hint:"Варіанти закриті зашиф
 /* 19. Експрес */
 GM.s_express=function(g){var SEC=(CUR9>=500&&CUR9<700)?18:6;run(g,{nb:1,n:8,wait:700,hint:SEC+" секунд на твердження! Чи правильна відповідь?",draw:function(q,A){var t=Math.random()<.5,ans=t?q.a[0]:wrongOne(q);qline(A,q);var c=document.createElement("div");c.className="card2";c.innerHTML="<b>Відповідь:</b> "+esc(ans);A.el.appendChild(c);var stop=null;var r=document.createElement("div");r.className="row";r.innerHTML="<button class='blk bad'>✖</button><button class='blk ok'>✔</button>";A.el.appendChild(r);function pick(v){stop&&stop();A.done(v===t,undefined,t?"":"Правильно: "+q.a[0])}r.children[0].onclick=function(){pick(false)};r.children[1].onclick=function(){pick(true)};stop=timer(A,SEC,function(){A.done(false,undefined,"Час! "+(t?"Було правильно.":"Правильно: "+q.a[0]))})}})};
 /* 20. Вежа */
-GM.s_tower=function(g){var GOOD=["Так тримати! 💪","Блок на місці! 🧱","Ти справжній інженер! 🛠️","Вежа росте! 🚀","Відмінна робота! ⭐","Не зупиняйся! 🔥","Геній! 🧠","Ще вище! 🏗️"],BAD=["Не здавайся – наступний блок твій! 💙","Помилки роблять нас сильнішими! 💪","Спробуй ще – ти зможеш! 🌟","Навіть найвищі вежі падали! 🏰"];run(g,{n:7,wait:1500,hint:"Правильна відповідь додає блок, помилка зносить верхній. Збудуй вежу якомога вищу!",init:function(S){S.h=0},draw:function(q,A){var S=A.S,tw=document.createElement("div");tw.className="tw";function d(){tw.innerHTML="";for(var k=0;k<S.h;k++){var u=document.createElement("u");u.style.width=(120-k*6)+"px";tw.appendChild(u)}}d();A.el.appendChild(tw);quiz(A,q,null,function(o,b,ops){mark(ops,o,b);if(o.ok)S.h++;else S.h=Math.max(0,S.h-1);d();var p=document.createElement("div");p.className="pop";p.textContent=o.ok?GOOD[(S.h+Math.floor(Math.random()*3))%GOOD.length]:BAD[Math.floor(Math.random()*BAD.length)];p.style.borderColor=o.ok?"#3dffa2":"#ffb02e";A.el.appendChild(p);A.done(o.ok,undefined,o.ok?"Висота "+S.h:"Блок зруйновано. Правильно: "+q.a[0])})}})};
+GM.s_tower=function(g){var GOOD=["Так тримати! 💪","Блок на місці! 🧱","Ти справжній інженер! 🛠️","Вежа росте! 🚀","Відмінна робота! ⭐","Не зупиняйся! 🔥","Геній! 🧠","Ще вище! 🏗️"],BAD=["Не здавайся – наступний блок твій! 💙","Помилки роблять нас сильнішими! 💪","Спробуй ще – ти зможеш! 🌟","Навіть найвищі вежі падали! 🏰"];run(g,{n:7,wait:1500,hint:"Правильна відповідь додає ряд блоків до будівлі, помилка забирає останній ряд. Збудуй усю будівлю!",init:function(S){S.h=0;S.bi=Math.floor(Math.random()*(window.GX&&GX.twN||1))},draw:function(q,A){var S=A.S,tw=document.createElement("canvas");tw.style.cssText="display:block;margin:0 auto 8px;width:100%;max-width:300px;image-rendering:pixelated;border-radius:6px";function d(){if(window.GX&&GX.twScene)GX.twScene(tw,S.bi,S.h)}d();A.el.appendChild(tw);quiz(A,q,null,function(o,b,ops){mark(ops,o,b);if(o.ok)S.h++;else S.h=Math.max(0,S.h-1);d();var p=document.createElement("div");p.className="pop";p.textContent=o.ok?GOOD[(S.h+Math.floor(Math.random()*3))%GOOD.length]:BAD[Math.floor(Math.random()*BAD.length)];p.style.borderColor=o.ok?"#3dffa2":"#ffb02e";p.style.cssText+=";position:static;transform:none;animation:none;margin:6px auto;max-width:300px;font-size:15px;padding:6px 10px";A.el.insertBefore(p,tw.nextSibling);A.done(o.ok,undefined,o.ok?"Збудовано "+S.h+" із 7":"Ряд зруйновано. Правильно: "+q.a[0])})}})};
 })();
 
 /* ===== середні ігри «Арена»: 8 поведінок відповідей × 8 керувань × 10 скінів; 37 спільних + 50 унікальних за класами ===== */
