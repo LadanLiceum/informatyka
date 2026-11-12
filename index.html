@@ -12081,7 +12081,7 @@ var SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,CANVAS:1,OPTION:1,SELECT:1,CODE:0,
 function conv(n){if(n.nodeType==3){var t=n.nodeValue;RX.lastIndex=0;if(!RX.test(t))return;RX.lastIndex=0;var f=document.createDocumentFragment(),last=0,m,ch=0;
  while((m=RX.exec(t))){var u=mk(m[0]);if(!u)continue;if(m.index>last)f.appendChild(document.createTextNode(t.slice(last,m.index)));var im=document.createElement("img");im.src=u;im.alt=m[0];im.className="pxe";f.appendChild(im);last=m.index+m[0].length;ch++}
  if(!ch)return;if(last<t.length)f.appendChild(document.createTextNode(t.slice(last)));if(n.parentNode)n.parentNode.replaceChild(f,n)}
- else if(n.nodeType==1){if(SKIP[n.tagName]||n.classList.contains("pxe")||n.hasAttribute("data-nopx"))return;if(n.classList.contains("card")&&n.querySelector(".ill-wrap"))return;var k=Array.prototype.slice.call(n.childNodes);k.forEach(conv)}}
+ else if(n.nodeType==1){if(SKIP[n.tagName]||n.classList.contains("pxe")||n.hasAttribute("data-nopx"))return;if(n.classList.contains("card")&&n.querySelector(".ill-wrap"))return;if(n.namespaceURI&&n.namespaceURI.indexOf("svg")>0)return;var k=Array.prototype.slice.call(n.childNodes);k.forEach(conv)}}
 var st=document.createElement("style");st.textContent="img.pxe{height:1.2em;width:auto;vertical-align:-.25em;image-rendering:pixelated;display:inline-block;margin:0 .05em}";document.head.appendChild(st);
 var busy=0,tm=0;function go(){tm=0;if(!on())return;busy=1;try{if(window.PXG)PXG.apply();conv(document.getElementById("app")||document.body)}catch(e){}busy=0}
 var mo=new MutationObserver(function(){if(busy||tm)return;tm=setTimeout(go,60)});
