@@ -14577,6 +14577,10 @@ var st=document.createElement("style");st.textContent=
 document.head.appendChild(st);
 })();
 
+/* 6 клас: «Лучник: захист башти» тепер на новому лучнику (підключається після mcc.js) */
+(function(){if(window.GM&&GM.arch)GM.mc_archer=function(g){return GM.arch(g)}})();
+(function(){var gi=window.GI;if(gi&&!gi.arch){gi.arch=gi.mc_archer||["🏹","Лучник: захист башти"]}else if(window.GI5&&!GI5.arch){GI5.arch=GI5.mc_archer||["🏹","Лучник: захист башти"]}})();
+
 /* ===== універсальний банер-візуал для всіх ігор, кольорове розділення пар, кнопка «пуск», стилі нових ігор ===== */
 (function(){
 var SKC={space:["#5b4bff","#22d3ee"],cave:["#6b4f2a","#8d9a9a"],nether:["#c2410c","#7f1d1d"],end:["#6d28d9","#312e81"],ocean:["#0284c7","#06b6d4"],forest:["#2e7d32","#9acd32"],cyber:["#ff2e93","#22d3ee"],matrix:["#0f9d58","#064e3b"],ios:["#7c5cff","#00b4ff"],design:["#ff5f6d","#ffa14d"]};
