@@ -14708,6 +14708,20 @@ if(window.LES)[605,647].forEach(function(k){var L=LES[k];if(L&&L.g)L.g.forEach(f
 if(window.GI5&&GI5.m_c1)GI5.m_c1=[GI5.m_c1[0],"Міст через прірву"];try{if(window.GV11&&GV11.meta&&GV11.meta.m_c1){var m0=GV11.meta.m_c1;Object.defineProperty(GV11.meta,'m_c1',{get:function(){return(CUR9>=600&&CUR9<700)?['Міст через прірву'].concat(m0.slice(1)):m0}})}}catch(e){}setTimeout(function(){if(!window.BN)return;var h=BN.html;BN.html=function(t){var r=h(t);if(t==='m_c1'&&CUR9>=600&&CUR9<700)r=r.replace(/(<span class='gt'>)[^<]*/,'$1Міст через прірву');return r}},0);window.BRG={scene:scene};
 })();
 
+/* ===== 6 клас: вирівнювання складу ігор під 5 клас (більше простих s_*, менше середніх m_*) ===== */
+(function(){
+if(!window.LES)return;
+var S6=["s_audit","s_toggles","s_wheel","s_scratch","s_express","s_tower","s_duel","s_elim","s_streak","s_bet","s_hang","s_ghost","s_vault","s_slider","s_flash","s_liar","s_bridge","s_sw"],PROT={601:1,605:1,616:1,647:1},ri=0;
+function title(t){var l=(window.GI&&GI[t])||(window.GI5&&GI5[t]);return l?l[1]:t}
+function has(L,t){return L.g.some(function(g){return g.type===t})}
+function nextS(L){for(var n=0;n<S6.length;n++){var t=S6[ri++%S6.length];if(!has(L,t))return t}return null}
+var cand=[],mcs=[];
+for(var k=601;k<=652;k++){var L=LES[k];if(!L||!L.g)continue;L.g.forEach(function(g,i){if(/^m_/.test(g.type)&&!PROT[k])cand.push([k,i]);else if(/^mc_/.test(g.type))mcs.push([k,i])})}
+var want=23,sel=[];cand.forEach(function(c,i){if(Math.floor((i+1)*want/cand.length)!==Math.floor(i*want/cand.length))sel.push(c)});
+var sel2=[];mcs.forEach(function(c,i){if(Math.floor((i+1)*4/mcs.length)!==Math.floor(i*4/mcs.length))sel2.push(c)});
+sel.concat(sel2).forEach(function(c){var L=LES[c[0]],t=nextS(L);if(!t)return;L.g[c[1]]={type:t,title:title(t)}});
+})();
+
 /* ===== універсальний банер-візуал для всіх ігор, кольорове розділення пар, кнопка «пуск», стилі нових ігор ===== */
 (function(){
 var SKC={space:["#5b4bff","#22d3ee"],cave:["#6b4f2a","#8d9a9a"],nether:["#c2410c","#7f1d1d"],end:["#6d28d9","#312e81"],ocean:["#0284c7","#06b6d4"],forest:["#2e7d32","#9acd32"],cyber:["#ff2e93","#22d3ee"],matrix:["#0f9d58","#064e3b"],ios:["#7c5cff","#00b4ff"],design:["#ff5f6d","#ffa14d"]};
