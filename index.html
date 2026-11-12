@@ -14720,7 +14720,7 @@ var S6=["s_audit","s_toggles","s_wheel","s_scratch","s_express","s_tower","s_due
 function lab(t){return (window.GI&&GI[t])||(window.GI5&&GI5[t])||null}
 function title(t){var l=lab(t);return l?l[1]:t}
 function mk(t,old){return old&&old.type===t&&old.title?old:{type:t,title:t==="m_c1"?"Міст через прірву":t==="m_c4"?"Ринок":title(t)}}
-function isTopic(t){return /^u6_/.test(t)||/^(anim|show|list|tbl|merge|wrap|vec|layers|cells|shop|chart|garden|ifelse|until)6$/.test(t)}
+function isTopic(t){return /^(anim|show|list|tbl|merge|wrap|vec|layers|cells|shop|chart|garden|ifelse|until)6$/.test(t)}
 function isCx(t){return /^mc_/.test(t)&&t!=="mc_archer"||t==="ender"||t==="mcart"||t==="m_c4"}
 function even(n,from,to,cnt,fixed){var a=fixed.slice(),L=[];for(var k=from;k<=to;k++)L.push(k);var step=L.length/cnt,i=0;while(a.length<cnt&&i<cnt*3){var k2=L[Math.floor(i*step+step/2)%L.length];if(a.indexOf(k2)<0)a.push(k2);i++}return a}
 var arch=even(0,601,652,9,[609,619,629,649].slice(0,0)),bridge=even(0,601,652,9,[605,647]),boat=even(0,601,652,9,[]),mkt=even(0,601,652,9,[601,616]);
@@ -14732,7 +14732,7 @@ var P={};P.bridge=bridge;P.mkt=mkt.slice(0,9);
 P.arch=even(0,601,652,9,[]).map(function(k){return k+1>652?601:k+1}).filter(function(k){return bridge.indexOf(k)<0});
 P.boat=even(0,601,652,9,[]).map(function(k){return k+2>652?602:k+2}).filter(function(k){return mkt.indexOf(k)<0});
 for(var k=601;k<=652;k++){var L=LES[k];if(!L||!L.g)continue;var old=L.g.slice(),topic=null,plain=[],cx=null;
- old.forEach(function(g){var t=g.type;if(isTopic(t)){if(!topic)topic=g}else if(isCx(t)){if(!cx&&t!=="m_c4"&&t!=="mcart")cx=g}else if(/^m_/.test(t)&&t!=="m_c1"){}else plain.push(g)});
+ old.forEach(function(g){var t=g.type;if(/^u6_/.test(t)){}else if(isTopic(t)){if(!topic)topic=g}else if(isCx(t)){if(!cx&&t!=="m_c4"&&t!=="mcart")cx=g}else if(/^m_/.test(t)&&t!=="m_c1"){}else plain.push(g)});
  var need=topic?2:3,res=[];
  // простих: класичні/s_/mine/archer/міст з поточних
  var seen={};plain.forEach(function(g){if(res.length<need&&!seen[g.type]){seen[g.type]=1;res.push(g)}});
