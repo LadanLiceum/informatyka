@@ -12537,14 +12537,14 @@ function mcShip(c,k,x,y){var map={cave:"pick",nether:"sword",end:"bow",ocean:"fi
  for(j=0;j<8;j++)for(i=0;i<8;i++){ch=sp[j].charAt(i);if(ch==".")continue;c.fillStyle=SPC[ch];c.fillRect(Math.round(x-16+i*u),Math.round(y-16+j*u),u,u)}}
 function arena(g,cf){var N=cf.n||6,qs=GQ(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
  var ct=cf.ctl,mut=cf.mut||[],pad=ct=="lane"||ct=="free",hint=cf.hint||((cf.pre?cf.pre+" ":"")+CDESC[ct]+" "+mut.map(function(m){return MDESC[m]}).join(" "));if(ct=="stop"&&cf.beh=="orbit")hint="Літери кружляють навколо станції. Тисни 🔥 (або торкнись екрана), коли ПРАВИЛЬНА літера опиниться в підсвіченому порту зверху. Не поспішай: у тебе кілька спроб!"+(mut.length?" "+mut.map(function(m){return MDESC[m]}).join(" "):"");
- var OY=(CUR9>500&&CUR9<700)?92:0,BK=OY?72:0;var cv=G.head(g.title,hint,pad?true:"f");cv.width=W;cv.height=H+OY+BK;var cx=cv.getContext("2d");if(!pad&&ct!="stop")G.noPad();if(pad){var _fb=document.querySelector("#adp .f");if(_fb)_fb.parentNode.removeChild(_fb)}
- var mc=CUR9>500&&CUR9<700,mk=mc?(MCMAP[cf.skin]||cf.skin):"",sk=mc?{ship:mk,txt:"#fff",bg:function(c,T){mcBg(c,T,mk)}}:(SK[cf.skin]||SK.space),bh=BH[cf.beh],lives=3,qi=0,sc=0,T=0,done=false,ops,ob=[],jk=[],wrong=false,tl=16,inv=0,bul=[],px=W/2,py=ct=="free"?H-60:(cf.beh=="rise"?40:H-34),tx=px,ty=py,mvx=0,mvy=0,hold=null,ptr0=null,ptrOn=false,lastp=[W/2,H/2],trail=[],fz=0,qt=0,msg="",mt=0,mir=mut.indexOf("mirror")>=0;
+ var SLW=cf.id=="u6_6",TL0=SLW?28:16,BL=SLW?1.2:3.2,BT=SLW?-.35:-.5;var OY=(CUR9>500&&CUR9<700)?92:0,BK=OY?72:0;var cv=G.head(g.title,hint,pad?true:"f");cv.width=W;cv.height=H+OY+BK;var cx=cv.getContext("2d");if(!pad&&ct!="stop")G.noPad();if(pad){var _fb=document.querySelector("#adp .f");if(_fb)_fb.parentNode.removeChild(_fb)}
+ var mc=CUR9>500&&CUR9<700,mk=mc?(MCMAP[cf.skin]||cf.skin):"",sk=mc?{ship:mk,txt:"#fff",bg:function(c,T){mcBg(c,T,mk)}}:(SK[cf.skin]||SK.space),bh=BH[cf.beh],lives=3,qi=0,sc=0,T=0,done=false,ops,ob=[],jk=[],wrong=false,tl=TL0,inv=0,bul=[],px=W/2,py=ct=="free"?H-60:(cf.beh=="rise"?40:H-34),tx=px,ty=py,mvx=0,mvy=0,hold=null,ptr0=null,ptrOn=false,lastp=[W/2,H/2],trail=[],fz=0,qt=0,msg="",mt=0,mir=mut.indexOf("mirror")>=0;
  function dif(){return 1+qi*.12}
- function newQ(){ops=G.panel(qs[qi]);if(OY){var _a=document.getElementById("ap");if(_a)_a.style.display="none"}ob=ops.slice(0,3).map(function(o,k){var a={k:k,ok:o.ok,r:21,on:true};bh.i(a,k,dif());return a});jk=[];if(mut.indexOf("junk")>=0)for(var j=0;j<3;j++){var a={junk:true,k:j,r:15,on:true};bh.i(a,j+1,dif());a.ok=false;jk.push(a)}wrong=false;tl=16;fz=0;qt=0;hold=null;G.hud(qi,N,sc,lives)}
+ function newQ(){ops=G.panel(qs[qi]);if(OY){var _a=document.getElementById("ap");if(_a)_a.style.display="none"}ob=ops.slice(0,3).map(function(o,k){var a={k:k,ok:o.ok,r:21,on:true};bh.i(a,k,dif());return a});jk=[];if(mut.indexOf("junk")>=0)for(var j=0;j<3;j++){var a={junk:true,k:j,r:15,on:true};bh.i(a,j+1,dif());a.ok=false;jk.push(a)}wrong=false;tl=TL0;fz=0;qt=0;hold=null;G.hud(qi,N,sc,lives)}
  function hurt(n){if(inv>0)return;lives--;inv=1.1;G.snd("bad");G.fx();G.hud(qi,N,sc,lives);if(lives<=0){done=true;G.endG(cv,0,"ГРУ ЗАВЕРШЕНО",sc,N)}}
  function next(){qi++;if(qi>=N){done=true;G.hud(N-1,N,sc,lives);return G.endG(cv,0,"ПЕРЕМОГА!",sc,N)}newQ()}
  function pick(o){if(done||!o.on)return;o.on=false;if(o.junk){hurt();return}if(o.ok){if(!wrong)sc++;G.snd("ok");msg="✔";mt=.6;next()}else{wrong=true;msg="✖";mt=.6;hurt()}}
- function vis(o){if(o.junk)return true;if(cf.beh=="pop"&&(o.al||0)<.25)return false;if(mut.indexOf("blink")>=0&&Math.sin(T*3.2+o.k*2)<-.5)return false;return true}
+ function vis(o){if(o.junk)return true;if(cf.beh=="pop"&&(o.al||0)<.25)return false;if(mut.indexOf("blink")>=0&&Math.sin(T*BL+o.k*2)<BT)return false;return true}
  function rad(o){return mut.indexOf("shrink")>=0&&!o.junk?Math.max(11,o.r-qt*.7):o.r}
  function cp(e){var r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*cv.height-OY;return [mir?W-x:x,y]}
  function near(x,y,pad2){var b=null,bd=1e9;ob.concat(jk).forEach(function(o){if(!o.on||!vis(o))return;var d=Math.hypot(o.x-x,o.y-y);if(d<rad(o)+pad2&&d<bd){bd=d;b=o}});return b}
@@ -12605,7 +12605,7 @@ var UQ={5:[["u5_1","Зомбі-орда","fall","shoot","cave",["junk"]],["u5_2"
 11:[["u11_1","Піпетка-кошик","fall","lane","design",["junk"]],["u11_2","Кисть-ловець","wave","free","design",["blink"]],["u11_3","Ретуш","pop","tap","design",["fog"]],["u11_4","Шар за шаром","rise","tap","design",["shrink"]],["u11_5","Палітра-орбіта","orbit","hold","design"]]};
 var ICN={fall:"⬇️",rise:"⬆️",wave:"🌊",orbit:"🪐",bounce:"🏀",sweep:"➡️",pop:"💥",flee:"🏃"};
 window.ARENA_SHARED=SH.map(function(x){return x[0]});window.ARENA_UNIQ={};window.ARENA_TITLES={};
-function reg(x){GM[x[0]]=function(g){arena(g,{beh:x[2],ctl:x[3],skin:x[4],mut:x[5]||[]})};window.ARENA_TITLES[x[0]]=x[1];var ic=ICN[x[2]];GI[x[0]]=GI5[x[0]]=[ic,x[1]];ARENA_ICON[x[0]]=x[2];ARENA_SKIN[x[0]]=x[4]}
+function reg(x){GM[x[0]]=function(g){arena(g,{id:x[0],beh:x[2],ctl:x[3],skin:x[4],mut:x[5]||[]})};window.ARENA_TITLES[x[0]]=x[1];var ic=ICN[x[2]];GI[x[0]]=GI5[x[0]]=[ic,x[1]];ARENA_ICON[x[0]]=x[2];ARENA_SKIN[x[0]]=x[4]}
 window.ARENA_ICON={};window.ARENA_SKIN={};SH.forEach(reg);Object.keys(UQ).forEach(function(c){window.ARENA_UNIQ[c]=UQ[c].map(function(x){return x[0]});UQ[c].forEach(reg)});
 })();
 
