@@ -14626,7 +14626,7 @@ function sprFor(t,k){t=String(t).toLowerCase();for(var key in SPR)if(t.indexOf(k
 function gp(){return {k:'#1a1209',y:'#ffd34d',d:'#b8860b',b:'#2f80ed',w:'#fff',g:'#9aa5b1',G:'#5b6770',r:'#e74c3c',l:'#cfd8dc'}}function icon(k,t){var c=document.createElement("canvas");c.width=c.height=38;var x=c.getContext("2d"),m=sprFor(t,k),s=Math.max(2,Math.min(3,Math.floor(34/Math.max(m[0].length,m.length)))),PL=gp(),ox=Math.floor((38-m[0].length*s)/2),oy=Math.floor((38-m.length*s)/2);m.forEach(function(r,j){for(var i=0;i<r.length;i++){var ch=r[i];if(ch!=="."&&PL[ch]){x.fillStyle=PL[ch];x.fillRect(ox+i*s,oy+j*s,s,s)}}});return c}
 var ITM=[["Мені треба надрукувати реферат на папері.","Принтер","Монітор","Мишка"],["Хочу бачити зображення від комп’ютера.","Монітор","Принтер","Клавіатура"],["Дай те, чим вводять текст.","Клавіатура","Монітор","Колонки"],["Потрібне те, чим рухають стрілку на екрані.","Мишка","Принтер","Роутер"],["Хочу слухати музику, щоб не заважати іншим.","Навушники","Мікрофон","Принтер"],["Мені треба записати свій голос.","Мікрофон","Монітор","Навушники"],["Перенести файли на інший комп’ютер без інтернету.","Флешка","Принтер","Колонки"],["Хочу роздати Wi-Fi вдома.","Роутер","Флешка","Монітор"],["Хочу бачити співрозмовника у відеодзвінку.","Веб-камера","Принтер","Мишка"],["Потрібен звук на весь клас.","Колонки","Мікрофон","Флешка"],["Це «мозок» комп’ютера, що виконує команди.","Процесор","Колонки","Мишка"],["Де надійно зберігаються файли, коли комп’ютер вимкнено?","Жорсткий диск","Монітор","Навушники"],["Мені треба захистити акаунт від злому.","Складний пароль","Пароль 12345","Ім’я кота"],["Потрібна копія важливих файлів на випадок поломки.","Резервна копія","Ще один ярлик","Заставка"],["Хочу зафарбувати малюнок у Paint.","Заливка","Гумка","Лінійка"],["Мені треба стерти зайву лінію на малюнку.","Гумка","Заливка","Піпетка"],["Потрібен пристрій, щоб ввести текст голосом.","Мікрофон","Принтер","Монітор"],["Хочу підключити комп’ютер до мережі кабелем.","Мережевий кабель","Навушники","Мишка"]];
 var LP={601:[["Мені треба надрукувати реферат на папері.","Принтер","Монітор","Мишка"],["Хочу бачити зображення від комп’ютера.","Монітор","Принтер","Клавіатура"],["Дай те, чим вводять текст.","Клавіатура","Монітор","Колонки"],["Потрібне те, чим рухають стрілку на екрані.","Мишка","Принтер","Роутер"],["Хочу слухати музику, щоб не заважати іншим.","Навушники","Мікрофон","Принтер"],["Мені треба записати свій голос.","Мікрофон","Монітор","Навушники"],["Перенести файли на інший комп’ютер без інтернету.","Флешка","Принтер","Колонки"],["Хочу роздати Wi-Fi вдома.","Роутер","Флешка","Монітор"],["Хочу бачити співрозмовника у відеодзвінку.","Веб-камера","Принтер","Мишка"],["Потрібен звук на весь клас.","Колонки","Мікрофон","Флешка"],["Це «мозок» комп’ютера, що виконує команди.","Процесор","Колонки","Мишка"],["Хочу фотографувати й дзвонити одним пристроєм.","Смартфон","Принтер","Монітор"],["Хочу читати книжку на легкому екрані.","Планшет","Принтер","Колонки"],["Потрібен комп’ютер, який можна взяти в подорож.","Ноутбук","Принтер","Роутер"],["Хочу рахувати кроки й пульс.","Смарт-годинник","Принтер","Мишка"]],616:[["Хочу зафарбувати область одним кольором.","Заливка","Гумка","Лінія"],["Хочу стерти зайве з малюнка.","Гумка","Заливка","Піпетка"],["Хочу взяти колір з готового малюнка.","Піпетка","Гумка","Лінія"],["Хочу провести рівну лінію.","Лінія","Гумка","Заливка"],["Хочу підписати малюнок.","Текст","Гумка","Лінія"],["Хочу скасувати останню дію.","Скасувати","Заливка","Текст"],["Хочу змінити розмір малюнка.","Змінити розмір","Гумка","Піпетка"],["Растрове зображення складається з…","Пікселів","Ліній","Слайдів"],["Векторне зображення складається з…","Фігур і кривих","Пікселів","Слайдів"],["Яка графіка краща для фотографії?","Растрова","Векторна","Текстова"],["Де малюють і редагують зображення?","Графічний редактор","Табличний процесор","Браузер"],["Прозорі накладені одне на одне частини малюнка.","Шари","Слайди","Таблиці"],["Хочу вирізати частину малюнка.","Виділення","Гумка","Заливка"]]};
-function mkq(){var P=LP[CUR9]||ITM;return shuffle(P.slice()).slice(0,5).map(function(r){return {q:r[0],a:r.slice(1)}})}
+function mkq(){var P=LP[CUR9];if(!P){var pp=pick(Q(16),5);if(pp.length>=2)return pp;P=ITM}return shuffle(P.slice()).slice(0,5).map(function(r){return {q:r[0],a:r.slice(1)}})}
 function pick(a,n){var f=a.filter(function(q){return !/^(Правда|Хибно)$/.test(q.a[0])&&!/[▁_]{2,}/.test(q.q)});if(f.length>=n)a=f;function sc(q){var t=q.q||"",s=0,L=0;q.a.slice(0,4).forEach(function(x){L=Math.max(L,String(x).length)});if(/_{2,}/.test(t))s+=3;if(t.length>90)s+=2;if(t.length>130)s+=3;if(L>28)s+=2;if(L>45)s+=3;if(/\b(яка група|характеристик|абстракт|поняття|визначен|принцип|категор)/i.test(t))s+=3;if(/[?]$/.test(t))s-=1;if(/(натисн|клац|кнопк|вкладк|меню|файл|слайд|папк|сайт|пароль|телефон|пристр)/i.test(t))s-=2;return s+Math.random()}return a.slice().sort(function(x,y){return sc(x)-sc(y)}).slice(0,n)}
 GM.m_c4=function(g){var qs=mkq();if(qs.length<2)return fin9(0,1);var NO=Math.min(5,qs.length),oi=0,sc=0,coins=0,streak=0,bonus=0,UP=[["Навіс","#c0392b",5,15],["Полиця","#2980b9",10,30],["Помічник","#8e44ad",15,45]],own=[0,0,0];
  var el=M.frame("Ринок: обслужи покупця","Селянин питає – обери товар із правильною відповіддю й натисни «Продати».",CSS+"<div id='mkr'></div>");
@@ -14706,6 +14706,42 @@ function game(g){var qs=pick(Q(14),6),NO=Math.min(6,qs.length);if(NO<2)return fi
 GM.m_c1=function(g){if(CUR9>=600&&CUR9<700)return game(g);return orig(g)};
 if(window.LES)[605,647].forEach(function(k){var L=LES[k];if(L&&L.g)L.g.forEach(function(g){if(g.type==="m_c1")g.title="Міст через прірву"})});
 if(window.GI5&&GI5.m_c1)GI5.m_c1=[GI5.m_c1[0],"Міст через прірву"];try{if(window.GV11&&GV11.meta&&GV11.meta.m_c1){var m0=GV11.meta.m_c1;Object.defineProperty(GV11.meta,'m_c1',{get:function(){return(CUR9>=600&&CUR9<700)?['Міст через прірву'].concat(m0.slice(1)):m0}})}}catch(e){}setTimeout(function(){if(!window.BN)return;var h=BN.html;BN.html=function(t){var r=h(t);if(t==='m_c1'&&CUR9>=600&&CUR9<700)r=r.replace(/(<span class='gt'>)[^<]*/,'$1Міст через прірву');return r}},0);window.BRG={scene:scene};
+})();
+
+/* ===== 6 клас: у кожному уроці Читалка + 3 прості (або 2 прості + 1 тематична) + 1 складна + Тест ===== */
+(function(){
+if(!window.LES)return;
+var S6=["s_audit","s_toggles","s_wheel","s_scratch","s_express","s_tower","s_duel","s_elim","s_streak","s_bet","s_hang","s_ghost","s_vault","s_slider","s_flash","s_liar","s_bridge","s_sw"],
+ CLS=["pairs","tf","cloze","sort","seq"],MC=["mc_mine","mc_nether","mc_farm","mc_craft","mc_dragon","mc_redstone","mc_rails","mc_build","mc_dungeon","ender"],
+ ri=0,mi=0;
+function lab(t){return (window.GI&&GI[t])||(window.GI5&&GI5[t])||null}
+function title(t){var l=lab(t);return l?l[1]:t}
+function mk(t,old){return old&&old.type===t&&old.title?old:{type:t,title:t==="m_c1"?"Міст через прірву":t==="m_c4"?"Ринок":title(t)}}
+function isTopic(t){return /^u6_/.test(t)||/^(anim|show|list|tbl|merge|wrap|vec|layers|cells|shop|chart|garden|ifelse|until)6$/.test(t)}
+function isCx(t){return /^mc_/.test(t)&&t!=="mc_archer"||t==="ender"||t==="mcart"||t==="m_c4"}
+function even(n,from,to,cnt,fixed){var a=fixed.slice(),L=[];for(var k=from;k<=to;k++)L.push(k);var step=L.length/cnt,i=0;while(a.length<cnt&&i<cnt*3){var k2=L[Math.floor(i*step+step/2)%L.length];if(a.indexOf(k2)<0)a.push(k2);i++}return a}
+var arch=even(0,601,652,9,[609,619,629,649].slice(0,0)),bridge=even(0,601,652,9,[605,647]),boat=even(0,601,652,9,[]),mkt=even(0,601,652,9,[601,616]);
+// щоб списки не збігалися: зсув
+function shift(a,n,not){return a.map(function(k){k=k+n;while(not.indexOf(k)>=0||k>652)k=k>652?601+(k-653):k+1;return k})}
+bridge=bridge.slice(0,9);var used={};
+function put(list,t){list.forEach(function(k){(used[k]=used[k]||{})[t]=1})}
+var P={};P.bridge=bridge;P.mkt=mkt.slice(0,9);
+P.arch=even(0,601,652,9,[]).map(function(k){return k+1>652?601:k+1}).filter(function(k){return bridge.indexOf(k)<0});
+P.boat=even(0,601,652,9,[]).map(function(k){return k+2>652?602:k+2}).filter(function(k){return mkt.indexOf(k)<0});
+for(var k=601;k<=652;k++){var L=LES[k];if(!L||!L.g)continue;var old=L.g.slice(),topic=null,plain=[],cx=null;
+ old.forEach(function(g){var t=g.type;if(isTopic(t)){if(!topic)topic=g}else if(isCx(t)){if(!cx&&t!=="m_c4"&&t!=="mcart")cx=g}else if(/^m_/.test(t)&&t!=="m_c1"){}else plain.push(g)});
+ var need=topic?2:3,res=[];
+ // простих: класичні/s_/mine/archer/міст з поточних
+ var seen={};plain.forEach(function(g){if(res.length<need&&!seen[g.type]){seen[g.type]=1;res.push(g)}});
+ while(res.length<need){var t=S6[ri++%S6.length];if(!seen[t]){seen[t]=1;res.push(mk(t))}}
+ // лучник / міст: замінюємо останню звичайну s_
+ function inject(t){for(var i=res.length-1;i>=0;i--){if(/^s_/.test(res[i].type)&&!seen[t]){res[i]=mk(t);seen[t]=1;return}}}
+ if(P.arch.indexOf(k)>=0)inject("mc_archer");
+ if(P.bridge.indexOf(k)>=0)inject("m_c1");
+ var out=res.slice(0,need);if(topic)out.splice(2,0,topic);
+ var c=cx?cx:mk(MC[mi++%MC.length]);
+ if(P.boat.indexOf(k)>=0)c=mk("mcart");else if(P.mkt.indexOf(k)>=0)c=mk("m_c4");
+ out.push(c);L.g=out}
 })();
 
 /* ===== універсальний банер-візуал для всіх ігор, кольорове розділення пар, кнопка «пуск», стилі нових ігор ===== */
