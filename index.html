@@ -986,7 +986,7 @@ try{document.head.appendChild(cs)}catch(e){}
 var ov=document.createElement("style");
 ov.textContent=
 ".two2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.two2>*{min-width:0}"+
-"#app button,#app .blk,#app .fun,#app .chip,#app .cell,#app li,#app .card h2,#app .mut{overflow-wrap:anywhere;word-wrap:break-word;hyphens:auto;-webkit-hyphens:auto;min-width:0}"+
+"#app button,#app .blk,#app .fun,#app .chip,#app .cell,#app li,#app .card h2,#app .mut{overflow-wrap:anywhere;word-wrap:break-word;hyphens:none;-webkit-hyphens:none;min-width:0}"+
 ".stars{font-size:clamp(13px,4.8vw,28px);letter-spacing:1px;max-width:100%;overflow:hidden;white-space:nowrap}"+
 "#app{max-width:100%;overflow-x:hidden}";
 try{document.head.appendChild(ov)}catch(e){}
@@ -1039,7 +1039,7 @@ var R=[
 /* фон: небо + шпильки базової плити */
 B+"{background-color:#17191e;background-image:radial-gradient(circle at 50% 50%,rgba(255,255,255,.075) 0 3px,transparent 4px),linear-gradient(180deg,#25407a 0,#1d2c57 120px,#17191e 360px);background-size:30px 30px,100% 100%;background-attachment:scroll;color:#fff;font-family:"+F+"}",
 "body.g9::before{display:none}",
-B+"#app,"+B+"#app *{hyphens:manual;-webkit-hyphens:manual}",
+B+"#app,"+B+"#app *{hyphens:none;-webkit-hyphens:none}",
 B+"h1,"+B+"h2,"+B+"b,"+B+"button,"+B+"input,"+B+"select,"+B+"textarea,"+B+"label{font-family:"+F+"}",
 B+"h1{font-size:clamp(25px,5.5vw,34px);font-weight:900;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.35);letter-spacing:-.01em}",
 B+"h2{font-size:clamp(19px,4.5vw,24px);font-weight:900;color:#fff}",
@@ -1534,7 +1534,7 @@ GRD[10]=1;
 (function(){var G="body.g10it ",SF='"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif',R=[
 G+"#app p,"+G+"#app li,"+G+".fun,"+G+".fb-t,"+G+".sub,"+G+"label,"+G+".mut,"+G+".kp li,"+G+"#app figcaption{font-family:"+SF+"}",
 G+"#app p,"+G+".card p{color:#c9d1d9}",G+".mut,"+G+".card .mut{color:#9aa7b8}",
-G+"#app,"+G+"#app *{hyphens:manual;-webkit-hyphens:manual}",
+G+"#app,"+G+"#app *{hyphens:none;-webkit-hyphens:none}",
 G+".a{--c:#58a6ff}"+G+".b{--c:#bc8cff}"+G+".c{--c:#3fb950}"+G+".d{--c:#d29922}",
 G+".mb .ic{font-size:22px}",
 G+"button.pri{font-weight:800}",
@@ -2163,7 +2163,7 @@ GX.pool=function(n){var L=LES[n],q=[];function cap(s){return s.charAt(0).toUpper
   if(g.type=="cloze")it.forEach(function(x){q.push({q:x[0].replace("___","▁▁▁"),a:x[1].slice(0,3)})});
   else if(g.type=="tf")it.forEach(function(x){q.push({q:"Правда чи хибно?\n"+x[0],a:x[1]?["Правда","Хибно"]:["Хибно","Правда"]})});
   else if(g.type=="quest")it.forEach(function(x){q.push({q:x[0],a:x[1].slice(0,3)})});
-  else if(g.type=="sort")it.forEach(function(x){var o=[g.buckets[x[1]]].concat(pick(g.buckets,2,[g.buckets[x[1]]])),lw=/^[А-ЯІЇЄҐA-Z]{2}/.test(tt)?tt:tt.charAt(0).toLowerCase()+tt.slice(1),
+  else if(g.type=="sort")it.forEach(function(x){if(g.buckets.some(function(b){var st=b.toLowerCase().replace(/[^а-яіїєґa-z]/g,"").slice(0,5);return st.length>=3&&x[0].toLowerCase().indexOf(st)>=0}))return;var o=[g.buckets[x[1]]].concat(pick(g.buckets,2,[g.buckets[x[1]]])),lw=/^[А-ЯІЇЄҐA-Z]{2}/.test(tt)?tt:tt.charAt(0).toLowerCase()+tt.slice(1),
     qq=/що з чим/i.test(tt)?"«"+x[0]+"» – до якої групи належить?":/\?$/.test(tt)?"«"+x[0]+"» – "+lw:"«"+x[0]+"» – до якої групи належить? ("+lw+")";q.push({q:qq,a:o})});
   else if(g.type=="seq"&&it.length>=3){var ts=cap(tt);q.push({q:ts+": який крок ПЕРШИЙ?",a:[it[0]].concat(pick(it,2,[it[0]]))});
    var k=Math.floor(Math.random()*(it.length-1));q.push({q:ts+": що робимо одразу ПІСЛЯ «"+it[k]+"»?",a:[it[k+1]].concat(pick(it,2,[it[k],it[k+1]]))})}
@@ -2181,7 +2181,7 @@ GM.adv=function(g){g.btn=0;g.over=0;var WD=GX.world(CUR9),pool=shuffle(GX.pool(C
  function ask(){var o=obs[stage],q=qs[stage];tool=o.t=="wall"?"pick":o.t=="lava"?"block":"sword";
   qb.innerHTML="";var ev=document.createElement("div");ev.className="gxev";ev.textContent=({wall:"🧱 Стіна заступила шлях! ",lava:WD.pn+" ",creeper:"💥 Зелений підривник! "})[o.t];qb.appendChild(ev);var b=document.createElement("b");b.textContent=q.q;b.style.whiteSpace="pre-line";qb.appendChild(b);
   shuffle(q.a.slice()).forEach(function(a){var bt=document.createElement("button");bt.className="blk";bt.textContent=a;if(window.GXT&&a===q.a[0])bt.dataset.ok="1";bt.onclick=function(){if(state!="ask"||bt.disabled)return;
-   if(a===q.a[0]){if(!tried)sc++;state="act";actT=0;say("<p class='mut'>"+({wall:"⛏️ Ламаю стіну…",lava:"🪵 Будую міст…",creeper:"🗡️ Бий зеленого підривника!"})[o.t]+"</p>")}
+   if(a===q.a[0]){GX.snd("ok");if(!tried)sc++;state="act";actT=0;say("<p class='mut'>"+({wall:"⛏️ Ламаю стіну…",lava:"🪵 Будую міст…",creeper:"🗡️ Бий зеленого підривника!"})[o.t]+"</p>")}
    else{tried=true;bt.disabled=true;bt.classList.add("bad");hp--;hurtT=.5;GX.snd(o.t=="creeper"?"boom":"bad");GX.flash();GX.shake(cv);hud();if(o.t=="creeper"){fuse=.6;boom(o.x-cam,GY-14,["#fff","#9be37a","#4caf50"],20)}
     if(hp<=0){state="dead";endT=0;GX.snd("bad");say("<p class='mut'>💀 Крафтер загинув…</p>")}}};qb.appendChild(bt)})}
  function bossIntro(){var A=ARMS[aidx()],nm=[],q;for(q=0;q<4;q++)if(A[q])nm.push((q>1?AJP:AJM)[A[q]]+" "+SL[q]);qb.innerHTML="";
@@ -2318,7 +2318,7 @@ GX.run=function(g,cfg){var E={WD:GX.world(CUR9),W:360,H:200,sc:0,hp:3,i:0,tried:
   if(pre){var ev=document.createElement("div");ev.className="gxev";ev.textContent=pre;qb.appendChild(ev)}var b=document.createElement("b");b.textContent=q.q;b.style.whiteSpace="pre-line";qb.appendChild(b);
   shuffle(q.a.slice()).forEach(function(a){var bt=document.createElement("button");bt.className="blk";bt.textContent=a;if(window.GXT&&a===q.a[0])bt.dataset.ok="1";
    bt.onclick=function(){if(E.state!="ask"||bt.disabled)return;
-    if(a===q.a[0]){if(!E.tried)E.sc++;E.state="anim";E.say("<p class='mut'>"+(cfg.rightMsg||"")+"</p>");cfg.right(E)}
+    if(a===q.a[0]){GX.snd("ok");if(!E.tried)E.sc++;E.state="anim";E.say("<p class='mut'>"+(cfg.rightMsg||"")+"</p>");cfg.right(E)}
     else{E.tried=true;bt.disabled=true;bt.classList.add("bad");E.hp--;E.hurtT=.5;GX.flash();GX.snd("bad");GX.shake(cv);E.hud();if(cfg.wrong)cfg.wrong(E);if(E.hp<=0){E.state="dead";E.endT=0;E.say("<p class='mut'>💀 Крафтер загинув…</p>")}}};qb.appendChild(bt)})};
  E.advance=function(){var pi=GX.armIdx(E.i,E.N,0);E.i++;E.hud();var ni=GX.armIdx(E.i,E.N,0),m=pi!=ni?GX.armMsg(pi,ni):null;
   if(m){E.note=m.t;E.boom(E.hx,E.hy-24,[GX.MAT[m.m][0],GX.MAT[m.m][2],"#fff"],22);GX.snd("ok")}
@@ -2373,7 +2373,7 @@ GM.boss=function(g){var GY=165;
  init:function(E){E.g={tot:2,totT:0,arrows:[],balls:[],hits:0,flash:0,dead:0,dx:250,dy:62,ph:0,p2:0,ban:0};E.hx=60;E.hy=GY},
  stage:function(E){E.after(.5,function(){E.ask("🐉 Дракон Далекого краю кружляє над островом!")})},
  right:function(E){var G=E.g;G.arrows.push({x:76,y:GY-30,a:0});GX.snd("hit")},
- wrong:function(E){var G=E.g;if(E.hp<=0&&G.tot>0){G.tot--;E.hp=2;G.totT=1.8;GX.flash("rgba(255,215,0,.45)");GX.snd("hit");E.boom(66,GY-30,["#ffd84a","#2fbf5a","#fff"],36);E.hud();E.say("<p class='mut'>🗿 Тотем безсмертя врятував Крафтера!</p>")}G.balls.push({x:G.dx-30,y:G.dy+8});if(G.p2){G.balls.push({x:G.dx-10,y:G.dy-14})}GX.snd("boom")},
+ wrong:function(E){var G=E.g;if(E.hp<=0&&G.tot>0){G.tot--;E.hp=2;G.totT=1.8;GX.flash("rgba(255,215,0,.45)");GX.snd("hit");E.boom(66,GY-30,["#ffd84a","#2fbf5a","#fff"],36);E.hud()}G.balls.push({x:G.dx-30,y:G.dy+8});if(G.p2){G.balls.push({x:G.dx-10,y:G.dy-14})}GX.snd("boom")},
  win:function(E){E.g.dead=.01},
  update:function(E,dt){var G=E.g;G.ph+=dt*(G.p2?1.8:1);if(G.ban>0)G.ban-=dt;if(G.totT>0)G.totT-=dt;G.dx=250+Math.sin(G.ph*.7)*(G.p2?62:50);G.dy=62+Math.sin(G.ph*1.4)*(G.p2?20:12)+(G.dead?G.dead*60:0);if(G.flash>0)G.flash-=dt;if(G.dead){G.dead+=dt;if(Math.random()<dt*8)E.boom(G.dx+(Math.random()-.5)*60,G.dy,["#c58bff","#7b2fbf","#fff","#ff9bf0"],6)}
   G.arrows.forEach(function(a){var tx=G.dx-6,ty=G.dy+6,d=Math.hypot(tx-a.x,ty-a.y),sp=300*dt;if(d<=sp+14){a.hit=1;G.flash=.3;G.hits++;GX.snd("break");if(!G.p2&&G.hits>=Math.ceil(E.N/2)&&G.hits<E.N){G.p2=1;G.ban=2;GX.flash("rgba(255,60,60,.35)");GX.snd("boom");E.boom(G.dx,G.dy,["#ff4040","#ff9b2f","#fff"],30)}E.boom(tx,ty,["#ff4a8a","#c58bff","#fff"],20);E.after(.35,function(){E.advance()})}else{a.x+=(tx-a.x)/d*sp;a.y+=(ty-a.y)/d*sp;a.a=Math.atan2(ty-a.y,tx-a.x)}});G.arrows=G.arrows.filter(function(a){return!a.hit});
@@ -2393,7 +2393,7 @@ GM.boss=function(g){var GY=165;
   G.balls.forEach(function(b){R("#7b2fbf",b.x-6,b.y-6,12,12);R("#d98cff",b.x-3,b.y-3,6,6);R("#fff",b.x-1,b.y-1,2,2)});
   function TT(x,y,z){R("#c9971c",x,y,10*z,14*z);R("#ffd84a",x+z,y+z,8*z,12*z);R("#2fbf5a",x+2*z,y+4*z,2*z,2*z);R("#2fbf5a",x+6*z,y+4*z,2*z,2*z);R("#8a5a10",x+3*z,y+8*z,4*z,2*z)}
   for(q=0;q<2;q++){ctx.globalAlpha=q<G.tot?1:.25;TT(318+q*16,24,1);ctx.globalAlpha=1}ctx.font="bold 8px monospace";ctx.fillStyle="#ffd84a";ctx.fillText("ТОТЕМИ",262,34);
-  if(G.totT>0){var tz=3+Math.sin(E.t*10)*.4;ctx.globalAlpha=Math.min(1,G.totT);TT(60-5*tz,GY-90-(1.8-G.totT)*14,tz);ctx.globalAlpha=1}
+  if(G.totT>0){ctx.font="bold 11px monospace";ctx.textAlign="left";ctx.fillStyle="#000";ctx.fillText("ТОТЕМ БЕЗСМЕРТЯ ВРЯТУВАВ!",21,31);ctx.fillStyle="#ffd84a";ctx.fillText("ТОТЕМ БЕЗСМЕРТЯ ВРЯТУВАВ!",20,30);var tz=3+Math.sin(E.t*10)*.4;ctx.globalAlpha=Math.min(1,G.totT);TT(60-5*tz,GY-90-(1.8-G.totT)*14,tz);ctx.globalAlpha=1}
   E.hero(60,GY,{walking:false,arm:E.state=="ask"?-1.2:-1.45,tool:"bow"})}})};
 
 /* ---------- ОБОРОНА: маяк / сніжний форт ---------- */
@@ -4992,7 +4992,6 @@ QQ("Що таке SSD?","Твердотілий накопичувач на мі
 QQ("Яка головна властивість носіїв даних?","Ємність","Колір","Вага"),
 QQ("Що входить до комунікаційних пристроїв?","Модем і маршрутизатор","Миша й клавіатура","Принтер і плотер"),
 QQ("Який пристрій виводить відео на великий екран?","Мультимедійний проєктор","Мікрофон","Сканер"),
-QQ("Скільки мм становить 1 дюйм?","25,4","10","100"),
 QQ("Що таке пам’ять комп’ютера?","Сукупність носіїв даних","Клавіатура","Монітор")
 ]};
 
@@ -5026,7 +5025,7 @@ r:[
 ],
 g:[
 {type:"pairs",title:"Крафт: поняття – пояснення",items:[["Операційна система","комплекс програм для керування комп’ютером"],["Файл","набір даних, що має ім’я"],["Папка","об’єкт для впорядкування файлів"],["Ярлик","посилання на інший об’єкт"],["Розширення","символи після останньої крапки в імені"],["WIMP","вікна, значки, меню, вказівник"]]},
-{type:"sort",title:"Скрині: файл, папка чи ярлик?",buckets:["Файл","Папка","Ярлик"],items:[["реферат.docx",0,"Має розширення."],["Малюнки",1,"Папка для файлів."],["Значок зі стрілкою в куті",2,"Це ярлик."],["пісня.mp3",0,"Звуковий файл."],["Папка «Документи»",1,"Це системна папка, а не файл."],["Документ.docx",0,"Має розширення – це файл."],["Ярлик на Робочому столі",2,"Посилання на об’єкт."],["графіка1.bmp",0,"Файл із малюнком."]]},
+{type:"sort",title:"Скрині: файл, папка чи ярлик?",buckets:["Файл","Папка","Ярлик"],items:[["реферат.docx",0,"Має розширення."],["Місце, де лежать інші файли й папки",1,"Це папка."],["Значок зі стрілкою в куті",2,"Це ярлик."],["пісня.mp3",0,"Звуковий файл."],["«Документи» – системне місце для ваших файлів",1,"Це системна папка, а не файл."],["Документ.docx",0,"Має розширення – це файл."],["Значок на Робочому столі, що лише вказує на програму чи файл",2,"Це ярлик – посилання на об’єкт."],["графіка1.bmp",0,"Файл із малюнком."]]},
 {type:"tf",title:"Правда чи хибно: ОС і файли",items:[["Без операційної системи сучасний комп’ютер не працює.",true,"Так."],["Windows і MacOS – це операційні системи.",true,"Так."],["Файл не має імені.",false,"Кожен файл має ім’я."],["Розширення – це символи після останньої крапки в імені файлу.",true,"Так."],["Ярлик – це копія файлу.",false,"Це посилання."],["Ім’я диска – літера з двокрапкою, наприклад C:.",true,"Так."]]},
 {type:"mine",title:"Шахта: об’єкти ОС",items:[["Розбий лише ОПЕРАЦІЙНІ СИСТЕМИ",[["Windows 11",1],["Android",1],["Paint",0],["MacOS",1],["Принтер",0],["Chrome OS",1]]],["Розбий лише ЕЛЕМЕНТИ WIMP",[["Вікна",1],["Значки",1],["Меню",1],["Вказівник",1],["Файл",0],["Диск",0]]],["Розбий лише ФАЙЛИ з розширеннями",[["лист.docx",1],["Малюнки",0],["фото.jpg",1],["Папка «Документи»",0],["пісня.mp3",1],["Кошик",0]]]]},
 {type:"cloze",title:"Табличка: ОС",items:[["ОС розшифровується як ___ система.",["операційна","олімпійська","об’єктна"],""],["Скорочення WIMP – це вікна, значки, меню, ___.",["вказівник","файл","диск"],""],["Набір даних, що має ім’я, – це ___.",["файл","принтер","процесор"],""],["Для впорядкованого зберігання файлів створюють ___.",["папки","розширення","мережі"],""],["Значок зі стрілкою в куті – ознака ___.",["ярлика","файлу","диска"],""]]}
@@ -5561,9 +5560,9 @@ r:[
  p:"Правила: між словами – <b>один пробіл</b>; <b>перед</b> розділовими знаками (; : . , ! ?) пробіл не ставлять, <b>після</b> них – один; після відкриваючих і перед закриваючими дужками та лапками пробілу немає; дефіс – без пробілів, перед тире й після нього – пробіли; новий абзац – <b>Enter</b>. Вставити скопійований текст: <b>Ctrl + V</b>.",
  k:["Один пробіл між словами","Дефіс без пробілів, тире з пробілами","Enter – новий абзац"],
  f:"Ці правила однакові для Word, PowerPoint і месенджерів.",fl:"Лайфхак"},
-{t:"Форматування текстових об’єктів",v:["tiles",[["🎨","Стилі фігур"],["🖌️","Заливка"],["✏️","Контур"],["✨","Ефекти"],["🔡","Стилі WordArt"],["🅰️","Шрифт"]]],
- p:"Вкладка <b>Формат фігури</b>, група <b>Стилі фігур</b>: готовий стиль (колір межі, заливка, колір символів), кнопки <b>Заливка фігури</b>, <b>Контур фігури</b>, <b>Ефекти для фігур</b>. Група <b>Стилі WordArt</b> форматує символи: Заливка тексту, Контур тексту, Текстові ефекти. Символи також форматують у групі Шрифт вкладки Основне.",
- k:["Стилі фігур – вигляд об’єкта","Стилі WordArt – вигляд символів","Шрифт – на вкладці Основне"],
+{t:"Форматування текстових об’єктів",v:["tiles",[["🎨","Заливка фігури"],["✏️","Контур фігури"],["✨","Ефекти для фігур"],["🖌️","Заливка тексту"],["🔡","Контур тексту"],["🅰️","Текстові ефекти"]]],
+ p:"Текстовий об’єкт оформлюють на двох рівнях. <b>Фігура</b> (рамка й тло): вкладка <b>Формат фігури</b>, група <b>Стилі фігур</b> – кнопки <b>Заливка фігури</b>, <b>Контур фігури</b>, <b>Ефекти для фігур</b>. <b>Символи тексту</b>: група <b>Стилі WordArt</b> – <b>Заливка тексту</b>, <b>Контур тексту</b>, <b>Текстові ефекти</b>. Звичайні налаштування символів (шрифт, розмір, колір) – у групі <b>Шрифт</b> вкладки <b>Основне</b>.",
+ k:["Стилі фігур – вигляд рамки й тла","Стилі WordArt – вигляд самих символів","Шрифт, розмір і колір – на вкладці Основне"],
  f:"Не вмикай багато ефектів: вони відволікають слухачів.",fl:"Порада"},
 {t:"Вирівнювання абзаців",v:["tiles",[["⬅️","За лівим краєм"],["↔️","По центру"],["➡️","За правим краєм"],["📏","За шириною"]]],
  p:"Положення тексту відносно меж об’єкта – <b>вирівнювання абзаців</b>. Інструменти: вкладка <b>Основне</b>, група <b>Абзац</b>. Способи: <b>за лівим краєм</b>, <b>по центру</b>, <b>за правим краєм</b>, <b>за шириною</b>.",
@@ -11434,14 +11433,14 @@ GI.pac=["👾","Pac-Man: з’їж правильну відповідь"];
 
 /* ---------- Змійка ---------- */
 GM.snake=function(g){var K=GX.sk;GX.sk=null;var N=8,qs=getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
- var W=15,H=15,C=22,cv=head(g.title,"Змійка: свайп або кнопки. З’їж яблуко з ПРАВИЛЬНОЮ літерою. Стіни й власний хвіст – мінус ❤️.");cv.width=W*C;cv.height=H*C;var ctx=cv.getContext("2d");
+ var W=15,H=15,C=22,cv=head(g.title,"Змійка: свайп або кнопки. З’їж яблуко з ПРАВИЛЬНОЮ літерою. Крізь край поля можна пройти – вийдеш з іншого боку. Власний хвіст – мінус ❤️.");cv.width=W*C;cv.height=H*C;var ctx=cv.getContext("2d");
  var sn,dir,nd,apples,ops,qi=0,sc=0,lives=3,wrong=false,done=false,acc=0,T=0,grow=0,go=false;
  function rnd(){var x,y,tr=0;do{x=Math.floor(Math.random()*W);y=Math.floor(Math.random()*H);tr++}while(tr<200&&(sn.some(function(s){return Math.abs(s[0]-x)+Math.abs(s[1]-y)<2})||(apples||[]).some(function(a){return a.x==x&&a.y==y})));return [x,y]}
  function resetS(){go=false;acc=0;sn=[[7,12],[7,13],[7,14]];dir=[0,-1];nd=dir}
  function newQ(keep){ops=panel(qs[qi]);resetS();apples=[];ops.forEach(function(o,k){var p=rnd();apples.push({x:p[0],y:p[1],k:k,ok:o.ok})});wrong=false;hud(qi,N,sc,lives)}
  newQ();ctl(cv,function(d){var v=d&&DIR[d];if(v&&!(v[0]==-dir[0]&&v[1]==-dir[1])){nd=v;go=true}},false);
  function lose(msg){lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}resetS()}
- function step(){dir=nd;var h=[sn[0][0]+dir[0],sn[0][1]+dir[1]];if(h[0]<0||h[1]<0||h[0]>=W||h[1]>=H||sn.some(function(s,i){return i<sn.length-1&&s[0]==h[0]&&s[1]==h[1]}))return lose();
+ function step(){dir=nd;var h=[(sn[0][0]+dir[0]+W)%W,(sn[0][1]+dir[1]+H)%H];if(sn.some(function(s,i){return i<sn.length-1&&s[0]==h[0]&&s[1]==h[1]}))return lose();
   sn.unshift(h);var ate=false;for(var i=0;i<apples.length;i++){var a=apples[i];if(a.x==h[0]&&a.y==h[1]){apples.splice(i,1);ate=true;if(a.ok){if(!wrong)sc++;snd("ok");qi++;if(qi>=N){done=true;over(cv,"LEVEL CLEAR!");hud(N-1,N,sc,lives);setTimeout(function(){fin9(sc,N)},1000);return}newQ();return}else{wrong=true;lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200);return}}break}}
   if(!ate||apples.length)sn.pop();if(ate)sn.push(sn[sn.length-1].slice())}
  function upd(dt){if(done)return;T+=dt;if(!go)return;acc+=dt;var ST=Math.max(.2,.34-qi*.015);while(acc>=ST&&!done){acc-=ST;step()}}
@@ -11454,22 +11453,24 @@ GI.snake=["🐍","Змійка: з’їж правильну відповідь"
 /* ---------- Захисник (Space Invaders) ---------- */
 GM.inv=function(g){var K=GX.sk;GX.sk=null;var N=6,qs=getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
  var W=312,H=380,cv=head(g.title,"Рухай корабель ◀ ▶ (або тягни пальцем), стань під потрібним прибульцем і тисни 🔥 (або пробіл). Збий ПРАВИЛЬНУ літеру!",true);cv.width=W;cv.height=H;var ctx=cv.getContext("2d");
- var sx=W/2,mv=0,bl=[],al,ops,qi=0,sc=0,lives=3,wrong=false,done=false,T=0,fire=0,inv=0,ex=[];
+ var sx=W/2,mv=0,bl=[],al,ops,qi=0,sc=0,lives=3,wrong=false,done=false,T=0,fire=0,inv=0,ex=[],AR=5,ar=AR;
  var stars=[];for(var i=0;i<40;i++)stars.push([Math.random()*W,Math.random()*H,Math.random()*1.5+.5]);
- function newQ(){ops=panel(qs[qi]);al=ops.map(function(o,k){return {x:52+k*104,y:30,k:k,ok:o.ok,on:true,ph:Math.random()*6}}).slice(0,Math.min(3,ops.length));wrong=false;hud(qi,N,sc,lives)}
+ function newQ(){ops=panel(qs[qi]);al=ops.map(function(o,k){return {x:52+k*104,y:30,k:k,ok:o.ok,on:true,ph:Math.random()*6}}).slice(0,Math.min(3,ops.length));wrong=false;ar=AR;hud(qi,N,sc,lives)}
  newQ();cv._pos=function(cx){var r=cv.getBoundingClientRect();sx=Math.max(18,Math.min(W-18,(cx-r.left)/r.width*W))};
  ctl(cv,function(d,rel){if(d=="f"||d=="u"){shoot();return}if(d=="l")mv=-1;else if(d=="r")mv=1;else if(rel=="l"&&mv<0||rel=="r"&&mv>0)mv=0},true);
- function shoot(){if(done||fire>0)return;fire=.3;bl.push({x:sx,y:H-44});snd("click")}
+ function shoot(){if(done||fire>0||(K&&ar<=0))return;fire=.3;if(K)ar--;bl.push({x:sx,y:H-44});snd("click")}
  function boom(x,y,c){for(var i=0;i<10;i++)ex.push({x:x,y:y,vx:(Math.random()-.5)*200,vy:(Math.random()-.5)*200,l:.5,c:c})}
  function lose(){if(inv>0)return;lives--;inv=1.2;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200)}}
  function upd(dt){if(done)return;T+=dt;inv=Math.max(0,inv-dt);sx=Math.max(18,Math.min(W-18,sx+mv*230*dt));fire-=dt;
   var v=11+qi*2;al.forEach(function(a){if(!a.on)return;a.y+=v*dt;a.xx=a.x+Math.sin(T*1.2+a.ph)*22;if(a.y>H-66){a.on=false;if(a.ok){lose();a.on=true;a.y=30}else boom(a.xx,a.y,"#ff5d73")}});
   bl.forEach(function(b){b.y-=300*dt});bl=bl.filter(function(b){if(b.y<-10)return false;for(var i=0;i<al.length;i++){var a=al[i];if(a.on&&Math.abs(b.x-a.xx)<20&&Math.abs(b.y-a.y)<20){a.on=false;boom(a.xx,a.y,COL[a.k]);if(a.ok){if(!wrong)sc++;snd("ok");qi++;if(qi>=N){done=true;over(cv,"LEVEL CLEAR!");hud(N-1,N,sc,lives);setTimeout(function(){fin9(sc,N)},1000)}else newQ();return false}else{wrong=true;lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200)}return false}}}return true});
+  if(K&&ar<=0&&!bl.length&&!done){lives--;snd("bad");fx();hud(qi,N,sc,lives);if(lives<=0){done=true;over(cv,"GAME OVER");setTimeout(function(){fin9(sc,N)},1200)}else{ar=AR;al.forEach(function(a){if(a.on&&a.ok)a.y=30})}}
   ex.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.l-=dt});ex=ex.filter(function(p){return p.l>0})}
  function draw(){if(done)return;ctx.fillStyle=K?K.bg:"#070720";ctx.fillRect(0,0,W,H);ctx.fillStyle="#fff";stars.forEach(function(s){s[1]=(s[1]+s[2]*.3)%H;ctx.globalAlpha=.4+s[2]/3;ctx.fillRect(s[0],s[1],s[2],s[2])});ctx.globalAlpha=1;
   al.forEach(function(a){if(!a.on)return;var x=a.xx||a.x,y=a.y;if(K&&K.alien){K.alien(ctx,x,y,a.k,T);return}ctx.fillStyle=COL[a.k];ctx.fillRect(x-16,y-8,32,16);ctx.fillRect(x-10,y-14,20,8);ctx.fillRect(x-20,y,6,10);ctx.fillRect(x+14,y,6,10);ctx.fillStyle="#111";ctx.font="bold 15px monospace";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(LET[a.k],x,y)});
   ctx.fillStyle="#fff7a0";bl.forEach(function(b){if(K&&K.bul)K.bul(ctx,b);else ctx.fillRect(b.x-1.5,b.y-8,3,10)});
   ex.forEach(function(p){ctx.globalAlpha=Math.max(0,p.l*2);ctx.fillStyle=p.c;ctx.fillRect(p.x,p.y,4,4)});ctx.globalAlpha=1;
+  if(K){ctx.fillStyle="rgba(0,0,0,.45)";ctx.fillRect(4,H-22,AR*14+8,18);for(var q=0;q<AR;q++){var ax=12+q*14;ctx.fillStyle=q<ar?"#e8d9a8":"#4a4a4a";ctx.fillRect(ax,H-19,2,12);ctx.fillRect(ax-2,H-19,6,3);ctx.fillStyle=q<ar?"#9a6b3a":"#333";ctx.fillRect(ax-1,H-9,4,2)}}
   if(!(inv>0&&Math.floor(T*12)%2)){if(K&&K.ship){K.ship(ctx,sx,H)}else{ctx.fillStyle="#3dffa2";ctx.beginPath();ctx.moveTo(sx,H-58);ctx.lineTo(sx+16,H-28);ctx.lineTo(sx+7,H-32);ctx.lineTo(sx-7,H-32);ctx.lineTo(sx-16,H-28);ctx.closePath();ctx.fill();ctx.fillStyle="#22d3ee";ctx.fillRect(sx-3,H-48,6,10)}}}
  loop(cv,upd,draw)};
 GI.inv=["🚀","Захисник: збий правильну відповідь"];
@@ -11602,14 +11603,14 @@ var SK={
   fly:function(ctx,go,T){var f=Math.sin(T*10)*(go?3:0);ctx.fillStyle="#7a6a8a";ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(-18,-14+f);ctx.lineTo(-24,6);ctx.lineTo(0,8);ctx.fill();ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(-16,16-f);ctx.lineTo(-22,2);ctx.fill();ctx.fillStyle="#2aa5a5";ctx.fillRect(-8,-5,14,10);head(ctx,10,0,14)},let:blk},
  ender:{bg:"#140a22",grid:"rgba(180,100,255,.15)",snk:function(ctx,s,i,C,d){var x=s[0]*C,y=s[1]*C;ctx.fillStyle=i%2?"#7a2fd0":"#9b4dff";ctx.fillRect(x+1,y+1,C-2,C-2);ctx.fillStyle="#2a0f4a";ctx.fillRect(x+3,y+3,4,4);ctx.fillRect(x+C-8,y+C-8,4,4);if(!i){ctx.fillStyle="#ff5bf0";ctx.fillRect(x+C*.25+d[0]*3,y+C*.3+d[1]*3,4,4);ctx.fillRect(x+C*.6+d[0]*3,y+C*.3+d[1]*3,4,4)}},let:blk}
 };
-var HINT={mcart:"Міняй течію ◀ ▶ (або свайп). Об’їжджай колоди й запливи в ту течію, де ПРАВИЛЬНА літера.",chick:"Тисни стрілки (або свайп): курка робить крок. Перейди колії з вагонетками й стрибни на ділянку з ПРАВИЛЬНОЮ літерою.",bow:"Рухай Крафтера ◀ ▶ (або тягни пальцем), стань під потрібним зеленим підривником і тисни 🔥 (або пробіл). Збий ПРАВИЛЬНУ літеру!",elytra:"▲ (або пробіл, або торкнись поля) – Крафтер злітає, ▼ – пікірує. Пролети крізь отвір між скелями з ПРАВИЛЬНОЮ літерою!",ender:"Змійка: свайп або кнопки. З’їж блок з ПРАВИЛЬНОЮ літерою. Стіни й власний хвіст – мінус ❤️."};
+var HINT={mcart:"Міняй течію ◀ ▶ (або свайп). Об’їжджай колоди й запливи в ту течію, де ПРАВИЛЬНА літера.",chick:"Тисни стрілки (або свайп): курка робить крок. Перейди колії з вагонетками й стрибни на ділянку з ПРАВИЛЬНОЮ літерою.",bow:"Рухай Крафтера ◀ ▶ (або тягни пальцем), стань під потрібним зеленим підривником і тисни 🔥 (або пробіл). Збий ПРАВИЛЬНУ літеру! Стріл обмаль (внизу ліворуч) – цілься, бо коли вони закінчаться, втратиш ❤️.",elytra:"▲ (або пробіл, або торкнись поля) – Крафтер злітає, ▼ – пікірує. Пролети крізь отвір між скелями з ПРАВИЛЬНОЮ літерою!",ender:"Змійка: свайп або кнопки. З’їж блок з ПРАВИЛЬНОЮ літерою. Крізь край поля можна пройти – вийдеш з іншого боку. Власний хвіст – мінус ❤️."};
 function sk(n){return function(g){GX.sk=SK[n];var r=GM["_"+n](g);var p=document.querySelector(".card p.mut");if(p&&HINT[n])p.textContent=HINT[n];return r}}
 ["mcart:race","chick:frog","bow:inv","elytra:flap","ender:snake"].forEach(function(p){var a=p.split(":");GM["_"+a[0]]=GM[a[1]];GM[a[0]]=sk(a[0])});
 
 /* ---------- Крот-бам ---------- */
 GM.whack=function(g){var N=6,qs=A.getQs(CUR9,N);if(qs.length<2)return fin9(0,1);N=qs.length;
  var C=100,cv=A.head(g.title,"З нір вилазять три істоти з літерами. Торкнись тієї, що відповідає ПРАВИЛЬНІЙ відповіді! Неправильна – мінус ❤️.","f");cv.width=C*3;cv.height=C*3;var ctx=cv.getContext("2d");
- document.getElementById("adp").style.display="none";
+ var _ad=document.getElementById("adp");if(_ad)_ad.parentNode.removeChild(_ad);
  var ops,mobs,qi=0,sc=0,lives=3,wrong=false,done=false,T=0,round=0,tl=0,MAXT=60;
  function spawn(){var cells=[0,1,2,3,4,5,6,7,8].sort(function(){return Math.random()-.5}).slice(0,ops.length);mobs=ops.map(function(o,k){return {c:cells[k],k:k,ok:o.ok,on:true,pop:0,kind:k}});tl=MAXT}
  function newQ(){ops=A.panel(qs[qi]);wrong=false;spawn();A.hud(qi,N,sc,lives)}
@@ -11631,7 +11632,7 @@ document.head.appendChild(st);
 /* ---------- інфо, іконки, розкладка по уроках ---------- */
 GI5.mcart=["🛶","Човен: обери течію"];GI5.chick=["🐔","Курка: перейди дорогу"];GI5.bow=["🏹","Лучник: стрільба по зелених підривниках"];GI5.elytra=["🪂","Планер: політ крізь скелі"];GI5.ender=["🐍","Змія Далекого краю"];GI5.whack=["🔨","Крот-бам: торкнись правильного"];
 var TT={mcart:"Гонка на човнах",chick:"Курка на дорозі",bow:"Лучник проти зелених підривників",elytra:"Політ на планері",whack:"Крот-бам: правильна істота",ender:"Змія Далекого краю"};
-var ALL=["dig","mcart","def","adv","bow","bld","elytra","whack","ender"],OLD={dig:1,def:1,adv:1,bld:1};
+var ALL=["dig","mcart","def","adv","bow","bld","whack","ender"],OLD={dig:1,def:1,adv:1,bld:1};
 /* одна велика гра на урок, але різноманітніша: замінюємо стару «піксельн» на вибір із 10 */
 Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g._mix)return;L.g._mix=1;
  var idx=-1;L.g.forEach(function(g,i){if(OLD[g.type])idx=i});if(idx<0)return;
@@ -11846,7 +11847,7 @@ function looseOK(inp,ans,full){var v=norm(inp),a=norm(ans);if(!v)return false;if
 function wordsOK(q){var t=String(q.a[0]).split(/\s+/);return t.length>=2&&t.length<=9}
 function NBq(n,K,mode){var bridge=mode==2,text=mode==3||mode==4||mode==5,hg=mode==4,wk=mode==5;var need=K>1?n*(bridge?4:2):n,out=[],seen={},tries=0;while(out.length<need&&tries<((hg||wk)?30:8)){var r=GQ(CUR9,need-out.length+3);tries++;if(!r.length)break;r.forEach(function(q){if(!isBin(q)&&!seen[q.q]&&(!bridge||fam(q)!="x")&&(!text||okText(q))&&(!hg||hangW(q))&&(!wk||wordsOK(q))&&(mode==2||mode==3||mode==4||mode==5||!/^\s*Що з цього підходить|Порядок|ПЕРШИЙ|ПІСЛЯ|Правда\s+чи/i.test(String(q.q)))){seen[q.q]=1;out.push(q)}})}
  if(K<2)return out.slice(0,n);var pool=shuffle(out.slice()),res=[];while(res.length+K<=n&&pool.length>=K){var f=pool.shift(),fm=fam(f);function sg(q){var t=String(q.q);return /«/.test(t)?t.replace(/«[^»]*»/g,"«»").slice(0,50):t.split(" ")[0]}var cand=pool.filter(function(q){return !bridge||(fam(q)==fm&&(fm!="o"||sg(q)==sg(f)))});if(bridge&&cand.length<K-1)cand=pool.filter(function(q){return fam(q)==fm});cand=cand.filter(function(q){return nn(q)!=nn(f)&&String(q.a[0]).toLowerCase()!=String(f.a[0]).toLowerCase()});cand.sort(function(a,b){return Math.abs(lenOf(a)-lenOf(f))-Math.abs(lenOf(b)-lenOf(f))});var tk=[];cand.forEach(function(q){if(tk.length<K-1&&tk.every(function(z){return nn(z)!=nn(q)}))tk.push(q)});if(tk.length<K-1)continue;tk.forEach(function(q){pool.splice(pool.indexOf(q),1)});res.push(f);tk.forEach(function(q){res.push(q)})}return res}
-function run(g,o){var K=o.k||1,N=o.n||6,qs=o.nb?NBq(N*K,K,o.nb):GQ(CUR9,N*K);if(o.nb&&qs.length<K*2)qs=GQ(CUR9,N*K);if(qs.length<K*2)return fin9(0,1);N=Math.floor(qs.length/K);var i=0,pts=0,mx=o.max?o.max(N):N,lock=false,S={};if(o.init)o.init(S,N);
+function run(g,o){var K=o.k||1,N=o.n||6,qs=o.nb?NBq(N*K,K,o.nb):GQ(CUR9,N*K);if(o.nb&&qs.length<K*2)qs=GQ(CUR9,N*K);if(o.qsf){var zq=o.qsf(N*K,qs);if(zq)qs=zq}if(qs.length<K*2)return fin9(0,1);N=Math.floor(qs.length/K);var i=0,pts=0,mx=o.max?o.max(N):N,lock=false,S={};if(o.init)o.init(S,N);
  function show(){fr9(g.title,o.hint,CSS+"<div class='sg' id='sg'></div>");gs9((i+1)+" / "+N+" · ✅ "+(Math.round(pts*10)/10));lock=false;var el=document.getElementById("sg");
   var A={el:el,i:i,N:N,S:S,done:function(ok,gain,note){if(lock)return;lock=true;if(gain===undefined)gain=ok?1:0;pts=Math.max(0,pts+gain);try{GX.snd(ok?"ok":"bad")}catch(e){}
     var f=document.createElement("div");f.className="fb";f.textContent=(ok?"✔ ":"✖ ")+(note||"");el.appendChild(f);var qx=qs[i],xw=0,qe=qx&&(qx.e||(window.EXPM&&EXPM[qx.q]));if(qe){var xe=document.createElement("div");xe.className="xpl";xe.textContent="💡 "+qe;el.appendChild(xe);xw=1300+qe.length*40}gs9((i+1)+" / "+N+" · ✅ "+(Math.round(pts*10)/10));
@@ -11887,13 +11888,17 @@ GM.s_type=function(g){run(g,{nb:3,n:6,hint:"Введи відповідь з к�
 function keyOf(a){var w=String(a).split(/\s+/),b=-1,l=0,re=/[^a-zа-яіїєґ0-9’']/gi;w.forEach(function(x,i){var t=x.replace(re,"");if(t.length>l&&t.length>=5&&t.length<=14){l=t.length;b=i}});if(b<0)return null;return {pre:w.slice(0,b).join(" "),word:w[b].replace(re,""),post:w.slice(b+1).join(" ")}}
 function blankLine(k){return (k.pre?k.pre+" ":"")+"▁▁▁▁▁"+(k.post?" "+k.post:"")}
 function quizFallback(A,q){quiz(A,q,null,function(o,b,ops){mark(ops,o,b);A.done(o.ok,undefined,o.ok?"":"Правильно: "+q.a[0])})}
-/* 8. Шибениця */
-GM.s_hang=function(g){run(g,{nb:4,n:5,hint:"Відгадай слово за літерами. 5 помилок – і програш.",draw:function(q,A){var full=q.a[0],ans=full,disp=q.q;if(ans.length>14||/\s/.test(ans)){var key=keyOf(full);if(!key)return quizFallback(A,q);ans=key.word;disp=q.q+"\n\nВідповідь: «"+blankLine(key)+"» – відгадай пропущене слово."}
+function readerWords(k,need,have){var L=LES[k],out=[],seen={};(have||[]).forEach(function(q){seen[norm(q.a[0])]=1});if(!L||!L.r)return out;
+ var src=[];L.r.forEach(function(r){if(r.p)src.push(r.p);(r.k||[]).forEach(function(x){src.push(x)});if(r.f)src.push(r.f)});
+ src.forEach(function(h){if(typeof h!="string")return;var parts=h.split(/[.!?]\s+/);parts.forEach(function(sn){var m,re=/<b>([А-ЯІЇЄҐа-яіїєґ’'-]{5,13})<\/b>/g;while((m=re.exec(sn))){var w=m[1],key=norm(w);if(seen[key])continue;var txt=sn.replace(new RegExp("<b>"+w+"</b>"),"▁▁▁▁").replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim();if(txt.length<30||txt.length>170)continue;var q={q:"Допиши слово: "+txt,a:[w.toLowerCase()]};if(!hangW(q))continue;seen[key]=1;out.push(q);break}})});
+ return shuffle(out).slice(0,need)}
+/* 8. Слово за літерами */
+GM.s_hang=function(g){run(g,{nb:4,n:5,qsf:function(n,qs){var good=qs.filter(function(q){return !isBin(q)&&hangW(q)});if(good.length>=n)return good.slice(0,n);return good.concat(readerWords(CUR9,n-good.length,good))},hint:"Відгадай слово за літерами: тисни літери. 5 помилок – і програш.",draw:function(q,A){var full=q.a[0],ans=full,disp=q.q;if(ans.length>14||/\s/.test(ans)){var key=keyOf(full);if(!key)return quizFallback(A,q);ans=key.word;disp=q.q+"\n\nВідповідь: «"+blankLine(key)+"» – відгадай пропущене слово."}
  var _st=ans.toLowerCase().replace(/[^a-zа-яіїєґ0-9]/g,"");_st=_st.slice(0,Math.max(4,_st.length-2));if(_st.length>=4&&q.q.toLowerCase().replace(/[^a-zа-яіїєґ0-9 ]/g,"").indexOf(_st)>=0)return quizFallback(A,q);
  qline(A,{q:disp});var low=ans.toLowerCase(),letters={},wrong=0,got={};low.split("").forEach(function(c){if(/[a-zа-яіїєґ]/.test(c))letters[c]=1});var lat=/[a-z]/.test(low),alpha=(lat?"abcdefghijklmnopqrstuvwxyz":"абвгґдеєжзиіїйклмнопрстуфхцчшщьюя").split(""),bank=Object.keys(letters);shuffle(alpha).forEach(function(c){if(bank.length<Object.keys(letters).length+5&&!letters[c])bank.push(c)});bank=shuffle(bank);
- var wd=document.createElement("div");wd.className="vt";var st=document.createElement("div"),kb=document.createElement("div");A.el.appendChild(wd);A.el.appendChild(st);A.el.appendChild(kb);
+ var wd=document.createElement("div");wd.className="vt";var st=document.createElement("div"),kb=document.createElement("div");kb.style.cssText="display:flex;flex-wrap:wrap;justify-content:center;margin-top:8px";wd.style.cssText="font-size:26px;letter-spacing:2px;font-weight:800;text-align:center;margin:10px 0;word-break:keep-all";A.el.appendChild(wd);A.el.appendChild(st);A.el.appendChild(kb);
  function d(){wd.textContent=low.split("").map(function(c){return /[a-zа-яіїєґ]/.test(c)?(got[c]?c:"_"):c}).join(" ");st.textContent="❤️".repeat(5-wrong)+"🖤".repeat(wrong)}d();
- bank.forEach(function(c){var b=document.createElement("button");b.className="tk";b.textContent=c;b.onclick=function(){if(b.disabled)return;b.disabled=true;b.className="tk u";if(letters[c]){got[c]=1;d();if(Object.keys(letters).every(function(x){return got[x]}))A.done(true,undefined,ans)}else{wrong++;d();if(wrong>=5){low.split("").forEach(function(x){got[x]=1});d();A.done(false,undefined,"Слово: "+ans)}}};kb.appendChild(b)})}})};
+ bank.forEach(function(c){var b=document.createElement("button");b.className="tk";b.style.cssText="display:inline-block;width:auto;min-width:42px;margin:3px;text-align:center";b.textContent=c;b.onclick=function(){if(b.disabled)return;b.disabled=true;b.className="tk u";if(letters[c]){got[c]=1;d();if(Object.keys(letters).every(function(x){return got[x]}))A.done(true,undefined,ans)}else{wrong++;d();if(wrong>=5){low.split("").forEach(function(x){got[x]=1});d();A.done(false,undefined,"Слово: "+ans)}}};kb.appendChild(b)})}})};
 /* 9. Наздожени бота */
 GM.s_ghost=function(g){var N=6,qs=GQ(CUR9,N);if(qs.length<3)return fin9(0,1);N=qs.length;var me=0,bot=0,i=0,sc=0,tm=null,T0=Date.now();
  function lane(id,label,ico,v,cl){return "<div class='ln "+cl+"'><span class='lb'>"+label+"</span><div class='sp' id='"+id+"' style='left:"+(4+v/N*76)+"%'><b class='fl'>🔥</b>"+ico+"</div><span class='fn'>🏁</span></div>"}
@@ -11945,7 +11950,7 @@ GM.s_scratch=function(g){run(g,{hint:"Варіанти закриті зашиф
    b.onclick=function(){if(!o.open||b.dataset.done)return;ops.forEach(function(x){x.b.dataset.done=1;if(x.ok)x.b.className="blk b ok"});if(!o.ok)b.className="blk b bad";ops.forEach(function(x){x.cv.style.display="none"});A.done(o.ok,o.ok?Math.max(.25,1-.25*(opened-1)):0,o.ok?"":"Правильно: "+q.a[0])}});
   var h=document.createElement("p");h.className="mut";h.textContent="Зітри пальцем захисний шар із варіанта, щоб розшифрувати його, потім торкнись, щоб обрати.";A.el.appendChild(h)}})};
 /* 19. Експрес */
-GM.s_express=function(g){run(g,{nb:1,n:8,wait:700,hint:"6 секунд на твердження! Чи правильна відповідь?",draw:function(q,A){var t=Math.random()<.5,ans=t?q.a[0]:wrongOne(q);qline(A,q);var c=document.createElement("div");c.className="card2";c.innerHTML="<b>Відповідь:</b> "+esc(ans);A.el.appendChild(c);var stop=null;var r=document.createElement("div");r.className="row";r.innerHTML="<button class='blk bad'>✖</button><button class='blk ok'>✔</button>";A.el.appendChild(r);function pick(v){stop&&stop();A.done(v===t,undefined,t?"":"Правильно: "+q.a[0])}r.children[0].onclick=function(){pick(false)};r.children[1].onclick=function(){pick(true)};stop=timer(A,6,function(){A.done(false,undefined,"Час! "+(t?"Було правильно.":"Правильно: "+q.a[0]))})}})};
+GM.s_express=function(g){var SEC=(CUR9>=500&&CUR9<700)?18:6;run(g,{nb:1,n:8,wait:700,hint:SEC+" секунд на твердження! Чи правильна відповідь?",draw:function(q,A){var t=Math.random()<.5,ans=t?q.a[0]:wrongOne(q);qline(A,q);var c=document.createElement("div");c.className="card2";c.innerHTML="<b>Відповідь:</b> "+esc(ans);A.el.appendChild(c);var stop=null;var r=document.createElement("div");r.className="row";r.innerHTML="<button class='blk bad'>✖</button><button class='blk ok'>✔</button>";A.el.appendChild(r);function pick(v){stop&&stop();A.done(v===t,undefined,t?"":"Правильно: "+q.a[0])}r.children[0].onclick=function(){pick(false)};r.children[1].onclick=function(){pick(true)};stop=timer(A,SEC,function(){A.done(false,undefined,"Час! "+(t?"Було правильно.":"Правильно: "+q.a[0]))})}})};
 /* 20. Вежа */
 GM.s_tower=function(g){var GOOD=["Так тримати! 💪","Блок на місці! 🧱","Ти справжній інженер! 🛠️","Вежа росте! 🚀","Відмінна робота! ⭐","Не зупиняйся! 🔥","Геній! 🧠","Ще вище! 🏗️"],BAD=["Не здавайся – наступний блок твій! 💙","Помилки роблять нас сильнішими! 💪","Спробуй ще – ти зможеш! 🌟","Навіть найвищі вежі падали! 🏰"];run(g,{n:7,wait:1500,hint:"Правильна відповідь додає блок, помилка зносить верхній. Збудуй вежу якомога вищу!",init:function(S){S.h=0},draw:function(q,A){var S=A.S,tw=document.createElement("div");tw.className="tw";function d(){tw.innerHTML="";for(var k=0;k<S.h;k++){var u=document.createElement("u");u.style.width=(120-k*6)+"px";tw.appendChild(u)}}d();A.el.appendChild(tw);quiz(A,q,null,function(o,b,ops){mark(ops,o,b);if(o.ok)S.h++;else S.h=Math.max(0,S.h-1);d();var p=document.createElement("div");p.className="pop";p.textContent=o.ok?GOOD[(S.h+Math.floor(Math.random()*3))%GOOD.length]:BAD[Math.floor(Math.random()*BAD.length)];p.style.borderColor=o.ok?"#3dffa2":"#ffb02e";A.el.appendChild(p);A.done(o.ok,undefined,o.ok?"Висота "+S.h:"Блок зруйновано. Правильно: "+q.a[0])})}})};
 })();
@@ -13921,7 +13926,7 @@ GX.pool=function(n){var all=GX.poolAll(n),c=QC[n]||(QC[n]={});if(all.length<12)r
 if(window.GX11&&GX11.terms){var _t=GX11.terms;GX11.terms=function(n){var r=_t(n);if(T0[n]){var o=JSON.parse(T0[n]);if(o.length>r.length)return o}return r}}
 window.GALL={};Object.keys(LES).forEach(function(k){(LES[k].g||[]).forEach(function(x){var a=GALL[x.type]||(GALL[x.type]={});if(!a[clsOfK(+k)])a[clsOfK(+k)]=[+k,x]})});function clsOfK(k){return k>=500&&k<600?5:k>=600&&k<700?6:k>=800&&k<900?8:k<100?9:k>=1000&&k<1100||k>=1200&&k<1300?10:k>=1100&&k<1200?11:0}
 var SIMPLE_AUTH=["pairs","tf","cloze","sort","seq"];
-var NEW_S=[["s_sw","Свайп-вердикт","↔️"],["s_duel","Дуель: 2 варіанти","⚔️"],["s_elim","Викресли хибні","✂️"],["s_streak","Серія відповідей","🔥"],["s_bet","Рівень складності","🧗"],["s_hang","Шибениця","🔤"],["s_ghost","Наздожени бота","🏁"],["s_vault","Сейф","🔐"],["s_slider","Повзунок","🎚️"],["s_flash","Спалах пам’яті","⚡"],["s_liar","Хто бреше?","🤥"],["s_bridge","Міст: з’єднай пари","🌉"],["s_audit","Аудит тверджень","📋"],["s_toggles","Тумблери","🔘"],["s_wheel","Калібрування: множник","🎯"],["s_scratch","Дешифратор","🔓"],["s_express","Експрес-вердикт","⏱️"],["s_tower","Вежа знань","🗼"]];
+var NEW_S=[["s_sw","Свайп-вердикт","↔️"],["s_duel","Дуель: 2 варіанти","⚔️"],["s_elim","Викресли хибні","✂️"],["s_streak","Серія відповідей","🔥"],["s_bet","Рівень складності","🧗"],["s_hang","Слово за літерами","🔤"],["s_ghost","Наздожени бота","🏁"],["s_vault","Сейф","🔐"],["s_slider","Повзунок","🎚️"],["s_flash","Спалах пам’яті","⚡"],["s_liar","Хто бреше?","🤥"],["s_bridge","Міст: з’єднай пари","🌉"],["s_audit","Аудит тверджень","📋"],["s_toggles","Тумблери","🔘"],["s_wheel","Калібрування: множник","🎯"],["s_scratch","Дешифратор","🔓"],["s_express","Експрес-вердикт","⏱️"],["s_tower","Вежа знань","🗼"]];
 var MED_AUTH0=["gaps","memory","decode","quest","pick","odd","bug","speed","ladder","hunt","build","ribbon","trace"];
 var MED_AUTH=MED_AUTH0.concat(window.ARENA_SHARED);
 var UNIQ={5:{s:["mine"],m:[]},6:{s:["mine"],m:[]},10:{s:[],m:["term","parsons","blitz"]},11:{s:[],m:["run","swp","wrd","hck","pxl"]}};
@@ -13934,7 +13939,7 @@ var CL={};Object.keys(LES).map(Number).sort(function(a,b){return a-b}).forEach(f
 Object.keys(CL).forEach(function(c){c=+c;var u=UNIQ[c]||{s:[],m:[]},LS=spread(SIMPLE_AUTH.concat(NEW_S.map(function(x){return x[0]})),u.s),LM=spread(MED_AUTH,u.m),ps=(c*7)%LS.length,pm=(c*5)%Math.max(1,LM.length);
  CL[c].forEach(function(k){var L=LES[k];if(!L||!L.g)return;var by={};L.g.forEach(function(x){if(!by[x.type])by[x.type]=x});
   function pick(list,p,n){var out=[],t=0;while(out.length<n&&t<list.length){var ty=list[p%list.length];p++;t++;var o=by[ty]||(NEWT[ty]?{type:ty,title:NEWT[ty]}:null);if(o&&out.indexOf(o)<0)out.push(o)}return [out,p]}
-  var a=pick(LS,ps,c==5?4:3);ps=a[1];var b=c==5?[[],pm]:pick(LM,pm,1);pm=b[1];
+  var a=pick(LS,ps,c==5?3:c==6?2:3);ps=a[1];var b=c==5?[[],pm]:pick(LM,pm,1);pm=b[1];
   var cx=L.g.filter(function(x){return !ALLSM[x.type]&&x.type!="mine"});
   if(cx.length>1){var bs=cx.filter(function(x){return x.type=="boss"});cx=[bs.length?bs[0]:cx[0]]}
   L.g=a[0].concat(b[0],cx)})});
@@ -15259,7 +15264,7 @@ var css=[
 "body.g5.g7 #app .hero h1{color:#ffce1f}",
 "body.g5.g7 .wpill{display:none}",
 "body.g5.g7 .mb{align-items:center;gap:12px}",
-"body.g5.g7,body.g5.g7 *{hyphens:manual!important}","body.g5.g7 .mb b{font-size:16px!important;line-height:1.2}","body.g5.g7 .mb .tx{flex:1;min-width:0;text-align:left}",
+"body.g5.g7,body.g5.g7 *{hyphens:none!important}","body.g5.g7 .mb b{font-size:16px!important;line-height:1.2}","body.g5.g7 .mb .tx{flex:1;min-width:0;text-align:left}",
 "body.g5.g7 .pbar{display:block;height:13px;border:3px solid "+k+";border-radius:99px;background:"+k+";margin-top:6px;overflow:hidden}",
 "body.g5.g7 .pbar i{display:block;height:100%;background:linear-gradient(180deg,#8dff5a,#2fd02a);border-right:2px solid "+k+"}",
 "body.g5.g7 .go7{flex:none;padding:8px 12px;border-radius:11px;border:3px solid "+k+";background:linear-gradient(180deg,#8dff5a,#2fd02a);color:#fff;font-size:13px;box-shadow:0 3px 0 "+k+";text-shadow:0 2px 0 "+k+"}",
@@ -17465,7 +17470,8 @@ function runner(g,tag,build){
 
 /* ================= 530 · ВИКОНАВЦІ-БУДІВЕЛЬНИКИ (GM.exec) ================= */
 var DIRS=[[0,-1],[1,0],[0,1],[-1,0]],ARW=["▲","▶","▼","◀"];
-var CMD={f:["іти вперед","mv"],r:["повернути ⟳","mv"],l:["повернути ⟲","mv"],d:["копати ⛏","lk"]};
+var RS='<svg viewBox="0 0 24 24" width="22" height="22" style="display:inline-block!important;width:22px!important;height:22px!important;flex:none!important;vertical-align:-5px;margin:0 2px"><path d="M19 12a7 7 0 1 1-3-5.7M19 3v5h-5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',LS='<svg viewBox="0 0 24 24" width="22" height="22" style="display:inline-block!important;width:22px!important;height:22px!important;flex:none!important;vertical-align:-5px;margin:0 2px"><path d="M5 12a7 7 0 1 0 3-5.7M5 3v5h5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var CMD={f:["іти вперед","mv"],r:["повернути "+RS+" праворуч","mv"],l:["повернути "+LS+" ліворуч","mv"],d:["копати ⛏","lk"]};
 function k2(x,y){return x+","+y}
 function stonesOf(rd){var o={};(rd.st||[]).forEach(function(p){o[k2(p[0],p[1])]=1});return o}
 function treesOf(rd){var o={};(rd.t||[]).forEach(function(p){o[k2(p[0],p[1])]=1});return o}
@@ -17622,7 +17628,7 @@ O.rep(531,{type:"algoprop",title:"Алгоритм-рецепт: що не та�
  {name:"Рецепт кекса",lines:["Змішати 200 г борошна, 100 г цукру та 2 яйця.","Додати борошна «трохи, скільки захочеться».","Вилити тісто у форму.","Випікати 30 хвилин при 180 °C.","Вийняти кекс із духовки."],faults:[[1,"vz"]],why:"Рядок 2 порушує <b>визначеність</b>: «трохи» – не точна вказівка. Кожна команда алгоритму має бути однозначною."},
  {name:"Інструкція «Вийти з кімнати»",lines:["Підійти до дверей.","Відчинити двері.","Вийти з кімнати.","Зачинити двері.","Повернутися до кроку 1 і так без кінця."],faults:[[4,"sk"]],why:"Рядок 5 порушує <b>скінченність</b>: алгоритм ніколи не завершиться, бо кроки повторюються без кінця."},
  {name:"Рецепт чаю",lines:["Налити воду в чайник.","Увімкнути чайник.","Підключити чайник до квантового синхронізатора.","Коли вода закипить, налити її в чашку з чаєм.","Вилити окріп у раковину й закінчити."],faults:[[2,"zr"],[4,"rz"]],tip:"Тут два порушені рядки: до кожного прив’яжи свою властивість.",why:"Рядок 3 порушує <b>зрозумілість</b>: виконавець не знає такої команди. Рядок 5 порушує <b>результативність</b>: чаю в результаті не буде."},
- {name:"Будівництво будинку",lines:["Зібрати 64 блоки дерева.","Поставити 4 стіни заввишки 3 блоки.","Одним махом збудувати дах, двері, вікна й меблі.","Поставити біля дверей смолоскип.","Прикрасити будинок як-небудь."],faults:[[2,"dk"],[4,"vz"]],tip:"Два порушені рядки. Пам’ятай: дискретність – це окремі прості кроки.",why:"Рядок 3 порушує <b>дискретність</b>: забагато дій в одній команді, її треба розбити на прості кроки. Рядок 5 порушує <b>визначеність</b>: «як-небудь» – неоднозначно."}
+ {name:"Будівництво будинку",lines:["Зібрати 64 блоки дерева.","Поставити 4 стіни заввишки 3 блоки.","Одним махом збудувати дах, двері, вікна й меблі.","Поставити біля дверей смолоскип.","Прикрасити будинок як-небудь."],faults:[[2,"dk"],[4,"vz"]],tip:"Два порушені рядки. Пам’ятай: алгоритм складається з окремих простих кроків – одна дія в одній команді.",why:"Рядок 3 порушує правило <b>«один крок – одна дія»</b>: забагато дій в одній команді, її треба розбити на прості кроки. Рядок 5 порушує <b>визначеність</b>: «як-небудь» – неоднозначно."}
 ]});
 O.rep(532,{type:"flowchart",title:"Конструктор блок-схем",hint:"Обирай фігури, складай схему лінійного алгоритму. Три життя ❤️.",rounds:[
  {k:"build",name:"Сума двох чисел",task:"Готово: блок-схема алгоритму «Сума двох чисел».",steps:[["Алгоритм починається","o","Початок"],["Користувач вводить числа a і b","p","Ввести a, b"],["Комп’ютер обчислює c = a + b","r","c = a + b"],["Результат c показують на екрані","p","Вивести c"],["Алгоритм закінчується","o","Кінець"]],why:"Овал – початок і кінець, паралелограм – ввід і вивід, прямокутник – дія. Стрілки показують порядок. Це лінійний алгоритм: кожна команда виконується один раз."},
@@ -17683,7 +17689,7 @@ var css=`
 .o5 .f5scr{border:3px solid #111;background:#fff;padding:5px;min-height:96px;display:flex;flex-direction:column;gap:2px;position:relative}
 .o5 .f5em{color:#889;font-size:11px;font-weight:800;padding:8px 2px;text-align:center}
 .o5 .f5cnt{align-self:flex-end;font-size:9px;font-weight:900;color:#99a}
-.o5 .f5pl{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;padding:5px;border:3px solid #111;background:#e9eef9}
+.o5 .f5pl>*{min-width:0;overflow-wrap:break-word}.o5 .f5pl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5px;margin-top:6px;padding:5px;border:3px solid #111;background:#e9eef9}
 .o5 .f5bar{display:flex;gap:6px;margin-top:6px;align-items:center}
 .o5 .f5an{display:flex;gap:6px;margin-bottom:6px}
 .o5 .f5big{position:relative;width:104px;height:104px;flex:none;border:3px solid #111;background:linear-gradient(#8fd0ff 0 68%,#6dc03a 68% 82%,#8b5a2b 82%);font-size:58px;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -17804,9 +17810,10 @@ GM.scrui=function(g){rn(g,"Раунд",function(rd,a){
 })};
 
 /* ================= 534 · ЗІБРАТИ СКРИПТ ================= */
+var RS='<svg viewBox="0 0 24 24" width="22" height="22" style="display:inline-block!important;width:22px!important;height:22px!important;flex:none!important;vertical-align:-5px;margin:0 2px"><path d="M19 12a7 7 0 1 1-3-5.7M19 3v5h-5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',LS='<svg viewBox="0 0 24 24" width="22" height="22" style="display:inline-block!important;width:22px!important;height:22px!important;flex:none!important;vertical-align:-5px;margin:0 2px"><path d="M5 12a7 7 0 1 0 3-5.7M5 3v5h5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var DX=[1,0,-1,0],DY=[0,1,0,-1],AR=["➡️","⬇️","⬅️","⬆️"];
 var C2={m1:{t:"перемістити на 50 кроків",bg:"#4c97ff",mv:1},m2:{t:"перемістити на 100 кроків",bg:"#4c97ff",mv:2},
- tr:{t:"повернути ↻ на 90 градусів",bg:"#4c97ff",tn:1},tl:{t:"повернути ↺ на 90 градусів",bg:"#4c97ff",tn:3},
+ tr:{t:"<span>повернути "+RS+" праворуч на 90°</span>",bg:"#4c97ff",tn:1},tl:{t:"<span>повернути "+LS+" ліворуч на 90°</span>",bg:"#4c97ff",tn:3},
  sa:{t:"говорити «Привіт!» (2 с)",bg:"#9966ff",say:"Привіт!"},sb:{t:"говорити «Бувай!» (2 с)",bg:"#9966ff",say:"Бувай!"}};
 function isWall(rd,x,y){return (rd.wl||[]).some(function(w){return w[0]==x&&w[1]==y})}
 /* виконує скрипт: steps – що показати, res – "ok" або причина невдачі */
@@ -17940,10 +17947,10 @@ O.rep(534,{type:"script",title:"Зібрати скрипт: Кіт іде до 
  {task:"Кіт стоїть ліворуч. Склади скрипт, щоб він дійшов до прапорця 🚩 (3 клітинки праворуч).",W:6,H:4,st:[0,1,0],fl:[3,1],wl:[],bk:["m1","m2","tr","tl"],max:6,sol:["m2","m1"],
   tip:"Прапорець за 3 клітинки = 150 кроків: «100» і ще «50».",why:"Три клітинки – це 150 кроків, тобто 100 + 50. Блоки виконуються зверху вниз."},
  {task:"Дійди до прапорця: спочатку праворуч, потім униз.",W:6,H:4,st:[0,0,0],fl:[3,2],wl:[],bk:["m1","m2","tr","tl"],max:7,sol:["m2","m1","tr","m2"],
-  tip:"Кіт рухається туди, куди дивиться. Спершу пройди вздовж ряду, потім поверни ↻ (дивитиметься вниз).",why:"Спочатку 150 кроків праворуч, потім поворот ↻ на 90° (Кіт дивиться вниз) і ще 100 кроків. Якщо повернути раніше – шлях піде іншою дорогою."},
+  tip:"Кіт рухається туди, куди дивиться. Спершу пройди вздовж ряду, потім поверни праворуч (дивитиметься вниз).",why:"Спочатку 150 кроків праворуч, потім поворот праворуч на 90° (Кіт дивиться вниз) і ще 100 кроків. Якщо повернути раніше – шлях піде іншою дорогою."},
  {task:"Кіт має сказати «Привіт!» на старті, дійти до прапорця і сказати «Бувай!».",W:6,H:4,st:[0,3,0],fl:[4,1],wl:[],bk:["m1","m2","tr","tl","sa","sb"],max:8,sol:["sa","m2","m2","tl","m2","sb"],sy:[["sa","start"],["sb","flag"]],
-  tip:"Прапорець вище: після руху праворуч поверни ↺ (Кіт дивитиметься вгору).",sayTip:"Порядок: «Привіт!» – до першого руху (на старті), «Бувай!» – після того, як Кіт дійшов до прапорця.",
-  why:"Порядок блоків = порядок дій: «Привіт!», 200 кроків праворуч, поворот ↺ до верху, ще 100 кроків і «Бувай!» на прапорці."},
+  tip:"Прапорець вище: після руху праворуч поверни ліворуч (Кіт дивитиметься вгору).",sayTip:"Порядок: «Привіт!» – до першого руху (на старті), «Бувай!» – після того, як Кіт дійшов до прапорця.",
+  why:"Порядок блоків = порядок дій: «Привіт!», 200 кроків праворуч, поворот ліворуч до верху, ще 100 кроків і «Бувай!» на прапорці."},
  {task:"Обійди камінь 🪨 і дійди до прапорця, а там скажи «Бувай!».",W:6,H:4,st:[0,0,0],fl:[3,0],wl:[[2,0]],bk:["m1","m2","tr","tl","sb"],max:10,sol:["m1","tr","m1","tl","m2","tl","m1","sb"],sy:[["sb","flag"]],
   tip:"Камінь на шляху: спустись на ряд нижче, пройди повз нього, а потім піднімись до прапорця.",sayTip:"«Бувай!» має прозвучати вже біля прапорця – постав цей блок останнім.",
   why:"Перешкоду обходять по клітинках: вниз, повз камінь, угору до прапорця. Кожен поворот стоїть рівно перед рухом, якому він потрібен."}
@@ -19151,7 +19158,7 @@ EXPL[501]=["Коли верх екрана на рівні очей, шия не
 EXPL[502]=["Інформація виникає тоді, коли людина сприйняла повідомлення й зрозуміла його; сам звук чи текст ще не є інформацією.","Дані – це повідомлення в зручному для зберігання й опрацювання вигляді, а не лише числа чи файли.","Інформаційні процеси охоплюють усі три дії: передавання, зберігання й опрацювання, а не якусь одну.","Приймач отримує повідомлення; той, хто його створює, – це джерело, а шлях передавання – канал.","Канал зв’язку – це середовище, яким повідомлення йде від джерела до приймача, наприклад повітря чи дріт.","Візуальні повідомлення ми бачимо, тому їх сприймає орган зору; слух і нюх сприймають інші види.","У телепередачі поєднано зображення та звук, тож це два способи сприйняття одразу, а запах і смак – прості.","Носії зберігають повідомлення, як папір чи флешпам’ять; дощ – це явище, а телебачення – спосіб передавання.","Опрацювання змінює повідомлення, і в результаті виходить нове, а не втрата чи проста копія.","Переклад змінює повідомлення, тож це опрацювання, а надсилання листа – передавання, і зошит у рюкзаку просто лежить.","Кожна людина розуміє повідомлення по-своєму, залежно від того, що вона знає і які в неї досвід та мислення.","Азбука Брайля складається з рельєфних крапок, які читають пальцями, тож вона допомагає людям із порушеним зором."];
 EXPL[503]=["ІС забезпечує всі інформаційні процеси: передавання, зберігання й опрацювання; один пристрій чи програма – це лише частина.","Служба погоди збирає, опрацьовує й передає відомості, а стіна й стілець цього не роблять.","Комп’ютеризована ІС працює завдяки і пристроям, і програмам разом; пристрої без програм або програми без пристроїв не працюють.","Технологія – це опис того, як саме виготовляють щось або надають послугу, а не програма чи набір пристроїв.","В інформаційних технологіях усі дії з відомостями виконує комп’ютерна техніка, тому паперові технології сюди не належать.","Віртуальний дослід безпечний і дешевий, коли реальний дослід неможливий, наприклад надто небезпечний чи надто дорогий.","Термінал – це комп’ютер, яким одночасно користуються багато людей, під’єднаний до головного комп’ютера.","ІТ потрібні майже скрізь, тож твердження, що їх не використовують у банках чи на транспорті, хибні.","Щоб не продати одне місце двічі, центральний комп’ютер після друку квитка записує, що місце зайняте.","Фото й малюнки опрацьовують за допомогою технологій опрацювання зображень, а звук і числа – інші технології.","ІТ дають змогу вчитися на відстані, тому вони допомагають тим, кому важко прийти до школи.","Фізик Стівен Гокінг через хворобу говорив за допомогою комп’ютерного синтезатора голосу."];
 EXPL[504]=["Персональний комп’ютер розрахований на одного користувача, а ціна чи власник тут ні до чого.","Суперкомп’ютери роблять величезну кількість складних розрахунків, наприклад прогноз погоди, а друк чи малювання схем не потребує такої потужності.","Вбудований комп’ютер – це мала частина пристрою, як-от автомобіля; ноутбук і смартфон є самостійними комп’ютерами.","Портативний – це легкий пристрій, який зручно носити, а стаціонарний стоїть на місці.","Тачпед – чутлива панель, що замінює мишу в ноутбуці; сканер і принтер мають зовсім інше призначення.","Планшет зручний для перегляду відео, музики, читання й Інтернету, але не для великих обчислень.","Смартфон об’єднує функції мобільного телефона та комп’ютера, а принтер і монітор лише виводять дані.","Перший у СРСР персональний комп’ютер МИР створили в Києві в Інституті кібернетики в 1965 році.","Apple II створили Стів Джобс і Стів Возняк; Франко й Леся Українка були письменниками, а Глушков – вченим-кібернетиком.","Комп’ютер передає, опрацьовує й зберігає повідомлення, а наявність екрана чи магазин цього не доводять.","Стаціонарний комп’ютер стоїть на одному місці, як у класі, а смартфон і ноутбук носять із собою.","Акумулятор ноутбука розряджається за кілька годин, а хвилина чи сто годин нереальні."];
-EXPL[505]=["Апаратні засоби – це самі пристрої комп’ютера, а програми та файли до них не належать.","Клавіатурою користувач вводить дані в комп’ютер, а монітор і колонки лише виводять їх.","Принтер виводить інформацію на папір, а миша й мікрофон вводять дані.","Процесор виконує команди й опрацьовує дані, а монітор і клавіатура лише показують і вводять їх.","Мікрофон перетворює звук на дані для комп’ютера, а колонки й навушники його відтворюють.","Картридер читає дані з флешкарт, що використовують у фотоапаратах і телефонах.","SSD зберігає дані на мікросхемах без рухомих частин, а на обертових пластинах дані зберігає жорсткий диск (HDD).","Ємність показує, скільки даних поміститься на носії, а колір і вага не впливають на зберігання.","Модем і маршрутизатор з’єднують комп’ютери в мережі, а миша, клавіатура, принтер і плотер мають інше призначення.","Проєктор показує зображення на великому екрані, а мікрофон і сканер вводять дані.","Один дюйм дорівнює 25,4 мм, тому 10 чи 100 мм – це неточні значення.","Пам’ять комп’ютера – це всі носії, на яких зберігаються дані, а клавіатура й монітор її не становлять."];
+EXPL[505]=["Апаратні засоби – це самі пристрої комп’ютера, а програми та файли до них не належать.","Клавіатурою користувач вводить дані в комп’ютер, а монітор і колонки лише виводять їх.","Принтер виводить інформацію на папір, а миша й мікрофон вводять дані.","Процесор виконує команди й опрацьовує дані, а монітор і клавіатура лише показують і вводять їх.","Мікрофон перетворює звук на дані для комп’ютера, а колонки й навушники його відтворюють.","Картридер читає дані з флешкарт, що використовують у фотоапаратах і телефонах.","SSD зберігає дані на мікросхемах без рухомих частин, а на обертових пластинах дані зберігає жорсткий диск (HDD).","Ємність показує, скільки даних поміститься на носії, а колір і вага не впливають на зберігання.","Модем і маршрутизатор з’єднують комп’ютери в мережі, а миша, клавіатура, принтер і плотер мають інше призначення.","Проєктор показує зображення на великому екрані, а мікрофон і сканер вводять дані.","Пам’ять комп’ютера – це всі носії, на яких зберігаються дані, а клавіатура й монітор її не становлять."];
 EXPL[506]=["ОС керує пристроями й забезпечує роботу інших програм, тож вона потрібна, щоб будь-яка програма працювала.","Windows – це операційна система, Блокнот – прикладна програма, а принтер – пристрій.","Файл – це дані одного типу, що мають ім’я; пристрої та програми керування файлом не є.","Розширення стоїть після останньої крапки в імені й показує тип файлу, а не його розмір.","Папки створюють, щоб файли лежали впорядковано й їх було легко знайти.","Ярлик лише вказує на об’єкт і не містить самих даних, тому він малий і не є копією.","Ярлик легко впізнати за стрілкою внизу ліворуч на значку, а колір чи розмір значка про це не говорять.","WIMP – це стандартні елементи графічного інтерфейсу: вікна, значки, меню й вказівник.","Пристрої на ПК позначають літерою з двокрапкою, наприклад C:, щоб їх відрізняти один від одного.","Подвійне клацання відкриває папку, і Провідник показує її вміст, а видалення чи вимкнення так не відбувається.","Android створено для смартфонів і планшетів, а DOS і MacOS Server – для інших пристроїв.","Графічний інтерфейс із вікнами й значками робить спілкування з комп’ютером простим і наочним."];
 EXPL[507]=[];
 EXPL[508]=["Програми загального призначення потрібні в багатьох галузях, наприклад текстовий редактор, і не прив’язані до однієї професії.","Діагностика захворювань потрібна лише медикам, тож це спеціальна програма, а графічний і текстовий редактори універсальні.","Система програмування дає змогу писати інші програми мовою програмування, а керує комп’ютером ОС.","Python – мова й система програмування, а Windows є ОС, Блокнот – прикладною програмою.","Текстовий редактор – прикладна програма, а MacOS та файлова система належать до системного ПЗ.","Папки допомагають впорядковано зберігати файли, але не прискорюють друк і не збільшують пам’ять.","Ярлик – це посилання на об’єкт, а не його копія, і до принтерів він ніякого стосунку не має.","Видалені файли лежать у Кошику, тож треба відкрити його й вибрати «Відновити».","Процесор опрацьовує дані й виконує програми, а екран керується іншим пристроєм, і дані після вимкнення зберігає накопичувач.","Файлами можна керувати в контекстному меню, у Провіднику й сполученнями клавіш, а не лише меню чи спеціальними програмами.","Ctrl + C копіює, Ctrl + V вставляє, а Ctrl + Z скасовує.","Ctrl + Z скасовує останню дію, а Ctrl + C копіює, Ctrl + A виділяє все."];
