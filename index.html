@@ -12024,7 +12024,7 @@ function scene(cv,b,h){var c=cv.getContext('2d'),Wd=280,H=340,BS=16,GY=290;
 GX.twN=BLD.length;GX.twScene=function(cv,bi,h){cv.width=280;cv.height=340;scene(cv,BLD[bi],h)};GX.twName=function(bi){return BLD[bi].n};
 })();
 
-/* 5 клас: емодзі в тексті → піксельні картинки (автоматично зі шрифту, 16x16, з контуром) */
+/* 5–6 клас: емодзі в тексті → піксельні картинки (автоматично зі шрифту, 16x16, з контуром) */
 (function(){
 var RX=/(?:[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2713}\u{2714}\u{2716}\u{3030}\u{303D}](?:\uFE0F|\u{1F3FB}-\u{1F3FF})?(?:\u200D[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]\uFE0F?)*)/gu;
 var TINT={"✔":"#3ad06a","✓":"#3ad06a","✖":"#e0314f","✕":"#e0314f","✗":"#e0314f","❤":"#e0314f","♥":"#e0314f","★":"#ffc928","☆":"#ffc928","➡":"#2d9cf0","⬅":"#2d9cf0","⬆":"#2d9cf0","⬇":"#2d9cf0","↔":"#2d9cf0","↕":"#2d9cf0","↩":"#2d9cf0","↪":"#2d9cf0","⚠":"#ffc928","☑":"#3ad06a","☐":"#555","✏":"#f28a1e","✂":"#555","✉":"#2d9cf0","✍":"#f28a1e","✋":"#e0b48a","☝":"#e0b48a","✈":"#2d9cf0","⚙":"#777","☀":"#ffc928","☁":"#9ab","☃":"#9ab","☎":"#555","♪":"#555","♫":"#555","⚖":"#555","⚗":"#2d9cf0","⚛":"#2d9cf0","☄":"#f28a1e","☠":"#555","❄":"#8fd8ff","♿":"#2d9cf0","⛏":"#8a6a3a","✨":"#ffc928","➕":"#3ad06a","➖":"#e0314f","➗":"#2d9cf0"};
@@ -12038,7 +12038,7 @@ function mk(ch){var base=ch.replace(/\uFE0F/g,"");if(cache[ch])return cache[ch];
  c.fillStyle="#1a1a1a";for(var j=0;j<G;j++)for(var i=0;i<G;i++)if(px[j*G+i]){[[0,1],[2,1],[1,0],[1,2]].forEach(function(v){c.fillRect(i+v[0],j+v[1],1,1)})}
  for(var j=0;j<G;j++)for(var i=0;i<G;i++)if(px[j*G+i]){c.fillStyle=px[j*G+i];c.fillRect(i+1,j+1,1,1)}
  return cache[ch]=o.toDataURL()}catch(e){return cache[ch]=null}}
-function on(){return document.body&&document.body.classList.contains("g5")&&window.ME&&ME.c&&ME.c.charAt(0)=="5"}
+function on(){return document.body&&document.body.classList.contains("g5")&&window.ME&&ME.c&&(ME.c.charAt(0)=="5"||ME.c.charAt(0)=="6")}
 var SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,CANVAS:1,OPTION:1,SELECT:1,CODE:0,TITLE:1,NOSCRIPT:1};
 function conv(n){if(n.nodeType==3){var t=n.nodeValue;RX.lastIndex=0;if(!RX.test(t))return;RX.lastIndex=0;var f=document.createDocumentFragment(),last=0,m,ch=0;
  while((m=RX.exec(t))){var u=mk(m[0]);if(!u)continue;if(m.index>last)f.appendChild(document.createTextNode(t.slice(last,m.index)));var im=document.createElement("img");im.src=u;im.alt=m[0];im.className="pxe";f.appendChild(im);last=m.index+m[0].length;ch++}
