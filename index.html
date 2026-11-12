@@ -1019,17 +1019,20 @@ quizG=function(QS,fin,tr,bk){var qs=spreadQ(shuffle(QS)),i=0,sc=0,streak=0,st={t
     f.parentNode.replaceChild(nf.firstChild,f);if(right)confetti(document.getElementById("fb"));var qe=q.e||(window.EXPM&&EXPM[q.q]);if(qe){var xe=document.createElement("div");xe.className="xpl";xe.textContent="💡 "+qe;var cd=document.querySelector(".card");if(cd)cd.appendChild(xe)}}
    var n=document.createElement("button");n.className="pri";n.textContent=i<qs.length-1?"Далі →":"Результат";n.onclick=function(){i++;i<qs.length?show():end()};document.getElementById("n").appendChild(n)}
   ans.forEach(function(a){var b=document.createElement("button");b.textContent=a;b.onclick=function(){answer(a,b)};document.getElementById("o").appendChild(b)});
+  window.__qLeave=function(){if(!done){answer(null,null);var f2=document.querySelector(".card");if(f2){var w=document.createElement("div");w.className="xpl";w.textContent="⚠️ Ти виходив зі сторінки тесту, тому питання зараховано як помилкове.";f2.appendChild(w)}}};
   var card=document.querySelector(".card"),tb=document.createElement("div");tb.id="tmrw";tb.style.cssText="height:8px;border-radius:6px;background:rgba(128,128,128,.25);margin:10px 0;overflow:hidden";tb.innerHTML="<i id='tmri' style='display:block;height:100%;width:100%;background:#2ecc71;transition:width 1s linear,background .5s'></i>";
   var tt=document.createElement("div");tt.id="tmrt";tt.className="mut";tt.style.cssText="text-align:right;font-size:13px;margin:-4px 0 6px";tt.textContent="⏱ "+tl+" с";
   if(card){card.insertBefore(tb,card.children[1]);card.insertBefore(tt,tb.nextSibling)}
 
   tmr=setInterval(function(){if(!document.getElementById("tmri")){stopT();return}tl--;var bi=document.getElementById("tmri");if(!bi){stopT();return}bi.style.width=Math.max(0,tl/TL*100)+"%";bi.style.background=tl<=10?"#e74c3c":tl<=20?"#f1c40f":"#2ecc71";document.getElementById("tmrt").textContent="⏱ "+Math.max(0,tl)+" с";if(tl<=0){stopT();answer(null,null)}},1000)}
- function end(){fin(sc);antRec(CUR9,CURK,st);endScr(sc,qs.length,tr,bk)}
+ function end(){window.__qLeave=null;fin(sc);antRec(CUR9,CURK,st);endScr(sc,qs.length,tr,bk)}
  show()};
 
 /* старий тест 5 класу (тема 1) теж через новий рушій */
 quiz=function(){quizG(Q,function(s){if(s>S.quiz){S.quiz=s;save()}},"quiz","menu")};
 })();
+
+(function(){var h0=0;document.addEventListener("visibilitychange",function(){try{if(document.hidden){h0=Date.now()}else if(h0&&Date.now()-h0>3000&&window.__qLeave&&document.getElementById("tmri")){h0=0;window.__qLeave()}else h0=0}catch(e){}})})();
 
 /* 9 клас: яскравий «ігровий» дизайн у дусі блокових 3D-ігор – темний інтерфейс, цегляні кнопки з товстим низом, неонові акценти, поле зі «шпильками» */
 (function(){
