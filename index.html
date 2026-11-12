@@ -12059,7 +12059,7 @@ function render(n){var L=D[n];if(!L)return null;var G=16,px=[];for(var i=0;i<G*G
  for(var y=0;y<G;y++)for(var x=0;x<G;x++)if(px[y*G+x])[[0,1],[2,1],[1,0],[1,2]].forEach(function(v){c.fillRect(x+v[0],y+v[1],1,1)});
  for(var y=0;y<G;y++)for(var x=0;x<G;x++)if(px[y*G+x]){c.fillStyle=px[y*G+x];c.fillRect(x+1,y+1,1,1)}
  return o}
-window.PXI={names:Object.keys(D),url:function(n){var o=render(n);return o?o.toDataURL():null}};
+window.PXI={def:def,get names(){return Object.keys(D)},url:function(n){var o=render(n);return o?o.toDataURL():null}};
 })();
 
 (function(){
@@ -12083,10 +12083,93 @@ function conv(n){if(n.nodeType==3){var t=n.nodeValue;RX.lastIndex=0;if(!RX.test(
  if(!ch)return;if(last<t.length)f.appendChild(document.createTextNode(t.slice(last)));if(n.parentNode)n.parentNode.replaceChild(f,n)}
  else if(n.nodeType==1){if(SKIP[n.tagName]||n.classList.contains("pxe")||n.hasAttribute("data-nopx"))return;var k=Array.prototype.slice.call(n.childNodes);k.forEach(conv)}}
 var st=document.createElement("style");st.textContent="img.pxe{height:1.2em;width:auto;vertical-align:-.25em;image-rendering:pixelated;display:inline-block;margin:0 .05em}";document.head.appendChild(st);
-var busy=0,tm=0;function go(){tm=0;if(!on())return;busy=1;try{conv(document.getElementById("app")||document.body)}catch(e){}busy=0}
+var busy=0,tm=0;function go(){tm=0;if(!on())return;busy=1;try{if(window.PXG)PXG.apply();conv(document.getElementById("app")||document.body)}catch(e){}busy=0}
 var mo=new MutationObserver(function(){if(busy||tm)return;tm=setTimeout(go,60)});
 function boot(){mo.observe(document.body,{childList:true,subtree:true,characterData:true});go()}
 if(document.body)boot();else document.addEventListener("DOMContentLoaded",boot);
+})();
+
+/* 5–6 клас: власні іконки для всіх ігор (за типом гри) */
+(function(){
+var d=PXI.def,K="#1a1a1a",G="#8f8f8f",g="#c6c6c6",D="#555",W="#fff",R="#e0314f",O="#f28a1e",Y="#ffd23f",E="#5ac83a",e="#2f8f1f",B="#2d9cf0",b="#1a6bb5",L="#8fd8ff",P="#a45be6",N="#9a6a3a",n="#5c3a1a",M="#ff7ac0",S="#e0b48a",T="#25295a";
+function r(c,x,y,w,h){return["r",c,x,y,w,h]}function p(c,a){return["p",c,a]}function o(c,x,y,q){return["c",c,x,y,q]}function x(c,X,Y2){return["x",c,X,Y2]}
+function star(cx,cy,R1,R2,n){var a=[];for(var i=0;i<n*2;i++){var t=Math.PI*i/n-Math.PI/2,q=i%2?R2:R1;a.push([cx+Math.cos(t)*q,cy+Math.sin(t)*q])}return a}
+function ell(cx,cy,rx,ry){var a=[];for(var i=0;i<20;i++){var t=Math.PI*i/10;a.push([cx+Math.cos(t)*rx,cy+Math.sin(t)*ry])}return a}
+d("flag",[r(N,3,1,1,14),r(W,4,2,9,6),r(K,4,2,3,2),r(K,10,2,3,2),r(K,7,4,3,2),r(K,4,6,3,2),r(K,10,6,3,2)]);
+d("pick",[r(N,7,5,2,10),p(g,[[1,7],[4,3],[8,2],[12,3],[15,7],[13,7],[11,5],[8,4],[5,5],[3,7]]),r(D,7,2,2,1)]);
+d("ore",[r(G,2,2,12,12),r("#6a6a6a",2,12,12,2),r(B,4,4,3,3),r(B,9,6,3,3),r(B,5,9,3,3),r(L,4,4,1,1),r(L,9,6,1,1),r(B,10,11,2,2)]);
+d("slider",[r(D,1,7,14,2),r(B,1,7,8,2),o(W,9,8,3),o(B,9,8,1.4)]);
+d("liar",[p(W,[[2,2],[14,2],[14,10],[9,10],[6,14],[6,10],[2,10]]),r(R,7,4,2,4),r(R,7,9,2,1),r(D,3,3,10,1)]);
+d("boat",[r(B,0,12,16,4),p(N,[[1,9],[15,9],[12,13],[4,13]]),r(n,1,9,14,1),r(n,8,2,1,7),p(W,[[9,2],[14,8],[9,8]]),p(R,[[7,3],[3,8],[7,8]]),r(L,2,13,3,1),r(L,9,14,4,1)]);
+d("zombie",[r(e,3,3,10,10),r(E,3,3,10,2),r(R,5,6,2,2),r(R,9,6,2,2),r(n,5,10,6,2),r("#1f6a14",7,8,2,1),r(E,3,5,1,6)]);
+d("creeper",[r(E,3,2,10,12),r(e,3,6,2,3),r(e,11,4,2,3),r(e,6,12,3,2),r(K,5,5,2,2),r(K,9,5,2,2),r(K,7,8,2,3),r(K,6,10,1,3),r(K,9,10,1,3)]);
+d("bow",[p(N,[[3,1],[9,3],[13,8],[9,13],[3,15],[7,12],[8,8],[7,4]]),r(W,3,1,1,14),r(n,1,8,12,1),p(g,[[15,8.5],[12,6],[12,11]]),r(R,1,7,2,3)]);
+d("target",[o(R,8,8,7),o(W,8,8,5),o(R,8,8,3.2),o(W,8,8,1.6),r(n,8,8,7,1),p(Y,[[15,8.5],[12,6],[12,11]])]);
+d("portal",[r("#25295a",3,1,10,14),r("#14082a",5,3,6,10),r(P,6,4,4,8),r("#c07aff",7,6,2,4),x(W,6,5),x(W,9,9),r("#3a2a6a",3,1,10,1)]);
+d("craft",[r(N,2,3,12,11),r("#c49c5a",2,3,12,3),r(n,4,8,8,1),r(n,4,11,8,1),r(n,6,7,1,6),r(n,9,7,1,6),r(O,5,9,1,1),r(g,10,9,1,1),r(n,2,13,12,1)]);
+d("swords",[p(g,[[2,1],[5,1],[14,10],[11,13]]),p(g,[[14,1],[11,1],[2,10],[5,13]]),p(N,[[0,11],[3,10],[5,13],[2,14]]),p(N,[[16,11],[13,10],[11,13],[14,14]]),r(D,0,14,3,1),r(Y,3,12,1,1)]);
+d("scissors",[p(g,[[2,1],[5,1],[10,9],[7,9]]),p(g,[[14,1],[11,1],[6,9],[9,9]]),o(R,4,12,2.6),o(R,12,12,2.6),o(null,4,12,1.1),o(null,12,12,1.1)]);
+d("hammer",[r(n,7,6,2,9),r(G,2,1,12,5),r(g,2,1,12,1),r(D,2,5,12,1),r(Y,7,1,2,5)]);
+d("mountain",[p(G,[[0,14],[6,3],[11,9],[13,6],[16,14]]),p(W,[[6,3],[8,6],[6,5],[4,6]]),p(D,[[6,3],[11,9],[16,14],[8,14]]),p(W,[[13,6],[14,8],[12,8]]),r(R,6,0,1,3),r(R,7,0,3,1)]);
+d("abc",[r(W,1,2,14,12),r(B,3,4,1,7),r(B,5,4,1,7),r(B,3,4,3,1),r(B,3,7,3,1),r(R,8,7,4,1),r(R,11,7,1,4),r(R,8,9,3,1),r(R,8,10,4,1),r(R,8,7,1,0)]);
+d("dragon",[r(P,3,4,10,8),r("#7a1fb0",4,10,8,3),r(T,2,1,2,3),r(T,12,1,2,3),r(M,4,6,2,1),r(M,10,6,2,1),r(K,6,9,1,1),r(K,9,9,1,1),r(W,5,12,1,1),r(W,10,12,1,1)]);
+d("clapper",[r(K,2,6,12,8),r(D,3,7,10,6),r(K,2,2,12,4),r(W,3,3,2,3),r(W,7,3,2,3),r(W,11,3,2,3),r(g,5,9,6,1),r(g,5,11,4,1)]);
+d("aa",[r(W,2,1,12,14),r(R,4,3,8,2),r(R,7,3,2,9),r(B,4,12,3,1),r(B,9,12,3,1)]);
+d("snake",[r(P,4,2,9,3),r(P,4,2,3,6),r(P,4,6,9,3),r(P,10,6,3,8),r(P,4,12,9,3),r("#c07aff",5,3,6,1),r(R,13,2,2,1),x(Y,11,3)]);
+d("picture",[r(N,1,2,14,12),r(L,2,3,12,10),o(Y,11,5,1.7),p(E,[[2,13],[6,7],[10,13]]),p(e,[[8,13],[11,9],[14,13]])]);
+(function(){var a=[r(K,1,3,14,10),r(B,4,5,3,6),r(L,8,5,3,6),r("#3ad06a",12,5,2,6)];for(var i=0;i<4;i++){a.push(r(W,2+i*4,4,1,1));a.push(r(W,2+i*4,11,1,1))}d("film",a)})();
+d("magnifier",[o(D,6,6,5),o(L,6,6,3.6),p(n,[[9.5,9],[11,10.5],[14.5,14],[13,15.5],[9,11.5]]),r(W,4,4,2,1),r(W,4,5,1,1)]);
+d("pencil",[p(Y,[[10,2],[13,5],[5,13],[2,14],[3,11]]),p(S,[[3,11],[5,13],[2,14]]),p(M,[[10,2],[11,1],[14,4],[13,5]]),r(R,6,14,9,1),r(K,2,14,1,1)]);
+d("brush",[r(N,7,1,2,8),r(g,6,8,4,2),p(B,[[6,10],[10,10],[9,15],[7,15]]),r(L,7,11,1,3)]);
+d("page",[r(W,3,1,10,14),r(L,5,3,6,1),r(D,5,5,6,1),r(D,5,7,6,1),r(D,5,9,4,1),r(R,3,1,2,1),r(R,3,1,1,2),r(R,12,14,1,1),r(R,11,14,2,1),r(R,12,13,1,2),r(B,4,12,8,1)]);
+d("steps",[r(B,2,11,4,3),r(E,6,8,4,6),r(O,10,5,4,9),r(W,3,8,2,1),r(W,7,5,2,1),r(W,11,2,2,1)]);
+d("flowchart",[r(B,5,1,6,3),r(D,7,4,2,2),p(Y,[[8,6],[12,9],[8,12],[4,9]]),r(D,7,12,2,1),r(R,5,13,6,2)]);
+d("cursor",[p(W,[[4,1],[4,13],[7,10],[10,15],[12,14],[9,9],[13,9]]),p(D,[[4,1],[4,13],[6,11],[6,4]])]);
+d("cat",[r(O,3,4,10,9),p(O,[[3,4],[3,1],[6,4]]),p(O,[[13,4],[13,1],[10,4]]),r(W,4,10,3,3),r(K,5,7,2,2),r(K,9,7,2,2),r(M,7,10,2,1),r(W,0,9,3,1),r(W,13,9,3,1)]);
+d("bug",[o(E,8,9,4.5),o(e,8,4,2.6),r(K,1,7,4,1),r(K,1,10,4,1),r(K,11,7,4,1),r(K,11,10,4,1),r(R,7,8,2,2),r(K,4,8,1,0),r(K,5,0,1,2),r(K,10,0,1,2)]);
+d("loop",[o(B,8,8,6.5),o(null,8,8,3.6),r(null,9,1,8,6),p(R,[[8,2],[13,2],[11,6]]),p(R,[[8,14],[3,14],[5,10]])]);
+d("pattern",[r(R,2,2,6,6),r(B,8,2,6,6),r(Y,2,8,6,6),r(E,8,8,6,6),r(W,4,4,2,2),r(W,10,4,2,2),r(W,4,10,2,2),r(W,10,10,2,2)]);
+d("fork",[p(R,[[2,6],[5,2],[8,9],[7,10]]),p(E,[[14,6],[11,2],[8,9],[9,10]]),r(Y,7,9,2,6),p(R,[[1,3],[6,2],[3,7]]),p(E,[[15,3],[10,2],[13,7]])]);
+d("eye",[p(W,[[0,8],[8,2],[16,8],[8,14]]),o(B,8,8,3.4),o(K,8,8,1.6),x(W,7,7)]);
+d("wave",[p(B,[[0,7],[2,4],[4,7],[6,4],[8,7],[10,4],[12,7],[14,4],[16,7],[16,15],[0,15]]),p(b,[[0,11],[16,11],[16,15],[0,15]]),r(W,2,4,1,1),r(W,6,4,1,1),r(W,10,4,1,1),r(W,14,4,1,1),r(L,3,8,2,1),r(L,9,8,3,1)]);
+d("planet",[p(Y,ell(8,8,7.5,2.6)),o(O,8,8,4.4),o("#ffb060",7,7,1.6),p(Y,ell(8,10,7,1.2).filter(function(q){return q[1]>10})),r("#c97a10",9,9,3,1)]);
+d("ball",[o(O,8,8,6.5),r(n,2,8,12,1),r(n,8,2,1,12),r("#ffb060",4,4,2,1)]);
+d("flow",[p(B,[[1,3],[6,8],[1,13],[4,13],[9,8],[4,3]]),p(L,[[7,3],[12,8],[7,13],[10,13],[15,8],[10,3]])]);
+d("boom",[p(O,star(8,8,7.5,3.6,8)),p(Y,star(8,8,5,2.4,8)),o(W,8,8,1.4)]);
+d("crosshair",[o(R,8,8,6.5),o(null,8,8,4.7),r(R,7,0,2,16),r(R,0,7,16,2),o(null,8,8,1.6),r(R,7,7,2,2)]);
+d("runner",[o(S,9,3,2.2),r(B,7,5,4,5),p(S,[[4,5],[7,6],[7,7],[4,7]]),p(S,[[11,6],[14,4],[14,6],[11,8]]),p(n,[[6,10],[8,10],[5,15],[3,15]]),p(n,[[9,10],[11,10],[13,14],[11,15]])]);
+d("meteor",[p(O,[[8,6],[15,0],[12,8]]),p(Y,[[8,7],[13,2],[11,8]]),o(N,6,10,4.2),r(D,5,9,2,2),r("#c49c5a",4,8,1,1)]);
+d("bubble",[o(L,8,8,6.3),o("#e8f8ff",8,8,5),r(W,5,4,3,1),r(W,4,5,1,3),r(B,10,11,2,1)]);
+d("pearl",[o("#0f6b5a",8,8,6.3),o("#1fa58a",8,8,4.8),r("#7affd8",5,5,3,2),r("#7affd8",5,7,1,1)]);
+d("redstone",[r("#901818",3,3,10,10),r(R,4,4,8,8),r("#ff7a7a",5,5,6,6),r(W,7,7,2,2),r("#901818",3,3,2,2),r("#901818",11,3,2,2),r("#901818",3,11,2,2),r("#901818",11,11,2,2)]);
+d("minecart",[r(G,2,6,12,6),r(D,2,6,12,1),r(g,3,7,10,1),o(K,5,13,1.9),o(K,11,13,1.9),o(g,5,13,.9),o(g,11,13,.9),r(Y,4,4,3,2),r(B,8,3,3,3),r(D,0,15,16,1)]);
+d("blueprint",[r(b,1,2,14,12),r(B,2,3,12,10),r(L,2,6,12,1),r(L,2,10,12,1),r(L,5,3,1,10),r(L,10,3,1,10),r(W,6,7,4,3)]);
+d("list",[r(W,3,1,10,14),r(B,4,3,2,2),r(D,7,3,5,1),r(E,4,7,2,2),r(D,7,7,5,1),r(R,4,11,2,2),r(D,7,11,4,1)]);
+d("table",[r(W,1,3,14,10),r(B,1,3,14,3),r(D,1,6,14,1),r(D,1,9,14,1),r(D,5,3,1,10),r(D,10,3,1,10),r(Y,6,10,4,2)]);
+d("emerald",[p(E,[[8,1],[13,5],[13,11],[8,15],[3,11],[3,5]]),p("#8aff8a",[[8,1],[13,5],[8,6],[3,5]]),p(e,[[8,6],[13,5],[13,11],[8,15]]),r(W,5,6,1,2)]);
+d("chest",[r(N,2,4,12,10),r("#c49c5a",2,4,12,4),r(D,2,8,12,1),r(Y,7,7,2,3),r(n,2,13,12,1),r(D,2,4,1,10),r(D,13,4,1,10)]);
+d("vector",[p(D,[[3,13],[3,9],[6,6],[9,4],[12,3],[12,5],[9,7],[6,10],[5,13]]),r(B,1,12,4,4),r(B,11,1,4,4),r(R,3,6,1,1),r(R,12,8,1,1),r(R,3,6,1,1)]);
+d("layers",[p(L,[[8,1],[15,4],[8,7],[1,4]]),p(B,[[1,6],[8,9],[15,6],[15,8],[8,11],[1,8]]),p(b,[[1,10],[8,13],[15,10],[15,12],[8,15],[1,12]])]);
+d("cell",[r(W,1,2,14,12),r(D,1,6,14,1),r(D,1,10,14,1),r(D,5,2,1,12),r(D,10,2,1,12),r(Y,6,7,4,3),r(R,6,2,4,0),r(B,1,2,14,2)]);
+d("calc",[r(D,3,1,10,14),r(E,4,2,8,3),r(W,4,7,2,2),r(W,7,7,2,2),r(W,10,7,2,2),r(W,4,10,2,2),r(W,7,10,2,2),r(R,10,10,2,4),r(W,4,13,5,1)]);
+d("chart",[r(W,1,1,14,14),r(R,3,9,3,5),r(B,7,5,3,9),r(E,11,2,3,12),r(D,2,14,13,1),r(D,2,1,1,14)]);
+d("skull",[r(W,3,2,10,8),r(W,5,10,6,4),r(K,4,5,3,3),r(K,9,5,3,3),r(K,7,8,2,2),r(K,6,11,1,3),r(K,9,11,1,3),r(g,3,9,10,1)]);
+d("gold",[p(Y,[[0,13],[3,7],[13,7],[16,13]]),p("#fff3a6",[[3,7],[13,7],[12,9],[4,9]]),r(O,0,12,16,1),r("#c9a012",1,13,14,1)]);
+d("sprout",[r(E,7,6,2,8),p(E,[[7,8],[2,4],[7,5]]),p(e,[[9,6],[14,2],[9,4]]),r(n,3,13,10,2),r(N,4,13,8,1)]);
+d("trident",[r(L,7,5,2,10),r(L,3,2,2,6),r(L,7,1,2,5),r(L,11,2,2,6),r(L,3,7,10,2),r(B,7,1,2,1),r(W,3,2,1,1)]);
+d("lava",[p(O,[[8,1],[12,7],[12,11],[8,15],[4,11],[4,7]]),p(Y,[[8,5],[10,9],[8,13],[6,9]]),r("#ffe070",7,9,1,2)]);
+d("play",[r(D,1,3,14,10),r(K,2,4,12,8),p(R,[[6,5],[6,11],[11,8]]),r(G,5,13,6,1)]);
+d("sign",[r(N,2,2,12,8),r("#c49c5a",2,2,12,2),r(n,4,5,8,1),r(n,4,7,6,1),r(n,7,10,2,5)]);
+d("pyramid",[p(Y,[[1,14],[8,2],[15,14]]),p(O,[[8,2],[15,14],[8,14]]),r("#c49c5a",4,10,3,1),r("#c49c5a",9,8,3,1),r(K,7,11,2,3)]);
+d("helmet",[p(Y,[[2,11],[2,8],[5,4],[11,4],[14,8],[14,11]]),r(O,1,11,14,2),r(O,7,3,2,3),r("#ffe070",4,6,2,1)]);
+d("maze",[r(D,1,1,14,14),r(W,2,2,12,1),r(W,2,2,1,12),r(W,2,13,9,1),r(W,10,5,1,9),r(W,5,5,6,1),r(W,5,5,1,5),r(W,5,9,3,1),r(R,12,12,2,2)]);
+d("sparkle",[p(Y,[[8,1],[10,6],[15,8],[10,10],[8,15],[6,10],[1,8],[6,6]]),r(W,7,5,1,2),r(W,5,7,1,1)]);
+d("check",[r(E,2,2,12,12),r(e,2,13,12,1),p(W,[[4,8],[6,7],[7,9],[11,4],[12,5],[7,12],[5,10]])]);
+var M0={s_ghost:"flag",mine:"ore",dig:"pick",s_slider:"slider",s_flash:"bolt",s_liar:"liar",mcart:"boat",def:"zombie",s_wheel:"target",adv:"portal",pairs:"craft",tf:"check",bow:"bow",cloze:"sign",s_sw:"swipe",bld:"pyramid",s_duel:"swords",s_elim:"scissors",s_streak:"flame",whack:"hammer",s_bet:"mountain",s_hang:"abc",boss:"dragon",seq:"steps",layout:"clapper",txtfmt:"aa",ender:"snake",photo:"picture",sorter:"film",critic:"magnifier",objhunt:"magnifier",spell:"pencil",clip:"clip",findrep:"magnifier",styler:"brush",pagesetup:"page",exec:"helmet",al_maze:"maze",algoprop:"scroll",al_ord:"steps",flowchart:"flowchart",scrui:"cursor",script:"cat",costumes:"film",al_bug:"bug",loopn:"loop",pen:"brush",ornament:"pattern",fork5:"fork",sensor:"eye",maze5:"creeper",mc_mine:"pick",mc_nether:"lava",mc_farm:"zombie",u6_6:"pearl",mc_craft:"craft",anim6:"sparkle",mc_dragon:"dragon",show6:"play",mc_rails:"minecart",mc_build:"blueprint",list6:"list",mc_archer:"bow",tbl6:"table",merge6:"table",u6_7:"emerald",mc_dungeon:"chest",wrap6:"picture",vec6:"vector",layers6:"layers",u6_8:"dragon",u6_9:"stone",cells6:"cell",shop6:"calc",chart6:"chart",m_h1:"runner",u6_1:"minecart",u6_2:"skull",u6_3:"gold",garden6:"sprout",ifelse6:"fork",until6:"loop",u6_4:"trident",u6_5:"lava",mc_redstone:"redstone",s_vault:"safe",s_scratch:"key",s_audit:"clip",s_toggles:"lever",s_express:"stopwatch",s_tower:"tower",s_bridge:"bridge"};
+var ser={m_c:"wave",m_d:"planet",m_e:"ball",m_g:"crosshair",m_a:"meteor",m_b:"bubble",m_f:"flow"};
+function icon(t){if(M0[t])return M0[t];var q=/^(m_[a-h])(\d)$/.exec(t);if(q){if(t=="m_f4")return"boom";return ser[q[1]]}return null}
+var done=0;
+window.PXG={apply:function(root){try{(root||document).querySelectorAll('[onclick^="playG("]').forEach(function(bt){var m=/playG\((\d+),(\d+)\)/.exec(bt.getAttribute("onclick")),ic=bt.querySelector(".ic");if(!m||!ic||ic.getAttribute("data-px"))return;var ls=window.LES&&LES[+m[1]],gg=ls&&ls.g&&ls.g[+m[2]],nm=gg&&icon(gg.type),u=nm&&PXI.url(nm);if(!u)return;ic.setAttribute("data-px","1");ic.setAttribute("data-nopx","1");ic.innerHTML="<img class='pxe' alt='' src='"+u+"'>"})}catch(er){}},icon:icon};
 })();
 
 /* 8 клас: сай-фай аркади (стикування, радар, гармата, конвеєр, бій з ШІ, реактор, астероїди) */
@@ -14754,6 +14837,59 @@ function put(w){var b=document.querySelector("#app .hero .big");if(!b||!SC[w])re
 var _a=section5;section5=function(k){var r=_a.apply(this,arguments);k=k||1;var t=TP5[k-1];if(t)put(t.w);return r};
 var _b=section6;section6=function(k){var r=_b.apply(this,arguments);k=k||1;var t=TP6[k-1];if(t)put(t.w);return r};
 window.SCN56=SC;
+})();
+
+/* 6 клас: власні анімовані піксельні шапки під зміст кожної теми */
+(function(){
+function R(x,y,w,h,c,cl,st){return "<rect x='"+x+"' y='"+y+"' width='"+w+"' height='"+h+"' fill='"+c+"'"+(cl?" class='"+cl+"'":"")+(st?" style='"+st+"'":"")+"/>"}
+function D(d){return "animation-delay:"+d+"s"}
+function dots(n,seed,col,y1){var h="",s=seed;for(var i=0;i<n;i++){s=(s*9301+49297)%233280;var X=Math.floor(s/233280*66)+2;s=(s*9301+49297)%233280;h+=R(X,Math.floor(s/233280*y1)+1,1,1,col,"tw",D((i%5)*.3))}return h}
+var S=[
+/* 1. Цифрові пристрої */
+function(){return R(0,0,70,28,"#243050")+dots(10,3,"#8fb0ff",12)+R(0,22,70,6,"#8a5a2b")+R(0,22,70,1,"#b07a3b")+
+ R(8,8,24,13,"#111")+R(9,9,22,11,"#2a7fe0")+R(9,9,22,1,"#6fb4ff")+R(11,11,10,1,"#fff")+R(11,13,14,1,"#cde8ff")+R(11,15,8,1,"#cde8ff")+R(22,15,2,1,"#143a66","blink")+R(6,21,28,1,"#999")+R(10,22,20,1,"#777")+
+ R(38,12,7,10,"#111")+R(39,13,5,7,"#59b4ff")+R(40,14,3,1,"#fff")+R(41,21,1,1,"#555")+R(40,12,1,1,"#3ad06a","blink")+
+ R(49,10,15,12,"#111")+R(50,11,13,9,"#7fe0a0")+R(52,13,4,1,"#145a30")+R(52,15,9,1,"#145a30")+R(52,17,6,1,"#145a30")+R(56,21,1,1,"#ccc")+
+ R(34,7,1,1,"#ff5555","blink")+R(3,6,2,2,"#3ad06a","sig")+R(5,4,2,2,"#3ad06a","sig",D(.4))+R(7,2,2,2,"#3ad06a","sig",D(.8))+R(31,18,2,1,"#3ad06a","blink")}
+,
+/* 2. Презентації */
+function(){return R(0,0,70,28,"#3a2a4a")+R(0,24,70,4,"#5a3a2a")+R(0,0,7,28,"#a02030")+R(7,0,2,28,"#701020")+R(63,0,7,28,"#a02030")+R(61,0,2,28,"#701020")+
+ R(14,3,42,18,"#111")+R(15,4,40,16,"#f2f2f2")+R(17,6,22,3,"#2d6be0","blink")+R(17,11,16,1,"#888","blink")+R(17,13,12,1,"#888","blink")+R(17,15,14,1,"#888","blink")+
+ R(17,6,14,2,"#e0314f")+R(17,10,20,1,"#555")+R(17,12,10,1,"#555")+R(40,8,12,10,"#3ad06a")+R(42,10,8,6,"#8fe8a8")+R(44,12,4,2,"#fff")+
+ R(14,21,42,1,"#666")+R(33,22,4,2,"#444")+R(28,9,1,1,"#ff2020","flick")+R(60,18,3,6,"#2d9cf0")+R(60,16,3,3,"#e0b48a")+R(46,2,1,1,"#ffd23f","tw")+R(52,22,1,1,"#ffd23f","tw",D(.6))}
+,
+/* 3. Текстові документи */
+function(){return R(0,0,70,28,"#6f8fb5")+R(0,0,70,2,"#4f6f95")+R(10,2,50,26,"#d8d8d8")+R(12,3,46,25,"#fff")+
+ R(15,5,24,2,"#222")+R(15,9,40,1,"#555")+R(15,11,40,1,"#555")+R(15,13,34,1,"#555")+R(15,15,40,1,"#555")+R(15,17,28,1,"#555")+R(15,19,36,1,"#555")+
+ R(15,21,10,1,"#555","write")+R(26,20,1,3,"#2d6be0","blink")+R(44,10,10,3,"#fff3a0","sway")+R(3,6,5,12,"#9a6a3a")+R(4,7,3,10,"#c49c5a")+R(61,6,6,16,"#2d6be0")+R(62,8,4,2,"#fff")+R(62,12,4,2,"#fff")+R(62,16,4,2,"#fff")}
+,
+/* 4. Графічні зображення */
+function(){return R(0,0,70,28,"#d9eeff")+R(0,24,70,4,"#8a6a3a")+R(16,2,34,19,"#6b4a2a")+R(17,3,32,17,"#fff")+R(17,3,32,9,"#8fd8ff")+R(17,12,32,8,"#7cc050")+
+ R(38,5,6,6,"#ffd23f","glow")+R(38,5,6,6,"#ffd23f")+R(20,7,8,4,"#fff")+R(21,6,6,1,"#fff")+R(25,10,10,10,"#4a9a30")+R(28,11,4,3,"#e0314f")+R(22,14,2,6,"#c0392b")+
+ R(30,21,2,3,"#6b4a2a")+R(18,21,2,3,"#6b4a2a")+R(46,21,2,3,"#6b4a2a")+
+ R(54,15,13,9,"#c49c5a")+R(56,17,2,2,"#e0314f")+R(59,17,2,2,"#2d9cf0")+R(62,17,2,2,"#ffd23f")+R(57,20,2,2,"#3ad06a")+R(61,20,2,2,"#a45be6")+
+ R(4,6,2,14,"#8a5a2b")+R(3,2,4,5,"#e0314f","float")+R(3,2,4,1,"#fff","float")+R(8,4,1,1,"#ffd23f","tw")+R(10,8,1,1,"#e0314f","tw",D(.5))}
+,
+/* 5. Моделювання та електронні таблиці */
+function(){var h=R(0,0,70,28,"#cfe8d0")+R(2,2,38,24,"#fff")+R(2,2,38,4,"#217346");for(var i=1;i<5;i++)h+=R(2+i*8,2,1,24,"#8fb59a");for(var j=1;j<6;j++)h+=R(2,2+j*4,38,1,"#8fb59a");
+ h+=R(3,3,6,2,"#fff")+R(11,3,6,2,"#fff")+R(19,3,6,2,"#fff")+R(11,11,6,3,"#fff3a0","blink")+R(19,15,6,3,"#9fe0b0")+R(27,7,6,3,"#9fe0b0")+R(3,19,6,3,"#9fe0b0")+
+ R(44,2,24,24,"#fff")+R(45,3,22,1,"#8fb59a")+R(46,22,20,1,"#333")+R(46,6,1,16,"#333")+R(48,16,4,6,"#e0314f","float")+R(54,11,4,11,"#2d9cf0","float",D(.4))+R(60,6,4,16,"#3ad06a","float",D(.8))+R(47,5,1,1,"#ffd23f","tw");return h}
+,
+/* 6. Алгоритми та програми */
+function(){return R(0,0,70,28,"#1e2538")+dots(8,5,"#6f8fff",10)+R(2,3,34,22,"#10141f")+R(2,3,34,2,"#2d3550")+
+ R(4,7,6,2,"#e0314f")+R(11,7,10,2,"#fff")+R(6,10,5,2,"#ffd23f")+R(12,10,12,2,"#7fe0a0")+R(6,13,8,2,"#2d9cf0")+R(15,13,6,2,"#fff")+R(8,16,6,2,"#ffd23f")+R(15,16,10,2,"#7fe0a0")+R(4,19,6,2,"#e0314f")+R(11,19,8,2,"#fff")+R(24,19,2,2,"#fff","blink")+
+ R(40,5,12,5,"#2d9cf0")+R(45,10,2,3,"#8fb0ff")+R(40,13,12,6,"#ffd23f")+R(45,19,2,3,"#8fb0ff")+R(40,22,12,4,"#3ad06a")+
+ R(57,10,10,9,"#c6c6c6","float")+R(58,11,8,5,"#2d9cf0","float")+R(60,12,1,2,"#fff","float")+R(63,12,1,2,"#fff","float")+R(55,13,2,4,"#8b8b8b","float")+R(67,13,2,4,"#8b8b8b","float")+R(59,19,3,4,"#8b8b8b")+R(63,19,3,4,"#8b8b8b")+R(61,8,1,2,"#8b8b8b")+R(61,7,1,1,"#e0314f","blink")}
+,
+/* 7. Практикум */
+function(){return R(0,0,70,28,"#2a3a5a")+dots(14,11,"#ffe070",18)+R(0,24,70,4,"#5a4a3a")+R(18,16,10,8,"#c6c6c6")+R(30,12,10,12,"#ffd23f")+R(42,18,10,6,"#c49c5a")+R(18,16,10,1,"#fff")+R(30,12,10,1,"#fff3a6")+R(42,18,10,1,"#e0b880")+
+ R(21,18,4,4,"#555")+R(34,15,2,6,"#8a5a00")+R(46,20,2,3,"#5c3a1a")+
+ R(31,4,8,6,"#ffd23f","glow")+R(32,3,6,7,"#ffd23f")+R(33,3,4,1,"#fff3a6")+R(34,10,2,2,"#e0a000")+R(32,11,6,1,"#e0a000")+R(29,5,2,3,"#ffd23f")+R(39,5,2,3,"#ffd23f")+R(34,5,2,2,"#fff","tw")+
+ R(8,6,3,3,"#ffd23f","tw")+R(58,8,3,3,"#ffd23f","tw",D(.5))+R(10,12,2,2,"#e0314f","tw",D(.9))+R(60,14,2,2,"#2d9cf0","tw",D(.2))+R(54,4,2,2,"#fff","tw",D(1.1))}
+];
+function put(k){var b=document.querySelector("#app .hero .big");if(!b||!S[k-1])return;b.className="big scn";b.innerHTML="<svg viewBox='0 0 70 28' shape-rendering='crispEdges' aria-hidden='true'>"+S[k-1]()+"</svg>"}
+var _s=section6;section6=function(k){var r=_s.apply(this,arguments);try{put(k||1)}catch(e){}return r};
+window.SCN6=S;
 })();
 
 /* Ачівки 5 класу (тест): 11 на кожен урок, показ під прогресом уроку та сума на головних екранах */
