@@ -14581,6 +14581,59 @@ document.head.appendChild(st);
 (function(){if(window.GM&&GM.arch)GM.mc_archer=function(g){return GM.arch(g)}})();
 (function(){var gi=window.GI;if(gi&&!gi.arch){gi.arch=gi.mc_archer||["🏹","Лучник: захист башти"]}else if(window.GI5&&!GI5.arch){GI5.arch=GI5.mc_archer||["🏹","Лучник: захист башти"]}})();
 
+/* ===== «Ринок» (замість Серфінгу, 6 клас): селянин-покупець, питання = замовлення ===== */
+(function(){
+var M=window.MC,Q=function(n){return GQ(CUR9,n)};
+function sp(x,y,s,m,p){var o="";m.forEach(function(r,j){for(var i=0;i<r.length;i++){var c=r[i];if(c!=="."&&p[c])o+="<rect x='"+(x+i*s)+"' y='"+(y+j*s)+"' width='"+s+"' height='"+s+"' fill='"+p[c]+"'/>"}});return o}
+function rc(x,y,w,h,f){return "<rect x='"+x+"' y='"+y+"' width='"+w+"' height='"+h+"' fill='"+f+"'/>"}
+var PL={k:"#1a1209",y:"#ffd34d",d:"#b8860b",b:"#2f80ed",w:"#fff",g:"#27ae60",r:"#e74c3c"};
+var IC=[
+["...kkkkkk...","..kk....kk..","..k......k..",".kk......kk.","kkkkkkkkkkkk","kyyyyyyyyyyk","kyyyyddyyyyk","kyyyyddyyyyk","kyyyyyddyyyk","kyyyyyyyyyyk","kyyyyyyyyyyk","kkkkkkkkkkkk"],
+["..kkkkkkkk..","..kbbbbbbk..","..kbwwwwbk..","..kbwggwbk..","..kbwggwbk..","..kbwwwwbk..","..kbwkkwbk..","..kbwwwwbk..","..kbbbbbbk..","..kbbggbbk..","..kkkkkkkk.."],
+["kkkkkkkkkkkk","kbbbbbbbbbbk","kbbbwwwbbbbk","kbbwwwwwbbbk","kbbwwkwwbbbk","kbbbwkwbbbbk","kbbbbkbbbbbk",".kbbbkbbbbk.","..kbbbbbbk..","...kbbbbk...","....kbbk....","....kkkk...."],
+["..k......k..","...k....k...","....kkkk....","..kkrrrrkk..",".krrwrrwrrk.",".krrrrrrrrk.","kkrrkrrkrrkk",".krrrrrrrrk.","kkrrkrrkrrkk","..krrrrrrk..","...kkkkkk..."]];
+var COIN=[".kkkk.","kyyyyk","kyddyk","kyddyk","kyyyyk",".kkkk."];
+var HD=["hhhhhhhh","ssssssss","bbbbbbbb","swgssgws","ssssssss","sssnnsss","sssnnsss","sssnnsss","sssNNsss","ssssssss"];
+var BT=["rrrrrrrrrrrr","rrrrrrrrrrrr"],AR=["dddddddddddddd","aaaaaaaaaaaaaa","aaaaaaaaaaaaaa","dddddddddddddd"],LW=["rrrrqqqqrrrr","rrrrqqqqrrrr","rrrrqqqqrrrr","rrrrqqqqrrrr","rrrrqqqqrrrr","rrrrqqqqrrrr"];
+var VP={h:"#a9794f",s:"#c49a73",n:"#a37650",N:"#7e5636",b:"#2f2014",w:"#f4f4f4",g:"#4f7a3a",r:"#6e4b2a",q:"#8a6238",d:"#4a3118",a:"#8c6a42"};
+function scene(){var o="",i,S=5,VX=70,VY=242-22*S;
+ o+="<defs><linearGradient id='mksk' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#4aa8ff'/><stop offset='1' stop-color='#d8f1ff'/></linearGradient></defs>"+rc(10,62,380,230,"url(#mksk)");
+ o+=rc(300,66,44,22,"#ffe27a");
+ [[22,72],[190,80]].forEach(function(p){o+=rc(p[0],p[1],36,8,"#fff")+rc(p[0]+8,p[1]-6,22,8,"#fff")});
+ [[56,196,34,46,"#c9a27a"],[92,208,30,34,"#b0856a"],[366,200,24,42,"#c9a27a"]].forEach(function(q){o+=rc(q[0],q[1],q[2],q[3],q[4])+rc(q[0]-3,q[1]-8,q[2]+6,9,"#8e3b2e")+rc(q[0]+6,q[1]+12,8,10,"#7fb8e8")});
+ o+=rc(12,206,6,36,"#6b4423")+rc(2,186,26,24,"#2e8b3e")+rc(8,178,14,10,"#3aa24d");
+ o+=rc(30,92,340,38,"#fff");for(i=0;i<5;i++)o+=rc(64+i*68,92,34,38,"#b03a2e");o+=rc(30,124,340,6,"#7b241c");
+ for(i=0;i<17;i++)o+=rc(30+i*20,130,14,10,["#f1c40f","#2e86c1","#27ae60","#e67e22"][i%4]);
+ o+=rc(40,130,8,112,"#6b4423")+rc(352,130,8,112,"#6b4423");
+ [56,344].forEach(function(x){o+=rc(x,140,2,10,"#000")+rc(x-6,150,14,16,"#ffb347")+rc(x-3,153,8,10,"#fff2b3")});
+ o+="<g id='mkw'><g>"+sp(VX,VY+10*S,S,BT,VP)+sp(VX,VY+16*S,S,LW,VP)+sp(VX-S,VY+12*S,S,AR,VP)+"</g><g id='mkh'>"+sp(VX+2*S,VY,S,HD,VP)+"<g id='mkb'>"+rc(VX+2*S,VY+3*S,8*S,S,"#c49a73")+rc(VX+3*S,VY+3*S+3,2*S,3,"#2f2014")+rc(VX+7*S,VY+3*S+3,2*S,3,"#2f2014")+"</g></g></g>";
+ o+=rc(26,242,348,46,"#d9b36b")+rc(26,262,348,3,"#b98f48")+rc(26,242,348,3,"#000")+rc(26,285,348,3,"#000");
+ o+=rc(46,226,28,18,"#8a5a2b")+rc(46,232,28,3,"#6b4423")+rc(50,218,20,8,"#c0392b")+rc(54,214,6,6,"#e74c3c")+rc(62,216,6,6,"#e74c3c");
+ o+=rc(290,222,30,22,"#8a5a2b")+rc(290,228,30,3,"#6b4423")+rc(296,214,18,8,"#27ae60");
+ o+=sp(334,226,3,COIN,PL)+sp(334,217,3,COIN,PL)+sp(346,226,3,COIN,PL);
+ return "<svg id='mksv' viewBox='10 62 380 230' width='100%' shape-rendering='crispEdges' style='display:block;border:3px solid #000'>"+o+"</svg>"}
+var CSS="<style>#mkw{animation:mkbob 1.2s steps(1) infinite}#mkh{animation:mkhd 4s steps(1) infinite}#mkb{opacity:0;animation:mkbl 4s steps(1) infinite}#mksv.yes #mkh{animation:mknod .5s steps(1) 3}#mksv.no #mkh{animation:mkshk .4s steps(1) 4}"+
+"@keyframes mkbob{0%{transform:translateY(0)}50%{transform:translateY(2px)}}@keyframes mkhd{0%{transform:translate(0,0)}6%{transform:translate(-5px,0)}12%{transform:translate(5px,0)}18%{transform:translate(-5px,0)}24%{transform:translate(0,0)}50%{transform:translate(0,3px)}56%{transform:translate(0,0)}62%{transform:translate(0,3px)}68%{transform:translate(0,0)}}"+
+"@keyframes mkbl{0%{opacity:0}38%{opacity:1}41%{opacity:0}80%{opacity:1}83%{opacity:0}}@keyframes mknod{0%{transform:translateY(0)}50%{transform:translateY(5px)}}@keyframes mkshk{0%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}"+
+".mkb{position:absolute;left:39%;top:6%;width:57%;background:#fff;border:3px solid #000;padding:6px 8px;font-size:12px;line-height:1.25;color:#000;box-sizing:border-box;max-height:62%;overflow:auto}.mkb b{color:#b03a00;font-size:10px;display:block}"+
+".mkc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.mkc button{display:flex;gap:6px;align-items:center;text-align:left;background:#fdf1c7;border:3px solid #000;padding:6px;font-size:12px;color:#000;min-height:64px;cursor:pointer}.mkc button.sel{background:#fff7c2;border-color:#ff9f00}.mkc button.ok{background:#2ecc71}.mkc button.bad{background:#e74c3c;color:#fff}.mkc canvas{flex:none;width:38px;height:38px;background:#2b1d10;border:2px solid #000;image-rendering:pixelated}"+
+".mks{width:100%;background:#27ae60;color:#fff;border:3px solid #000;font-size:18px;font-weight:bold;padding:12px;cursor:pointer}.mks:disabled{background:#6b7d6f;opacity:.7}.mkt{display:flex;justify-content:space-between;background:#5a3b1f;border:3px solid #000;color:#ffe27a;font-weight:bold;padding:8px 10px;margin-bottom:6px;font-size:14px}.mkm{min-height:22px;text-align:center;font-weight:bold;margin-top:6px}</style>";
+function icon(k){var c=document.createElement("canvas");c.width=c.height=38;var x=c.getContext("2d"),m=IC[k%IC.length],s=3,ox=Math.floor((38-m[0].length*s)/2),oy=Math.floor((38-m.length*s)/2);m.forEach(function(r,j){for(var i=0;i<r.length;i++){var ch=r[i];if(ch!=="."&&PL[ch]){x.fillStyle=PL[ch];x.fillRect(ox+i*s,oy+j*s,s,s)}}});return c}
+GM.m_c4=function(g){var qs=Q(5);if(qs.length<2)return fin9(0,1);var NO=Math.min(5,qs.length),oi=0,sc=0,coins=0,streak=0;
+ var el=M.frame("Ринок: обслужи покупця","Покупець-селянин робить замовлення (питання). Обери товар на полиці з правильною відповіддю й натисни «Продати».",CSS+"<div id='mkr'></div>");
+ function round(){if(oi>=NO)return fin9(sc,NO);var q=qs[oi],sel=null,done=false,b=document.getElementById("mkr");
+  b.innerHTML="<div class='mkt'><span>🪙 "+coins+"</span><span>Замовлення "+(oi+1)+"/"+NO+"</span><span>★ "+sc+"</span></div><div style='position:relative'>"+scene()+"<div class='mkb'><b>ЗАМОВЛЕННЯ №"+(oi+1)+"</b>"+q.q.replace(/</g,"&lt;")+"</div></div><div class='mkc' id='mkc'></div><button class='mks' id='mks' disabled>ПРОДАТИ</button><div class='mkm' id='mkm'></div>";
+  var ops=shuffle(q.a.slice(0,4)).map(function(t){return {t:t,ok:t===q.a[0]}}),box=document.getElementById("mkc"),sv=document.getElementById("mksv"),btn=document.getElementById("mks"),ms=document.getElementById("mkm");
+  ops.forEach(function(o,k){var bt=document.createElement("button");bt.appendChild(icon(k));var sp2=document.createElement("span");sp2.textContent=o.t;bt.appendChild(sp2);bt.onclick=function(){if(done)return;sel=o;[].forEach.call(box.children,function(x){x.className=""});bt.className="sel";btn.disabled=false;M.snd("click")};box.appendChild(bt);o.b=bt});
+  btn.onclick=function(){if(done||!sel)return;done=true;btn.disabled=true;ops.forEach(function(x){if(x.ok)x.b.className="ok"});
+   if(sel.ok){sc++;streak++;var gain=20+Math.min(streak-1,3)*5;coins+=gain;sv.setAttribute("class","yes");ms.textContent="✔ Продано! +"+gain+" 🪙"+(streak>1?" · серія ×"+streak:"");ms.style.color="#27ae60";M.snd("ok")}
+   else{streak=0;sel.b.className="bad";sv.setAttribute("class","no");ms.textContent="✖ Покупець хитає головою. Правильно – зелений товар.";ms.style.color="#e74c3c";M.snd("bad")}
+   setTimeout(function(){if(!document.body.contains(b))return;oi++;round()},sel.ok?1400:2400)};
+ }
+ round()};
+window.ARENA_TITLES.m_c4="Ринок";if(window.GI)GI.m_c4=[GI.m_c4?GI.m_c4[0]:"🛒","Ринок"];if(window.GI5)GI5.m_c4=GI.m_c4;
+})();
+
 /* ===== універсальний банер-візуал для всіх ігор, кольорове розділення пар, кнопка «пуск», стилі нових ігор ===== */
 (function(){
 var SKC={space:["#5b4bff","#22d3ee"],cave:["#6b4f2a","#8d9a9a"],nether:["#c2410c","#7f1d1d"],end:["#6d28d9","#312e81"],ocean:["#0284c7","#06b6d4"],forest:["#2e7d32","#9acd32"],cyber:["#ff2e93","#22d3ee"],matrix:["#0f9d58","#064e3b"],ios:["#7c5cff","#00b4ff"],design:["#ff5f6d","#ffa14d"]};
