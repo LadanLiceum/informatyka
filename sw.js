@@ -5,6 +5,5 @@ function timeout(p,ms){return new Promise((res,rej)=>{const t=setTimeout(()=>rej
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;const u=new URL(r.url);
  if(u.hostname==="fonts.googleapis.com"||u.hostname==="fonts.gstatic.com"){e.respondWith(caches.open(F).then(c=>c.match(r).then(m=>m||fetch(r).then(res=>{if(res&&(res.ok||res.type==="opaque"))c.put(r,res.clone());return res}).catch(()=>m))));return}
  if(u.origin!==location.origin)return;
- if(r.mode==="navigate"||/(^|\/)(index\.html)?$/.test(u.pathname)){e.respondWith(caches.open(C).then(c=>c.match("index.html").then(m=>{const net=fetch(r).then(res=>{if(res&&res.ok)c.put("index.html",res.clone());return res}).catch(()=>m);return m||net})));return}
  /* спочатку мережа (свіжа версія), але на слабкому інтернеті через 4 с віддаємо збережену */
  e.respondWith(timeout(fetch(r),4000).then(res=>{if(res&&res.ok){const cp=res.clone();caches.open(C).then(c=>c.put(r,cp))}return res}).catch(()=>caches.match(r,{ignoreSearch:true}).then(m=>m||(r.mode==="navigate"?caches.match("index.html"):undefined)||fetch(r))))});
