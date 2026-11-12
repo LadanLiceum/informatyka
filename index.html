@@ -20376,6 +20376,45 @@ var _w=who;who=function(){var r=_w.apply(this,arguments);try{add()}catch(e){}ret
 var _t=topics;topics=function(){var r=_t.apply(this,arguments);try{add()}catch(e){}return r};
 })();
 
+/* Арена знань – стиль 7 класу */
+(function(){
+var D="#150a33",S="body.g5.g7";
+var css=[
+S+"{--k7:#7b3cff;--pri:#ffd23a;background:linear-gradient(160deg,#5b2bd6 0%,#2d7bff 55%,#19c6ff 100%)!important;background-attachment:fixed!important}",
+S+":before{background:repeating-linear-gradient(115deg,rgba(255,255,255,.07) 0 26px,transparent 26px 60px)!important}",
+S+" h1,"+S+" h2{text-transform:uppercase;transform:skewX(-8deg) rotate(-1.5deg);transform-origin:left center;text-shadow:3px 3px 0 "+D+",-1px -1px 0 "+D+",5px 5px 0 #ff3d8b!important;letter-spacing:.8px}",
+S+" #app .hero h1{color:#fff!important}",
+S+" .card,"+S+" .lv{background:linear-gradient(180deg,#2a1668,"+D+")!important;border:3px solid #fff!important;border-radius:16px!important;box-shadow:5px 5px 0 #0d0620!important}",
+S+" .ill-wrap{border:3px solid #fff!important;box-shadow:5px 5px 0 #0d0620!important}",
+S+" button{border:3px solid "+D+"!important;border-radius:12px!important;box-shadow:3px 4px 0 "+D+"!important;text-transform:none}",
+S+" button.pri{background:linear-gradient(#ffe24a,#ffb000)!important;color:#2a1a00!important;text-shadow:none!important;text-transform:uppercase;transform:skewX(-6deg);box-shadow:0 5px 0 #8a5a00!important}",
+S+" button.pri:active{transform:skewX(-6deg) translateY(4px)}",
+S+" button.sm{background:"+D+"!important;color:#fff!important;border:3px solid #fff!important;transform:skewX(-8deg);box-shadow:3px 3px 0 #0d0620!important}",
+S+" .mb{border:3px solid #fff!important;border-radius:14px!important;box-shadow:4px 4px 0 #0d0620!important;transform:rotate(-.6deg);text-shadow:none!important}",
+S+" .mb:nth-of-type(even){transform:rotate(.6deg)}",
+S+" .mb b{text-shadow:2px 2px 0 "+D+"!important;text-transform:uppercase;letter-spacing:.3px}",
+S+" .mb .sub{text-shadow:1px 1px 0 "+D+"!important}",
+S+" .mb .ic{border:3px solid "+D+"!important;background:rgba(255,255,255,.28)!important;border-radius:12px!important;transform:skewX(-6deg)}",
+S+" .lock{filter:grayscale(.9) brightness(.7)!important}",
+S+" .bar,"+S+" .pbar{background:"+D+"!important;border:3px solid #fff!important}",
+S+" .bar i,"+S+" .pbar i{background:linear-gradient(90deg,#ffd23a,#ff8a2a)!important;border-right:2px solid "+D+"!important}",
+S+" .go7{background:linear-gradient(#ffe24a,#ffb000)!important;color:#2a1a00!important;text-shadow:none!important;border:3px solid "+D+"!important;text-transform:uppercase;transform:skewX(-6deg)}",
+S+" .blk{background:linear-gradient(#7b3cff,#5b2bd6)!important;border:3px solid "+D+"!important;text-shadow:none!important;font-weight:900;box-shadow:3px 4px 0 "+D+"!important}",
+S+" .blk.ok,"+S+" button.ok{background:linear-gradient(#8dff9a,#2fbf5a)!important;color:#073d1a!important}",
+S+" .blk.bad,"+S+" button.bad{background:linear-gradient(#ff9ab8,#e0306a)!important;color:#fff!important}",
+S+" .ach .at{color:#ffd23a;text-transform:uppercase;letter-spacing:.5px}",
+S+" .atoast .acard,"+S+" .t7 .acard{background:linear-gradient(#2a1668,"+D+")!important;border:3px solid #ffd23a!important;box-shadow:0 0 26px #ffd23a88,5px 5px 0 #0d0620!important}",
+S+" .atoast .ahd{color:#ffd23a!important}",
+S+" .kp li,"+S+" .fun,"+S+" .chip{border:3px solid "+D+"!important;box-shadow:3px 3px 0 "+D+"}",
+S+" .wpill{display:none}"
+].join("");
+var st=document.createElement("style");st.id="a7css";st.textContent=css;document.head.appendChild(st);
+/* заголовок-«сезон» на списку тем */
+var _tp=window.topics;
+function ban(){try{if(!document.body.classList.contains("g7"))return;var a=document.getElementById("app");if(!a||a.querySelector(".s7"))return;var h=a.querySelector(".c7,.hero,.lv");if(!h)return;var d=document.createElement("div");d.className="s7";d.style.cssText="display:inline-block;margin:6px 0 2px;background:#ff3d8b;color:#fff;border:3px solid #fff;border-radius:10px;padding:3px 12px;font-weight:900;font-size:12px;text-transform:uppercase;transform:skewX(-8deg) rotate(-2deg);box-shadow:3px 3px 0 #0d0620;letter-spacing:.6px";d.textContent="Арена знань · Сезон 1";h.insertBefore(d,h.firstChild)}catch(e){}}
+if(typeof _tp=="function"){window.topics=function(){var r=_tp.apply(this,arguments);ban();return r}}
+})();
+
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
 function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
 var _pt;function queuePush(){clearTimeout(_pt);_pt=setTimeout(push,1200)}
