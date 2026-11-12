@@ -41,7 +41,7 @@ label{font-weight:700;font-size:16px}
 table{width:100%;border-collapse:collapse;font-size:16px}th,td{padding:6px;border-bottom:1px solid var(--bd);text-align:left}
 tr.lo td{background:color-mix(in srgb,var(--bad) 18%,transparent)}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Rubik:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Rubik:wght@700;800&display=swap" media="print" onload="this.media='all'">
 <style>
 html:root,html:root:not([data-theme="light"]),html:root[data-theme="dark"]{color-scheme:dark;--bg:#120a2e;--bgi:none;--card:rgba(255,255,255,.09);--tx:#fff;--mut:#cfc8f5;--pri:#ff3d9a;--ok:#2be38b;--bad:#ff5470;--bd:rgba(255,255,255,.2)}
 body{font-family:"Nunito","Rubik",system-ui,sans-serif;font-weight:600;color:#fff;background:radial-gradient(900px 500px at 85% -10%,#ff3d9a55,transparent 60%),radial-gradient(700px 500px at -10% 30%,#2b8cff55,transparent 60%),radial-gradient(800px 600px at 50% 120%,#7c3aed66,transparent 60%),linear-gradient(180deg,#1a0f45,#0e0827);background-attachment:fixed}
@@ -274,11 +274,11 @@ body.g10y .wbar{background:linear-gradient(90deg,#7c5cff,#ff6b9a,#ffb84d);color:
 body.g10y .wbar i{border:0;background:rgba(255,255,255,.85)}body.g10y .wbar i:nth-child(n){background:rgba(255,255,255,.85)}
 body.g10y .wbody{background-image:radial-gradient(#e3e8ff 1.5px,transparent 1.5px);background-size:14px 14px}
 </style>
-<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' media='print' onload="this.media='all'">
 <link rel='manifest' href='manifest.json'><meta name='theme-color' content='#2b2f55'><link rel='icon' href='icon.svg'><link rel='apple-touch-icon' href='apple-touch-icon.png'><meta name='apple-mobile-web-app-capable' content='yes'><meta name='mobile-web-app-capable' content='yes'><meta name='apple-mobile-web-app-title' content='Інформатика'><meta name='apple-mobile-web-app-status-bar-style' content='black-translucent'>
 </head>
 <body>
-<main id="app"></main>
+<main id="app"><style>@keyframes splr{to{transform:rotate(360deg)}}</style><div id='spl' style='display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;gap:14px;text-align:center'><div style='width:54px;height:54px;border:6px solid rgba(128,128,128,.3);border-top-color:#7c3aed;border-radius:50%;animation:splr .9s linear infinite'></div><div style='font-weight:800;opacity:.8'>Завантаження…</div></div></main>
 <script>
 var S={read:0,quiz:0,game:0},ME=null,T="";
 try{var s=JSON.parse(localStorage.getItem("inf5"));if(s)S=s;ME=JSON.parse(localStorage.getItem("inf5me"));T=localStorage.getItem("inf5t")||""}catch(e){}
@@ -20562,7 +20562,7 @@ function flush(){if(RESULTS_URL.indexOf("http")!==0)return Promise.resolve([]);v
 function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t)return Promise.resolve();var o=obGet();var ant="";try{var A_=JSON.parse(localStorage.getItem("inf5ant")||"{}"),pre=ME.c+"|"+ME.n+"|";Object.keys(A_).forEach(function(k){if(k.indexOf(pre)===0)ant+="\n"+A_[k]})}catch(e){}o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code()+ant;obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку – відправимо пізніше")})}
 window.addEventListener("online",function(){flush()});
 var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf11l"||k=="inf10g"||k=="inf5me"))queuePush()};
-if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}return navigator.serviceWorker.ready}).then(function(){try{if(localStorage.getItem("infOff"))return;caches.open("inf-v3").then(function(c){return c.match("index.html")}).then(function(m){if(!m)return;localStorage.setItem("infOff","1");var d=document.createElement("div");d.textContent="✅ Готово: застосунок працюватиме й без інтернету";d.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:12px;font:600 14px sans-serif;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";setTimeout(function(){d.remove()},700)},4500)})}catch(e){}}).catch(function(){})});
+if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}return navigator.serviceWorker.ready}).then(function(){try{if(localStorage.getItem("infOff"))return;caches.open("inf-v4").then(function(c){return c.match("index.html")}).then(function(m){if(!m)return;localStorage.setItem("infOff","1");var d=document.createElement("div");d.textContent="✅ Готово: застосунок працюватиме й без інтернету";d.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:12px;font:600 14px sans-serif;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";setTimeout(function(){d.remove()},700)},4500)})}catch(e){}}).catch(function(){})});
 setTimeout(flush,1500);
 setTimeout(push,3000);
 topics();
