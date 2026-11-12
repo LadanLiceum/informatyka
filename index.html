@@ -16550,6 +16550,78 @@ if(typeof LES!="undefined"&&LES[715])LES[715].g.push({type:"cannon",title:"Га�
 })();
 window.addEventListener("unhandledrejection",function(e){var m=(e.reason&&e.reason.message)||"";if(/null/.test(m)&&!document.getElementById("crS")&&!document.getElementById("cnS"))e.preventDefault()});
 
+/* ===== 7 клас · урок 14 · «Гонка з пітстопом» (змінні) — замінює «Склад-скриньки» ===== */
+(function(){
+var E=window.E7;if(!E||typeof GM=="undefined"||typeof LES=="undefined"||!LES[714])return;
+var N="#150a33",val=E.val,fmt=E.fmt,ev=E.ev;
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function tween(ms,alive,fn){return new Promise(function(res){var t0=performance.now();(function f(t){var p=Math.min(1,Math.max(0,(t-t0)/ms));if(!alive()){res();return}fn(p);if(p<1)requestAnimationFrame(f);else res()})(t0)})}
+function car(x,y,sc,col,boost,smoke){return "<g transform='translate("+x+","+y+") scale("+sc+")'><ellipse cx='28' cy='30' rx='34' ry='6' fill='#0007'/>"+(boost?"<path d='M-6 6Q-34 0 -30 14Q-12 12 -4 12Z' fill='#ffd23f' stroke='"+N+"' stroke-width='2'/><path d='M-6 8Q-24 8 -22 12Q-12 12 -6 12Z' fill='#ff8a2a'/>":"")+(smoke?"<circle cx='4' cy='-4' r='7' fill='#cfd6e8' opacity='.8'/><circle cx='-6' cy='-14' r='9' fill='#aab3cc' opacity='.6'/>":"")+"<g stroke='"+N+"' stroke-width='3' stroke-linejoin='round'><path d='M0 10Q2 0 16 -2L30 -14Q36 -18 46 -14L58 -2Q70 0 70 12V20H0Z' fill='"+col+"'/><path d='M30 -12L44 -12L54 -2H24Z' fill='#bfefff'/><rect x='-2' y='4' width='6' height='6' rx='2' fill='#ffd23f'/><circle cx='16' cy='22' r='9' fill='#2b2f55'/><circle cx='56' cy='22' r='9' fill='#2b2f55'/><circle cx='16' cy='22' r='3.5' fill='#c9d4ff' stroke='none'/><circle cx='56' cy='22' r='3.5' fill='#c9d4ff' stroke='none'/></g><path d='M6 8H64' stroke='#fff' stroke-width='3' opacity='.55'/></g>"}
+var BG="<defs><linearGradient id='rcS' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#3a1d8f'/><stop offset='.55' stop-color='#ff6f91'/><stop offset='1' stop-color='#ffc46b'/></linearGradient></defs><rect width='360' height='210' fill='url(#rcS)'/><circle cx='280' cy='84' r='34' fill='#fff2b0' opacity='.9'/><path d='M0 110L40 70L80 104L130 56L190 108L250 74L310 110L360 90V120H0Z' fill='#2a1a6e' opacity='.85'/><path d='M0 120L60 98L120 118L200 92L280 118L360 100V130H0Z' fill='#1b0f4a'/><rect y='128' width='360' height='82' fill='#2b2f55'/><rect y='128' width='360' height='6' fill='#ff4d6d'/><rect y='134' width='360' height='4' fill='#fff'/>";
+function dashes(off){var s="<g fill='#fff' opacity='.85'>";for(var x=-70;x<400;x+=60)s+="<rect x='"+(x+off%60)+"' y='164' width='34' height='4' rx='2'/>";return s+"</g>"}
+function edge(){var s="<rect y='200' width='360' height='10' fill='#ff4d6d'/><g fill='#fff'>";for(var x=0;x<360;x+=30)s+="<rect x='"+x+"' y='200' width='15' height='10'/>";return s+"</g>"}
+function ftxt(x,y,t,c,sz,o){return "<text x='"+x+"' y='"+y+"' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='"+(sz||22)+"' fill='"+c+"' stroke='"+N+"' stroke-width='5' paint-order='stroke' opacity='"+(o==null?1:o)+"'>"+esc(t)+"</text>"}
+function GOK(vals,g){var m=g.match(/^(\w+)\s*(>=|<=|==|>|<)\s*(-?[\d.]+)$/),a=vals[m[1]].v,b=parseFloat(m[3]);return m[2]==">="?a>=b:m[2]=="<="?a<=b:m[2]=="=="?a==b:m[2]==">"?a>b:a<b}
+function gtxt(g){return g.replace(/>=/g,"≥").replace(/<=/g,"≤").replace(/==/g,"=")}
+GM.race=function(g){var R=g.rounds,i=0,sc=0,n=R.length,lives=3;
+ function hud(){gs9((i+1)+" / "+n+" · "+new Array(lives+1).join("❤")+(lives?"":"–")+" · ✅ "+sc)}
+ function show(){var rd=R[i],busy=false,over=false,prog=[],vals={},names=rd.vars.map(function(v){return v[0]});
+  function reset(){vals={};rd.vars.forEach(function(v){vals[v[0]]=val(v[1])})}reset();
+  var fm=rd.fmax||100;
+  function alive(){var e=document.getElementById("rcS");return e&&e===svg}
+  fr9(g.title,g.hint||"","<div class='e7q'>"+rd.q+"</div><div class='rcg' id='rcG'></div><div class='rcs'><svg id='rcS' viewBox='0 0 360 210' xmlns='http://www.w3.org/2000/svg'></svg></div><div class='rch' id='rcH'></div><div class='rcb'><i id='rcB'></i></div><div class='rcl' id='rcL'></div><div class='e7code' id='rcP'></div><div class='e7pal' id='rcA'></div><div class='e7bt'><div class='e7b go' id='rcR' role='button' tabindex='0'>▶ Запустити</div><div class='e7b' id='rcC' role='button' tabindex='0'>↺ Очистити</div></div><div class='e7m' id='rcX' style='display:none'></div>");
+  var svg=document.getElementById("rcS"),pg=document.getElementById("rcP"),pa=document.getElementById("rcA"),bx=document.getElementById("rcX");
+  function draw(o){o=o||{};var cx=o.cx==null?52:o.cx,s=BG+dashes(o.off||0)+edge()+car(215,138,.78,"#3a9bff",false)+car(cx,146,1,"#ff3d5a",!!o.boost,!!o.smoke);
+   if(o.pit)s+="<g transform='translate(14,90)'><rect width='64' height='30' rx='6' fill='#ffd23f' stroke='"+N+"' stroke-width='3'/><text x='32' y='21' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='14' fill='"+N+"'>ПІТ</text></g><text x='20' y='160' font-size='24'>🔧</text><text x='98' y='160' font-size='22'>⛽</text>";
+   if(o.t)s+=ftxt(o.tx||150,o.ty==null?118:o.ty,o.t,o.tc||"#ffd23f",o.ts,o.to);
+   if(o.flag)s+="<g transform='translate(180,52)'><rect x='-82' y='-24' width='164' height='46' rx='12' fill='#150a33ee' stroke='#ffd23f' stroke-width='3'/><text y='6' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='20' fill='#ffd23f'>"+esc(o.flag)+"</text></g>";
+   svg.innerHTML=s}
+  function drawH(ch,d){var h="";names.forEach(function(nm){var c=ch===nm,dl=(d&&d[nm])||"";h+="<div class='rcp"+(c?" hi":"")+"'><span>"+nm+" · "+(vals[nm].f?"float":"int")+"</span><b>"+fmt(vals[nm])+"</b>"+(dl?"<em class='"+(dl.charAt(0)=="−"?"r":"")+"'>"+dl+"</em>":"")+"</div>"});document.getElementById("rcH").innerHTML=h;
+   var f=vals.fuel?Math.max(0,Math.min(100,vals.fuel.v/fm*100)):0,b=document.getElementById("rcB");b.style.width=f+"%";b.className=f<25?"low":""}
+  function goals(done){var h="🎯 ";rd.goals.forEach(function(gl,k){var st=done?(GOK(vals,gl)?"ok":"no"):"";h+="<span class='"+st+"'>"+gtxt(gl)+(st=="ok"?" ✔":st=="no"?" ✖":"")+"</span>"});document.getElementById("rcG").innerHTML=h}
+  function drawP(now,dn){pg.innerHTML=prog.length?prog.map(function(c,k){return "<div class='"+(now===k?"now":(dn>k?"ok":""))+"' data-k='"+k+"'>"+(k+1)+" <i>"+esc(c)+"</i>"+(dn>k?" <em>✓</em>":(now===k?" <em>▶</em>":(busy?"":" <em class='x'>✕</em>")))+"</div>"}).join(""):"<div class='gh'>Торкай команди нижче…</div>";
+   pg.querySelectorAll("[data-k]").forEach(function(d){d.onclick=function(){if(busy||over)return;prog.splice(+d.getAttribute("data-k"),1);drawP();lim()}})}
+  function lim(){pa.querySelectorAll(".e7c").forEach(function(c){c.classList.toggle("dis",prog.length>=rd.max)})}
+  function msg(t,k){bx.style.display="";bx.className="e7m "+(k||"");bx.innerHTML=t}
+  function log(t){document.getElementById("rcL").innerHTML=t}
+  rd.pal.forEach(function(c){var d=document.createElement("div");d.className="e7c";d.setAttribute("role","button");d.setAttribute("tabindex","0");d.textContent=c;d.onclick=function(){if(busy||over||prog.length>=rd.max)return;prog.push(c);drawP();lim();bx.style.display="none"};pa.appendChild(d)});
+  draw();drawH();goals();log("Склади програму з команд і запусти її");drawP();
+  document.getElementById("rcC").onclick=function(){if(busy||over)return;prog=[];drawP();lim();bx.style.display="none"};
+  document.getElementById("rcR").onclick=async function(){if(busy||over)return;if(!prog.length){msg("Додай хоча б одну команду.","");return}
+   busy=true;reset();draw();drawH();goals();bx.style.display="none";var rb=document.getElementById("rcR");rb.classList.add("dis");var crash=null,off=0;
+   for(var k=0;k<prog.length&&alive();k++){var cmd=prog[k],m=cmd.split("="),nm=m[0].trim(),old=vals[nm];drawP(k,k);
+    var nw=ev(m.slice(1).join("="),vals);vals[nm]=nw;var dv=nw.v-old.v,sg=dv>0?"+":"−",ds=dv?sg+fmt({v:Math.abs(dv),f:nw.f}):"";
+    log(esc(cmd)+" &nbsp; <s>"+fmt(old)+"</s> → <b>"+fmt(nw)+"</b>");
+    if(nm=="fuel"&&nw.v<0){crash=1;drawH(nm,{fuel:ds});await tween(700,alive,function(p){draw({cx:52+p*30,smoke:1,t:"0 ⛽ !",tc:"#ff8a99",tx:90,ty:118-p*10,off:off+=3})});await sleep(250);break}
+    if(nm=="fuel"&&dv>0){drawH(nm,{fuel:ds});await tween(720,alive,function(p){draw({pit:1,cx:52,t:ds+" ⛽",tc:"#7ee787",tx:100,ty:118-p*14,to:1-p*.3})})}
+    else if(nm=="fuel"){drawH(nm,{fuel:ds});await tween(620,alive,function(p){draw({cx:52+p*18,boost:1,off:off+=6,t:ds+" ⛽",tc:"#ff8a99",tx:100,ty:118-p*14,to:1-p*.3})})}
+    else if(nm=="speed"&&dv>0){drawH(nm,{speed:ds});await tween(700,alive,function(p){draw({cx:52+Math.sin(p*3.14)*46,boost:1,off:off+=14,t:ds,tc:"#ffd23f",tx:150,ty:118-p*14,to:1-p*.3})})}
+    else if(nm=="speed"){drawH(nm,{speed:ds});await tween(620,alive,function(p){draw({cx:52,off:off+=3,t:ds,tc:"#ff8a99",tx:150,ty:118-p*14,to:1-p*.3})})}
+    else if(nm=="lap"&&dv>0){drawH(nm,{lap:ds});await tween(900,alive,function(p){draw({cx:52+p*220*(p<1?1:0),boost:1,off:off+=18,flag:p>.5?"КОЛО "+fmt(nw)+"!":null})});draw({flag:"КОЛО "+fmt(nw)+"!"});await sleep(250)}
+    else{drawH(nm,{[nm]:ds});await tween(560,alive,function(p){draw({cx:52,off:off+=4,t:(ds||"="),tc:"#ffd23f",tx:150,ty:118-p*14,to:1-p*.3})})}
+    draw();drawH(nm);msg("🔎 Змінна <b>"+nm+"</b> була <b>"+fmt(old)+"</b>, стала <b>"+fmt(nw)+"</b>. Нове значення стерло старе.","blue");await sleep(420)}
+   if(!alive())return;
+   goals(true);drawP(-1,prog.length);busy=false;rb.classList.remove("dis");
+   var bad=rd.goals.filter(function(gl){return !GOK(vals,gl)});
+   if(!crash&&!bad.length){over=true;sc++;draw({flag:"🏁 ФІНІШ!"});hud();msg("🎉 <b>Усі цілі виконано!</b> "+rd.why,"green");nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)})}
+   else{lives--;hud();var t=crash?"⛽ Пальне закінчилось (fuel став від’ємним) — авто зупинилось. Додай пітстоп: fuel = 100.":"😕 Ціль не виконана: <b>"+gtxt(bad[0])+"</b>, а зараз "+bad[0].match(/^\w+/)[0]+" = "+fmt(vals[bad[0].match(/^\w+/)[0]])+".";
+    msg(t+(lives?" Виправ програму й запусти ще раз: торкни рядок, щоб прибрати його.":" Життя скінчились."),"red");
+    if(!lives){over=true;nxt9("Результат",function(){fin9(sc,n)})}}
+  };
+  hud()}
+ show()};
+var st=document.createElement("style");st.textContent="body .rcs{margin:8px 0}body .rcs svg{display:block;width:100%;border:4px solid "+N+";border-radius:20px;box-shadow:0 5px 0 "+N+"}body .rch{display:flex;gap:6px;margin:8px 0 5px}body .rcp{flex:1;background:"+N+";border:2px solid #fff;border-radius:10px;padding:3px 7px;font:800 11px ui-monospace,Consolas,monospace;position:relative;color:#fff}body .rcp b{display:block;font:900 20px ui-monospace,Consolas,monospace;color:#ffd23f}body .rcp.hi{box-shadow:0 0 0 3px #37f2ff}body .rcp em{position:absolute;right:6px;top:3px;font-style:normal;font-size:12px;color:#7ee787}body .rcp em.r{color:#ff8a99}body .rcb{height:14px;border-radius:8px;background:"+N+";overflow:hidden;margin-bottom:6px}body .rcb i{display:block;height:100%;width:0;background:linear-gradient(90deg,#37f2ff,#3a7bff);transition:width .5s}body .rcb i.low{background:linear-gradient(90deg,#ff4d6d,#ff8a2a)}body .rcl{background:#0b0f1a;border-radius:8px;padding:6px 9px;font:800 12px ui-monospace,Consolas,monospace;color:#7ee787;min-height:30px}body .rcl s{color:#ff8a99}body .rcg{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;font:800 12px ui-monospace,Consolas,monospace;color:#fff}body .rcg span{background:#ffffff18;border:2px dashed #ffffff66;border-radius:8px;padding:1px 8px}body .rcg span.ok{background:#2d9b4a66;border:2px solid #5be37a}body .rcg span.no{background:#e0314f55;border:2px solid #ff8a99}";document.head.appendChild(st);
+if(typeof GI7!="undefined")GI7.race=["🏎️","Гонка з пітстопом"];
+LES[714].g=LES[714].g.filter(function(x){return x.type!="crates"});
+LES[714].g.push({type:"race",title:"Гонка з пітстопом: змінні",hint:"fuel, speed, lap – це змінні гонки. Склади програму з команд, запусти її й дивись, як значення змінюються. Нове значення стирає старе. Торкни рядок програми, щоб прибрати його.",rounds:[
+ {q:"Фініш: 3-тє коло, швидкість 140 і рівно 60 пального. Вистачить усього кількох команд.",vars:[["fuel","80"],["speed","120"],["lap","1"]],pal:["speed = speed + 10","fuel = fuel - 20","lap = lap + 1","fuel = 100","speed = speed * 2"],goals:["speed==140","lap==3","fuel==60"],max:5,why:"Дві команди speed + 10 дали 140, дві lap + 1 – третє коло, одна fuel - 20 – рівно 60."},
+ {q:"Пального лише 30, а кожне коло забирає 20. Якщо fuel стане меншим за 0 – авто зупиниться. Встигни на 3-тє коло зі швидкістю 140.",vars:[["fuel","30"],["speed","100"],["lap","1"]],pal:["fuel = fuel - 20","lap = lap + 1","fuel = 100","speed = speed + 20","speed = speed - 20"],goals:["lap==3","speed==140","fuel>=1"],max:8,why:"Між колами потрібен пітстоп fuel = 100: порядок команд вирішує, чи вистачить пального."},
+ {q:"Турбо-режим: швидкість подвоюється, а пальне ділиться на 4 (дробове число – float). Підготуй авто до фінішного ривка.",vars:[["fuel","100"],["speed","60"],["lap","2"]],pal:["speed = speed * 2","fuel = fuel / 4","speed = speed / 2","fuel = fuel * 4","lap = lap + 1"],goals:["speed==120","fuel==25","lap==3"],max:4,why:"Ділення / завжди дає float: fuel став 25.0. Множення int на int лишає int."},
+ {q:"Фінал! Призові: coins = coins + speed додає поточну швидкість. Отримай рівно 230 монет, швидкість 130, 3-тє коло й 35 пального.",vars:[["fuel","50"],["speed","100"],["lap","1"],["coins","0"]],pal:["speed = speed + 15","fuel = fuel - 15","lap = lap + 1","coins = coins + speed","fuel = fuel + 40"],goals:["coins==230","speed==130","lap==3","fuel==35"],max:8,why:"coins + speed спрацював двічі: спершу зі швидкістю 100, потім 130. Значення, яке береться з виразу, – те, що в змінної зараз."}
+]});
+})();
+
 /* ===== 7 клас · уроки 16–18: «Автотурель» (if/else), «Лабораторія слаймів» (гіпотези, експерименти), «Гільдія рангів» (elif) ===== */
 (function(){
 var A=window.A7,O=A.O,DEFS=A.DEFS,esc=A.esc,heroS=A.heroS,cloud=A.cloud,spark=A.spark,bar=A.bar,bub=A.bub;
