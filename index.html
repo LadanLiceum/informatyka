@@ -20533,6 +20533,18 @@ var st3=document.createElement("style");st3.textContent=
 st3.textContent+="body.g5.g7 .hero.hb7{position:relative;overflow:hidden;min-height:190px;border:3px solid var(--sa,#fff);border-radius:16px;padding:16px;display:flex;flex-direction:column;justify-content:flex-end;text-align:left;box-shadow:5px 5px 0 #0d0620;background:linear-gradient(160deg,color-mix(in srgb,var(--sa,#5ee7ff) 30%,#0c0620),#0c0620)}.sb7{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:1}.hb7 .s7{align-self:flex-start}.sh7{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,4,28,.82) 0%,rgba(8,4,28,.35) 48%,rgba(8,4,28,0) 72%)}.hb7>*:not(.sb7):not(.sh7){position:relative;z-index:2}.hb7 h1{margin:6px 0;font-size:24px;max-width:75%}.hb7 .mut{max-width:75%}";
 document.head.appendChild(st3);
 var _tp3=window.topics;window.topics=function(){var r=_tp3.apply(this,arguments);try{if(BD.classList.contains("g7")){document.querySelectorAll("#app>.mb[data-sk]").forEach(function(b,i){if(!b.querySelector(".sc7"))b.insertAdjacentHTML("afterbegin",art(i))});var c=document.querySelector("#app .c7");if(c&&!c.querySelector(".fx7"))c.insertAdjacentHTML("afterbegin",FX)}}catch(e){}return r};
+
+/* ===== шапки ігор 7 класу ===== */
+var st4=document.createElement("style");st4.textContent=
+"body.g5.g7 .gbn{position:relative;overflow:hidden;min-height:104px;height:auto!important;border:3px solid var(--sa,#fff)!important;border-radius:14px!important;box-shadow:4px 4px 0 #0d0620!important;background:linear-gradient(135deg,color-mix(in srgb,var(--sa,#5ee7ff) 35%,#0c0620),#0c0620 80%)!important;display:flex;align-items:center;padding:12px}"+
+"body.g5.g7 .gbn>svg:not(.g7a):not(.g7i){display:none!important}"+
+".gbn .g7a{position:absolute;inset:0;width:100%;height:100%;opacity:.9;z-index:0}.gbn .g7sh{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(8,4,28,.7),rgba(8,4,28,0) 70%)}"+
+".gbn .g7i{position:relative;z-index:2;flex:none;width:70px;height:70px;padding:12px;border:3px solid #fff;border-radius:14px;background:rgba(8,4,28,.6);box-shadow:3px 3px 0 #0d0620;transform:rotate(-4deg)}"+
+"body.g5.g7 .gbn .gt{position:relative;z-index:2;margin-left:14px;background:var(--sa,#ff3d8b)!important;color:#150a33!important;border:3px solid #fff!important;border-radius:10px;padding:5px 12px!important;font-weight:900;font-size:13px;text-transform:uppercase;transform:skewX(-8deg);box-shadow:3px 3px 0 #0d0620;letter-spacing:.5px;text-shadow:none!important;position:relative}";
+document.head.appendChild(st4);
+function fixGbn(){try{if(!BD.classList.contains("g7"))return;var g=document.querySelector("#app .gbn:not(.g7d)");if(!g)return;g.classList.add("g7d");var n=CUR9-700,k=(n>=1&&n<=52)?tp7(n):0;BD.dataset.s=k+1;var e="🎮",t=window.BNT,m=window.GI7&&GI7[t]||window.GI&&GI[t]||window.GI5&&GI5[t];if(m&&m[0])e=m[0];var ic=IC[e]||IC["🎮"];
+ g.insertAdjacentHTML("afterbegin","<svg class='g7a' viewBox='36 0 134 124' preserveAspectRatio='xMidYMid slice' aria-hidden='true'>"+AR[k]+"</svg><div class='g7sh'></div>"+ic.replace("<svg ","<svg class='g7i' ").replace(/width='\d+' height='\d+'/,""))}catch(x){}}
+new MutationObserver(function(){fixGbn()}).observe(document.getElementById("app")||BD,{childList:true,subtree:true});
 })();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
