@@ -15128,26 +15128,27 @@ function earned(n){var L=LES[BASE+n],o=(Bq().sc||{})[BASE+n]||{},r={},ks=[],i,k;
  if(ks.length&&ks.every(function(k){return o[k]!==undefined}))r.all=1;
  if(o.q>=80)r.q80=1;
  if(e.bl)r.bl=1;(L.g||[]).forEach(function(g,i){if(BL[g.type]&&o["g"+i]>=80)r.bl=1});
- if(e.str)r.str=1;if(e.nh)r.nh=1;var pv=(Bq().sc||{})[BASE+(n>1?n-1:2)]||{};if(pv.q>=80)r.imp=1
+ if(e.str)r.str=1;if(e.nh)r.nh=1;var pv=(Bq().sc||{})[BASE+n-1]||{};if(n>1&&pv.q>=80)r.imp=1
  var need=ks.concat(L.q&&!L.noq?["q"]:[]);
  if(need.length&&need.every(function(k){return o[k]>=100}))r.perf=1;
- if(AD.slice(0,AD.length-1).every(function(a){return r[a[0]]}))r.king=1;
+ if(LA(n).slice(0,LA(n).length-1).every(function(a){return r[a[0]]}))r.king=1;
  return r}
 function base(n){try{var b=Bq();b.ach=b.ach||{};if(!b.ach[n]){b.ach[n]=earned(n);saveB()}}catch(e){}}
-function cnt(n){var r=earned(n),c=0;AD.forEach(function(a){if(r[a[0]])c++});return c}
+function LA(n){return n==1?AD.filter(function(a){return a[0]!='imp'}):AD}
+function cnt(n){var r=earned(n),c=0;LA(n).forEach(function(a){if(r[a[0]])c++});return c}
 var TOTAL=0;function total(){var s=0,N=TN(),i;for(i=1;i<=N;i++)s+=cnt(i);return s}
-function row(n){var r=earned(n),h="<div class='ach'><div class='at'>🏆 Ачівки уроку · "+cnt(n)+" з "+AD.length+"</div><div class='ar'>";
- AD.forEach(function(a){var hid=a[0]=="king"&&!r[a[0]],ic=hid?"?":a[1],nm=hid?"Прихована":a[2],ds=hid?"Це прихована ачівка. Збери решту – і дізнаєшся, що на тебе чекає!":a[3];h+="<span class='ai"+(r[a[0]]?" on":"")+(hid?" hid":"")+"' data-i='"+ic+"' data-n='"+(hid?"???":a[2])+"' data-d='"+ds+"' data-hid='"+(hid?1:0)+"' data-on='"+(r[a[0]]?1:0)+"'><i>"+ic+"</i><u>"+nm+"</u></span>"});return h+"</div></div>"}
+function row(n){var r=earned(n),h="<div class='ach'><div class='at'>🏆 Ачівки уроку · "+cnt(n)+" з "+LA(n).length+"</div><div class='ar'>";
+ LA(n).forEach(function(a){var hid=a[0]=="king"&&!r[a[0]],ic=hid?"?":a[1],nm=hid?"Прихована":a[2],ds=hid?"Це прихована ачівка. Збери решту – і дізнаєшся, що на тебе чекає!":a[3];h+="<span class='ai"+(r[a[0]]?" on":"")+(hid?" hid":"")+"' data-i='"+ic+"' data-n='"+(hid?"???":a[2])+"' data-d='"+ds+"' data-hid='"+(hid?1:0)+"' data-on='"+(r[a[0]]?1:0)+"'><i>"+ic+"</i><u>"+nm+"</u></span>"});return h+"</div></div>"}
 var Q=[],busy=false;
 function toast(a,n){Q.push([a,n]);if(!busy)nextT()}
 function nextT(){var x=Q.shift();if(!x){busy=false;return}busy=true;var a=x[0],n=x[1],KG=a[0]=="king",cnt1=cnt(n),tt=total();
  var d=document.createElement("div");d.className="atoast"+(G8?" t8":G7?" t7":"")+(KG?" king":"");
  var cf="";var C=G8?["#7cf0ff","#ffb02e","#a78bfa","#34f5a8","#ff6fb1","#ffffff"]:G7?["#ffe36b","#8dff5a","#5ad2ff","#ff4fa3","#ff9b1f","#ffffff"]:["#ffd23f","#6cc04a","#3fa7ff","#e0527a","#ff8a2a","#ffffff"];for(var k=0;k<(KG?110:34);k++){var an=Math.random()*6.283,r=90+Math.random()*150,sz=6+Math.floor(Math.random()*3)*3;cf+="<s style='--x:"+Math.round(Math.cos(an)*r)+"px;--y:"+Math.round(Math.sin(an)*r-60)+"px;--d:"+(Math.random()*.25).toFixed(2)+"s;--r:"+Math.round(Math.random()*540-270)+"deg;width:"+sz+"px;height:"+sz+"px;background:"+C[k%6]+"'></s>"}
- d.innerHTML="<div class='acf'>"+cf+"</div><div class='acard'><div class='ahd'>"+(G7?"🎁 НОВА НАГОРОДА!":"🏆 НОВА АЧІВКА")+"</div><div class='aic'><span>"+a[1]+"</span></div><div class='an'>"+a[2]+"</div><div class='ad'>"+a[3]+"</div><div class='ast'><span>Урок "+n+": <b>"+cnt1+" з "+AD.length+"</b></span><span>Усього: <b>"+tt+"</b></span></div>"+(KG?"<div class='k12'>Ну це вже точно <b>12 балів</b>! 😎</div><div class='kst'>12</div>":"")+"<div class='ahint'>торкнись, щоб закрити</div></div>";
+ d.innerHTML="<div class='acf'>"+cf+"</div><div class='acard'><div class='ahd'>"+(G7?"🎁 НОВА НАГОРОДА!":"🏆 НОВА АЧІВКА")+"</div><div class='aic'><span>"+a[1]+"</span></div><div class='an'>"+a[2]+"</div><div class='ad'>"+a[3]+"</div><div class='ast'><span>Урок "+n+": <b>"+cnt1+" з "+LA(n).length+"</b></span><span>Усього: <b>"+tt+"</b></span></div>"+(KG?"<div class='k12'>Ну це вже точно <b>12 балів</b>! 😎</div><div class='kst'>12</div>":"")+"<div class='ahint'>торкнись, щоб закрити</div></div>";
  document.body.appendChild(d);try{GX.snd("ok")}catch(e){}
  var closed=false;function close(){if(closed)return;closed=true;d.classList.add("out");setTimeout(function(){d.remove();nextT()},350)}
  d.onclick=close;setTimeout(close,KG?7000:4200)}
-function check(n){if(!n||n<1||n>(TN()))return;Bq().ach=Bq().ach||{};var had=Bq().ach[n]||{},r=earned(n),nw=[];AD.forEach(function(a){if(r[a[0]]&&!had[a[0]])nw.push(a)});if(!nw.length)return;Bq().ach[n]=r;try{saveB()}catch(e){}nw.forEach(function(a){toast(a,n)})}
+function check(n){if(!n||n<1||n>(TN()))return;Bq().ach=Bq().ach||{};var had=Bq().ach[n]||{},r=earned(n),nw=[];LA(n).forEach(function(a){if(r[a[0]]&&!had[a[0]])nw.push(a)});if(!nw.length)return;Bq().ach[n]=r;try{saveB()}catch(e){}nw.forEach(function(a){toast(a,n)})}
 /* події: серія, без втрат */
 var st={ok:0,bad:0,heart:false,start:0};
 function reset(){st={ok:0,bad:0,heart:false,start:Date.now()}}
@@ -15155,13 +15156,13 @@ if(window.GX&&GX.snd){var _sn=GX.snd;GX.snd=function(k){try{if(CUR9>BASE&&CUR9<(
 var _pg=playG;playG=function(n,i){reset();return _pg.apply(this,arguments)};
 var _es=endScr;endScr=function(a,b,c,e){var n=CUR9-BASE,key=CURK||c,old,ok5=n>=1&&n<=TN()&&okc();if(ok5){base(n);old=((Bq().sc||{})[CUR9]||{})[key]}
  var r=_es.apply(this,arguments);
- try{if(ok5){var pc=Math.round(100*a/b),ev1=ev(n);if(old!==undefined&&pc>old)ev1.imp=1;if(pc>=90)ev1.nh=1;if(pc>=80&&Date.now()-st.start<=60000)ev1.bl=1;if(pc>=100&&b>=5)ev1.str=1;if(pc>=100&&String(key).charAt(0)=="g")ev1.imp=1;try{saveB()}catch(x){}check(n);if(key=="q"&&pc>=80){check(n+1);if(n==2)check(1)}}}catch(x){}return r};
+ try{if(ok5){var pc=Math.round(100*a/b),ev1=ev(n);if(old!==undefined&&pc>old)ev1.imp=1;if(pc>=90)ev1.nh=1;if(pc>=80&&Date.now()-st.start<=60000)ev1.bl=1;if(pc>=100&&b>=5)ev1.str=1;if(pc>=100&&String(key).charAt(0)=="g")ev1.imp=1;try{saveB()}catch(x){}check(n);if(key=="q"&&pc>=80){check(n+1)}}}catch(x){}return r};
 var _dn=done9;done9=function(){var n=CUR9-BASE,ok5=n>=1&&n<=TN()&&okc();if(ok5)base(n);var r=_dn.apply(this,arguments);try{if(ok5)check(n)}catch(e){}return r};
 /* показ */
 function inject(){var app=document.getElementById("app");if(!app||!document.body.classList.contains(BC)||!okc())return;
  var old=app.querySelector(".ach");if(old)old.remove();
  var lv=app.querySelector(".lv")||(G8&&app.querySelector(".hero11.p-home"))||(G7&&app.querySelector(".c7"));
- if(lv){var s=total(),N=(TN())*AD.length,sp=document.createElement("div");sp.className="ach";sp.innerHTML="<div class='at'>🏆 Ачівки · "+s+" з "+N+"</div><div class='asum'><i style='width:"+Math.round(100*s/N)+"%'></i></div>";lv.appendChild(sp);return}
+ if(lv){var s=total(),N=(TN())*AD.length-1,sp=document.createElement("div");sp.className="ach";sp.innerHTML="<div class='at'>🏆 Ачівки · "+s+" з "+N+"</div><div class='asum'><i style='width:"+Math.round(100*s/N)+"%'></i></div>";lv.appendChild(sp);return}
  var c=app.querySelector(".card");if(c&&/Прогрес уроку/.test(c.textContent)){var m=CUR9-BASE;base(m);c.insertAdjacentHTML("beforeend",row(m))}}
 var _l5=window["lesson"+cls];window["lesson"+cls]=function(n){var r=_l5.apply(this,arguments);inject();return r};
 var _s5=window["section"+cls];window["section"+cls]=function(k){var r=_s5.apply(this,arguments);inject();return r};
