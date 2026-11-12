@@ -739,7 +739,7 @@ var RETAKE=10*36e5;
 function tlt(n,k){B.qt=B.qt||{};var t=B.qt[n+k];if(!t){t=B.qt[n+k]=Date.now();try{saveB()}catch(e){}}return t}
 function tlock(n,k){var o=(B.sc||{})[n];if(!(o&&o[k]!==undefined))return false;return Date.now()-tlt(n,k)<RETAKE}
 function tleft(n,k){var m=Math.max(1,Math.ceil((RETAKE-(Date.now()-tlt(n,k)))/6e4));return m>=60?"≈"+Math.ceil(m/60)+" год":m+" хв"}
-function tlockMsg(n,k){try{note("Тест уже пройдено. Повторно його можна пройти через "+(n?tleft(n,k):"10 годин")+".")}catch(e){}}
+function tlockMsg(n,k){try{note("Тест уже пройдено.")}catch(e){}}
 function playQ(n,key){var qs=key=="big"?LES[n].big:LES[n].q;CUR9=n;if(tlock(n,key)){tlockMsg(n,key);return lesson9(n)}LAST9=function(){if(tlock(n,key)){tlockMsg(n,key);return lesson9(n)}quizG(qs,function(s){CURK=key},"again9","menu9")};LAST9()}
 var NORD=0;/* NORD=1: читалка не враховується (звіт у таблицю) */
 function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k,L=LES[n],c=0;for(k in o){v.push(o[k]);c++}if(B.rd[n]&&!NORD){v.push(100);c++}
@@ -749,8 +749,8 @@ function lessonPct(n){var o=(B.sc||{})[n];if(!o)return 0;var v=[],k,L=LES[n],c=0
 function lessonItems(n){var L=LES[n],h="",cl=["a","c","d","b"],c=0;
  if(L.r)h+=mb("a","📖","Читалка",L.r.length+" "+(L.r.length<5?"сторінки":"сторінок")+" з малюнками"+(B.rd[n]?" · ✓":""),"openR("+n+")");
  (L.g||[]).forEach(function(g,i){if(g.hide)return;if(g.type=="fn"){h+=mb(cl[c++%4],g.icon,g.title,g.sub,g.fn+"()");return}var t=GI[g.type];h+=mb(cl[c++%4],t[0],g.title,t[1]+" · "+bst(n,"g"+i),"playG("+n+","+i+")")});
- if(L.q&&!L.noq)h+=tlock(n,"q")?mb("lock","🔒","Тест","пройдено: "+B.sc[n].q+"% · повторно – через "+tleft(n,"q"),"tlockMsg("+n+",\"q\")"):mb("b","📝","Тест",L.q.length+" питань · "+bst(n,"q")+(B.sc&&B.sc[n]&&B.sc[n].q!==undefined?" · повтор відкрито":" · одна спроба"),"playQ("+n+",\"q\")");
- if(L.big)h+=tlock(n,"big")?mb("lock","🔒","Великий тест із теми","пройдено: "+B.sc[n].big+"% · повторно – через "+tleft(n,"big"),"tlockMsg("+n+",\"big\")"):mb("b","📝","Великий тест із теми",L.big.length+" питання · "+bst(n,"big")+(B.sc&&B.sc[n]&&B.sc[n].big!==undefined?" · повтор відкрито":" · одна спроба"),"playQ("+n+",\"big\")");
+ if(L.q&&!L.noq)h+=tlock(n,"q")?mb("lock","🔒","Тест","пройдено: "+B.sc[n].q+"%","tlockMsg("+n+",\"q\")"):mb("b","📝","Тест",L.q.length+" питань · "+bst(n,"q")+" · одна спроба","playQ("+n+",\"q\")");
+ if(L.big)h+=tlock(n,"big")?mb("lock","🔒","Великий тест із теми","пройдено: "+B.sc[n].big+"%","tlockMsg("+n+",\"big\")"):mb("b","📝","Великий тест із теми",L.big.length+" питання · "+bst(n,"big")+" · одна спроба","playQ("+n+",\"big\")");
  return h}
 
 var _l9=lesson9;
