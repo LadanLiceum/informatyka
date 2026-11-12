@@ -12064,7 +12064,7 @@ window.PXI={def:def,get names(){return Object.keys(D)},url:function(n){var o=ren
 
 (function(){
 var EM={"💎":"diamond","🔥":"flame","🧭":"compass","🛡":"shield","📜":"scroll","⚡":"bolt","🔨":"anvil","🌟":"star","👑":"crown","🪨":"stone","🗼":"tower","🌉":"bridge","🔐":"safe","⏱":"stopwatch","📋":"clip","🔓":"key","↔":"swipe","🔘":"lever"};
-var RX=/(?:[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2713}\u{2714}\u{2716}\u{3030}\u{303D}](?:\uFE0F|\u{1F3FB}-\u{1F3FF})?(?:\u200D[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]\uFE0F?)*)/gu;
+var RX=/(?:[\u{1F000}-\u{1FAFF}\u{2194}\u{2195}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2713}\u{2714}\u{2716}\u{3030}\u{303D}](?:\uFE0F|\u{1F3FB}-\u{1F3FF})?(?:\u200D[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]\uFE0F?)*)/gu;
 var TINT={"✔":"#3ad06a","✓":"#3ad06a","✖":"#e0314f","✕":"#e0314f","✗":"#e0314f","❤":"#e0314f","♥":"#e0314f","★":"#ffc928","☆":"#ffc928","➡":"#2d9cf0","⬅":"#2d9cf0","⬆":"#2d9cf0","⬇":"#2d9cf0","↔":"#2d9cf0","↕":"#2d9cf0","↩":"#2d9cf0","↪":"#2d9cf0","⚠":"#ffc928","☑":"#3ad06a","☐":"#555","✏":"#f28a1e","✂":"#555","✉":"#2d9cf0","✍":"#f28a1e","✋":"#e0b48a","☝":"#e0b48a","✈":"#2d9cf0","⚙":"#777","☀":"#ffc928","☁":"#9ab","☃":"#9ab","☎":"#555","♪":"#555","♫":"#555","⚖":"#555","⚗":"#2d9cf0","⚛":"#2d9cf0","☄":"#f28a1e","☠":"#555","❄":"#8fd8ff","♿":"#2d9cf0","⛏":"#8a6a3a","✨":"#ffc928","➕":"#3ad06a","➖":"#e0314f","➗":"#2d9cf0"};
 var cache={},G=16,cv=document.createElement("canvas"),cx=null;cv.width=cv.height=64;
 function mk(ch){var base=ch.replace(/\uFE0F/g,"");if(cache[ch])return cache[ch];if(EM[base]&&window.PXI)return cache[ch]=PXI.url(EM[base]);
@@ -12082,7 +12082,7 @@ function conv(n){if(n.nodeType==3){var t=n.nodeValue;RX.lastIndex=0;if(!RX.test(
  while((m=RX.exec(t))){var u=mk(m[0]);if(!u)continue;if(m.index>last)f.appendChild(document.createTextNode(t.slice(last,m.index)));var im=document.createElement("img");im.src=u;im.alt=m[0];im.className="pxe";f.appendChild(im);last=m.index+m[0].length;ch++}
  if(!ch)return;if(last<t.length)f.appendChild(document.createTextNode(t.slice(last)));if(n.parentNode)n.parentNode.replaceChild(f,n)}
  else if(n.nodeType==1){if(SKIP[n.tagName]||n.classList.contains("pxe")||n.hasAttribute("data-nopx"))return;if(n.classList.contains("card")&&n.querySelector(".ill-wrap"))return;if(n.namespaceURI&&n.namespaceURI.indexOf("svg")>0)return;var k=Array.prototype.slice.call(n.childNodes);k.forEach(conv)}}
-var st=document.createElement("style");st.textContent="img.pxe{height:1.2em;width:auto;vertical-align:-.25em;image-rendering:pixelated;display:inline-block;margin:0 .05em}";document.head.appendChild(st);
+var st=document.createElement("style");st.textContent=".blk>img.pxe:only-child{display:block;margin:0 auto;height:2em}img.pxe{height:1.2em;width:auto;vertical-align:-.25em;image-rendering:pixelated;display:inline-block;margin:0 .05em}";document.head.appendChild(st);
 var busy=0,tm=0;function go(){tm=0;if(!on())return;busy=1;try{if(window.PXG)PXG.apply();conv(document.getElementById("app")||document.body)}catch(e){}busy=0}
 var mo=new MutationObserver(function(){if(busy||tm)return;tm=setTimeout(go,60)});
 function boot(){mo.observe(document.body,{childList:true,subtree:true,characterData:true});go()}
@@ -12366,7 +12366,7 @@ function isBin(q){var a=q.a||[];if(a.length<3)return true;if(/^\s*правда\s
 function lenOf(q){return String(q.a[0]).length}
 function fam(q){var t=String(q.q);if(/▁{2,}|_{2,}/.test(t))return "c";if(/^Що відповідає поняттю/i.test(t))return "d";if(/^(Порядок дій|Що з цього підходить|Купівля|Продовж)/i.test(t)||/ПЕРШИЙ|ПІСЛЯ/.test(t))return "x";return "o"}
 function nn(q){return norm(q.a[0])}
-function claim(q,a){var t=String(q.q);if(/▁{2,}|_{2,}/.test(t))return t.replace(/▁{2,}|_{2,}/,a);return t+" → "+a}
+function claim(q,a){var t=String(q.q);var m=/^Правда чи хибно\?\s*(.+)$/.exec(t),al=String(a).toLowerCase().replace(/[.!\s]/g,"");if(m&&(al=="правда"||al=="хибно")){var st=m[1];return al=="правда"?st:"Неправда, що "+st.charAt(0).toLowerCase()+st.slice(1)}if(/▁{2,}|_{2,}/.test(t))return t.replace(/▁{2,}|_{2,}/,a);return t+" Відповідь: "+a}
 function okText(q){var t=String(q.q);if(/^\s*Що з цього підходить|Порядок дій|ПЕРШИЙ|ПІСЛЯ|код\s+(великої\s+|малої\s+)?(букви|літери|символу|цифри)|коди?\s+цифр|ASCII.*(код|–)/i.test(t))return false;if(/^\s*Правда\s+чи/i.test(t))return false;return String(q.a[0]).length<=60}
 function hangW(q){var a=String(q.a[0]).trim(),w=a;if(a.length>14||/\s/.test(a))return null;var t=w.toLowerCase().replace(/[^a-zа-яіїєґ0-9]/g,"");if(t.length<4)return null;var st=t.slice(0,Math.max(4,t.length-2));if(q.q.toLowerCase().replace(/[^a-zа-яіїєґ0-9 ]/g,"").indexOf(st)>=0)return null;return 1}
 var ENDS=["ами","ями","ові","еві","ого","ому","ої","ою","ею","ям","ам","ах","ях","ом","ем","ів","їв","ей","ий","ій","а","я","у","ю","і","ї","и","е","є","о","ь"];
