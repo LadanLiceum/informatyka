@@ -20547,6 +20547,9 @@ function fixGbn(){try{if(!BD.classList.contains("g7"))return;var g=document.quer
 new MutationObserver(function(){fixGbn()}).observe(document.getElementById("app")||BD,{childList:true,subtree:true});
 
 var st5=document.createElement("style");st5.textContent="body.g5.g7 #cl{display:grid!important;grid-template-columns:1fr!important;gap:8px;padding:0!important;font:inherit!important;border:0!important;color:inherit!important;height:auto!important;max-height:none!important;overflow:visible!important;min-height:0!important}body.g5.g7 #cl .clue{height:auto!important;overflow:visible!important;margin:0!important;font:800 14px/1.4 Nunito,Arial,sans-serif!important;color:#150a33!important}";document.head.appendChild(st5);
+
+try{var mv=document.querySelector("meta[name=viewport]");if(mv&&!/maximum-scale/.test(mv.content))mv.content+=", maximum-scale=1";}catch(e){}
+var st6=document.createElement("style");st6.textContent="body.g5.g7 input,body.g5.g7 textarea,body.g5.g7 select{font-size:16px!important}body.g5.g7 #app{overflow-x:hidden}";document.head.appendChild(st6);
 })();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
