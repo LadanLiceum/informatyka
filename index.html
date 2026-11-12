@@ -12180,11 +12180,12 @@ window.PXG={apply:function(root){try{(root||document).querySelectorAll('[onclick
 /* 8 клас: сай-фай аркади (стикування, радар, гармата, конвеєр, бій з ШІ, реактор, астероїди) */
 (function(){
 var COL=["#ff4d8d","#22d3ee","#fbbf24"],LET=["A","B","C"];
-var QR={};function getQs(n,N){var seen={},out=[],c=QR[n]||(QR[n]={});function add(a){a.forEach(function(q){if(!q||!q.q||!q.a||q.a.length<2||seen[q.q])return;seen[q.q]=1;out.push(q)})}
+var QR={};function getQs(n,N){var seen={},out=[],ext={},c=QR[n]||(QR[n]={});function add(a,ex){a.forEach(function(q){if(!q||!q.q||!q.a||q.a.length<2||seen[q.q])return;seen[q.q]=1;if(ex)ext[q.q]=1;out.push(q)})}
  try{add(shuffle((GX.poolAll||GX.pool)(n)))}catch(e){}
  var L=LES[n]||{};if(out.length<N){add(shuffle((L.q||[]).slice()));add(shuffle((L.big||[]).slice()))}
- for(var d=1;out.length<N&&d<6;d++){[n-d,n+d].forEach(function(m){if(out.length<N&&LES[m]){try{add(shuffle((GX.poolAll||GX.pool)(m)))}catch(e){}}})}
- out.sort(function(a,b){return (c[a.q]||0)-(c[b.q]||0)});out=out.slice(0,N);out.forEach(function(q){c[q.q]=(c[q.q]||0)+1});return shuffle(out)}
+ if(out.length<28)for(var d=1;d<14&&out.length<28;d++){[n-d,n+d].forEach(function(m){if(out.length<28&&LES[m]){try{add(shuffle((GX.poolAll||GX.pool)(m)),1)}catch(e){}}})}
+ function key(q){return (c[q.q]||0)+(ext[q.q]?.5:0)}
+ out.sort(function(a,b){return key(a)-key(b)});out=out.slice(0,N);out.forEach(function(q){c[q.q]=(c[q.q]||0)+1});return shuffle(out)}
 function head(title,hint,lr){var fo=lr=="f",nf=lr=="lr0",ud=lr=="ud";if(ud)lr=true;fr9(title,hint+" Спершу натисни «▶ Старт».","<div id='ap' class='arp'></div><canvas id='arc' class='arc'></canvas><div id='adp' class='adp"+(lr?" lr":"")+(fo?" fo":"")+"'>"+(ud?"<button class='l' data-d='u'>▲</button><button class='r' data-d='d'>▼</button>":"")+(fo||ud?"":"<button class='l' data-d='l'>◀</button>")+(lr?"":"<button class='u' data-d='u'>▲</button><button class='d' data-d='d'>▼</button>")+(fo||ud?"":"<button class='r' data-d='r'>▶</button>")+(lr&&!nf&&!ud?"<button class='f' data-d='f'>🔥</button>":"")+"</div>");var cv=document.getElementById("arc");addStart(cv);return cv}
 function addStart(cv){cv._st=0;var b=document.createElement("button");b.className="blk";b.id="stbtn";b.textContent="▶ Старт";b.style.cssText="display:block;width:100%;margin:8px 0;font-size:18px;padding:12px";b.onclick=function(){cv._st=1;b.remove();try{GX.snd("click")}catch(e){}};cv.parentNode.insertBefore(b,cv.nextSibling)}
 function panel(q){var ops=shuffle(q.a.map(function(t,k){return {t:t,ok:k===0}})),h="<div class='aq'>"+esc9(q.q)+"</div>";
