@@ -29864,10 +29864,13 @@ body.g5 .cwx{--cb:#c6c6c6;--cx:#2a2a2a;--cl:#373737;--cf:#fcee4b;--co:#55ff55;--
 body.g5 .cwh{background:#5a8f2a;color:#fff;border:3px solid #2e4d14;text-shadow:2px 2px #1e3a0a;border-radius:0}\
 body.g5 .cwc input{border-width:3px;box-shadow:inset -3px -3px #8b8b8b,inset 3px 3px #fff}\
 body.g5 .cwq{border-radius:0;border:3px solid #373737;background:rgba(0,0,0,.35);color:#fff}\
-body.g7 .cwx{--cb:#1a1033;--cx:#5ef2ff;--cl:#7a5bd0;--cf:#ffe45e;--co:#4cff9a;--cr:#ff3da6;--cfont:'Courier New',monospace}\
-body.g7 .cwh{background:linear-gradient(90deg,#ff3da6,#7a5bd0);color:#fff;text-shadow:2px 2px #1a1033;box-shadow:0 0 14px #ff3da6}\
-body.g7 .cwc input{box-shadow:0 0 6px rgba(94,242,255,.45)}\
-body.g7 .cwq{background:#1a1033;color:#fff;border-color:#7a5bd0}\
+body.g7 .cwx{--cb:#fff;--cx:#150a33;--cl:#150a33;--cf:#ffd23a;--co:#4cff9a;--cr:#ff5c9d;--cr2:7px;--cfont:'Nunito','Segoe UI',system-ui,sans-serif}\
+body.g7 .cwh{background:#ff4f9a;color:#fff;border:3px solid #fff;border-radius:12px;transform:rotate(-2deg);box-shadow:0 4px 0 #150a33;text-transform:uppercase;font-weight:900;font-style:italic;letter-spacing:.8px;width:fit-content;max-width:100%}\
+body.g7 .cwx .cwc input{border-width:3px!important;font-weight:900!important;box-shadow:0 3px 0 #150a33!important}\
+body.g7 .cwq{background:rgba(21,10,51,.75);color:#fff;border:3px solid #fff;border-radius:12px;box-shadow:0 3px 0 #0b0524;font-weight:700}\
+body.g7 .cwq.on{outline:0;border-color:#ffd23a;background:#3a1d8a}\
+body.g7 .cwl h4{color:#ffd23a;font-weight:900;font-style:italic}\
+body.g7 .cwq b{color:#ffd23a}\
 body.g8 .cwx{--cb:#fff;--cx:#111;--cl:#111;--cf:#ffe14a;--co:#7ee081;--cr:#ff6b6b;--cr2:3px}\
 body.g8 .cwh{background:#ffe14a;color:#111;border:3px solid #111;box-shadow:4px 4px 0 #111;text-transform:uppercase;transform:rotate(-.6deg)}\
 body.g8 .cwc input{border-width:3px;box-shadow:2px 2px 0 #111}\
@@ -29894,7 +29897,7 @@ function theme(){var c=document.body.classList;
  if(c.contains("g11"))return ["🔤","Кросворд: терміни теми","Кросворд"];
  if(c.contains("g10y"))return ["🔤","Кросворд: терміни теми","Кросворд"];
  if(c.contains("g8"))return ["💥","КРОСВОРД!","Кросворд"];
- if(c.contains("g7"))return ["🕹️","КРОСВОРД · рівень терміналів","Кросворд"];
+ if(c.contains("g7"))return ["🏆","Кросворд · Арена знань","Кросворд"];
  if(c.contains("g5"))return ["📜","Кросворд зі скрині знань","Кросворд"];
  return ["🔤","Кросворд: терміни теми","Кросворд"]}
 var TH=function(){var t=theme();return [t[0],t[2]]};
