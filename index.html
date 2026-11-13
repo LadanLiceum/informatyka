@@ -29898,7 +29898,10 @@ function theme(){var c=document.body.classList;
  if(c.contains("g5"))return ["📜","Кросворд зі скрині знань","Кросворд"];
  return ["🔤","Кросворд: терміни теми","Кросворд"]}
 var TH=function(){var t=theme();return [t[0],t[2]]};
-[window.GI,window.GI5,window.GI8].forEach(function(o){if(o)try{Object.defineProperty(o,"cross",{get:TH,set:function(){},configurable:true,enumerable:true})}catch(e){}});
+function ensure(o){if(o&&!Object.prototype.hasOwnProperty.call(o,"cross")||o&&typeof Object.getOwnPropertyDescriptor(o,"cross").get!="function")try{Object.defineProperty(o,"cross",{get:TH,set:function(){},configurable:true,enumerable:true})}catch(e){}}
+Object.keys(window).filter(function(k){return /^GI[0-9]*$/.test(k)}).forEach(function(k){ensure(window[k])});
+if(typeof lessonItems=="function"){var _li=lessonItems;lessonItems=function(n){ensure(window.GI);return _li(n)}}
+if(typeof lab=="function"){var _lab=lab;lab=function(t){if(t=="cross")return TH();return _lab(t)}}
 function rng(s){return function(){s=(s*1664525+1013904223)%4294967296;return s/4294967296}}
 function build(words,seed){var best=null,R=rng(seed||7),LIM=12;
  for(var t=0;t<400;t++){var ws=words.slice().sort(function(){return R()-.5}),g={},pl=[];
