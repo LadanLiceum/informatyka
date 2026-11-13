@@ -20859,8 +20859,9 @@ mk("t8_pac","Пакмен: Лабіринт даних","👾","Керуй Па�
   function R(x,y,w,h,f,s){c.fillStyle=f;c.fillRect(x,y,w,h);if(s!==0){c.strokeStyle=K;c.lineWidth=s||3;c.strokeRect(x,y,w,h)}}
   function wrapL(str,w,font,mx){c.font=font;var ws=String(str).split(" "),l=[],q="";ws.forEach(function(z){if(c.measureText(q?q+" "+z:z).width>w&&q){l.push(q);q=z}else q=q?q+" "+z:z});l.push(q);if(l.length>mx){l=l.slice(0,mx);l[mx-1]=l[mx-1].replace(/.{0,2}$/,"…")}return l}
   function mkR(base){var q=qs[qi],o=ops(q),n=o.length,cw=(296-26*(n-1))/n,x0=[],ci=0,k;for(k=0;k<n;k++){x0.push(32+k*(cw+26));if(o[k].ok)ci=k}
-   var ql=wrapL(q.q,W-40,"bold 14px monospace",3),bw=(344-(n-1)*6)/n,al=o.map(function(z){return wrapL(z.t,bw-14,"12px monospace",4)});
-   return {base:base,q:q,o:o,n:n,cw:cw,x0:x0,ci:ci,ch:-1,done:false,last:false,ql:ql,al:al,bw:bw,spawn:false}}
+   var ql=wrapL(q.q,W-40,"bold 14px monospace",3);c.font="12px monospace";var tw=o.map(function(z){return Math.max(70,Math.min(c.measureText(z.t).width+46,200))}),mn=o.map(function(z){return Math.max.apply(null,z.t.split(" ").map(function(w){return c.measureText(w).width}))+50}),av=344-(n-1)*6,bws=tw.slice(),it;for(it=0;it<4;it++){var tt=bws.reduce(function(a,b){return a+b},0);bws=bws.map(function(w,k){return Math.max(mn[k],w/tt*av)})}var ts=bws.reduce(function(a,b){return a+b},0);if(ts>av)bws=bws.map(function(w){return w*av/ts});
+   var al=o.map(function(z,k){return wrapL(z.t,bws[k]-44,"12px monospace",4)}),mh=Math.max(44,Math.max.apply(null,al.map(function(l){return l.length}))*15+18);
+   return {base:base,q:q,o:o,n:n,cw:cw,x0:x0,ci:ci,ch:-1,done:false,last:false,ql:ql,al:al,bws:bws,mh:mh,spawn:false}}
   function cur(){for(var k=0;k<rounds.length;k++)if(!rounds[k].done)return rounds[k]}
   function start(){if(state=="wait"){state="play";cv.style.touchAction="none"}}
   function pt(e){if(state=="wait")return;var b=cv.getBoundingClientRect();tx=(e.clientX-b.left)/b.width*W}
@@ -20900,8 +20901,8 @@ mk("t8_pac","Пакмен: Лабіринт даних","👾","Керуй Па�
   function cards(r){var y=8,qh=18+r.ql.length*17;R(8,y,W-16,qh,"#fff",3.5);c.font="bold 14px monospace";c.textAlign="left";c.textBaseline="alphabetic";c.fillStyle=K;r.ql.forEach(function(l,k){c.fillText(l,16,y+22+k*17)});
    c.textBaseline="middle";c.font="900 14px monospace";c.fillStyle="#ff3d81";c.textAlign="left";c.fillText("♥".repeat(Math.max(0,lives)),12,y+qh+14);c.fillStyle="#fff";c.textAlign="right";c.fillText((Math.min(qi+1,N))+"/"+N,W-12,y+qh+14);
    var near=r.ch;if(near<0){var bd=1e9;for(var k=0;k<r.n;k++){var d=Math.abs(x-(r.x0[k]+r.cw/2));if(d<bd){bd=d;near=k}}}
-   for(var k2=0;k2<r.n;k2++){var bx=8+k2*(r.bw+6),by=H-112,bw=r.bw,hot=k2==near;R(bx,by,bw,104,hot?"#ffd400":"#fff",3.5);c.fillStyle=hot?K:"#ffd400";c.beginPath();c.arc(bx+16,by+16,12,0,7);c.fill();c.strokeStyle=K;c.lineWidth=3;c.stroke();c.fillStyle=hot?"#ffd400":K;c.font="900 15px monospace";c.textAlign="center";c.textBaseline="middle";c.fillText("ABC"[k2],bx+16,by+17);
-    c.fillStyle=K;c.font="12px monospace";c.textAlign="left";c.textBaseline="alphabetic";r.al[k2].forEach(function(l,j){c.fillText(l,bx+8,by+46+j*15)})}}
+   var bx=8;for(var k2=0;k2<r.n;k2++){var bw=r.bws[k2],bh=r.mh,by=H-8-bh,hot=k2==near;R(bx+3,by+3,bw,bh,K,0);R(bx,by,bw,bh,hot?"#ffd400":"#fff",3.5);c.fillStyle=hot?K:"#ffd400";c.beginPath();c.arc(bx+19,by+bh/2,12,0,7);c.fill();c.strokeStyle=K;c.lineWidth=3;c.stroke();c.fillStyle=hot?"#ffd400":K;c.font="900 15px monospace";c.textAlign="center";c.textBaseline="middle";c.fillText("ABC"[k2],bx+19,by+bh/2+1);
+    c.fillStyle=K;c.font="12px monospace";c.textAlign="left";c.textBaseline="middle";var ln=r.al[k2],y0=by+bh/2-(ln.length-1)*7.5;ln.forEach(function(l,j){c.fillText(l,bx+38,y0+j*15)});bx+=bw+6}}
   function draw(){c.fillStyle="#14102a";c.fillRect(0,0,W,H);
    for(var k=Math.floor((p-80)/64);k<Math.floor((p+BY)/64)+2;k++){bld(0,k);bld(1,k+7)}
    R(32,0,296,H,"#2a2a3a",0);
