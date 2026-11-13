@@ -20912,6 +20912,9 @@ s_bet:function(){return bg(B,[0,1,2].map(function(i){return bx(30+i*110,40+(2-i)
 };
 window.COV8=window.COV8||{};Object.keys(C).forEach(function(k){window.COV8[k]=function(){if(window.TDEFS8)TDEFS8();return C[k]()}});
 })();
+/* діагностика: показати помилку на екрані, якщо гра не запустилась */
+(function(){var last=0;function show(m){var n=Date.now();if(n-last<1500)return;last=n;try{var d=document.createElement("div");d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;background:#ff3d81;color:#fff;border:3px solid #0d0d14;padding:8px 10px;font:700 12px/1.3 sans-serif;box-shadow:3px 3px 0 #0d0d14;word-break:break-word";d.textContent="⚠ Помилка: "+m+" · скріншот цього напису надішліть учителю";d.onclick=function(){d.remove()};document.body.appendChild(d);setTimeout(function(){d.remove()},15000)}catch(e){}}
+window.addEventListener("error",function(e){show((e.message||"?")+(e.lineno?" ["+e.lineno+"]":""))});window.addEventListener("unhandledrejection",function(e){show(String(e.reason&&e.reason.message||e.reason))})})();
 
 /* пояснення після відповіді: EXPL[урок]=[рядок на кожне питання тесту]; q.e показують quizG та міні-ігри */
 if(window.O5)O5.flush();
