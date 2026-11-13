@@ -1,4 +1,4 @@
-const C="inf-v4",F="inf-fonts-v1",SHELL=["./","index.html","manifest.json","icon.svg","icon-192.png","icon-512.png","apple-touch-icon.png"];
+const C="inf-v5",F="inf-fonts-v1",SHELL=["./","index.html","manifest.json","icon.svg","icon-192.png","icon-512.png","apple-touch-icon.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(C).then(c=>Promise.all(SHELL.map(u=>c.add(u).catch(()=>0)))));self.skipWaiting()});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C&&x!==F).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 function timeout(p,ms){return new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error("timeout")),ms);p.then(v=>{clearTimeout(t);res(v)},e=>{clearTimeout(t);rej(e)})})}
