@@ -1670,7 +1670,7 @@ var _c5=code;code=function(){var b=_c5();if(ME&&ME.c.charAt(0)=="5"){useB5();var
 function picTiles(it){var cols=it.length>6?4:3,w=Math.floor(292/cols),h="",rows=Math.ceil(it.length/cols);
  it.forEach(function(c,i){var x=4+(i%cols)*w,y=4+Math.floor(i/cols)*86,cx=x+(w-6)/2;
   h+="<rect x='"+x+"' y='"+y+"' width='"+(w-6)+"' height='80' fill='#c6c6c6' stroke='#000' stroke-width='3'/><rect x='"+(x+3)+"' y='"+(y+3)+"' width='"+(w-12)+"' height='74' fill='none' stroke='#fff' stroke-width='3' opacity='.8'/>"+
-  (/[a-zа-яіїєґ]/i.test(String(c[0]))?two(cx,y+26,c[0],13,"#111",Math.floor((w-10)/7.6)):"<text x='"+cx+"' y='"+(y+38)+"' text-anchor='middle' font-size='30'>"+c[0]+"</text>")+two(cx,y+62,c[1],10,0,Math.floor((w-10)/5.2))});
+  (/[a-zа-яіїєґ]/i.test(String(c[0]))?two(cx,y+26,c[0],13,"#111",Math.floor((w-10)/7.6)):"<text x='"+cx+"' y='"+(y+38)+"' text-anchor='middle' font-size='"+Math.max(11,Math.min(30,Math.floor((w-16)/(String(c[0]).length*.72))))+"'>"+c[0]+"</text>")+two(cx,y+62,c[1],10,0,Math.floor((w-10)/5.2))});
  return ill(rows*86+8,h)}
 var _pic5=pic;pic=function(v){if(v&&typeof v!="string"&&v[0]=="tiles")return picTiles(v[1]);return _pic5(v)};
 GM.mine=function(g){var its=shuffle(g.items),i=0,sc=0,need=0,n=its.length;its.forEach(function(r){r[1].forEach(function(x){if(x[1])need++})});
@@ -29953,6 +29953,22 @@ var SIMPLE={pairs:1,tf:1,sort:1,seq:1,gaps:1,memory:1,odd:1,pick:1,cloze:1,decod
 Object.keys(CWD).forEach(function(n){var L=window.LES&&LES[n];if(!L)return;L.g=L.g||[];if(L.g.some(function(x){return x.type=="cross"}))return;
  var o={type:"cross",title:"Кросворд",words:CWD[n]},ix=-1;for(var i=0;i<L.g.length;i++){if(SIMPLE[L.g[i].type]&&!L.g[i].hide){ix=i;break}}
  if(ix>=0)L.g[ix]=o;else L.g.push(o)});
+})();
+
+/* ===== Автопідгонка підписів в ілюстраціях читанок: текст не виходить за плитки/рамки ===== */
+(function(){
+function fit(){try{document.querySelectorAll("svg.ill").forEach(function(sv){
+ var vb=sv.viewBox&&sv.viewBox.baseVal,VW=vb&&vb.width?vb.width:300,rects=null;
+ sv.querySelectorAll("text").forEach(function(t){if(t.getAttribute("data-fit"))return;var bb;try{bb=t.getBBox()}catch(e){return}
+  if(!bb.width||!t.textContent.trim())return;
+  if(!rects)rects=[].map.call(sv.querySelectorAll("rect"),function(r){var b=r.getBBox();return {x:b.x,y:b.y,w:b.width,h:b.height}}).filter(function(r){return r.w>20&&r.h>14});
+  var cx=bb.x+bb.width/2,cy=bb.y+bb.height/2,hs=rects.filter(function(r){return cx>=r.x&&cx<=r.x+r.w&&cy>=r.y&&cy<=r.y+r.h}).sort(function(a,b){return a.w*a.h-b.w*b.h}),h=hs[0],
+  allow=h?Math.min(h.w-8,VW-6):VW-6;
+  if(bb.width>allow){t.setAttribute("textLength",Math.max(20,allow));t.setAttribute("lengthAdjust","spacingAndGlyphs");}
+  t.setAttribute("data-fit","1")})})}catch(e){}}
+window.fitIll=fit;var q=0;function sched(){if(q)return;q=requestAnimationFrame(function(){q=0;fit()})}
+try{new MutationObserver(sched).observe(document.body,{childList:true,subtree:true})}catch(e){}
+try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){document.querySelectorAll("svg.ill text[data-fit]").forEach(function(t){t.removeAttribute("data-fit");t.removeAttribute("textLength")});sched()})}catch(e){}
 })();
 
 var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
