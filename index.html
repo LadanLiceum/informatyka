@@ -30380,6 +30380,16 @@ var CODE={710:"3856"};
 Object.keys(MAP).forEach(function(k){var L=window.LES&&LES[k];if(!L||!L.g)return;
  for(var i=0;i<L.g.length;i++){var g=L.g[i];if(g.type=="scn"||g.type==MAP[k]){g.type=MAP[k];g.skin="arena";if(CODE[k])g.code=CODE[k];if(MAP[k]=="x_boss"&&!g.boss)g.boss="Король фейків";break}}});
 })();
+/* ===== M8: додаткові складні ігри в уроках, де їх ще не було; раунди беруться з тесту уроку ===== */
+(function(){
+var ADD={702:"x_safe",704:"x_rhythm",705:"x_maze",706:"x_build",711:"x_drop",728:"x_safe",734:"x_build",735:"x_rhythm",743:"x_maze",748:"x_boss",750:"x_drop"};
+var CODE={702:"7314",728:"5920"};
+var TI={x_zone:["Буря знань","Обери скриню з правильною відповіддю й добіжи, поки не зімкнулася буря."],x_boss:["Дуель з босом","Відповідай швидко: за 5 секунд удар стає критичним."],x_drop:["Дроп-контроль","Лови скриню з правильною відповіддю, поки не впала на склад."],x_defense:["Захист бази","Обери захисника, який знищить загрозу."],x_build:["Вежа знань","Кожна правильна відповідь додає блок, помилка руйнує верхній."],x_safe:["Злам сейфа","Правильні відповіді відкривають цифри коду. Далі зламай сейф."],x_rhythm:["Ритм-різ","Лови правильну відповідь, коли вона на білій лінії."],x_maze:["Лабіринт розвідки","Іди лабіринтом і відчиняй двері правильними відповідями."]};
+Object.keys(ADD).forEach(function(k){var L=window.LES&&LES[k];if(!L||!L.q||!L.q.length)return;var t=ADD[k];L.g=L.g||[];if(L.g.some(function(x){return x.type==t}))return;
+ var ix=[0,2,4,6,8,10,1,3,5,7,9,11],R=[];for(var i=0;i<ix.length&&R.length<6;i++){var x=L.q[ix[i]];if(x&&x.a&&x.a.length>=2)R.push({q:x.q,o:x.a.slice(),a:0,w:x.e||""})}
+ if(R.length<4)return;var g={type:t,title:TI[t][0],hint:TI[t][1],rounds:R,skin:"arena"};if(CODE[k]){g.code=CODE[k]}if(t=="x_boss")g.boss="Король помилок";
+ L.g.push(g)});
+})();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
