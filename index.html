@@ -36592,6 +36592,215 @@ for(var k in LES){var L=LES[k];if(!L||!L.g)continue;L.g.forEach(function(g){var 
  if(window.GI7&&!GI7[g.type])GI7[g.type]=l;if(window.GI5&&!GI5[g.type])GI5[g.type]=l;if(window.GI&&!GI[g.type])GI[g.type]=l})}
 })();
 
+/* 9 клас: «Космостанція» – кімнати станції, робот-талісман, товсті темні контури, цукеркові кольори, білі картки */
+(function(){
+var F='"Poppins","Nunito","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif',B="body.g9.g9 ",K="#0a0830",INK="#1a1040",OR="#ff8a3d",MI="#4cf0b6",PKK="#ff6fb5",YE="#ffd23f",LV="#b79cff";
+function uri(s){return "url(\"data:image/svg+xml,"+encodeURIComponent(s)+"\")"}
+function bot(c){return "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><line x1='50' y1='12' x2='50' y2='24' stroke='"+K+"' stroke-width='4'/><circle cx='50' cy='10' r='7' fill='"+YE+"' stroke='"+K+"' stroke-width='3.5'/><ellipse cx='50' cy='93' rx='26' ry='5' fill='rgba(0,0,0,.35)'/><rect x='14' y='22' width='72' height='64' rx='28' fill='"+c+"' stroke='"+K+"' stroke-width='4'/><rect x='24' y='36' width='52' height='30' rx='15' fill='#14123f' stroke='"+K+"' stroke-width='3'/><ellipse cx='38' cy='51' rx='6' ry='8' fill='"+MI+"'/><ellipse cx='62' cy='51' rx='6' ry='8' fill='"+MI+"'/><circle cx='36' cy='47' r='2.2' fill='#fff'/><circle cx='60' cy='47' r='2.2' fill='#fff'/><path d='M22 30Q30 24 42 26' stroke='#fff' stroke-opacity='.6' stroke-width='4' stroke-linecap='round' fill='none'/></svg>"}
+var BOT=uri(bot(OR)),BOT2=uri(bot(MI));
+var PLAY=uri("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l11-7z' fill='"+K+"'/></svg>");
+var STARS="radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 130px 90px,#fff9,transparent),radial-gradient(1.5px 1.5px at 210px 20px,#fff,transparent),radial-gradient(2px 2px at 300px 150px,#fff,transparent),radial-gradient(1.5px 1.5px at 70px 170px,#fff8,transparent),radial-gradient(1.5px 1.5px at 260px 240px,#fff,transparent)";
+var BGI="radial-gradient(60% 28% at 100% 0,rgba(255,111,181,.42),transparent 70%),radial-gradient(60% 28% at 0 100%,rgba(76,240,182,.33),transparent 70%),"+STARS+",linear-gradient(#0b1033,#241866)";
+var OL="border:3px solid "+K+";box-shadow:0 5px 0 "+K;
+var R=[
+B+"{background:"+BGI+" fixed!important;background-color:#10153f!important;background-size:auto,auto,320px 280px,auto!important;background-attachment:fixed!important;color:#fff;font-family:"+F+"}",
+B+"h1,"+B+"h2,"+B+"h3,"+B+"b,"+B+"button,"+B+"label,"+B+"p,"+B+"li,"+B+"span,"+B+"div,"+B+"td,"+B+"th,"+B+"input,"+B+"select,"+B+"textarea{font-family:"+F+"}",
+B+"h1,"+B+"h2{color:#fff;font-weight:800;letter-spacing:-.01em;text-shadow:none}",
+B+"h1{font-size:clamp(24px,6vw,30px);line-height:1.1}"+B+"h2{font-size:clamp(19px,4.8vw,24px);line-height:1.15}",
+B+".mut{color:#ffffffb8;font-weight:700}"+B+"p,"+B+"li{color:#fff;font-weight:600}",
+B+"label{color:"+MI+";font-weight:800;font-size:12px;letter-spacing:.08em}",
+/* білі картки (читалка, урок) */
+B+".card{margin-top:14px;background:#fff;color:"+INK+";"+OL+";border-radius:22px;padding:16px}",
+B+".card h2,"+B+".card h3,"+B+".card b,"+B+".card p,"+B+".card li,"+B+".card span,"+B+".card div{color:"+INK+";text-shadow:none}",
+B+".card .mut{color:#5a5388}",
+B+".card .ach .ai,"+B+".card .ach .ai i,"+B+".card .ach .ai u{color:"+INK+"}",
+B+".lv{margin-top:14px;background:#ffffff14;border:2px solid #ffffff2e;border-radius:20px;padding:14px;box-shadow:none}",
+B+".lv,"+B+".lv b,"+B+".lv .at{color:#fff!important;opacity:1}"+B+".lv .mut{color:#ffffffc0!important}",
+B+".mb .kd{display:table!important}"+B+".mb br{display:none}"+B+".mb .sub{display:block;margin-top:3px}",
+/* герой «робот + бульбашка» */
+/* кнопки */
+B+"button{background:#fff;color:"+INK+";border:3px solid "+K+";border-radius:16px;font-weight:800;margin:8px 0;box-shadow:0 5px 0 "+K+";text-shadow:none;transition:transform .08s}",
+B+"button:active{transform:translateY(4px);box-shadow:0 1px 0 "+K+"}",
+B+"button.pri{background:"+YE+";color:"+INK+"}",
+B+"button.alt{background:"+MI+";color:#0a3a2c}",
+B+"button.sm{padding:6px 14px;font-size:14px;margin:4px 0;border-radius:999px;box-shadow:0 3px 0 "+K+"}",
+B+"button.ok,"+B+".blk.ok{background:"+MI+"!important;color:#0a3a2c!important;border-color:"+K+"!important;box-shadow:0 5px 0 "+K+",0 0 22px rgba(76,240,182,.7)!important}",
+B+"button.bad,"+B+".blk.bad{background:#ffd0d8!important;color:#7a0d2c!important;border-color:"+K+"!important;box-shadow:0 5px 0 "+K+",0 0 0 3px #ff3b5c,0 0 22px #ff3b5c!important}",
+B+".sel{background:"+YE+";color:"+INK+";box-shadow:0 5px 0 "+K+",0 0 0 3px #fff}",
+/* кімнати станції (головна) та завдання (списки) */
+B+".a{--c:"+OR+"}"+B+".b{--c:"+MI+"}"+B+".c{--c:"+PKK+"}"+B+".d{--c:"+LV+"}",
+B+".mb{position:relative;background:var(--c);color:"+INK+";"+OL+";border-radius:20px;padding:12px 14px;margin-top:12px;text-align:left;text-shadow:none}",
+B+".mb b{color:"+INK+"!important;font-weight:800;font-size:15px;line-height:1.15;text-shadow:none}",
+B+".mb .sub{color:"+INK+"!important;opacity:.78;font-weight:700;font-size:12px}",
+B+".mb .kd{display:inline-block;background:"+K+"!important;color:#fff!important;font-weight:800;font-size:10.5px;letter-spacing:.08em;padding:2px 9px;border-radius:8px;margin-bottom:4px}",
+B+".mb .ic{display:flex;align-items:center;justify-content:center;flex:none;width:46px;height:46px;border-radius:14px;background:#fff;"+OL.replace("5px","3px")+";color:"+INK+";font-weight:800;font-size:20px}",
+B+".mb .ic svg{width:30px;height:30px}",
+B+".mb:active{transform:translateY(4px);box-shadow:0 1px 0 "+K+"}",
+B+".mb.lock{--c:#8a8fb8;opacity:.75}",
+/* головна: сітка кімнат */
+/* списки уроків і завдань: рядки */
+B+".mb.tk::after{content:'';position:static!important;transform:none!important;inset:auto!important;flex:none;margin:0 0 0 auto;width:36px;height:36px;border-radius:50%;background:#fff "+PLAY+" 58% 50%/18px no-repeat;border:3px solid "+K+"}",
+/* прогрес */
+B+".bar,"+B+".asum{height:14px;background:"+K+";border:0;border-radius:8px;overflow:hidden;padding:2px;box-shadow:none}",
+B+".bar i,"+B+".asum i{display:block;height:100%;border-radius:5px;animation:none;background:repeating-linear-gradient(90deg,"+MI+" 0 14px,#2fb98a 14px 17px);transition:width .4s;box-shadow:none;-webkit-mask:none}",
+/* поля та блоки */
+B+"input,"+B+"select,"+B+"textarea{background:#ffffff1a;color:#fff;border:3px solid "+K+";border-radius:14px;font-weight:700;box-shadow:none}",
+B+".card input,"+B+".card select,"+B+".card textarea{background:#f2efff;color:"+INK+"}",
+B+"input:focus,"+B+"select:focus,"+B+"textarea:focus{outline:0;box-shadow:0 0 0 3px "+MI+"}",
+B+".kp li{background:#fff;color:"+INK+";border:3px solid "+K+";border-left:10px solid "+MI+";border-radius:14px;box-shadow:0 4px 0 "+K+"}",
+B+".fun{background:"+MI+";color:#0a3a2c;border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+"}",
+B+".sum b{color:"+YE+"}",
+B+".blk{background:#fff;color:"+INK+";border:3px solid "+K+";border-radius:12px;font-weight:800;box-shadow:0 4px 0 "+K+"}",
+B+".blk.alt2{background:"+YE+"}",
+B+".chip{background:#fff;color:"+INK+";border:3px solid "+K+";border-radius:999px;font-weight:800;box-shadow:0 3px 0 "+K+"}",
+B+".xpl{background:"+YE+";color:"+INK+";border:3px solid "+K+";border-radius:14px;font-weight:800;box-shadow:0 4px 0 "+K+"}",
+B+".gb div{background:#1d1857;border:0;border-radius:6px;box-shadow:inset 0 0 0 1px #ffffff22}",
+B+".gbn{position:relative;overflow:hidden;border:3px solid "+K+"!important;border-radius:20px;box-shadow:0 5px 0 "+K+";min-height:96px}",
+B+".gbn>*{position:relative;z-index:1}",
+B+".gbn .gt{background:#fff!important;color:"+INK+"!important;border:3px solid "+K+"!important;border-radius:999px;padding:3px 12px;font-weight:800;text-transform:uppercase;font-size:12px;text-shadow:none;box-shadow:none}",
+B+".stars{filter:drop-shadow(0 0 8px rgba(255,210,63,.8))}",
+B+".abt{color:#ffffff99}",/* ===== нова розмітка ===== */
+B+".cs-top{padding:0 2px;display:flex;justify-content:space-between;align-items:center;margin:2px 0 8px;font-size:12px;font-weight:700;color:#ffffffb0;letter-spacing:.04em}",
+B+".cs-pill{background:"+YE+";color:"+INK+";font-weight:800;border-radius:999px;padding:5px 12px;font-size:12px;letter-spacing:0}",
+B+".cs-bot{display:flex;align-items:flex-end;gap:8px;margin:4px 0 10px}",
+B+".cs-robot{flex:none;width:92px;height:92px;background:"+BOT+" center/contain no-repeat;animation:csB 3.2s ease-in-out infinite}",
+B+".cs-robot.m{background-image:"+BOT2+";width:68px;height:68px}",
+"@keyframes csB{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}",
+B+".cs-bub{position:relative;flex:1;background:#fff;color:"+INK+";border-radius:18px;padding:12px 14px;font-size:14px;font-weight:700;line-height:1.35;margin-bottom:8px}",
+B+".cs-bub::after{content:'';position:absolute;left:-10px;bottom:20px;border:10px solid transparent;border-right-color:#fff;border-left:0}",
+B+".cs-bub b{color:"+INK+";font-weight:800}",
+B+".cs-bub button.sm{background:"+YE+";margin:8px 0 0;font-size:13px;padding:5px 14px}",
+B+".cs-h{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;margin:12px 2px 10px;color:#fff}",
+B+".cs-h svg{width:22px;height:22px}",
+B+".cs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}",
+B+".cs-room{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;min-height:150px;margin:0;padding:12px;border-radius:20px;background:var(--c);color:"+INK+";"+OL+";cursor:pointer}",
+B+".cs-room .ri{width:42px;height:42px}",B+".cs-room .ri svg{width:100%;height:100%;filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}",
+B+".cs-room b{display:block;margin-top:5px;font-size:15.5px;line-height:1.1;color:"+INK+"!important;font-weight:800;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}",
+B+".cs-room small{display:block;font-size:11.5px;font-weight:700;opacity:.8;margin-top:3px;color:"+INK+"}",
+B+".cs-room .tn{display:block;margin-top:8px;font-size:10.5px;font-weight:800;letter-spacing:.08em;background:"+K+";color:#fff;border-radius:6px;padding:1px 7px}",
+B+".cs-room .rg{position:absolute;right:10px;top:10px;width:40px;height:40px;border-radius:50%;background:conic-gradient("+K+" var(--p),#ffffff77 0);display:flex;align-items:center;justify-content:center}",
+B+".cs-room .rg i{width:28px;height:28px;border-radius:50%;background:var(--c);font-style:normal;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;color:"+INK+"}",
+B+".cs-en{margin-top:14px;background:#ffffff14;border:2px solid #ffffff2a;border-radius:20px;padding:14px}",
+B+".cs-en .r{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#fff}.cs-en .r span:last-child{color:"+MI+"}",
+B+".cs-en .bar{margin:8px 0}",
+B+".cs-en p{font-size:12px;font-weight:700;color:#ffffffc0}",
+B+".cs-head{display:flex;align-items:center;gap:12px;margin:8px 0 14px}",
+B+".cs-head .hi{width:68px;height:68px;border-radius:20px;background:#ffffff1c;border:2px solid #ffffff33;display:flex;align-items:center;justify-content:center;flex:none}",
+B+".cs-head .hi svg{width:44px;height:44px}",
+B+".cs-head small{display:block;font-size:12px;font-weight:800;color:"+OR+";letter-spacing:.08em}",
+B+".cs-head h1{font-size:23px;line-height:1.1;margin-top:2px}",
+B+".cs-row{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:11px 12px;border-radius:18px;background:var(--c);color:"+INK+";"+OL+";text-align:left}",
+B+".cs-row .sq{flex:none;width:44px;height:44px;border-radius:14px;background:#fff;border:3px solid "+K+";display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;color:"+INK+"}",
+B+".cs-row b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:15px;line-height:1.15;color:"+INK+"!important}",
+B+".cs-row small{display:block;font-size:11.5px;font-weight:700;opacity:.82;margin-top:3px;color:"+INK+"}",
+B+".cs-row.done{background:#ffffff1a;color:#fff;border-color:"+K+"}.cs-row.done b,"+B+".cs-row.done small{color:#fff!important}.cs-row.done .sq{background:"+MI+"}",
+B+".cs-row.cur{outline:3px solid #fff;outline-offset:0}",
+B+".cs-row .go{margin-left:auto;flex:none;width:34px;height:34px;border-radius:50%;background:#fff "+PLAY+" 58% 50%/16px no-repeat;border:3px solid "+K+"}",
+B+".cs-seg{display:flex;gap:5px;margin:2px 0 6px}.cs-seg i{flex:1;height:9px;border-radius:5px;border:2px solid "+K+";background:#ffffff30}.cs-seg i.on{background:"+MI+"}",
+B+".cs-lab{font-size:13px;font-weight:800;color:#ffffffc0;letter-spacing:.06em;margin:14px 2px 10px}",/* ===== іконки, шапки ігор, відгук ===== */
+B+".gbn{display:flex!important;align-items:center;gap:14px;min-height:104px!important;padding:14px!important;background:linear-gradient(135deg,var(--a1,#7c5cff),var(--a2,#ff5f6d))!important;position:relative;overflow:hidden}",
+B+".gbn::before{content:'';position:absolute;right:-26px;top:-26px;width:120px;height:120px;border-radius:50%;background:repeating-radial-gradient(circle,#ffffff2e 0 5px,transparent 5px 13px)}",
+B+".gbn::after{content:'';position:absolute;right:26px;bottom:10px;width:10px;height:10px;background:#fff;border-radius:2px;transform:rotate(45deg);box-shadow:-36px -34px 0 -2px #ffffffcc,-70px 6px 0 -3px #ffffff99}",
+B+".gbn .gi{flex:none;width:74px;height:74px;display:flex;align-items:center;justify-content:center;font-size:42px;background:#fff;border:3px solid "+K+";border-radius:22px;box-shadow:0 4px 0 "+K+";position:relative;z-index:1}",
+B+".gbn>svg:not(.gs){flex:none;width:74px!important;height:74px!important;padding:8px;background:#fff;border:3px solid "+K+";border-radius:22px;box-shadow:0 4px 0 "+K+";position:relative;z-index:1}",
+B+".gbn .gt{position:relative;z-index:1;background:"+K+"!important;color:#fff!important;border:0!important;border-radius:12px!important;padding:6px 12px!important;font-size:13px!important;letter-spacing:.04em;line-height:1.2;max-width:60%}",
+B+".fb{display:flex!important;align-items:center;gap:10px;background:#f2efff!important;border:3px solid "+K+"!important;border-radius:18px!important;padding:8px 12px!important;color:"+INK+"!important;box-shadow:0 4px 0 "+K+"!important}",
+B+".fb .fm{flex:none;width:46px;height:46px;background:"+BOT2+" center/contain no-repeat}",B+".fb .fm svg{display:none}",
+B+".fb .fb-t,"+B+".fb span,"+B+".fb div{color:"+INK+"!important;font-weight:800}",
+B+".fb.ok{background:"+MI+"!important}"+B+".fb.bad{background:#ffd0d8!important}",
+"/*gh*/",B+".gbn::before,"+B+".gbn::after{display:none!important}",
+B+".gbn{min-height:136px!important;padding:0!important;background:#14103f!important;gap:0!important;align-items:stretch!important}",
+B+".gbn .gs{position:absolute;inset:0;width:100%;height:100%;z-index:0}",
+B+".gbn .gp{position:relative;z-index:1;flex:none;width:92px;margin:14px 0 0 12px}",B+".gbn .gp svg{width:92px;height:100px;filter:drop-shadow(0 4px 0 "+K+")}",
+B+".gbn .gx{position:relative;z-index:1;flex:1;min-width:0;padding:14px 120px 14px 10px;display:flex;flex-direction:column;justify-content:center;gap:6px}",
+B+".gbn .gx small{align-self:flex-start;background:"+YE+";color:"+INK+";font-size:10.5px;font-weight:800;letter-spacing:.1em;padding:2px 9px;border-radius:7px;border:2px solid "+K+"}",
+B+".gbn .gx b{color:#fff!important;font-size:19px;line-height:1.08;font-weight:800;-webkit-text-stroke:4px "+K+";paint-order:stroke fill;text-shadow:0 3px 0 "+K+"}",
+B+".gbn .gx .ch{align-self:flex-start;display:inline-flex;align-items:center;gap:5px;background:#ffffff22;border:2px solid #ffffff44;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;color:#fff}",
+B+".gbn .gx .ch i{width:8px;height:8px;border-radius:50%;background:"+MI+";box-shadow:0 0 8px "+MI+"}",
+B+".cs-room .ri svg,"+B+".mb .ic svg,"+B+".cs-head .hi svg{overflow:visible}"
+];
+var st=document.createElement("style");st.id="cs9";st.textContent=R.join("\n");
+try{document.head.appendChild(st)}catch(e){}
+
+
+/* набір намальованих іконок */
+function ico(k,m){var F1=m?"#fff":"#5ac8ff",S="stroke='"+K+"' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'",g="";
+ var D={
+ gear:function(){var t="";for(var i=0;i<8;i++)t+="<rect x='-4' y='-21' width='8' height='11' rx='2.5' fill='"+YE+"' "+S+" transform='rotate("+i*45+")'/>";return "<g transform='translate(24 24)'>"+t+"<circle r='14' fill='"+F1+"' "+S+"/><circle r='5.5' fill='"+K+"'/></g>"},
+ doc:function(){return "<rect x='8' y='4' width='32' height='40' rx='6' fill='"+F1+"' "+S+"/><path d='M15 16h18M15 24h18M15 32h10' "+S+"/><circle cx='36' cy='36' r='7' fill='"+YE+"' "+S+"/>"},
+ code:function(){return "<rect x='4' y='9' width='40' height='30' rx='8' fill='"+F1+"' "+S+"/><path d='M19 17l-7 7 7 7M29 17l7 7-7 7' fill='none' stroke='"+K+"' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/>"},
+ cube:function(){return "<path d='M24 5l17 9v20l-17 9-17-9V14z' fill='"+F1+"' "+S+"/><path d='M7 14l17 9 17-9M24 23v20' fill='none' "+S+"/><path d='M24 5l17 9-17 9-17-9z' fill='"+YE+"' "+S+"/>"},
+ shield:function(){return "<path d='M24 4l16 6v12c0 11-7 18-16 22C15 40 8 33 8 22V10z' fill='"+F1+"' "+S+"/><path d='M16 24l6 6 11-12' fill='none' stroke='"+MI+"' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/><path d='M16 24l6 6 11-12' fill='none' stroke='"+K+"' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' opacity='.0'/>"},
+ db:function(){return "<path d='M8 12v24c0 4 7 7 16 7s16-3 16-7V12' fill='"+F1+"' "+S+"/><ellipse cx='24' cy='12' rx='16' ry='7' fill='"+YE+"' "+S+"/><path d='M8 24c0 4 7 7 16 7s16-3 16-7' fill='none' "+S+"/>"},
+ mon:function(){return "<rect x='4' y='6' width='40' height='28' rx='7' fill='"+F1+"' "+S+"/><rect x='10' y='12' width='28' height='16' rx='3' fill='"+K+"'/><path d='M14 40h20M24 34v6' "+S+"/><path d='M15 24l5-6 4 4 5-7' fill='none' stroke='"+MI+"' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/>"},
+ book:function(){return "<path d='M24 12c-5-4-12-5-18-4v29c6-1 13 0 18 4 5-4 12-5 18-4V8c-6-1-13 0-18 4z' fill='"+F1+"' "+S+"/><path d='M24 12v29' fill='none' "+S+"/><path d='M12 17c3 0 6 1 8 2M12 24c3 0 6 1 8 2M28 19c2-1 5-2 8-2M28 26c2-1 5-2 8-2' fill='none' stroke='"+K+"' stroke-width='2.4' stroke-linecap='round'/>"},
+ pad:function(){return "<path d='M12 14h24c6 0 9 6 10 14 1 7-2 11-6 11-3 0-5-3-8-6H16c-3 3-5 6-8 6-4 0-7-4-6-11 1-8 4-14 10-14z' fill='"+F1+"' "+S+"/><path d='M15 20v8M11 24h8' fill='none' "+S+"/><circle cx='31' cy='22' r='2.6' fill='"+PKK+"' "+S+"/><circle cx='37' cy='27' r='2.6' fill='"+MI+"' "+S+"/>"},
+ test:function(){return "<rect x='8' y='7' width='32' height='37' rx='6' fill='"+F1+"' "+S+"/><rect x='16' y='3' width='16' height='9' rx='4' fill='"+YE+"' "+S+"/><path d='M15 21l3 3 6-6M15 33l3 3 6-6M28 22h7M28 34h7' fill='none' "+S+"/>"},
+ sat:function(){return "<g transform='rotate(-35 24 24)'><rect x='16' y='16' width='16' height='16' rx='4' fill='"+F1+"' "+S+"/><rect x='1' y='19' width='11' height='10' rx='2' fill='"+MI+"' "+S+"/><rect x='36' y='19' width='11' height='10' rx='2' fill='"+MI+"' "+S+"/></g>"}};
+ return "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'>"+D[k]()+"</svg>"}
+var TI=["gear","doc","code","cube","shield","db","mon"];
+function icFix(m){try{m.querySelectorAll(":scope>.mb.tk-read .ic,:scope>.mb[onclick*='openR'] .ic").forEach(function(e){e.innerHTML=ico("book",0)});m.querySelectorAll(":scope>.mb[onclick*='playQ'] .ic").forEach(function(e){e.innerHTML=ico("test",0)})}catch(e){}}
+
+/* ===== перебудова екранів ===== */
+var PH=["Слухай уважно — зараз найважливіше!","Ще трохи — і станція запрацює на повну!","Запам'ятай це — пригодиться в тесті!","Ти вже майже експерт!","Читай до кінця — далі буде гра!","Останній ривок, екіпаже!"];
+function esc(x){return String(x).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
+var IC={bolt:"<svg viewBox='0 0 24 24'><path d='M13 2L4 14h6l-1 8 9-12h-6z' fill='"+YE+"' stroke='"+K+"' stroke-width='1.6' stroke-linejoin='round'/></svg>",sat:"<svg viewBox='0 0 24 24'><rect x='9' y='9' width='6' height='6' rx='1.5' fill='"+MI+"' stroke='"+K+"' stroke-width='1.5' transform='rotate(45 12 12)'/><path d='M3 7l4 4M17 13l4 4M5 3l3 3M16 18l3 3' stroke='#fff' stroke-width='2' stroke-linecap='round'/></svg>"};
+function homeX(m){
+ var rooms=[].slice.call(m.querySelectorAll(":scope>.mb")).map(function(b){var cl=((b.className.match(/\b([abcd])\b/)||[])[1])||"a",t=(b.querySelector("b")||{}).textContent||"",sb=(b.querySelector(".sub")||{}).textContent||"",mm=/пройдено (\d+) з (\d+)/.exec(sb)||[0,0,1],mt=/^Тема (\d+)\.\s*([\s\S]*)$/.exec(t)||[0,"",t],ic=b.querySelector(".ic");
+  return {cl:cl,ic:ic?ic.innerHTML:"",n:mt[1],name:mt[2],tot:mm[2],p:Math.round(100*mm[1]/mm[2]),oc:b.getAttribute("onclick")||""}});
+ var lv=m.querySelector(".lv"),lt=lv&&lv.querySelector("b")?lv.querySelector("b").textContent:"",xp=lv&&lv.querySelector(".mut")?lv.querySelector(".mut").textContent:"",at=lv&&lv.querySelector(".at")?lv.querySelector(".at").textContent.replace(/^[^А-Яа-яA-Za-z]+/,""):"",w1=lv&&lv.querySelector(".bar i")?lv.querySelector(".bar i").style.width:"0%",w2=lv&&lv.querySelector(".asum i")?lv.querySelector(".asum i").style.width:"0%";
+ var h1=m.querySelector(".wt h1"),nm=h1?h1.textContent.replace(/^Привіт,\s*/,"").replace(/!$/,""):"",cls=(m.querySelector(".wt .mut")||{}).textContent||"";cls=(cls.split("·")[0]||"").replace(/\s*клас\s*/,"").trim();
+ var abt=m.querySelector(".abt"),lvn=(/Рівень\s*\d+/.exec(lt)||["Рівень 1"])[0];
+ var h="<i class='cs-mark' hidden></i><div class='cs-top'><span>КОМАНДА "+esc(cls)+"</span><span class='cs-pill'>"+esc(lvn)+"</span></div>";
+ h+="<div class='cs-bot'><div class='cs-robot'></div><div class='cs-bub'>Екіпаже <b>"+esc(nm)+"</b>! Обери кімнату станції — там чекають завдання та ігри. 🚀<br><button class='sm' onclick='who()'>Вийти</button></div></div>";
+ h+="<div class='cs-h'>"+IC.sat+"Станція «Інфо-"+esc(cls.replace(/\D/g,"")||"9")+"»</div><div class='cs-grid'>";
+ rooms.forEach(function(r){h+="<button class='cs-room "+r.cl+"' onclick=\""+esc(r.oc)+"\"><span class='ri'>"+ico(TI[(+r.n-1)%7],1)+"</span><span class='rg' style='--p:"+r.p+"%'><i>"+r.p+"%</i></span><span class='tn'>ТЕМА "+r.n+"</span><b>"+esc(r.name)+"</b><small>"+r.tot+" уроків</small></button>"});
+ h+="</div><div class='cs-en'><div class='r'><span>"+IC.bolt.replace("<svg","<svg style='width:16px;height:16px;vertical-align:-3px'")+" "+esc(lt)+"</span><span>"+esc(xp)+"</span></div><div class='bar'><i style='width:"+w1+"'></i></div><div class='r'><span>Ачівки</span><span>"+esc(at.replace(/^Ачівки\s*·\s*/,""))+"</span></div><div class='bar'><i style='width:"+w2+"'></i></div></div>";
+ if(abt)h+=abt.outerHTML;
+ m.innerHTML=h}
+function sectionX(m){
+ var top=m.querySelector(".top"),big=m.querySelector(".hero .big"),h1=m.querySelector(".hero h1"),mu=m.querySelector(".hero .mut"),rows=[].slice.call(m.querySelectorAll(":scope>.mb"));
+ var t=h1?h1.textContent:"",mt=/^Тема (\d+)\.\s*([\s\S]*)$/.exec(t)||[0,"",t];
+ var cur=0,items=rows.map(function(b){var cl=((b.className.match(/\b([abcd])\b/)||[])[1])||"a",nn=(/lesson9\((\d+)\)/.exec(b.getAttribute("onclick")||"")||[0,0])[1],pc=0;try{pc=lessonPct(+nn)}catch(e){}
+  var dn=pc>0;if(!dn&&!cur)cur=nn;return {cl:cl,n:nn,dn:dn,t:(b.querySelector("b")||{}).textContent||"",s:(b.querySelector(".sub")||{}).textContent||"",oc:b.getAttribute("onclick")||""}});
+ var h="<i class='cs-mark' hidden></i>"+(top?top.outerHTML:"")+"<div class='cs-head'><div class='hi'>"+ico(TI[(+mt[1]-1)%7],1)+"</div><div><small>ТЕМА "+mt[1]+"</small><h1>"+esc(mt[2])+"</h1><span class='mut' style='font-size:12.5px'>"+esc(mu?mu.textContent:"")+"</span></div></div>";
+ items.forEach(function(r){h+="<button class='cs-row "+r.cl+(r.dn?" done":"")+(!r.dn&&r.n==cur?" cur":"")+"' onclick=\""+esc(r.oc)+"\"><span class='sq'>"+(r.dn?"✔":r.n)+"</span><span style='min-width:0;flex:1'><b>"+esc(r.t)+"</b><small>"+esc(r.s)+"</small></span><span class='go'></span></button>"});
+ m.innerHTML=h}
+function lessonX(m){
+ var top=m.querySelector(".top");if(!top)return;var n=(/Урок\s*(\d+)/.exec(top.textContent)||[0,1])[1];
+ m.insertAdjacentHTML("afterbegin","<i class='cs-mark' hidden></i>");
+ top.insertAdjacentHTML("afterend","<div class='cs-bot'><div class='cs-robot m'></div><div class='cs-bub'>Слухай, екіпаже: сьогодні <b>урок "+n+"</b>. Читалка, ігри й тест — обирай із чого почати!</div></div>");
+ icFix(m);var f=m.querySelector(":scope>.mb");if(f)f.insertAdjacentHTML("beforebegin","<div class='cs-lab'>ЗАВДАННЯ УРОКУ</div>")}
+function readerX(m){
+ var top=m.querySelector(":scope>.top"),bar=m.querySelector(":scope>.bar");if(!top||!bar||m.querySelector(".gbn,#gb"))return;var tst=!!m.querySelector("#o,#tmrw");
+ var mm=/(\d+)\s*\/\s*(\d+)/.exec(top.textContent);if(!mm)return;var i=+mm[1],N=+mm[2],s="";for(var k=1;k<=N;k++)s+="<i"+(k<=i?" class='on'":"")+"></i>";
+ m.insertAdjacentHTML("afterbegin","<i class='cs-mark' hidden></i>");bar.outerHTML="<div class='cs-seg'>"+s+"</div>";
+ var sg=m.querySelector(".cs-seg");if(!tst)sg.insertAdjacentHTML("afterend","<div class='cs-bot'><div class='cs-robot m'></div><div class='cs-bub'>"+(tst?"Обери правильну відповідь — час іде!":PH[(i-1)%PH.length])+"</div></div>")}
+
+function mx(c,t,a){var x=c.replace("#",""),y=t.replace("#","");if(x.length==3)x=x.replace(/(.)/g,"$1$1");if(y.length==3)y=y.replace(/(.)/g,"$1$1");var o="#";for(var i=0;i<3;i++){var u=parseInt(x.substr(i*2,2),16),v=parseInt(y.substr(i*2,2),16),r=Math.round(u+(v-u)*a).toString(16);o+=r.length<2?"0"+r:r}return o}
+function scene(a1,a2,id){var l=mx(a2,"#ffffff",.35),d=mx(a1,"#000000",.35),st="",P=[[14,16,1.6],[52,38,1.2],[88,12,1.4],[130,30,1],[176,14,1.7],[205,52,1.1],[160,86,1.3],[44,96,1.2],[118,118,1.5],[225,108,1],[20,64,1],[190,120,1.2],[250,16,1.2]];P.forEach(function(q){st+="<circle cx='"+q[0]+"' cy='"+q[1]+"' r='"+q[2]+"' fill='#fff' opacity='"+(.5+q[2]/4)+"'/>"});
+ function sp(x,y,r){return "<path d='M"+x+" "+(y-r)+"Q"+x+" "+y+" "+(x+r)+" "+y+"Q"+x+" "+y+" "+x+" "+(y+r)+"Q"+x+" "+y+" "+(x-r)+" "+y+"Q"+x+" "+y+" "+x+" "+(y-r)+"z' fill='#fff'/>"}
+ return "<svg class='gs' viewBox='0 0 360 136' preserveAspectRatio='xMidYMid slice'><defs><linearGradient id='b"+id+"' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#15103f'/><stop offset='1' stop-color='"+d+"'/></linearGradient><radialGradient id='p"+id+"' cx='.35' cy='.3' r='.85'><stop offset='0' stop-color='"+l+"'/><stop offset='.6' stop-color='"+a2+"'/><stop offset='1' stop-color='"+mx(a1,"#000000",.25)+"'/></radialGradient><radialGradient id='g"+id+"'><stop offset='0' stop-color='"+a2+"' stop-opacity='.55'/><stop offset='1' stop-color='"+a2+"' stop-opacity='0'/></radialGradient><radialGradient id='h"+id+"'><stop offset='0' stop-color='"+a1+"' stop-opacity='.5'/><stop offset='1' stop-color='"+a1+"' stop-opacity='0'/></radialGradient><linearGradient id='t"+id+"' x1='0' x2='1'><stop offset='0' stop-color='#fff' stop-opacity='0'/><stop offset='1' stop-color='#fff'/></linearGradient></defs><rect width='360' height='136' fill='url(#b"+id+")'/><circle cx='300' cy='64' r='110' fill='url(#g"+id+")'/><circle cx='30' cy='130' r='100' fill='url(#h"+id+")'/>"+st+sp(70,60,6)+sp(235,34,5)+sp(150,104,4)
+ +"<path d='M120 26L160 8' stroke='url(#t"+id+")' stroke-width='2.5' stroke-linecap='round'/><path d='M150 128Q220 120 250 58' fill='none' stroke='#fff' stroke-opacity='.4' stroke-width='2' stroke-dasharray='2 6' stroke-linecap='round'/>"
+ +"<g transform='rotate(-18 305 70)'><path d='M247 70A58 14 0 0 1 363 70' fill='none' stroke='#fff' stroke-opacity='.55' stroke-width='6'/></g><circle cx='305' cy='70' r='32' fill='url(#p"+id+")' stroke='"+K+"' stroke-width='3'/><circle cx='294' cy='60' r='5' fill='#000' opacity='.18'/><circle cx='316' cy='78' r='7' fill='#000' opacity='.16'/><circle cx='300' cy='84' r='3.5' fill='#000' opacity='.16'/><path d='M276 62Q305 52 334 62' fill='none' stroke='#fff' stroke-opacity='.25' stroke-width='3'/>"
+ +"<g transform='rotate(-18 305 70)'><path d='M247 70A58 14 0 0 0 363 70' fill='none' stroke='#fff' stroke-opacity='.95' stroke-width='6'/><path d='M247 70A58 14 0 0 0 363 70' fill='none' stroke='"+K+"' stroke-width='1.5' opacity='.35'/></g>"
+ +"<circle cx='238' cy='108' r='11' fill='#fff' stroke='"+K+"' stroke-width='3'/><circle cx='235' cy='105' r='3' fill='#000' opacity='.15'/><circle cx='242' cy='112' r='2' fill='#000' opacity='.15'/>"
+ +"<path d='M196 24l9-4 7 6-3 9-9 2-5-6z' fill='"+mx(a1,"#ffffff",.25)+"' stroke='"+K+"' stroke-width='2.5' stroke-linejoin='round'/></svg>"}
+var GID=0;
+function gameX(m){var gb=m.querySelector(".gbn");if(!gb||!gb.querySelector("svg"))return;var t=gb.querySelector("svg text"),e=t?t.textContent:"",gt=gb.querySelector(".gt"),ti=gt?gt.textContent:"",cs=getComputedStyle(gb),a1=(cs.getPropertyValue("--a1")||"#7c5cff").trim(),a2=(cs.getPropertyValue("--a2")||"#ff5f6d").trim();
+ if(!/^#/.test(a1))a1="#7c5cff";if(!/^#/.test(a2))a2="#ff5f6d";GID++;
+ var hex="<svg viewBox='0 0 92 100'><polygon points='46,3 87,26 87,74 46,97 5,74 5,26' fill='#fff' stroke='"+K+"' stroke-width='3.5' stroke-linejoin='round'/><polygon points='46,12 79,31 79,69 46,88 13,69 13,31' fill='"+a2+"' stroke='"+K+"' stroke-width='2.5' stroke-linejoin='round' opacity='.95'/><polygon points='46,12 79,31 46,50 13,31' fill='#fff' opacity='.28'/><text x='46' y='62' font-size='36' text-anchor='middle'>"+esc(e)+"</text></svg>";
+ gb.innerHTML=scene(a1,a2,GID)+"<div class='gp'>"+hex+"</div><div class='gx'><small>МІСІЯ</small><b>"+esc(ti)+"</b><span class='ch'><i></i>МІНІ-ГРА</span></div>";
+ m.insertAdjacentHTML("afterbegin","<i class='cs-mark' hidden></i>")}
+function run(){var m=document.getElementById("app");if(!m||!document.body.classList.contains("g9")||m.querySelector(":scope>.cs-mark"))return;
+ try{
+  if(m.querySelector(":scope>.hero.home"))homeX(m);
+  else if(m.querySelector(":scope>.hero>.big")&&m.querySelector(":scope>.mb[onclick*='lesson9']"))sectionX(m);
+  else if(m.querySelector(":scope>.top")&&m.querySelector(":scope>.card>h2")&&m.querySelector(":scope>.mb.tk"))lessonX(m);
+  else if(m.querySelector(".gbn>svg"))gameX(m);else readerX(m)}catch(e){m.insertAdjacentHTML("afterbegin","<i class='cs-mark' hidden></i>")}}
+try{var ap=document.getElementById("app");if(ap){new MutationObserver(run).observe(ap,{childList:true});run()}}catch(e){}
+})();
+
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
 var LD={},V=window.PKV||"1";
