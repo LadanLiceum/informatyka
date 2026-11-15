@@ -6977,6 +6977,55 @@ QQ("Яка команда оновлює зміст?","Посилання → З
 QQ("Що відображає режим «Виправлення»?","Усі внесені зміни в документі","Лише кількість слів","Лише малюнки")
 ]};
 
+/* ===== 7 клас, Розділ 3: гра «як у програмі» (імітація вікон PowerPoint) + Інспектор слайдів ===== */
+(function(){
+function E(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+var css=document.createElement("style");css.textContent=".ap7 .sl7{position:relative;background:#fff;color:#150a33;border:3px solid #150a33;border-radius:10px;padding:10px;min-height:112px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;box-shadow:0 4px 0 #150a33}.ap7 .sl7 h5{flex:0 0 100%;margin:0;text-align:center;font-size:14px}.ap7 .ob{border:3px dashed #9a9ac0;background:#f4f1ff;color:#150a33;border-radius:10px;padding:8px 12px;font:800 14px inherit;cursor:pointer}.ap7 .ob.sel{border:3px solid #ff4f9a;background:#ffe3f1}.ap7 .dg7{margin-top:10px;background:#f3f3f7;color:#150a33;border:3px solid #150a33;border-radius:12px;padding:8px 10px}.ap7 .dg7 h4{margin:2px 0 6px;font-size:13px;text-transform:uppercase;color:#7b3cff}.ap7 .dg7 h6{margin:8px 0 3px;font-size:12px;color:#555}.ap7 .rw{display:flex;gap:8px;align-items:center;padding:7px 4px;font-weight:800;font-size:13.5px;cursor:pointer;min-height:34px}.ap7 .rw i{width:18px;height:18px;border-radius:50%;border:3px solid #150a33;background:#fff;flex:none;text-align:center;line-height:12px;font-style:normal;font-size:12px}.ap7 .rw.on i{background:#7b3cff;color:#fff}.ap7 .msg{margin:8px 0;font-weight:800;min-height:20px}";
+document.head.appendChild(css);
+window.GM.app7=function(g){var R=g.rounds.slice(),n=R.length,i=0,sc=0;
+ function show(){var r=R[i],st={},picked=!r.pick,tries=0,done=false;
+  fr9(g.title,g.hint||"Виконай завдання так, як у програмі.","<div class='ap7'><div class='fun'><b>Завдання:</b> "+r.task+"</div><div class='sl7'><h5>"+E(r.slide)+"</h5>"+r.obj.map(function(o){return "<button class='ob' data-o='"+o[0]+"'>"+E(o[1])+"</button>"}).join("")+"</div><div id='dgw'></div><p class='msg' id='ms'></p><div id='ok'></div></div>");
+  gs9((i+1)+" / "+n);
+  var ms=document.getElementById("ms");
+  function say(t,c){ms.textContent=t;ms.style.color=c||""}
+  function dlg(){var w=document.getElementById("dgw");w.innerHTML="<div class='dg7'><h4>"+E(r.dlg)+"</h4>"+r.f.map(function(f,fi){return "<h6>"+E(f.l)+"</h6>"+f.o.map(function(o,oi){return "<div class='rw"+(st[fi]===oi?" on":"")+"' data-f='"+fi+"' data-o='"+oi+"'><i>"+(st[fi]===oi?"●":"")+"</i>"+E(o)+"</div>"}).join("")}).join("")+"</div>";
+   [].forEach.call(w.querySelectorAll(".rw"),function(e){e.onclick=function(){if(done)return;st[+e.dataset.f]=+e.dataset.o;dlg()}});
+   if(!document.getElementById("okb")){var b=document.createElement("button");b.id="okb";b.className="pri";b.textContent="ОК ✔";b.onclick=check;document.getElementById("ok").appendChild(b)}}
+  if(picked)dlg();
+  [].forEach.call(document.querySelectorAll(".ob"),function(b){b.onclick=function(){if(done)return;if(picked){say("Об’єкт уже вибрано.");return}
+   if(b.dataset.o==r.pick){picked=true;b.classList.add("sel");say("");dlg()}else{say("Не той об’єкт. "+(r.pickHint||"Прочитай завдання ще раз."),"#c4002f")}}});
+  function nextBtn(){nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)})}
+  function check(){if(done)return;var bad=[];r.f.forEach(function(f,fi){if(st[fi]!==f.a)bad.push(f)});
+   if(st[0]===undefined&&r.f.length&&bad.length==r.f.length){say("Спочатку заповни поля вікна.","#c4002f");return}
+   if(!bad.length){done=true;sc+=tries==0?1:.5;say("Готово! "+(r.why||""),"#0a7a3a");try{GX.snd("ok")}catch(e){}document.getElementById("okb").disabled=true;nextBtn();return}
+   tries++;if(tries>=2){done=true;say("Правильно було так: "+r.f.map(function(f){return f.o[f.a]}).join("; ")+". "+(r.why||""),"#c4002f");document.getElementById("okb").disabled=true;nextBtn()}
+   else say("Не збігається: "+(bad[0].h||bad[0].l)+". Спробуй ще раз.","#c4002f")}
+  }
+ show()};
+var IC={app7:["🖥️","Як у програмі"]};
+function ens(o){Object.keys(IC).forEach(function(k){try{Object.defineProperty(o,k,{get:function(){return IC[k]},set:function(){},configurable:true,enumerable:true})}catch(e){}})}
+Object.keys(window).filter(function(k){return /^GI[0-9]*$/.test(k)}).forEach(function(k){if(window[k]&&typeof window[k]=="object")ens(window[k])});
+if(typeof lessonItems=="function"){var _li=lessonItems;lessonItems=function(n){ens(window.GI);return _li(n)}}
+if(typeof lab=="function"){var _lab=lab;lab=function(t){if(IC[t])return IC[t];return _lab(t)}}
+var D={
+725:["tf",{type:"app7",title:"Вставлення гіперпосилання",hint:"Виділи об’єкт і заповни вікно, як у PowerPoint.",rounds:[
+ {task:"Зроби, щоб клік на кнопці «Музей» відкривав сайт museum.ua.",slide:"Слайд 2 · Зміст",obj:[["m","Музей"],["f","Фото"],["t","Назад"]],pick:"m",pickHint:"Посилання ставимо на кнопку «Музей».",dlg:"Вставлення гіперпосилання",f:[{l:"Зв’язати з",o:["Файлом, вебсторінкою","Місцем у документі","Електронною поштою"],a:0,h:"для сайту потрібен зв’язок із вебсторінкою"},{l:"Адреса",o:["museum.ua","Слайд 3","teacher@lyceum.ua"],a:0,h:"адреса має бути museum.ua"}],why:"Вебсторінка відкривається за адресою сайту."},
+ {task:"Кнопка «До змісту» має перемикати на слайд 2 цієї презентації.",slide:"Слайд 5 · Висновки",obj:[["k","До змісту"],["x","Автор"]],pick:"k",dlg:"Вставлення гіперпосилання",f:[{l:"Зв’язати з",o:["Файлом, вебсторінкою","Місцем у документі","Електронною поштою"],a:1,h:"перехід на слайд – це місце в документі"},{l:"Слайд",o:["Слайд 2","Слайд 5","Слайд 1"],a:0,h:"потрібен слайд 2"}],why:"Посилання на слайд належить до «місця в документі»."},
+ {task:"Підпис «Написати автору» має відкривати лист для teacher@lyceum.ua.",slide:"Слайд 6 · Контакти",obj:[["a","Написати автору"],["l","Логотип"]],pick:"a",dlg:"Вставлення гіперпосилання",f:[{l:"Зв’язати з",o:["Файлом, вебсторінкою","Місцем у документі","Електронною поштою"],a:2,h:"для листа потрібна електронна пошта"},{l:"Адреса",o:["museum.ua","Слайд 3","teacher@lyceum.ua"],a:2,h:"адреса одержувача teacher@lyceum.ua"}],why:"Посилання на пошту відкриває чернетку листа."}]}],
+726:["mine",{type:"app7",title:"Налаштування кнопок дії",hint:"Виділи кнопку та задай дію в вікні.",rounds:[
+ {task:"Кнопка у кутку слайда має повертати на перший слайд презентації.",slide:"Слайд 7",obj:[["b","🏠 Кнопка"],["t","Текст"]],pick:"b",pickHint:"Дію задають для кнопки.",dlg:"Налаштування дії",f:[{l:"Під час клацання мишею",o:["Перейти за гіперпосиланням","Запустити програму","Відтворити звук","Немає"],a:0,h:"має бути перехід за гіперпосиланням"},{l:"Куди перейти",o:["Наступний слайд","Попередній слайд","Перший слайд","Завершити показ"],a:2,h:"потрібен перший слайд"}],why:"Дія «Перейти за гіперпосиланням» веде на перший слайд."},
+ {task:"Кнопка «Далі» має показувати наступний слайд.",slide:"Слайд 3",obj:[["n","▶ Далі"],["p","◀ Назад"]],pick:"n",dlg:"Налаштування дії",f:[{l:"Під час клацання мишею",o:["Перейти за гіперпосиланням","Запустити програму","Відтворити звук","Немає"],a:0,h:"це перехід за гіперпосиланням"},{l:"Куди перейти",o:["Наступний слайд","Попередній слайд","Перший слайд","Завершити показ"],a:0,h:"потрібен наступний слайд"}],why:"Кнопка «Далі» веде на наступний слайд."},
+ {task:"Кнопка «🔊» має відтворювати звук фанфар.",slide:"Слайд 9 · Фінал",obj:[["s","🔊 Звук"],["t","Текст"]],pick:"s",dlg:"Налаштування дії",f:[{l:"Під час клацання мишею",o:["Перейти за гіперпосиланням","Запустити програму","Відтворити звук","Немає"],a:2,h:"треба відтворити звук"},{l:"Який звук",o:["Фанфари","Оплески","Без звуку"],a:0,h:"потрібні фанфари"}],why:"Звук задають у блоці «Відтворити звук»."}]}],
+727:["tf",{type:"app7",title:"Тригер: що і коли запуститься",hint:"Додай анімацію до об’єкта й задай, що її запускає.",rounds:[
+ {task:"Підпис «Сатурн – планета з кільцями» має з’являтися після кліку по картинці 🪐.",slide:"Слайд «Планети»",obj:[["p","🪐 Картинка"],["t","Підпис"]],pick:"t",pickHint:"Анімацію додають до підпису, що має з’являтися.",dlg:"Параметри анімації",f:[{l:"Ефект",o:["Поява","Зникнення","Виліт"],a:0,h:"підпис має з’являтися"},{l:"Початок",o:["За клацанням","Після попередньої","Спрацьовує при клацанні на: 🪐 Картинка"],a:2,h:"запускати має клік по картинці, тобто тригер"}],why:"Тригер запускає анімацію при клацанні на іншому об’єкті."},
+ {task:"Кнопка «Підказка» показує текст підказки, лише коли клацнути саме на ній.",slide:"Слайд «Вікторина»",obj:[["b","Кнопка «Підказка»"],["h","Текст підказки"]],pick:"h",dlg:"Параметри анімації",f:[{l:"Ефект",o:["Поява","Зникнення","Виліт"],a:0,h:"підказка має з’являтися"},{l:"Початок",o:["За клацанням","Після попередньої","Спрацьовує при клацанні на: Кнопка «Підказка»"],a:2,h:"потрібен тригер на кнопці"}],why:"Тригер зв’язує анімацію з конкретним об’єктом."},
+ {task:"Текст «Правильно!» має зникати за клацанням на кнопці «Далі».",slide:"Слайд «Відповідь»",obj:[["d","Кнопка «Далі»"],["r","Правильно!"]],pick:"r",dlg:"Параметри анімації",f:[{l:"Ефект",o:["Поява","Зникнення","Виліт"],a:1,h:"текст має зникати"},{l:"Початок",o:["За клацанням","Після попередньої","Спрацьовує при клацанні на: Кнопка «Далі»"],a:2,h:"запускає кнопка «Далі»"}],why:"Тригер дозволяє керувати анімацією кнопкою."}]}],
+728:["sort",{type:"spot",title:"Інспектор слайдів",hint:"Торкайся місць, які зіпсують показ. Знайди 4 помилки.",parts:["",["Світлий текст на білому фоні",1,"Мало контрасту: текст не видно."]," | ",["Кнопка «Далі» без дії",1,"Кнопка нічого не робить."]," | ",["Фото класу",0,"Це нормально."]," | ",["Анімація з тригером на невидимому об’єкті",1,"Тригер не спрацює, бо об’єкт не клацнути."]," | ",["Шрифт розміром 36 пт у заголовку",0,"Для заголовка це добре."]," | ",["Десять різних шрифтів на слайді",1,"Занадто багато шрифтів."]]}]};
+Object.keys(D).forEach(function(k){var L=window.LES&&LES[k];if(!L)return;L.g=L.g||[];var d=D[k],o=d[1];if(L.g.some(function(x){return x.type==o.type&&x.title==o.title}))return;
+ var ix=-1;for(var i=0;i<L.g.length;i++){if(L.g[i].type==d[0]&&!L.g[i].hide){ix=i;break}}
+ if(ix>=0)L.g[ix]=o;else L.g.push(o)});
+})();
+
 /* ===== 5 клас · Тема 1 «Інформаційні процеси та системи» · уроки 1–3 (ключі LES = 500+n) ===== */
 
 /* ---------- УРОК 1: Безпека в комп’ютерному класі. Об’єкти, їх властивості та значення (с. 5–10 + додаток 1) ---------- */
@@ -30002,6 +30051,55 @@ var D={
  {q:"Усі за посиланням мають лише ознайомитися з презентацією.",o:["Лише перегляд","Коментування","Редагування"],a:0,w:"Ознайомлення не потребує змін."},
  {q:"Учень з іншого класу просить доступ «для цікавості».",o:["Редагування без обмежень","Лише перегляд","Доступ не надавати"],a:1,w:"Мінімальні права, яких вистачає."}]}],
 711:["cloze",{type:"pairs",title:"Команда проєкту: хто чим займається?",hint:"З’єднай завдання та інструмент.",items:[["Спільно писати текст","спільний документ"],["Зберегти фото для всіх","хмарний диск"],["Надіслати результат вчителю","електронна пошта"],["Знайти джерела","пошукова система"],["Порахувати бали команди","спільна таблиця"]]}]};
+Object.keys(D).forEach(function(k){var L=window.LES&&LES[k];if(!L)return;L.g=L.g||[];var d=D[k],o=d[1];if(L.g.some(function(x){return x.type==o.type&&x.title==o.title}))return;
+ var ix=-1;for(var i=0;i<L.g.length;i++){if(L.g[i].type==d[0]&&!L.g[i].hide){ix=i;break}}
+ if(ix>=0)L.g[ix]=o;else L.g.push(o)});
+})();
+
+/* ===== 7 клас, Розділ 3: гра «як у програмі» (імітація вікон PowerPoint) + Інспектор слайдів ===== */
+(function(){
+function E(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+var css=document.createElement("style");css.textContent=".ap7 .sl7{position:relative;background:#fff;color:#150a33;border:3px solid #150a33;border-radius:10px;padding:10px;min-height:112px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;box-shadow:0 4px 0 #150a33}.ap7 .sl7 h5{flex:0 0 100%;margin:0;text-align:center;font-size:14px}.ap7 .ob{border:3px dashed #9a9ac0;background:#f4f1ff;color:#150a33;border-radius:10px;padding:8px 12px;font:800 14px inherit;cursor:pointer}.ap7 .ob.sel{border:3px solid #ff4f9a;background:#ffe3f1}.ap7 .dg7{margin-top:10px;background:#f3f3f7;color:#150a33;border:3px solid #150a33;border-radius:12px;padding:8px 10px}.ap7 .dg7 h4{margin:2px 0 6px;font-size:13px;text-transform:uppercase;color:#7b3cff}.ap7 .dg7 h6{margin:8px 0 3px;font-size:12px;color:#555}.ap7 .rw{display:flex;gap:8px;align-items:center;padding:7px 4px;font-weight:800;font-size:13.5px;cursor:pointer;min-height:34px}.ap7 .rw i{width:18px;height:18px;border-radius:50%;border:3px solid #150a33;background:#fff;flex:none;text-align:center;line-height:12px;font-style:normal;font-size:12px}.ap7 .rw.on i{background:#7b3cff;color:#fff}.ap7 .msg{margin:8px 0;font-weight:800;min-height:20px}";
+document.head.appendChild(css);
+window.GM.app7=function(g){var R=g.rounds.slice(),n=R.length,i=0,sc=0;
+ function show(){var r=R[i],st={},picked=!r.pick,tries=0,done=false;
+  fr9(g.title,g.hint||"Виконай завдання так, як у програмі.","<div class='ap7'><div class='fun'><b>Завдання:</b> "+r.task+"</div><div class='sl7'><h5>"+E(r.slide)+"</h5>"+r.obj.map(function(o){return "<button class='ob' data-o='"+o[0]+"'>"+E(o[1])+"</button>"}).join("")+"</div><div id='dgw'></div><p class='msg' id='ms'></p><div id='ok'></div></div>");
+  gs9((i+1)+" / "+n);
+  var ms=document.getElementById("ms");
+  function say(t,c){ms.textContent=t;ms.style.color=c||""}
+  function dlg(){var w=document.getElementById("dgw");w.innerHTML="<div class='dg7'><h4>"+E(r.dlg)+"</h4>"+r.f.map(function(f,fi){return "<h6>"+E(f.l)+"</h6>"+f.o.map(function(o,oi){return "<div class='rw"+(st[fi]===oi?" on":"")+"' data-f='"+fi+"' data-o='"+oi+"'><i>"+(st[fi]===oi?"●":"")+"</i>"+E(o)+"</div>"}).join("")}).join("")+"</div>";
+   [].forEach.call(w.querySelectorAll(".rw"),function(e){e.onclick=function(){if(done)return;st[+e.dataset.f]=+e.dataset.o;dlg()}});
+   if(!document.getElementById("okb")){var b=document.createElement("button");b.id="okb";b.className="pri";b.textContent="ОК ✔";b.onclick=check;document.getElementById("ok").appendChild(b)}}
+  if(picked)dlg();
+  [].forEach.call(document.querySelectorAll(".ob"),function(b){b.onclick=function(){if(done)return;if(picked){say("Об’єкт уже вибрано.");return}
+   if(b.dataset.o==r.pick){picked=true;b.classList.add("sel");say("");dlg()}else{say("Не той об’єкт. "+(r.pickHint||"Прочитай завдання ще раз."),"#c4002f")}}});
+  function nextBtn(){nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)})}
+  function check(){if(done)return;var bad=[];r.f.forEach(function(f,fi){if(st[fi]!==f.a)bad.push(f)});
+   if(st[0]===undefined&&r.f.length&&bad.length==r.f.length){say("Спочатку заповни поля вікна.","#c4002f");return}
+   if(!bad.length){done=true;sc+=tries==0?1:.5;say("Готово! "+(r.why||""),"#0a7a3a");try{GX.snd("ok")}catch(e){}document.getElementById("okb").disabled=true;nextBtn();return}
+   tries++;if(tries>=2){done=true;say("Правильно було так: "+r.f.map(function(f){return f.o[f.a]}).join("; ")+". "+(r.why||""),"#c4002f");document.getElementById("okb").disabled=true;nextBtn()}
+   else say("Не збігається: "+(bad[0].h||bad[0].l)+". Спробуй ще раз.","#c4002f")}
+  }
+ show()};
+var IC={app7:["🖥️","Як у програмі"]};
+function ens(o){Object.keys(IC).forEach(function(k){try{Object.defineProperty(o,k,{get:function(){return IC[k]},set:function(){},configurable:true,enumerable:true})}catch(e){}})}
+Object.keys(window).filter(function(k){return /^GI[0-9]*$/.test(k)}).forEach(function(k){if(window[k]&&typeof window[k]=="object")ens(window[k])});
+if(typeof lessonItems=="function"){var _li=lessonItems;lessonItems=function(n){ens(window.GI);return _li(n)}}
+if(typeof lab=="function"){var _lab=lab;lab=function(t){if(IC[t])return IC[t];return _lab(t)}}
+var D={
+725:["tf",{type:"app7",title:"Вставлення гіперпосилання",hint:"Виділи об’єкт і заповни вікно, як у PowerPoint.",rounds:[
+ {task:"Зроби, щоб клік на кнопці «Музей» відкривав сайт museum.ua.",slide:"Слайд 2 · Зміст",obj:[["m","Музей"],["f","Фото"],["t","Назад"]],pick:"m",pickHint:"Посилання ставимо на кнопку «Музей».",dlg:"Вставлення гіперпосилання",f:[{l:"Зв’язати з",o:["Файлом, вебсторінкою","Місцем у документі","Електронною поштою"],a:0,h:"для сайту потрібен зв’язок із вебсторінкою"},{l:"Адреса",o:["museum.ua","Слайд 3","teacher@lyceum.ua"],a:0,h:"адреса має бути museum.ua"}],why:"Вебсторінка відкривається за адресою сайту."},
+ {task:"Кнопка «До змісту» має перемикати на слайд 2 цієї презентації.",slide:"Слайд 5 · Висновки",obj:[["k","До змісту"],["x","Автор"]],pick:"k",dlg:"Вставлення гіперпосилання",f:[{l:"Зв’язати з",o:["Файлом, вебсторінкою","Місцем у документі","Електронною поштою"],a:1,h:"перехід на слайд – це місце в документі"},{l:"Слайд",o:["Слайд 2","Слайд 5","Слайд 1"],a:0,h:"потрібен слайд 2"}],why:"Посилання на слайд належить до «місця в документі»."},
+ {task:"Підпис «Написати автору» має відкривати лист для teacher@lyceum.ua.",slide:"Слайд 6 · Контакти",obj:[["a","Написати автору"],["l","Логотип"]],pick:"a",dlg:"Вставлення гіперпосилання",f:[{l:"Зв’язати з",o:["Файлом, вебсторінкою","Місцем у документі","Електронною поштою"],a:2,h:"для листа потрібна електронна пошта"},{l:"Адреса",o:["museum.ua","Слайд 3","teacher@lyceum.ua"],a:2,h:"адреса одержувача teacher@lyceum.ua"}],why:"Посилання на пошту відкриває чернетку листа."}]}],
+726:["mine",{type:"app7",title:"Налаштування кнопок дії",hint:"Виділи кнопку та задай дію в вікні.",rounds:[
+ {task:"Кнопка у кутку слайда має повертати на перший слайд презентації.",slide:"Слайд 7",obj:[["b","🏠 Кнопка"],["t","Текст"]],pick:"b",pickHint:"Дію задають для кнопки.",dlg:"Налаштування дії",f:[{l:"Під час клацання мишею",o:["Перейти за гіперпосиланням","Запустити програму","Відтворити звук","Немає"],a:0,h:"має бути перехід за гіперпосиланням"},{l:"Куди перейти",o:["Наступний слайд","Попередній слайд","Перший слайд","Завершити показ"],a:2,h:"потрібен перший слайд"}],why:"Дія «Перейти за гіперпосиланням» веде на перший слайд."},
+ {task:"Кнопка «Далі» має показувати наступний слайд.",slide:"Слайд 3",obj:[["n","▶ Далі"],["p","◀ Назад"]],pick:"n",dlg:"Налаштування дії",f:[{l:"Під час клацання мишею",o:["Перейти за гіперпосиланням","Запустити програму","Відтворити звук","Немає"],a:0,h:"це перехід за гіперпосиланням"},{l:"Куди перейти",o:["Наступний слайд","Попередній слайд","Перший слайд","Завершити показ"],a:0,h:"потрібен наступний слайд"}],why:"Кнопка «Далі» веде на наступний слайд."},
+ {task:"Кнопка «🔊» має відтворювати звук фанфар.",slide:"Слайд 9 · Фінал",obj:[["s","🔊 Звук"],["t","Текст"]],pick:"s",dlg:"Налаштування дії",f:[{l:"Під час клацання мишею",o:["Перейти за гіперпосиланням","Запустити програму","Відтворити звук","Немає"],a:2,h:"треба відтворити звук"},{l:"Який звук",o:["Фанфари","Оплески","Без звуку"],a:0,h:"потрібні фанфари"}],why:"Звук задають у блоці «Відтворити звук»."}]}],
+727:["tf",{type:"app7",title:"Тригер: що і коли запуститься",hint:"Додай анімацію до об’єкта й задай, що її запускає.",rounds:[
+ {task:"Підпис «Сатурн – планета з кільцями» має з’являтися після кліку по картинці 🪐.",slide:"Слайд «Планети»",obj:[["p","🪐 Картинка"],["t","Підпис"]],pick:"t",pickHint:"Анімацію додають до підпису, що має з’являтися.",dlg:"Параметри анімації",f:[{l:"Ефект",o:["Поява","Зникнення","Виліт"],a:0,h:"підпис має з’являтися"},{l:"Початок",o:["За клацанням","Після попередньої","Спрацьовує при клацанні на: 🪐 Картинка"],a:2,h:"запускати має клік по картинці, тобто тригер"}],why:"Тригер запускає анімацію при клацанні на іншому об’єкті."},
+ {task:"Кнопка «Підказка» показує текст підказки, лише коли клацнути саме на ній.",slide:"Слайд «Вікторина»",obj:[["b","Кнопка «Підказка»"],["h","Текст підказки"]],pick:"h",dlg:"Параметри анімації",f:[{l:"Ефект",o:["Поява","Зникнення","Виліт"],a:0,h:"підказка має з’являтися"},{l:"Початок",o:["За клацанням","Після попередньої","Спрацьовує при клацанні на: Кнопка «Підказка»"],a:2,h:"потрібен тригер на кнопці"}],why:"Тригер зв’язує анімацію з конкретним об’єктом."},
+ {task:"Текст «Правильно!» має зникати за клацанням на кнопці «Далі».",slide:"Слайд «Відповідь»",obj:[["d","Кнопка «Далі»"],["r","Правильно!"]],pick:"r",dlg:"Параметри анімації",f:[{l:"Ефект",o:["Поява","Зникнення","Виліт"],a:1,h:"текст має зникати"},{l:"Початок",o:["За клацанням","Після попередньої","Спрацьовує при клацанні на: Кнопка «Далі»"],a:2,h:"запускає кнопка «Далі»"}],why:"Тригер дозволяє керувати анімацією кнопкою."}]}],
+728:["sort",{type:"spot",title:"Інспектор слайдів",hint:"Торкайся місць, які зіпсують показ. Знайди 4 помилки.",parts:["",["Світлий текст на білому фоні",1,"Мало контрасту: текст не видно."]," | ",["Кнопка «Далі» без дії",1,"Кнопка нічого не робить."]," | ",["Фото класу",0,"Це нормально."]," | ",["Анімація з тригером на невидимому об’єкті",1,"Тригер не спрацює, бо об’єкт не клацнути."]," | ",["Шрифт розміром 36 пт у заголовку",0,"Для заголовка це добре."]," | ",["Десять різних шрифтів на слайді",1,"Занадто багато шрифтів."]]}]};
 Object.keys(D).forEach(function(k){var L=window.LES&&LES[k];if(!L)return;L.g=L.g||[];var d=D[k],o=d[1];if(L.g.some(function(x){return x.type==o.type&&x.title==o.title}))return;
  var ix=-1;for(var i=0;i<L.g.length;i++){if(L.g[i].type==d[0]&&!L.g[i].hide){ix=i;break}}
  if(ix>=0)L.g[ix]=o;else L.g.push(o)});
