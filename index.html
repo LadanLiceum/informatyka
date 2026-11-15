@@ -36592,6 +36592,17 @@ for(var k in LES){var L=LES[k];if(!L||!L.g)continue;L.g.forEach(function(g){var 
  if(window.GI7&&!GI7[g.type])GI7[g.type]=l;if(window.GI5&&!GI5[g.type])GI5[g.type]=l;if(window.GI&&!GI[g.type])GI[g.type]=l})}
 })();
 
+/* 9 клас: схема уроку = читалка + 3 прості + 1 складна + тест (підсумкові: великий тест на 24 замість звичайного на 12) */
+(function(){
+var AR={pac:1,snake:1,flap:1,inv:1,brk:1,frog:1,race:1},AUTH={cross:1,quest:1,tf:1,cloze:1,sort:1,seq:1,pairs:1};
+try{for(var n=1;n<=52;n++){var L=LES[n];if(!L||!L.g)continue;
+ var cx=null,sm=[];
+ L.g.forEach(function(g){if(g.hide)return;var t=g.type;if(/^u9_/.test(t)){if(!cx)cx=g}else if(!AR[t])sm.push(g)});
+ var au=sm.filter(function(g){return AUTH[g.type]}),rs=sm.filter(function(g){return !AUTH[g.type]}),keep=au.concat(rs).slice(0,3);
+ L.g=L.g.filter(function(g){return g===cx||keep.indexOf(g)>-1})}}catch(e){}
+try{L9.forEach(function(x){x[2]=""})}catch(e){}
+})();
+
 /* 9 клас: «Космостанція» – кімнати станції, робот-талісман, товсті темні контури, цукеркові кольори, білі картки */
 (function(){
 var F='"Poppins","Nunito","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif',B="body.g9.g9 ",K="#0a0830",INK="#1a1040",OR="#ff8a3d",MI="#4cf0b6",PKK="#ff6fb5",YE="#ffd23f",LV="#b79cff";
