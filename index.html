@@ -30413,6 +30413,32 @@ Object.keys(ADD).forEach(function(k){var L=window.LES&&LES[k];if(!L||!L.q||!L.q.
  L.g.push(g)});
 })();
 
+/* Універсальний звуковий шар для ігор 5–6 класу: реагує на «✅/❌» у репліках, мінус сердечка і фінал */
+(function(){if(!window.GX||!GX.snd)return;
+var last=0,hp=new WeakMap();
+function g56(){return window.CUR9&&(window.CUR9>=500&&window.CUR9<700)}
+function play(k){var n=Date.now();if(n-last<180)return;last=n;try{GX.snd(k)}catch(e){}}
+function hearts(t){return (t.match(/❤/g)||[]).length}
+function chk(el){if(!el||el.nodeType!=1)return;
+ var c=el.className;
+ if(typeof c=="string"&&/(^|\s)(b|say|c)(\s|$)/.test(c)||(el.id&&/say$/.test(el.id))){
+  if(/(^|\s)ok(\s|$)/.test(c)){play("ok");return true}
+  if(/(^|\s)bad(\s|$)/.test(c)){play("bad");return true}}
+ var t=el.textContent||"";
+ if(t.length<14&&/^[❤️🖤\s♥]+$/.test(t)&&/[❤🖤]/.test(t)){var h=hearts(t),o=hp.get(el);hp.set(el,h);if(o!=null&&h<o){play("bad");return true}}
+ return false}
+function up(n){while(n&&n.nodeType!=1)n=n.parentNode;return n}
+var mo=new MutationObserver(function(ms){if(!g56())return;
+ for(var i=0;i<ms.length;i++){var m=ms[i],e=up(m.target);
+  if(m.type=="attributes"){if(chk(e))return}
+  else{ // childList/characterData: перевіряємо елемент і трьох предків
+   for(var k=0,x=e;x&&k<3;k++,x=x.parentElement){if(chk(x))return}}}});
+function go(){mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["class"]})}
+if(document.body)go();else document.addEventListener("DOMContentLoaded",go);
+/* фінал уроку: перемога/поразка */
+var _e=window.endScr;if(typeof _e=="function"&&!_e._s56){window.endScr=function(sc,max){try{if(g56()&&!GX.mute){if(max&&sc/max>=.5){GX.snd("ok");setTimeout(function(){GX.snd("ok")},260)}else GX.snd("bad")}}catch(e){}return _e.apply(this,arguments)};window.endScr._s56=1}
+})();
+
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
 var LD={},V=window.PKV||"1";
