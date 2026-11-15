@@ -30062,6 +30062,324 @@ Object.keys(D).forEach(function(k){var L=window.LES&&LES[k];if(!L)return;L.g=L.g
  if(ix>=0)L.g[ix]=o;else L.g.push(o)});
 })();
 
+/* ===== M8: 8 складних механік зі скінами. Ядро + Бос, Дроп, Зона, Будівельник ===== */
+(function(){
+var M8=window.M8={};
+function snd(k){try{GX.snd(k)}catch(e){}}
+var CSS=[
+".m8{--m1:#2a1470;--m2:#d8548f;--m3:#ffb36b;--ac:#ffd23a;--hot:#ff4f9a;--ok:#4cff9a;--bad:#ff4f4f;--dk:#150a33;color:#fff}",
+".m8.sk-cyber{--m1:#03142e;--m2:#0b5a8f;--m3:#27e1d6;--ac:#27e1d6;--hot:#ff2e93}",
+".m8.sk-jungle{--m1:#0e3b2a;--m2:#2f8f4e;--m3:#cfe86b;--ac:#ffd23a;--hot:#ff7a2e}",
+".m8q{background:rgba(11,5,36,.88);border:3px solid var(--ac);border-radius:14px;padding:10px 12px;font-weight:800;font-size:15px;line-height:1.35;margin:0 0 8px;min-height:24px;color:#fff;box-shadow:0 4px 0 #0b0524}",
+".m8q .mut{opacity:.8;font-weight:600;margin-bottom:4px}",
+".m8s{position:relative;height:min(54vh,400px);min-height:310px;border-radius:20px;overflow:hidden;border:3px solid #fff;box-shadow:0 5px 0 var(--dk),inset 0 0 50px rgba(0,0,0,.35);background:linear-gradient(var(--m1),var(--m2) 62%,var(--m3));user-select:none;-webkit-user-select:none;touch-action:manipulation}",
+".m8h{position:absolute;left:8px;right:8px;top:8px;display:flex;justify-content:space-between;gap:6px;z-index:30;pointer-events:none}",
+".m8h span{background:rgba(11,5,36,.8);border:2px solid #fff;border-radius:10px;padding:3px 9px;font-weight:900;font-size:12px;color:#fff;white-space:nowrap}",
+".m8t{position:absolute;left:0;right:0;bottom:0;height:7px;background:rgba(0,0,0,.45);z-index:30}.m8t i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--ok),var(--ac),var(--bad));transform-origin:left}",
+".m8o{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}",
+".m8b{display:flex;align-items:center;gap:8px;text-align:left;background:linear-gradient(#ffe14a,#ffb400);color:#2a1a00;border:3px solid var(--dk);border-radius:13px;padding:9px 10px;font-weight:900;font-size:14px;line-height:1.25;box-shadow:0 4px 0 #8a5a00;cursor:pointer;font-family:inherit}",
+".m8b:active{transform:translateY(3px);box-shadow:0 1px 0 #8a5a00}.m8b i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--dk);color:var(--ac);display:grid;place-items:center;font-style:normal;font-size:13px}",
+".m8b.ok{background:linear-gradient(#7dffb8,#2fd97a);box-shadow:0 4px 0 #0a7a3a}.m8b.bad{background:linear-gradient(#ff8a8a,#ff4f4f);box-shadow:0 4px 0 #8a1a1a;color:#fff}.m8b:disabled{opacity:.92;cursor:default}",
+".m8p{position:absolute;width:7px;height:7px;border-radius:50%;z-index:40;pointer-events:none}",
+".m8f{position:absolute;z-index:45;font-weight:900;font-size:20px;color:#fff;text-shadow:0 2px 0 #150a33,0 0 8px currentColor;pointer-events:none;white-space:nowrap;transform:translateX(-50%)}",
+".m8flash{position:absolute;inset:0;z-index:35;pointer-events:none;opacity:0;background:radial-gradient(circle,transparent 40%,rgba(255,40,40,.7))}",
+".m8ban{position:absolute;left:0;right:0;top:38%;text-align:center;z-index:44;font-weight:900;font-size:34px;letter-spacing:2px;color:#fff;text-shadow:0 4px 0 var(--dk),0 0 22px var(--hot);opacity:0;pointer-events:none;font-style:italic}",
+".m8cloud{position:absolute;height:26px;border-radius:30px;background:rgba(255,255,255,.55);filter:blur(1px);animation:m8dr linear infinite}.m8cloud:before{content:'';position:absolute;left:18%;top:-14px;width:44%;height:26px;border-radius:50%;background:inherit}",
+"@keyframes m8dr{from{transform:translateX(-140px)}to{transform:translateX(130vw)}}",
+"@keyframes m8bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}",
+"@keyframes m8hit{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px) rotate(-2deg)}60%{transform:translateX(9px) rotate(2deg)}}",
+"@keyframes m8pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}",
+"@keyframes m8spin{to{transform:rotate(360deg)}}",
+"@keyframes m8eq{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}",
+"@keyframes m8tw{0%,100%{opacity:.3}50%{opacity:1}}",
+/* Бос */
+".m8-boss .m8city{position:absolute;left:0;right:0;bottom:22%;height:34%;background:linear-gradient(transparent,rgba(11,5,36,.55));-webkit-mask:linear-gradient(90deg,#000 0 8%,transparent 8% 10%,#000 10% 22%,transparent 22% 24%,#000 24% 40%,transparent 40% 43%,#000 43% 60%,transparent 60% 62%,#000 62% 80%,transparent 80% 83%,#000 83%);mask:none}",
+".m8-boss .m8floor{position:absolute;left:0;right:0;bottom:0;height:24%;background:linear-gradient(#3a2a78,#150a33);border-top:4px solid rgba(255,255,255,.7)}",
+".m8-boss .m8floor:after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 38px,rgba(255,255,255,.07) 38px 40px)}",
+".m8boss{position:absolute;right:6%;bottom:16%;width:46%;max-width:210px;animation:m8bob 2.4s ease-in-out infinite;z-index:5;filter:drop-shadow(0 10px 8px rgba(0,0,0,.4));transition:filter .6s}",
+".m8boss.hit svg{animation:m8hit .4s}.m8boss svg,.m8hero svg{display:block;width:100%;height:auto;overflow:visible}",
+".m8hero{position:absolute;left:8%;bottom:14%;width:17%;max-width:80px;z-index:6}.m8hero.hit{animation:m8hit .4s}",
+".m8bbar{position:absolute;left:8px;right:8px;top:40px;z-index:30;display:flex;align-items:center;gap:8px;font-weight:900;font-size:12px}.m8bbar>div{flex:1;height:14px;border-radius:8px;border:2px solid #fff;background:#0b0524;overflow:hidden}.m8bbar i{display:block;height:100%;width:100%;background:linear-gradient(#ff7b7b,#ff3b3b);transition:width .5s}",
+".m8shot{position:absolute;width:26px;height:26px;border-radius:50%;z-index:20;box-shadow:0 0 16px 6px currentColor;background:#fff}",
+/* Дроп */
+".m8-drop{background:linear-gradient(#5ec9ff,#b6ecff 55%,#ffd9a0)}.m8-drop .m8gnd{position:absolute;left:0;right:0;bottom:0;height:17%;background:linear-gradient(#6fcf5a,#2d8a3a);border-top:4px solid #150a33}",
+".m8-drop .m8base{position:absolute;left:50%;bottom:11%;width:44%;max-width:190px;transform:translateX(-50%);z-index:4}",
+".m8cr{position:absolute;top:0;z-index:10;display:flex;flex-direction:column;align-items:center;cursor:pointer}.m8cr svg{width:46px;height:40px;margin-bottom:-4px}",
+".m8cr b{display:block;background:linear-gradient(#c98a4a,#8b5a2b);border:3px solid #150a33;border-radius:8px;padding:6px 6px;color:#fff;font-size:12px;line-height:1.2;font-weight:800;text-align:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.25),0 3px 0 rgba(0,0,0,.35);word-break:break-word}",
+".m8cr b u{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ac);color:var(--dk);text-decoration:none;margin-right:4px;font-size:11px}",
+/* Зона */
+".m8-zone{background:radial-gradient(circle at 30% 20%,#7ed957,#3f9a3a 55%,#276b2c)}",
+".m8-zone .m8sea{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 62%,#2a7fd6 63%);}",
+".m8zst{position:absolute;border-radius:50%;border:3px dashed #fff;box-shadow:0 0 0 2000px rgba(86,26,170,.62);transition:all 6s linear;z-index:12;pointer-events:none}",
+".m8zst:after{content:'';position:absolute;inset:-3px;border-radius:50%;box-shadow:inset 0 0 40px 10px rgba(180,120,255,.8)}",
+".m8tree{position:absolute;width:9%;z-index:3}.m8ch{position:absolute;width:15%;max-width:64px;z-index:14;transform:translate(-50%,-50%);cursor:pointer;transition:transform .2s}.m8ch:hover{transform:translate(-50%,-55%)}",
+".m8ch svg{display:block;width:100%;height:auto;overflow:visible}.m8ch em{position:absolute;left:50%;top:-14px;transform:translateX(-50%);background:var(--dk);color:var(--ac);border:2px solid #fff;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:12px}",
+".m8zh{position:absolute;width:11%;max-width:46px;z-index:15;transform:translate(-50%,-85%);transition:left .9s ease-in-out,top .9s ease-in-out}",
+/* Будівельник */
+".m8-tower{background:linear-gradient(#69c6ff,#cdeeff 62%,#9ddc6b 62.2%,#4aa84a)}.m8-tower .m8cam{position:absolute;left:0;right:0;bottom:0;height:100%;transition:transform .8s ease}",
+".m8tw{position:absolute;left:50%;transform:translateX(-50%);border:3px solid var(--dk);border-radius:6px;display:grid;place-items:center;font-weight:900;font-size:13px;color:rgba(0,0,0,.55);box-shadow:inset 0 -6px 0 rgba(0,0,0,.18),inset 0 4px 0 rgba(255,255,255,.35)}",
+".m8tw.w{background:repeating-linear-gradient(90deg,#c98a4a 0 14px,#b9783a 14px 16px)}.m8tw.s{background:repeating-linear-gradient(90deg,#aab0c8 0 18px,#8e95b4 18px 20px)}.m8tw.m{background:linear-gradient(#ffe14a,#e0a400)}",
+".m8-tower .m8hill{position:absolute;left:-10%;right:-10%;bottom:19%;height:24%;background:radial-gradient(ellipse at 18% 100%,#86d474 0 58%,transparent 59%),radial-gradient(ellipse at 78% 100%,#5fb85a 0 52%,transparent 53%)}",
+".m8plat{position:absolute;left:50%;transform:translateX(-50%);width:62%;max-width:230px;height:14px;background:linear-gradient(#aab0c8,#6d7494);border:3px solid #150a33;border-radius:6px;z-index:4}",
+".m8gb{position:absolute;left:0;right:0;bottom:0;height:20%;background:linear-gradient(#5fbf55,#2f7f35);border-top:4px solid #150a33}"
+].join("\n");
+M8.css=function(){if(document.getElementById("m8css"))return;var s=document.createElement("style");s.id="m8css";s.textContent=CSS;document.head.appendChild(s)};
+/* ===== арт ===== */
+var ART={};
+ART.hero='<svg viewBox="0 0 60 84"><defs><linearGradient id="m8hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--ac)"/><stop offset="1" style="stop-color:var(--hot)"/></linearGradient></defs><ellipse cx="30" cy="80" rx="19" ry="4" fill="rgba(0,0,0,.35)"/><rect x="5" y="34" width="12" height="24" rx="6" fill="#3a2a78" stroke="#150a33" stroke-width="3"/><rect x="18" y="58" width="10" height="20" rx="4" fill="#3a2a78" stroke="#150a33" stroke-width="3"/><rect x="32" y="58" width="10" height="20" rx="4" fill="#3a2a78" stroke="#150a33" stroke-width="3"/><rect x="14" y="30" width="32" height="32" rx="11" fill="url(#m8hg)" stroke="#150a33" stroke-width="3"/><circle cx="30" cy="20" r="15" fill="#ffd9b0" stroke="#150a33" stroke-width="3"/><path d="M14 19Q30-8 46 19Q30 9 14 19Z" fill="#4cc9ff" stroke="#150a33" stroke-width="3"/><rect x="21" y="17" width="18" height="8" rx="4" fill="#150a33"/><rect x="24" y="19" width="5" height="3" rx="1.5" fill="#7df"/><rect x="42" y="38" width="9" height="20" rx="4" fill="#ffd9b0" stroke="#150a33" stroke-width="3"/></svg>';
+ART.boss='<svg viewBox="0 0 200 210"><defs><radialGradient id="m8bg" cx=".4" cy=".3" r=".9"><stop offset="0" stop-color="#b85bff"/><stop offset="1" stop-color="#4a1aa0"/></radialGradient></defs><ellipse cx="100" cy="202" rx="62" ry="8" fill="rgba(0,0,0,.35)"/><path d="M40 70 Q10 20 52 8 Q48 36 70 52Z" fill="#ffd23a" stroke="#150a33" stroke-width="5"/><path d="M160 70 Q190 20 148 8 Q152 36 130 52Z" fill="#ffd23a" stroke="#150a33" stroke-width="5"/><path d="M24 118 Q4 150 28 178" fill="none" stroke="#150a33" stroke-width="22" stroke-linecap="round"/><path d="M24 118 Q4 150 28 178" fill="none" stroke="#7a2fd0" stroke-width="14" stroke-linecap="round"/><path d="M176 118 Q196 150 172 178" fill="none" stroke="#150a33" stroke-width="22" stroke-linecap="round"/><path d="M176 118 Q196 150 172 178" fill="none" stroke="#7a2fd0" stroke-width="14" stroke-linecap="round"/><path d="M34 120Q34 60 100 56Q166 60 166 120Q172 196 100 198Q28 196 34 120Z" fill="url(#m8bg)" stroke="#150a33" stroke-width="6"/><ellipse cx="72" cy="96" rx="19" ry="23" fill="#fff" stroke="#150a33" stroke-width="5"/><ellipse cx="128" cy="96" rx="19" ry="23" fill="#fff" stroke="#150a33" stroke-width="5"/><circle cx="76" cy="100" r="9" fill="#ff2b4a"/><circle cx="124" cy="100" r="9" fill="#ff2b4a"/><circle cx="73" cy="96" r="3" fill="#fff"/><circle cx="121" cy="96" r="3" fill="#fff"/><path d="M52 74L90 84M148 74L110 84" stroke="#150a33" stroke-width="7" stroke-linecap="round"/><path d="M58 138Q100 176 142 138Q100 150 58 138Z" fill="#150a33"/><path d="M66 142l6 12 6-10 8 14 8-14 8 14 8-14 6 10 6-12" fill="#fff" stroke="#150a33" stroke-width="3" stroke-linejoin="round"/></svg>';
+ART.chest='<svg viewBox="0 0 70 60"><ellipse cx="35" cy="56" rx="28" ry="4" fill="rgba(0,0,0,.35)"/><rect x="6" y="26" width="58" height="28" rx="5" fill="#a8672a" stroke="#150a33" stroke-width="3.5"/><g class="lid"><path d="M6 28Q6 6 35 6Q64 6 64 28Z" fill="#c98a4a" stroke="#150a33" stroke-width="3.5"/></g><rect x="6" y="26" width="58" height="7" fill="#ffd23a" stroke="#150a33" stroke-width="3"/><rect x="28" y="24" width="14" height="16" rx="3" fill="#ffd23a" stroke="#150a33" stroke-width="3"/><circle cx="35" cy="32" r="3" fill="#150a33"/></svg>';
+ART.para='<svg viewBox="0 0 60 50"><path d="M4 30Q4 2 30 2Q56 2 56 30Q48 22 42 30Q36 22 30 30Q24 22 18 30Q12 22 4 30Z" fill="var(--hot)" stroke="#150a33" stroke-width="3"/><path d="M30 2Q22 14 30 30M30 2Q38 14 30 30" fill="none" stroke="#fff" stroke-width="2" opacity=".6"/><path d="M5 31L26 48M55 31L34 48M30 31V48" stroke="#150a33" stroke-width="2"/></svg>';
+ART.base='<svg viewBox="0 0 200 110"><ellipse cx="100" cy="100" rx="96" ry="9" fill="rgba(0,0,0,.28)"/><rect x="20" y="50" width="160" height="50" rx="6" fill="#5b8def" stroke="#150a33" stroke-width="5"/><path d="M14 52L100 14L186 52Z" fill="#ff5c7a" stroke="#150a33" stroke-width="5" stroke-linejoin="round"/><rect x="82" y="64" width="36" height="36" rx="4" fill="#150a33"/><rect x="30" y="64" width="38" height="20" rx="3" fill="#bfe6ff" stroke="#150a33" stroke-width="3"/><rect x="132" y="64" width="38" height="20" rx="3" fill="#bfe6ff" stroke="#150a33" stroke-width="3"/><circle cx="100" cy="36" r="7" fill="#ffd23a" stroke="#150a33" stroke-width="3"/></svg>';
+ART.tree='<svg viewBox="0 0 40 52"><ellipse cx="20" cy="49" rx="13" ry="3" fill="rgba(0,0,0,.25)"/><rect x="17" y="30" width="6" height="19" fill="#7a4a1f"/><circle cx="20" cy="20" r="16" fill="#1f7d33" stroke="#0e4a1c" stroke-width="2"/><circle cx="14" cy="16" r="8" fill="#37b34a"/></svg>';
+var BANN=["ФАЗА 1","ФАЗА 2","ФІНАЛ"];
+/* ===== ефекти ===== */
+var fx={
+ burst:function(S,x,y,col,n){n=n||16;for(var k=0;k<n;k++)(function(){var p=document.createElement("i");p.className="m8p";p.style.cssText="left:"+x+"px;top:"+y+"px;background:"+(col[k%col.length]||col);S.appendChild(p);var a=Math.random()*6.283,d=28+Math.random()*64;var an=p.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:"translate("+Math.cos(a)*d+"px,"+(Math.sin(a)*d+14)+"px) scale(.2)",opacity:0}],{duration:520+Math.random()*320,easing:"ease-out"});an.onfinish=function(){p.remove()}})()},
+ flt:function(S,x,y,t,col){var f=document.createElement("div");f.className="m8f";f.style.cssText="left:"+x+"px;top:"+y+"px;color:"+(col||"#fff");f.textContent=t;S.appendChild(f);var an=f.animate([{transform:"translate(-50%,0) scale(.6)",opacity:0},{transform:"translate(-50%,-14px) scale(1.15)",opacity:1,offset:.25},{transform:"translate(-50%,-52px) scale(1)",opacity:0}],{duration:1100,easing:"ease-out"});an.onfinish=function(){f.remove()}},
+ shake:function(S,p){S.animate([{transform:"translate(0,0)"},{transform:"translate("+(-6*(p||1))+"px,3px)"},{transform:"translate("+(5*(p||1))+"px,-3px)"},{transform:"translate("+(-3*(p||1))+"px,2px)"},{transform:"translate(0,0)"}],{duration:340})},
+ red:function(S){var f=S.querySelector(".m8flash");if(!f){f=document.createElement("div");f.className="m8flash";S.appendChild(f)}f.animate([{opacity:0},{opacity:1},{opacity:0}],{duration:520})},
+ ban:function(S,t){var b=S.querySelector(".m8ban");if(!b){b=document.createElement("div");b.className="m8ban";S.appendChild(b)}b.textContent=t;b.animate([{opacity:0,transform:"scale(.5)"},{opacity:1,transform:"scale(1.1)",offset:.3},{opacity:1,transform:"scale(1)",offset:.7},{opacity:0,transform:"scale(1.3)"}],{duration:1300})}
+};
+M8.fx=fx;M8.ART=ART;
+/* ===== драйвер ===== */
+M8.play=function(g,eng){
+ M8.css();
+ var R=shuffle(g.rounds.slice()),n=R.length,i=-1,sc=0,mx=eng.nolives?0:(g.lives||3),hp=mx,st=0,done=true,tids=[],ivs=[];
+ fr9(g.title,g.hint||eng.hint||"","<div class='m8 sk-"+(g.skin||"arena")+"'><div class='m8q' id='m8q'></div><div class='m8s m8-"+eng.cls+"' id='m8s'><div class='m8h' id='m8h'></div></div><div class='m8o' id='m8o'></div><p id='fb' class='mut' style='min-height:1.4em;margin-top:8px'></p></div>");
+ var S=document.getElementById("m8s"),O=document.getElementById("m8o"),Q=document.getElementById("m8q"),H=document.getElementById("m8h"),FB=document.getElementById("fb");
+ var c={S:S,O:O,Q:Q,g:g,n:n,sc:0,hp:hp,mx:mx,streak:0,i:0,fx:fx,ART:ART,tstart:Date.now()};
+ c.alive=function(){return document.body.contains(S)};
+ c.isDone=function(){return done};
+ function clr(){tids.forEach(clearTimeout);ivs.forEach(clearInterval);tids=[];ivs=[]}
+ c.later=function(f,ms){var id=setTimeout(function(){if(c.alive())f()},ms);tids.push(id);return id};
+ c.every=function(f,ms){var id=setInterval(function(){if(!c.alive()){clearInterval(id);return}f()},ms);ivs.push(id);return id};
+ c.elapsed=function(){return Date.now()-c.tstart};
+ c.timer=function(sec,f){var bar=S.querySelector(".m8t");if(!bar){bar=document.createElement("div");bar.className="m8t";bar.innerHTML="<i></i>";S.appendChild(bar)}var b=bar.firstChild;b.style.transition="none";b.style.transform="scaleX(1)";void b.offsetWidth;b.style.transition="transform "+sec+"s linear";b.style.transform="scaleX(0)";c.tstart=Date.now();c.later(f,sec*1000)};
+ c.hearts=function(){return mx?new Array(Math.max(0,c.hp)+1).join("❤️"):""};
+ c.refresh=function(){var h=eng.hud?eng.hud(c):["",""];H.innerHTML="<span>"+h[0]+"</span><span>"+(h[1]||"")+"</span><span>"+(mx?c.hearts():"")+"</span>";gs9((Math.max(i,0)+(done?(i>=0?1:0):1)>n?n:Math.max(i+1,1))+" / "+n+" · ✅ "+sc)};
+ c.showQ=function(r){Q.innerHTML=(r.v||"")+"<b>"+r.q+"</b>"};
+ c.opts=function(r,cb){O.innerHTML="";var ord=shuffle(r.o.map(function(x,k){return k})),bs=[],used=false;ord.forEach(function(k,p){var b=document.createElement("button");b.className="m8b";b.innerHTML="<i>"+String.fromCharCode(65+p)+"</i><span>"+r.o[k]+"</span>";if(k===r.a)b.setAttribute("data-ok","1");b.onclick=function(){if(used||done)return;used=true;var ok=k===r.a;b.className="m8b "+(ok?"ok":"bad");bs.forEach(function(x){x.disabled=true;if(x.getAttribute("data-ok")&&!ok)x.className="m8b ok"});cb(ok,b,k)};O.appendChild(b);bs.push(b)});return bs};
+ c.pickBtns=function(){return O.querySelectorAll(".m8b")};
+ c.res=function(ok,info){if(done)return;done=true;clr();info=info||{};
+  if(ok){sc++;st++;snd("ok")}else{st=0;if(mx)hp--;snd("bad")}
+  c.sc=sc;c.hp=hp;c.streak=st;c.lastOk=ok;
+  if(ok&&mx&&st>0&&st%3==0&&hp<mx){hp++;c.hp=hp;fx.flt(S,S.clientWidth*.14,S.clientHeight*.55,"💚 +1","#4cff9a")}
+  if(eng.after)eng.after(c,ok,info);
+  FB.textContent=(ok?"Так! ":"Ні. ")+(R[i].w||"")+(info.msg?" "+info.msg:"");
+  Array.prototype.forEach.call(O.querySelectorAll(".m8b"),function(x){x.disabled=true;if(x.getAttribute("data-ok"))x.className="m8b ok"});
+  c.refresh();
+  var last=i>=n-1||(mx&&hp<=0);
+  nxt9(last?"Результат":"Далі →",function(){if(last){if(eng.end)eng.end(c,sc==n);if(eng.finish)eng.finish(c,sc,n);else fin9(sc,n)}else next()})};
+ function next(){i++;done=false;c.i=i;FB.textContent="";document.getElementById("gn").innerHTML="";Q.innerHTML="";O.innerHTML="";if(!eng.lateQ)c.showQ(R[i]);c.refresh();eng.round(c,R[i])}
+ if(eng.init)eng.init(c);
+ next();
+ return c};
+M8.reg=function(name,eng){window.GM[name]=function(g){M8.play(g,eng)}};
+/* ===== 1. БОС-ДУЕЛЬ ===== */
+M8.reg("x_boss",{cls:"boss",hint:"Відповідай швидко: за 5 секунд удар стає критичним!",
+ init:function(c){var S=c.S;S.insertAdjacentHTML("beforeend","<div class='m8cloud' style='top:16%;width:90px;animation-duration:38s'></div><div class='m8cloud' style='top:30%;width:60px;animation-duration:55s;opacity:.6'></div><div class='m8city'></div><div class='m8floor'></div><div class='m8boss' id='m8bs'>"+ART.boss+"</div><div class='m8hero' id='m8hr'>"+ART.hero+"</div><div class='m8bbar'><b id='m8bn'></b><div><i id='m8bh'></i></div></div>");
+  c.bs=S.querySelector("#m8bs");c.hr=S.querySelector("#m8hr");c.bh=S.querySelector("#m8bh");S.querySelector("#m8bn").textContent="👹 "+(c.g.boss||"Бос");c.ph=0},
+ hud:function(c){return ["⚔ Фаза "+Math.max(1,c.ph),"🔥 Комбо ×"+c.streak]},
+ round:function(c,r){var ph=Math.min(3,Math.floor(c.i/c.n*3)+1);if(ph!=c.ph){c.ph=ph;c.bs.style.filter="drop-shadow(0 10px 8px rgba(0,0,0,.4)) hue-rotate("+(ph-1)*75+"deg) saturate("+(1+.25*ph)+")";fx.ban(c.S,BANN[ph-1]);snd("hit")}c.refresh();
+  c.timer(c.g.t||18,function(){c.res(false,{msg:"Час вийшов!"})});
+  c.opts(r,function(ok){c.res(ok,{fast:c.elapsed()<5500})})},
+ after:function(c,ok,info){var S=c.S,W=S.clientWidth,Hh=S.clientHeight,sh=document.createElement("div");sh.className="m8shot";S.appendChild(sh);
+  if(ok){sh.style.color="#4cc9ff";sh.style.background="#e8fbff";var a=sh.animate([{left:W*.22+"px",top:Hh*.62+"px"},{left:W*.66+"px",top:Hh*.5+"px"}],{duration:380,easing:"ease-in",fill:"forwards"});
+   a.onfinish=function(){sh.remove();c.bs.classList.add("hit");setTimeout(function(){c.bs.classList.remove("hit")},420);fx.burst(S,W*.68,Hh*.48,["#ffd23a","#fff","#4cc9ff"],info.fast?26:16);fx.flt(S,W*.68,Hh*.3,info.fast?"КРИТ! −2":"−1",info.fast?"#ffd23a":"#fff");if(info.fast)fx.shake(S,1.4);snd("hit");
+    var left=Math.max(0,100-(c.sc+(info.fast?1:0))/c.n*100);c.bh.style.width=left+"%"}
+  }else{sh.style.color="#ff3b3b";sh.style.background="#ffb3b3";var a2=sh.animate([{left:W*.68+"px",top:Hh*.5+"px"},{left:W*.2+"px",top:Hh*.65+"px"}],{duration:420,easing:"ease-in",fill:"forwards"});
+   a2.onfinish=function(){sh.remove();c.hr.classList.add("hit");setTimeout(function(){c.hr.classList.remove("hit")},420);fx.red(S);fx.shake(S,1.8);fx.burst(S,W*.2,Hh*.66,["#ff3b3b","#ff9a3b"],14);fx.flt(S,W*.2,Hh*.45,"−1 ❤️","#ff6b6b");snd("boom")}}},
+ end:function(c,won){if(won){c.bh.style.width="0%";c.bs.animate([{transform:"scale(1)",opacity:1},{transform:"scale(1.3) rotate(8deg)",opacity:0}],{duration:900,fill:"forwards"});fx.burst(c.S,c.S.clientWidth*.68,c.S.clientHeight*.5,["#ffd23a","#ff4f9a","#4cff9a","#fff"],50)}}});
+/* ===== 2. ДРОП ===== */
+M8.reg("x_drop",{cls:"drop",hint:"Лови скриню з правильною відповіддю, поки не впала на склад!",
+ init:function(c){var S=c.S;S.insertAdjacentHTML("beforeend","<div class='m8cloud' style='top:12%;width:100px;animation-duration:30s'></div><div class='m8cloud' style='top:34%;width:70px;animation-duration:48s;opacity:.7'></div><div class='m8cloud' style='top:52%;width:84px;animation-duration:40s;opacity:.5'></div><div class='m8gnd'></div><div class='m8base'>"+ART.base+"</div>")},
+ hud:function(c){return ["🏠 Склад","⚡ Серія "+c.streak]},
+ round:function(c,r){var S=c.S,W=S.clientWidth,Hh=S.clientHeight,k=r.o.length,ord=shuffle(r.o.map(function(x,q){return q})),T=c.g.t||14,cr=[];
+  S.querySelectorAll(".m8cr").forEach(function(x){x.remove()});
+  ord.forEach(function(q,p){var el=document.createElement("div");el.className="m8cr";var cw=W/k-10;el.style.left=(p*(W/k)+5)+"px";el.style.width=(cw-6)+"px";el.innerHTML=ART.para+"<b style='width:100%'><u>"+String.fromCharCode(65+p)+"</u>"+r.o[q]+"</b>";if(q===r.a)el.setAttribute("data-ok","1");S.appendChild(el);
+   var land=Hh*.84-el.offsetHeight,ph=(Math.random()*.2),a=el.animate([{transform:"translateY(-"+(el.offsetHeight+10)+"px) rotate(-3deg)"},{transform:"translateY("+land*.5+"px) rotate(3deg)",offset:.5},{transform:"translateY("+land+"px) rotate(0)"}],{duration:(T+ph*4)*1000,easing:"linear",fill:"forwards"});
+   el.onclick=function(){if(el.dataset.d)return;el.dataset.d=1;var ok=q===r.a,rc=el.getBoundingClientRect(),sr=S.getBoundingClientRect(),x=rc.left-sr.left+rc.width/2,y=rc.top-sr.top+rc.height/2;a.pause();el.style.pointerEvents="none";
+    if(ok){fx.burst(S,x,y,["#ffd23a","#4cff9a","#fff"],22);el.animate([{opacity:1,transform:getComputedStyle(el).transform},{opacity:0,transform:getComputedStyle(el).transform+" scale(1.4)"}],{duration:300,fill:"forwards"})}
+    else{fx.burst(S,x,y,["#ff4f4f","#ff9a3b","#444"],26);fx.red(S);fx.shake(S,1.3);el.style.display="none"}
+    c.res(ok)};
+   cr.push([el,a,q])});
+  var good=cr.filter(function(z){return z[2]===r.a})[0];
+  good[1].onfinish=function(){if(c.isDone())return;var el=good[0];if(el.dataset.d)return;var rc=el.getBoundingClientRect(),sr=S.getBoundingClientRect();fx.burst(S,rc.left-sr.left+rc.width/2,rc.top-sr.top+rc.height,["#ff4f4f","#ff9a3b","#ffd23a"],30);fx.red(S);fx.shake(S,1.6);snd("boom");c.res(false,{msg:"Скриня впала на склад!"})}}});
+/* ===== 3. ЗОНА ===== */
+M8.reg("x_zone",{cls:"zone",hint:"Обери скриню з правильною відповіддю й добіжи, поки не зімкнулася буря!",
+ init:function(c){var S=c.S;S.insertAdjacentHTML("beforeend","<div class='m8sea'></div>"+[[8,22],[78,14],[14,70],[84,66],[60,84],[30,10],[90,40],[40,62]].map(function(p){return "<div class='m8tree' style='left:"+p[0]+"%;top:"+p[1]+"%'>"+ART.tree+"</div>"}).join("")+"<div class='m8zst' id='m8st'></div><div class='m8zh' id='m8zh'>"+ART.hero+"</div>");
+  c.st=S.querySelector("#m8st");c.zh=S.querySelector("#m8zh");c.R=.58;c.px=.5;c.py=.5;c.setZone=function(R,dur){var W=S.clientWidth,Hh=S.clientHeight,d=R*Math.max(W,Hh)*1.1;c.st.style.transition="all "+dur+"s linear";c.st.style.width=d+"px";c.st.style.height=d+"px";c.st.style.left=(W*.5-d/2)+"px";c.st.style.top=(Hh*.52-d/2)+"px"};c.setZone(.95,0);c.zh.style.left="50%";c.zh.style.top="56%"},
+ hud:function(c){return ["⛈ Буря наступає","👥 "+Math.max(2,100-Math.round((c.i+(c.lastDone?1:0))*(98/c.n)))+" живих"]},
+ round:function(c,r){var S=c.S,W=S.clientWidth,Hh=S.clientHeight,k=r.o.length,T=c.g.t||16;S.querySelectorAll(".m8ch").forEach(function(x){x.remove()});
+  var R=.95-.4*(c.i+1)/c.n,Rpx=R*Math.max(W,Hh)*1.1/2,cx=W*.5,cy=Hh*.52,rr=Math.min(Rpx*.62,Math.min(W,Hh)*.34);c.setZone(R,0);c.zh.style.transition="none";c.zh.style.left=cx+"px";c.zh.style.top=(cy+Hh*.04)+"px";void c.zh.offsetWidth;c.zh.style.transition="";
+  var ord=shuffle(r.o.map(function(x,q){return q})),off=Math.random()*6.28,chs=[];
+  ord.forEach(function(q,p){var ang=off+p*6.283/k,x=cx+Math.cos(ang)*rr,y=cy+Math.sin(ang)*rr*.9,el=document.createElement("div");el.className="m8ch";el.style.left=x+"px";el.style.top=y+"px";el.innerHTML=ART.chest+"<em>"+String.fromCharCode(65+p)+"</em>";el.dataset.q=q;S.appendChild(el);chs.push(el)});
+  var T0=T,sh=R-.12;c.later(function(){c.setZone(sh,T0)},50);
+  c.timer(T,function(){fx.red(S);fx.shake(S,1.3);c.res(false,{msg:"Буря накрила тебе!"})});
+  var bs=c.opts(r,function(ok,b,q){var el=chs.filter(function(z){return z.dataset.q==q})[0],x=parseFloat(el.style.left),y=parseFloat(el.style.top);c.st.style.transition="none";c.zh.style.left=x+"px";c.zh.style.top=(y+Hh*.06)+"px";
+   c.later(function(){var lid=el.querySelector(".lid");if(lid)lid.style.cssText="transform-origin:35px 28px;transform:rotate(-70deg);transition:transform .3s";if(ok){fx.burst(S,x,y,["#ffd23a","#4cff9a","#fff","#4cc9ff"],30);fx.flt(S,x,y-30,"🛡 +25","#4cc9ff");snd("ok")}else{fx.burst(S,x,y,["#7a3cff","#444","#ff4f4f"],22);fx.flt(S,x,y-30,"ПАСТКА!","#ff6b6b");fx.red(S);fx.shake(S,1.3)}c.lastDone=1;c.res(ok)},950)});
+  chs.forEach(function(el){el.onclick=function(){var b=Array.prototype.filter.call(bs,function(z,pp){return ord[pp]==el.dataset.q})[0];if(b&&!b.disabled)b.click()}})}});
+/* ===== 4. БУДІВЕЛЬНИК ===== */
+M8.reg("x_build",{cls:"tower",hint:"Кожна правильна відповідь додає блок. Помилка руйнує верхній!",
+ init:function(c){var S=c.S;S.insertAdjacentHTML("beforeend","<div class='m8cloud' style='top:8%;width:90px;animation-duration:36s'></div><div class='m8cloud' style='top:26%;width:60px;animation-duration:52s;opacity:.7'></div><div class='m8hill'></div><div class='m8cam' id='m8cam'><div class='m8gb'></div><div class='m8plat' style='bottom:"+(S.clientHeight*.2-8)+"px'></div></div>");c.cam=S.querySelector("#m8cam");c.bl=[];var Hh=S.clientHeight;c.bh=Math.max(24,Math.min(40,(Hh*.78-40)/(c.n+1)));c.gh=Hh*.2;
+  var tr=document.createElement("div");tr.style.cssText="position:absolute;left:50%;transform:translateX(-50%);font-size:34px;filter:drop-shadow(0 0 10px #ffd23a);bottom:"+(c.gh+c.n*c.bh+6)+"px;animation:m8pulse 1.6s infinite;z-index:3";tr.textContent="🏆";c.cam.appendChild(tr);c.tr=tr;
+  c.cam.insertAdjacentHTML("beforeend","<div style='position:absolute;left:50%;transform:translateX(-50%);bottom:"+(c.gh+c.n*c.bh)+"px;width:56%;border-top:3px dashed rgba(255,255,255,.8)'></div>")},
+ hud:function(c){return ["🧱 "+c.bl.length+" / "+c.n,"🏗 Будуємо"]},
+ round:function(c,r){c.opts(r,function(ok){c.res(ok)})},
+ after:function(c,ok,info){var S=c.S,W=S.clientWidth,bh=c.bh,mat=c.bl.length<c.n/3?"w":(c.bl.length<c.n*2/3?"s":"m");
+  if(ok){var b=document.createElement("div");b.className="m8tw "+mat;b.style.cssText="width:"+(Math.min(W*.5,150)-(c.bl.length%2?6:0))+"px;height:"+bh+"px;bottom:"+(c.gh+c.bl.length*bh)+"px;z-index:5";b.textContent=c.bl.length+1;c.cam.appendChild(b);c.bl.push(b);
+   var a=b.animate([{transform:"translate(-50%,-"+(S.clientHeight)+"px)"},{transform:"translate(-50%,0)",offset:.7},{transform:"translate(-50%,-10px)",offset:.82},{transform:"translate(-50%,0)"}],{duration:650,easing:"cubic-bezier(.5,0,.8,.5)"});a.onfinish=function(){fx.burst(S,W/2,S.clientHeight-c.gh-c.bl.length*bh,["#e9d6a8","#fff"],12);snd("hit")};
+   var top=c.gh+c.bl.length*bh,lim=S.clientHeight*.55;c.cam.style.transform=top>lim?"translateY("+(top-lim)+"px)":"translateY(0)"}
+  else{fx.red(S);fx.shake(S,1.4);var bz=document.createElement("div");bz.style.cssText="position:absolute;left:50%;top:"+(S.clientHeight*.18)+"px;font-size:30px;z-index:40;transform:translateX(-50%)";bz.textContent="⚡";S.appendChild(bz);bz.animate([{opacity:0,transform:"translate(-50%,-20px) scale(.5)"},{opacity:1,transform:"translate(-50%,0) scale(1.2)"},{opacity:0}],{duration:600}).onfinish=function(){bz.remove()};
+   var t=c.bl.pop();if(t){t.animate([{transform:"translate(-50%,0) rotate(0)",opacity:1},{transform:"translate(30%,160px) rotate(40deg)",opacity:0}],{duration:700,fill:"forwards"}).onfinish=function(){t.remove()};fx.burst(S,S.clientWidth/2,S.clientHeight-c.gh-c.bl.length*bh-10,["#aaa","#fff","#8b5a2b"],16)}}
+  c.cam.style.transform=(c.gh+c.bl.length*bh>S.clientHeight*.55)?"translateY("+((c.gh+c.bl.length*bh)-S.clientHeight*.55)+"px)":"translateY(0)"},
+ end:function(c,won){if(won){fx.burst(c.S,c.S.clientWidth/2,c.S.clientHeight*.3,["#ffd23a","#ff4f9a","#4cff9a","#4cc9ff"],60);fx.ban(c.S,"ПЕРЕМОГА!")}}});
+})();
+
+/* ===== M8 (частина 2): Ритм-різ, Лабіринт, Захист бази, Злам сейфа ===== */
+(function(){
+if(!window.M8)return;
+var M8=window.M8,fx=M8.fx,ART=M8.ART;
+function snd(k){try{GX.snd(k)}catch(e){}}
+var CSS=[
+".m8s.m8-rhythm{background:linear-gradient(#0a0426,#1d0b55 70%,#3b0f7a)}.m8-rhythm .m8eq{position:absolute;left:0;right:0;bottom:0;height:46%;display:flex;align-items:flex-end;gap:3px;padding:0 4px;opacity:.55}.m8-rhythm .m8eq i{flex:1;background:linear-gradient(var(--hot),var(--ac));border-radius:3px 3px 0 0;height:100%;transform-origin:bottom;animation:m8eq 1s ease-in-out infinite}",
+".m8grid{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/100% 34px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/34px 100%}",
+".m8line{position:absolute;top:34px;bottom:8px;width:5px;border-radius:3px;background:#fff;box-shadow:0 0 14px 6px var(--hot),0 0 30px 12px var(--ac);z-index:8}",
+".m8lane{position:absolute;left:0;right:0;border-top:1px dashed rgba(255,255,255,.18)}",
+".m8chip{position:absolute;display:flex;align-items:center;gap:6px;padding:0 10px;border-radius:12px;border:3px solid #fff;font-weight:900;font-size:12.5px;line-height:1.15;color:#fff;cursor:pointer;z-index:10;box-shadow:0 0 14px currentColor,inset 0 -5px 0 rgba(0,0,0,.25)}.m8chip u{text-decoration:none;display:grid;place-items:center;flex:none;width:20px;height:20px;border-radius:50%;background:#fff;color:#150a33;font-size:11px}",
+".m8s.m8-maze{background:#0a0620}.m8mz{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.m8mz svg{display:block}",
+".m8pl{position:absolute;z-index:6;transition:left .12s linear,top .12s linear}.m8pl svg{width:100%;height:auto;display:block;overflow:visible}.m8fog{position:absolute;inset:0;z-index:12;pointer-events:none}",
+".m8s.m8-maze{height:min(46vh,350px);min-height:290px}",
+".m8torch{animation:m8tw .9s infinite}",
+".m8s.m8s.m8-def{background:radial-gradient(circle at 80% 18%,#fff6c8 0 6%,rgba(255,246,200,.25) 7% 14%,transparent 15%),radial-gradient(1.5px 1.5px at 20% 15%,#fff,transparent),radial-gradient(1.5px 1.5px at 45% 28%,#fff,transparent),radial-gradient(1.5px 1.5px at 62% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 10% 40%,#fff,transparent),radial-gradient(1.5px 1.5px at 35% 8%,#fff,transparent),linear-gradient(#1b0a52,#7a2d9a 55%,#ffb36b)}.m8-def .m8gr{position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(#3f8f3a,#1f5a26);border-top:4px solid #150a33}.m8-def .m8rd{position:absolute;left:0;right:0;bottom:12%;height:11%;background:repeating-linear-gradient(90deg,#8b7a5a 0 26px,#7a6a4c 26px 28px);border-top:3px solid #150a33;border-bottom:3px solid #150a33}",
+".m8mt{position:absolute;bottom:34%;left:0;right:0;height:26%;background:linear-gradient(135deg,transparent 48%,#2a1470 49%) 0 0/16% 100%,linear-gradient(225deg,transparent 48%,#3a1a8a 49%) 8% 0/16% 100%;opacity:.8}",
+".m8tur{position:absolute;bottom:35%;width:13%;max-width:58px;z-index:6;transform:translateX(-50%)}.m8tur svg{width:100%;display:block;overflow:visible}.m8tur em{position:absolute;left:50%;top:-18px;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;background:var(--ac);color:#150a33;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:12px;border:2px solid #150a33}",
+".m8en{position:absolute;bottom:30%;left:0;width:17%;max-width:74px;z-index:8}.m8en svg{width:100%;display:block;overflow:visible;animation:m8bob .6s ease-in-out infinite}",
+".m8cast{position:absolute;right:1%;bottom:30%;width:20%;max-width:90px;z-index:5}.m8cast svg{width:100%;display:block}",
+".m8s.m8-safe{background:radial-gradient(circle at 35% 50%,#4a5578,#1d2340 70%)}.m8sf{position:absolute;left:3%;top:46px;bottom:12px;width:56%}.m8sf svg{width:100%;height:100%}",
+".m8slots{position:absolute;left:5%;width:52%;display:flex;gap:5px;justify-content:center;top:34%}.m8slots b{flex:1;max-width:44px;aspect-ratio:3/4;display:grid;place-items:center;background:#0b1a0e;border:3px solid #7a8499;border-radius:7px;color:#4cff9a;font-size:20px;font-weight:900;box-shadow:inset 0 0 12px #000}.m8slots b.lk{color:#ffd23a;border-color:#ffd23a}.m8slots b.cur{border-color:#fff;box-shadow:0 0 12px #fff}",
+".m8bolts{position:absolute;left:5%;width:52%;top:58%;display:flex;gap:6px;justify-content:center}.m8bolts i{width:22px;height:22px;border-radius:50%;background:#3a4258;border:3px solid #150a33;box-shadow:inset 0 0 6px #000}.m8bolts i.on{background:radial-gradient(#ffe97a,#ffb400);box-shadow:0 0 12px #ffd23a}",
+".m8hist{position:absolute;right:2%;top:46px;bottom:10px;width:36%;display:flex;flex-direction:column;gap:5px;overflow:hidden}.m8hist div{display:flex;align-items:center;gap:3px;background:rgba(0,0,0,.4);border-radius:8px;padding:3px 5px;font-weight:900;font-size:13px}.m8hist s{text-decoration:none;display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:5px;color:#150a33;background:#ccc;font-size:12px}.m8hist s.g{background:#4cff9a}.m8hist s.y{background:#ffd23a}",
+".m8kp{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}.m8kp .m8b{justify-content:center;padding:9px 0;font-size:17px}"
+].join("\n");
+var st=document.createElement("style");st.id="m8css2";st.textContent=CSS;document.head.appendChild(st);
+var A2={};
+A2.en=['<svg viewBox="0 0 70 70"><ellipse cx="35" cy="66" rx="22" ry="4" fill="rgba(0,0,0,.35)"/><path d="M8 40Q8 8 35 8Q62 8 62 40Q62 62 35 62Q8 62 8 40Z" fill="#ff4f4f" stroke="#150a33" stroke-width="4"/><circle cx="24" cy="32" r="8" fill="#fff" stroke="#150a33" stroke-width="3"/><circle cx="46" cy="32" r="8" fill="#fff" stroke="#150a33" stroke-width="3"/><circle cx="26" cy="33" r="3.5" fill="#150a33"/><circle cx="44" cy="33" r="3.5" fill="#150a33"/><path d="M20 48Q35 40 50 48" stroke="#150a33" stroke-width="4" fill="none"/><path d="M16 12L10 0M54 12L60 0" stroke="#150a33" stroke-width="4"/></svg>',
+ '<svg viewBox="0 0 70 70"><ellipse cx="35" cy="66" rx="20" ry="4" fill="rgba(0,0,0,.3)"/><path d="M10 62V30Q10 6 35 6Q60 6 60 30V62L50 54L40 62L30 54L20 62Z" fill="#b6e6ff" stroke="#150a33" stroke-width="4" stroke-linejoin="round"/><circle cx="26" cy="30" r="6" fill="#150a33"/><circle cx="44" cy="30" r="6" fill="#150a33"/><ellipse cx="35" cy="44" rx="7" ry="5" fill="#150a33"/></svg>',
+ '<svg viewBox="0 0 70 70"><ellipse cx="35" cy="66" rx="22" ry="4" fill="rgba(0,0,0,.3)"/><path d="M6 36Q35-12 64 36Q66 62 35 62Q4 62 6 36Z" fill="#7bd54a" stroke="#150a33" stroke-width="4"/><circle cx="25" cy="34" r="7" fill="#fff" stroke="#150a33" stroke-width="3"/><circle cx="45" cy="34" r="7" fill="#fff" stroke="#150a33" stroke-width="3"/><circle cx="27" cy="35" r="3" fill="#150a33"/><circle cx="43" cy="35" r="3" fill="#150a33"/><path d="M22 50l5 6 5-6 5 6 5-6 5 6" stroke="#150a33" stroke-width="3" fill="none"/></svg>'];
+A2.tur='<svg viewBox="0 0 60 80"><ellipse cx="30" cy="76" rx="22" ry="4" fill="rgba(0,0,0,.3)"/><rect x="10" y="48" width="40" height="26" rx="6" fill="#5b8def" stroke="#150a33" stroke-width="4"/><rect x="16" y="26" width="28" height="26" rx="8" fill="#8fb4ff" stroke="#150a33" stroke-width="4"/><rect x="38" y="30" width="22" height="9" rx="4" fill="#ffd23a" stroke="#150a33" stroke-width="3"/><circle cx="26" cy="38" r="5" fill="#150a33"/><circle cx="26" cy="38" r="2" fill="#ff4f9a"/></svg>';
+A2.cast='<svg viewBox="0 0 100 110"><ellipse cx="50" cy="104" rx="46" ry="6" fill="rgba(0,0,0,.3)"/><rect x="10" y="40" width="80" height="62" fill="#aab0c8" stroke="#150a33" stroke-width="5"/><path d="M10 40V24h14v10h14V24h14v10h14V24h14v16Z" fill="#aab0c8" stroke="#150a33" stroke-width="4" stroke-linejoin="round"/><path d="M38 102V76Q50 64 62 76V102Z" fill="#150a33"/><path d="M50 24V4L72 12L50 20" fill="#ff4f9a" stroke="#150a33" stroke-width="3"/></svg>';
+function pa(i){return String.fromCharCode(65+i)}
+var COL=["#ff4f9a","#4cc9ff","#7bd54a","#ffb400"];
+/* ===== 5. РИТМ-РІЗ ===== */
+M8.reg("x_rhythm",{cls:"rhythm",nolives:true,hint:"Лови правильну відповідь, коли вона на білій лінії, — це ідеальний удар!",
+ init:function(c){var S=c.S,W=S.clientWidth,eq="";for(var k=0;k<26;k++)eq+="<i style='animation-delay:-"+(Math.random()).toFixed(2)+"s;animation-duration:"+(.6+Math.random()*.7).toFixed(2)+"s'></i>";
+  S.insertAdjacentHTML("beforeend","<div class='m8grid'></div><div class='m8eq'>"+eq+"</div><div class='m8line' style='left:"+W*.2+"px'></div>");c.perf=0;c.tot=0;c.combo=0},
+ hud:function(c){return ["🎯 Ідеально "+c.perf+"/"+c.tot,"🔥 Комбо ×"+c.combo]},
+ round:function(c,r){var S=c.S;S.querySelectorAll(".m8chip,.m8lane").forEach(function(x){x.remove()});var W=S.clientWidth,Hh=S.clientHeight,k=r.o.length,lh=(Hh-70)/k,T=c.g.t||10,ch=Math.min(lh-8,54),cw=Math.min(W*.6,270),ord=shuffle(r.o.map(function(x,q){return q})),line=W*.2,chips=[];
+  ord.forEach(function(q,p){var y=44+p*lh+(lh-ch)/2,ln=document.createElement("div");ln.className="m8lane";ln.style.top=(44+p*lh)+"px";S.appendChild(ln);var el=document.createElement("div");el.className="m8chip";el.style.cssText="top:"+y+"px;height:"+ch+"px;width:"+cw+"px;left:0;color:"+COL[p%4]+";background:linear-gradient("+COL[p%4]+",#150a33 190%)";el.innerHTML="<u>"+pa(p)+"</u><span style='color:#fff'>"+r.o[q]+"</span>";if(q===r.a)el.setAttribute("data-ok","1");S.appendChild(el);
+   var sp=T+(Math.random()*1.6-.6),an=el.animate([{transform:"translateX("+W+"px)"},{transform:"translateX("+(-cw)+"px)"}],{duration:sp*1000,easing:"linear",fill:"forwards"});
+   an.onfinish=function(){if(q===r.a&&!c.isDone()){fx.red(S);c.tot++;c.combo=0;c.res(false,{msg:"Ти пропустив правильну відповідь!"})}};
+   el.onclick=function(){if(c.isDone())return;var rc=el.getBoundingClientRect(),sr=S.getBoundingClientRect(),l=rc.left-sr.left,rr=l+rc.width,ok=q===r.a,perf=ok&&l<=line+8&&rr>=line-8;chips.forEach(function(z){z[1].pause()});c.tot++;
+    if(ok){if(perf){c.perf++;c.combo++;fx.flt(S,line,rc.top-sr.top-6,"ІДЕАЛЬНО!","#ffd23a");fx.burst(S,line,rc.top-sr.top+rc.height/2,["#ffd23a","#ff4f9a","#fff"],28);snd("hit")}else{c.combo=0;fx.flt(S,Math.max(70,l+60),rc.top-sr.top-6,l>line?"Рано!":"Добре","#4cc9ff");fx.burst(S,l+30,rc.top-sr.top+rc.height/2,["#4cc9ff","#fff"],12)}}
+    else{c.combo=0;fx.red(S);fx.shake(S,1.2);fx.burst(S,l+30,rc.top-sr.top+rc.height/2,["#ff4f4f","#333"],18)}
+    c.res(ok)};
+   chips.push([el,an,q])});
+  c.O.innerHTML="";ord.forEach(function(q,p){var b=document.createElement("button");b.className="m8b";b.innerHTML="<i>"+pa(p)+"</i><span>"+r.o[q]+"</span>";if(q===r.a)b.setAttribute("data-ok","1");b.onclick=function(){chips[p][0].onclick()};c.O.appendChild(b)})}});
+/* ===== 6. ЛАБІРИНТ ===== */
+function genMaze(w,h){var W=2*w+1,H=2*h+1,T=[],x,y;for(y=0;y<H;y++){T.push([]);for(x=0;x<W;x++)T[y].push(1)}
+ var st=[[0,0]],vis={"0,0":1};T[1][1]=0;
+ while(st.length){var c=st[st.length-1],cx=c[0],cy=c[1],nb=[[1,0],[-1,0],[0,1],[0,-1]].map(function(d){return [cx+d[0],cy+d[1],d]}).filter(function(n){return n[0]>=0&&n[1]>=0&&n[0]<w&&n[1]<h&&!vis[n[0]+","+n[1]]});
+  if(!nb.length){st.pop();continue}var n=nb[Math.floor(Math.random()*nb.length)];vis[n[0]+","+n[1]]=1;T[2*cy+1+n[2][1]][2*cx+1+n[2][0]]=0;T[2*n[1]+1][2*n[0]+1]=0;st.push([n[0],n[1]])}
+ return T}
+function bfs(T,a,b,blk){var W=T[0].length,H=T.length,q=[a],pr={};pr[a[0]+","+a[1]]=null;
+ while(q.length){var c=q.shift();if(c[0]==b[0]&&c[1]==b[1])break;[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var x=c[0]+d[0],y=c[1]+d[1],k=x+","+y;if(x<0||y<0||x>=W||y>=H||T[y][x]||(blk&&blk[k])||(k in pr))return;pr[k]=c;q.push([x,y])})}
+ var k=b[0]+","+b[1];if(!(k in pr))return null;var p=[],cur=b;while(cur){p.unshift(cur);cur=pr[cur[0]+","+cur[1]]}return p}
+M8.reg("x_maze",{cls:"maze",lateQ:true,hint:"Торкайся карти, щоб іти. Біля дверей відповідай на питання, щоб відчинити.",
+ init:function(c){var S=c.S,MW=6,MH=4,T=genMaze(MW,MH),W=2*MW+1,H=2*MH+1,ts=Math.floor(Math.min((S.clientWidth-8)/W,(S.clientHeight-54)/H)),path=bfs(T,[1,1],[W-2,H-2]),n=c.n,x,y;
+  c.T=T;c.ts=ts;c.W=W;c.H=H;c.doors=[];c.blk={};c.coins=0;c.pos=[1,1];
+  for(var k=1;k<=n;k++){var ix=Math.round(k*(path.length-1)/(n+1));if(ix<2)ix=2;var d=path[ix];c.doors.push(d);c.blk[d[0]+","+d[1]]=1}
+  var svg="<svg width='"+W*ts+"' height='"+H*ts+"'><defs><linearGradient id='m8w' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#6a4fd0'/><stop offset='1' stop-color='#2c1a78'/></linearGradient></defs>",torch="";
+  for(y=0;y<H;y++)for(x=0;x<W;x++){if(T[y][x]){svg+="<rect x='"+x*ts+"' y='"+y*ts+"' width='"+ts+"' height='"+ts+"' fill='url(#m8w)' stroke='#150a33' stroke-width='1.5'/><rect x='"+x*ts+"' y='"+y*ts+"' width='"+ts+"' height='"+ts*.25+"' fill='rgba(255,255,255,.18)'/>";if(((x*7+y*13)%11==0)&&x>0&&y>0&&x<W-1&&y<H-1&&!T[y+1][x])torch+="<circle class='m8torch' cx='"+(x*ts+ts/2)+"' cy='"+(y*ts+ts*1.2)+"' r='"+ts*.5+"' fill='#ffb347' opacity='.38'/><rect x='"+(x*ts+ts*.4)+"' y='"+(y*ts+ts*.75)+"' width='"+ts*.2+"' height='"+ts*.5+"' rx='2' fill='#ffd23a'/>"}else svg+="<rect x='"+x*ts+"' y='"+y*ts+"' width='"+ts+"' height='"+ts+"' fill='"+((x+y)%2?"#241552":"#2a1a60")+"'/>"}
+  var dead=[];for(y=1;y<H-1;y+=2)for(x=1;x<W-1;x+=2){var o=[[1,0],[-1,0],[0,1],[0,-1]].filter(function(dd){return !T[y+dd[1]][x+dd[0]]}).length;if(o==1&&!(x==1&&y==1)&&!(x==W-2&&y==H-2))dead.push([x,y])}
+  c.cn={};dead.slice(0,8).forEach(function(d){c.cn[d[0]+","+d[1]]=1;svg+="<circle id='cn"+d[0]+"_"+d[1]+"' cx='"+(d[0]*ts+ts/2)+"' cy='"+(d[1]*ts+ts/2)+"' r='"+ts*.28+"' fill='#ffd23a' stroke='#150a33' stroke-width='2'/>"});
+  svg+=torch;c.doors.forEach(function(d,q){svg+="<g id='dr"+q+"'><rect x='"+d[0]*ts+"' y='"+d[1]*ts+"' width='"+ts+"' height='"+ts+"' rx='3' fill='#c98a4a' stroke='#150a33' stroke-width='2.5'/><circle cx='"+(d[0]*ts+ts/2)+"' cy='"+(d[1]*ts+ts/2)+"' r='"+ts*.18+"' fill='#ffd23a' stroke='#150a33' stroke-width='1.5'/></g>"});
+  svg+="<circle cx='"+((W-2)*ts+ts/2)+"' cy='"+((H-2)*ts+ts/2)+"' r='"+ts*.42+"' fill='#4cff9a' opacity='.85'/><text x='"+((W-2)*ts+ts*.14)+"' y='"+((H-2)*ts+ts*.78)+"' font-size='"+ts*.7+"'>🏁</text></svg>";
+  var mz=document.createElement("div");mz.className="m8mz";mz.style.cssText="width:"+W*ts+"px;height:"+H*ts+"px;margin-top:14px";mz.innerHTML=svg+"<div class='m8pl' id='m8pl' style='width:"+ts*1.15+"px'>"+ART.hero+"</div><div class='m8fog' id='m8fg'></div>";S.appendChild(mz);c.mz=mz;c.pl=mz.querySelector("#m8pl");c.fg=mz.querySelector("#m8fg");
+  c.place=function(){var p=c.pos;c.pl.style.left=(p[0]*ts-ts*.08)+"px";c.pl.style.top=(p[1]*ts-ts*.6)+"px";var cx=p[0]*ts+ts/2,cy=p[1]*ts+ts/2;c.fg.style.background="radial-gradient(circle at "+cx+"px "+cy+"px,transparent "+ts*4+"px,rgba(5,2,20,.6) "+ts*8+"px)"};
+  c.place();c.moving=false;c.asked=false;
+  c.checkDoor=function(){var d=c.doors[c.i];if(!d||c.asked)return false;if(Math.abs(d[0]-c.pos[0])+Math.abs(d[1]-c.pos[1])<=1){c.asked=true;c.ask();return true}return false};
+  c.walk=function(p){if(c.moving||!p||p.length<2||c.asked)return;c.moving=true;var k=1,id=setInterval(function(){if(!c.alive()){clearInterval(id);return}
+    c.pos=p[k];c.place();var key=c.pos[0]+","+c.pos[1];if(c.cn[key]){delete c.cn[key];c.coins++;var e=c.mz.querySelector("#cn"+c.pos[0]+"_"+c.pos[1]);if(e)e.remove();fx.flt(S,S.clientWidth/2,S.clientHeight*.3,"💎 +1","#ffd23a");snd("ok");c.refresh()}
+    k++;if(c.checkDoor()||k>=p.length){clearInterval(id);c.moving=false}},120)};
+  S.addEventListener("click",function(ev){if(c.moving||c.asked)return;var r=c.mz.getBoundingClientRect(),tx=Math.floor((ev.clientX-r.left)/ts),ty=Math.floor((ev.clientY-r.top)/ts);if(tx<0||ty<0||tx>=W||ty>=H)return;var p=bfs(T,c.pos,[tx,ty],c.blk);if(!p){var d=c.doors[c.i];if(d&&tx==d[0]&&ty==d[1]){var best=null;[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(o){var q=bfs(T,c.pos,[d[0]+o[0],d[1]+o[1]],c.blk);if(q&&(!best||q.length<best.length))best=q});p=best}}if(p)c.walk(p)});
+  c.kd=function(ev){if(!c.alive()){document.removeEventListener("keydown",c.kd);return}var m={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[ev.key];if(!m||c.moving||c.asked)return;var x2=c.pos[0]+m[0],y2=c.pos[1]+m[1];if(T[y2]&&!T[y2][x2]&&!c.blk[x2+","+y2]){c.walk([c.pos,[x2,y2]]);ev.preventDefault()}};document.addEventListener("keydown",c.kd)},
+ hud:function(c){return ["🚪 Двері "+Math.min(c.n,c.i+1)+" / "+c.n,"💎 "+c.coins]},
+ round:function(c,r){c.asked=false;c.Q.innerHTML="<b>🚪 Знайди двері №"+(c.i+1)+" — торкайся карти, щоб рухатись.</b>";
+  c.ask=function(){c.showQ(r);c.timer(c.g.t||40,function(){c.res(false,{msg:"Час вийшов!"})});c.opts(r,function(ok){var d=c.doors[c.i],g=c.mz.querySelector("#dr"+c.i);if(ok)fx.burst(c.S,(d[0]+.5)*c.ts+(c.S.clientWidth-c.W*c.ts)/2,(d[1]+.5)*c.ts+(c.S.clientHeight-c.H*c.ts)/2+7,["#ffd23a","#4cff9a","#fff"],24);else{fx.red(c.S);fx.shake(c.S,1.4)}
+    if(g)g.animate([{opacity:1},{opacity:0}],{duration:500,fill:"forwards"});delete c.blk[d[0]+","+d[1]];c.res(ok)})};
+  c.checkDoor()},
+ end:function(c){document.removeEventListener("keydown",c.kd)}});
+/* ===== 7. ЗАХИСТ БАЗИ ===== */
+M8.reg("x_defense",{cls:"def",hint:"Обери захисника, який знищить загрозу, поки вона не дійшла до бази!",
+ init:function(c){var S=c.S;c.sl=[];S.insertAdjacentHTML("beforeend","<div class='m8mt'></div><div class='m8gr'></div><div class='m8rd'></div><div class='m8cast'>"+A2.cast+"</div>");for(var q=0;q<4;q++){var t=document.createElement("div");t.className="m8tur";t.style.left=(22+q*15)+"%";t.innerHTML=A2.tur+"<em>"+pa(q)+"</em>";S.appendChild(t);c.sl.push(t)}},
+ hud:function(c){return ["🌊 Хвиля "+(c.i+1)+" / "+c.n,"🏰 База"]},
+ round:function(c,r){var S=c.S,W=S.clientWidth,Hh=S.clientHeight,T=c.g.t||16;S.querySelectorAll(".m8en").forEach(function(x){x.remove()});
+  var en=document.createElement("div");en.className="m8en";en.innerHTML=A2.en[c.i%3];S.appendChild(en);c.defWrong=false;
+  var castX=W*.78,enW=en.offsetWidth,an=en.animate([{transform:"translateX(-10px)"},{transform:"translateX("+(castX-enW)+"px)"}],{duration:T*1000,easing:"linear",fill:"forwards"});
+  function hitBase(){fx.red(S);fx.shake(S,1.8);fx.burst(S,castX+20,Hh*.62,["#ff4f4f","#ff9a3b","#ffd23a"],34);snd("boom");en.style.display="none"}
+  an.onfinish=function(){if(c.isDone()&&!c.defWrong)return;hitBase();if(!c.isDone())c.res(false,{msg:"Загроза дійшла до бази!"})};
+  c.opts(r,function(ok,b){var ord=Array.prototype.indexOf.call(c.O.children,b),tu=c.sl[ord%c.sl.length],tr=tu.getBoundingClientRect(),sr=S.getBoundingClientRect(),tx=tr.left-sr.left+tr.width*.8,ty=tr.top-sr.top+tr.height*.35,er=en.getBoundingClientRect(),ex=er.left-sr.left+er.width/2,ey=er.top-sr.top+er.height/2;an.pause();
+   var sh=document.createElement("div");sh.className="m8shot";sh.style.color=ok?"#4cc9ff":"#aaa";S.appendChild(sh);var a=sh.animate([{left:tx+"px",top:ty+"px"},{left:(ok?ex:ex-30)+"px",top:(ok?ey:ey-90)+"px"}],{duration:420,easing:"ease-in",fill:"forwards"});
+   a.onfinish=function(){sh.remove();if(ok){fx.burst(S,ex,ey,["#ffd23a","#fff","#4cc9ff","#ff4f9a"],36);en.animate([{opacity:1},{opacity:0,transform:"scale(1.6)"}],{duration:300,fill:"forwards"});fx.flt(S,ex,ey-30,"БАХ!","#ffd23a");snd("hit");c.res(true)}else{fx.burst(S,ex-30,ey-90,["#999","#555"],16);fx.flt(S,tx,ty-20,"Промах!","#ccc");c.defWrong=true;an.updatePlaybackRate(6);an.play();c.res(false,{msg:"Цей захисник не підходить — загроза проривається."})}}})}});
+/* ===== 8. ЗЛАМ СЕЙФА ===== */
+var SF='<svg viewBox="0 0 200 230"><defs><linearGradient id="m8sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8d98b8"/><stop offset="1" stop-color="#3e4666"/></linearGradient></defs><rect x="6" y="6" width="188" height="214" rx="16" fill="url(#m8sg)" stroke="#150a33" stroke-width="6"/><rect x="20" y="20" width="160" height="186" rx="10" fill="none" stroke="#2c3350" stroke-width="4"/><circle cx="100" cy="172" r="26" fill="#ffd23a" stroke="#150a33" stroke-width="5"/><circle cx="100" cy="172" r="9" fill="#150a33"/><path d="M100 150V166M78 172H92M108 172H122M100 178V194" stroke="#150a33" stroke-width="4"/><rect x="180" y="60" width="10" height="26" rx="3" fill="#2c3350"/><rect x="180" y="130" width="10" height="26" rx="3" fill="#2c3350"/></svg>';
+M8.reg("x_safe",{cls:"safe",hint:"Правильні відповіді відкривають цифри коду. Потім зламай сейф!",
+ init:function(c){var S=c.S,L=c.g.code.length;c.code=c.g.code;c.known={};c.guess=[];c.hist=[];c.tries=c.g.tries||6;
+  S.insertAdjacentHTML("beforeend","<div class='m8sf'>"+SF+"</div><div class='m8slots' id='m8sl'></div><div class='m8bolts' id='m8bo'></div><div class='m8hist' id='m8hi'><small style='font-weight:900;font-size:10px;letter-spacing:1px;opacity:.7'>ЖУРНАЛ СПРОБ</small></div>");
+  c.drawSlots=function(){var h="";for(var q=0;q<L;q++){var kn=c.known[q];h+="<b class='"+(kn?"lk":"")+(!kn&&q===c.cur?" cur":"")+"'>"+(kn?c.code[q]:(c.guess[q]!=null?c.guess[q]:"•"))+"</b>"}S.querySelector("#m8sl").innerHTML=h};c.drawSlots();
+  var b="";for(var k=0;k<c.n;k++)b+="<i id='bo"+k+"'></i>";S.querySelector("#m8bo").innerHTML=b},
+ hud:function(c){return ["🔐 Цифр: "+Object.keys(c.known).length+" / "+c.code.length,c.phase2?"Спроби: "+(c.tries-c.hist.length):"Крок 1: питання"]},
+ round:function(c,r){c.opts(r,function(ok){c.res(ok)})},
+ after:function(c,ok){var S=c.S,bo=S.querySelector("#bo"+c.i);if(ok){if(bo)bo.className="on";var fr=[];for(var q=0;q<c.code.length;q++)if(!c.known[q])fr.push(q);if(fr.length>(c.g.keep||2)){var p=fr[Math.floor(Math.random()*fr.length)];c.known[p]=1;c.drawSlots();fx.flt(S,S.clientWidth*.3,S.clientHeight*.3,"🔓 цифра "+c.code[p],"#ffd23a");fx.burst(S,S.clientWidth*.3,S.clientHeight*.42,["#ffd23a","#fff"],16)}}else{fx.red(S);fx.shake(S,1.2)}},
+ finish:function(c,sc,n){c.phase2=true;var L=c.code.length,sym=(c.g.sym||"0123456789").split(""),tries=c.tries,S=c.S;
+  function nxt(){for(var q=0;q<L;q++)if(!c.known[q]&&c.guess[q]==null)return q;return -1}
+  function fillKnown(){c.guess=[];for(var q=0;q<L;q++)c.guess[q]=c.known[q]?c.code[q]:null;c.cur=nxt()}
+  fillKnown();c.drawSlots();c.refresh();
+  c.Q.innerHTML="<b>🔐 Введи код. Золоті цифри вже відомі. Після спроби: зелений — на місці, жовтий — є в коді, але не тут.</b>";
+  document.getElementById("gn").innerHTML="";document.getElementById("fb").textContent="";
+  var O=c.O;O.innerHTML="";var kp=document.createElement("div");kp.className="m8kp";O.appendChild(kp);
+  sym.forEach(function(sy){var b=document.createElement("button");b.className="m8b";b.textContent=sy;b.onclick=function(){var q=nxt();if(q<0||c.over)return;c.guess[q]=sy;c.cur=nxt();c.drawSlots();snd("ok")};kp.appendChild(b)});
+  var ctl=document.createElement("div");ctl.style.cssText="display:flex;gap:8px;margin-top:8px";
+  var clr=document.createElement("button");clr.className="m8b";clr.style.cssText="flex:1;justify-content:center";clr.textContent="⌫ Стерти";clr.onclick=function(){if(c.over)return;fillKnown();c.drawSlots()};
+  var go=document.createElement("button");go.className="m8b";go.style.cssText="flex:2;justify-content:center";go.textContent="🔓 Спробувати";
+  go.onclick=function(){if(nxt()>=0||c.over)return;var gs=c.guess.slice(),res=[],cd=c.code.split(""),used=[],q,z;
+   for(q=0;q<L;q++)if(gs[q]==cd[q]){res[q]="g";used[q]=1}
+   for(q=0;q<L;q++){if(res[q])continue;var f=-1;for(z=0;z<L;z++)if(!used[z]&&gs[q]==cd[z]){f=z;break}if(f>=0){used[f]=1;res[q]="y"}else res[q]="n"}
+   c.hist.push(1);var row=document.createElement("div");row.innerHTML=gs.map(function(d,q2){return "<s class='"+(res[q2]=="n"?"":res[q2])+"'>"+d+"</s>"}).join("");S.querySelector("#m8hi").appendChild(row);c.refresh();
+   var win=res.every(function(x){return x=="g"});
+   if(win||c.hist.length>=tries){c.over=true;var gain=win?1:0;if(win){fx.burst(S,S.clientWidth*.3,S.clientHeight*.4,["#ffd23a","#4cff9a","#fff","#ff4f9a"],60);fx.ban(S,"СЕЙФ ВІДКРИТО!");snd("ok")}else{fx.red(S);fx.shake(S,1.6);fx.ban(S,"ТРИВОГА!");document.getElementById("fb").textContent="Код був: "+c.code;snd("boom")}
+    nxt9("Результат",function(){fin9(sc+gain,n+1)})}else{fillKnown();c.drawSlots()}};
+  ctl.appendChild(clr);ctl.appendChild(go);O.appendChild(ctl)}});
+/* іконки й назви в списку ігор */
+var IC={x_boss:["👹","Дуель з босом"],x_drop:["🪂","Дроп"],x_zone:["⛈","Зона"],x_build:["🏗","Будівельник"],x_rhythm:["🎚","Ритм-різ"],x_maze:["🧭","Лабіринт"],x_defense:["🛡","Захист бази"],x_safe:["🔐","Злам сейфа"]};
+function ens(o){Object.keys(IC).forEach(function(k){try{Object.defineProperty(o,k,{get:function(){return IC[k]},set:function(){},configurable:true,enumerable:true})}catch(e){}})}
+Object.keys(window).filter(function(k){return /^GI[0-9]*$/.test(k)}).forEach(function(k){if(window[k]&&typeof window[k]=="object")ens(window[k])});
+if(typeof lessonItems=="function"){var _li=lessonItems;lessonItems=function(n){ens(window.GI);return _li(n)}}
+if(typeof lab=="function"){var _lab=lab;lab=function(t){if(IC[t])return IC[t];return _lab(t)}}
+})();
+
+/* ===== M8: розстановка складних механік по уроках 7 класу (заміна звичайних scn, дані раундів ті самі) ===== */
+(function(){
+var MAP={701:"x_zone",703:"x_boss",707:"x_drop",708:"x_defense",709:"x_build",710:"x_safe",
+ 729:"x_rhythm",730:"x_maze",736:"x_boss",737:"x_defense",739:"x_zone",741:"x_rhythm",742:"x_build",744:"x_drop",
+ 745:"x_maze",746:"x_boss",749:"x_defense",751:"x_zone"};
+var CODE={710:"3856"};
+Object.keys(MAP).forEach(function(k){var L=window.LES&&LES[k];if(!L||!L.g)return;
+ for(var i=0;i<L.g.length;i++){var g=L.g[i];if(g.type=="scn"||g.type==MAP[k]){g.type=MAP[k];g.skin="arena";if(CODE[k])g.code=CODE[k];if(MAP[k]=="x_boss"&&!g.boss)g.boss="Король фейків";break}}});
+})();
+
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
 var LD={},V=window.PKV||"1";
