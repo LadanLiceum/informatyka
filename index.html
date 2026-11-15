@@ -37241,6 +37241,139 @@ try{GI.m3=["💎","Кристали"]}catch(e){}
 try{var L=LES[14];if(L&&L.g){L.g.pop();L.g.push({type:"m3",title:"Кристали реактора",items:C14})}}catch(e){}
 })();
 
+/* «Програмуй маніпулятор» — складна гра 9 класу (Космостанція): складання програм над масивом. */
+(function(){
+var X=window.SB9;if(!X)return;var K=X.K,INK=X.INK,esc=X.esc,shf=X.shf;
+function need(S,v){if(S[v]===null)throw "Змінна "+v+" ще не має значення — спочатку присвой її."}
+var CH={
+ t0:["t = a[0]",function(S){S.t=S.a[0];S.th=[0]}],
+ t5:["t = a[5]",function(S){S.t=S.a[5];S.th=[5]}],
+ a05:["a[0] = a[5]",function(S){S.a[0]=S.a[5];S.th=[0,5]}],
+ a5t:["a[5] = t",function(S){need(S,"t");S.a[5]=S.t;S.th=[5]}],
+ a50:["a[5] = a[0]",function(S){S.a[5]=S.a[0];S.th=[5,0]}],
+ inc5:["a[5] = a[5] + 1",function(S){S.a[5]=S.a[5]+1;S.th=[5]}],
+ inc6:["a[6] = a[6] + 1",function(S){throw "Елемента a[6] не існує: у масиві з 6 елементів індекси від 0 до 5."}],
+ p5:["print(a[5])",function(S){S.out=S.a[5];S.th=[5]}],
+ p1:["print(a[1])",function(S){S.out=S.a[1];S.th=[1]}],
+ p0:["print(a[0])",function(S){S.out=S.a[0];S.th=[0]}],
+ s0:["s = 0",function(S){S.s=0}],
+ sa0:["s = a[0]",function(S){S.s=S.a[0];S.th=[0]}],
+ sadd:["s = s + a[i]",function(S){need(S,"s");S.s+=S.a[S.i];S.th=[S.i]}],
+ smax:["if a[i] > s:\n    s = a[i]",function(S){need(S,"s");if(S.a[S.i]>S.s)S.s=S.a[S.i];S.th=[S.i]}],
+ az:["a[i] = 0",function(S){S.a[S.i]=0;S.th=[S.i]}],
+ c1:["if a[i] > 0:\n    s = s + 1",function(S){need(S,"s");if(S.a[S.i]>0)S.s+=1;S.th=[S.i]}],
+ c1b:["if a[i] >= 0:\n    s = s + 1",function(S){need(S,"s");if(S.a[S.i]>=0)S.s+=1;S.th=[S.i]}],
+ cadd:["if a[i] > 0:\n    s = s + a[i]",function(S){need(S,"s");if(S.a[S.i]>0)S.s+=S.a[S.i];S.th=[S.i]}],
+ dl:["s = s / len(a)",function(S){need(S,"s");S.s=S.s/S.a.length}],
+ d2:["s = s / 2",function(S){need(S,"s");S.s=S.s/2}],
+ da0:["s = s / a[0]",function(S){need(S,"s");S.s=S.s/S.a[0];S.th=[0]}],
+ ps:["print(s)",function(S){need(S,"s");S.out=S.s}]};
+var LV=[
+ {t:"Обмін контейнерів",task:"Поміняй місцями перший і останній елементи масиву a. Для обміну знадобиться допоміжна змінна t.",a:[4,7,1,9,3,6],h:[8,2,5,1,9,0],loop:false,sl:{body:3},chips:["t0","a05","a5t","a50","t5"],sol:{body:["t0","a05","a5t"]},
+  exp:function(a){var b=a.slice();b[0]=a[5];b[5]=a[0];return {arr:b}},why:"Спершу a[0] ховаємо в t, потім перезаписуємо a[0], і лише тоді кладемо збережене значення в a[5]. Без допоміжної змінної одне з чисел було б загублене."},
+ {t:"Лічильник вантажу",task:"Збільш останній елемент масиву на 1 і виведи його. У масиві 6 елементів.",a:[5,3,8,2,6,4],h:[1,1,1,1,1,9],loop:false,sl:{body:2},chips:["inc5","p5","inc6","p1","p0"],sol:{body:["inc5","p5"]},
+  exp:function(a){return {out:a[5]+1}},why:"Останній елемент шостого масиву має індекс 5, а не 6. Спершу змінюємо a[5], потім виводимо вже нове значення."},
+ {t:"Загальна вага",task:"Знайди суму всіх елементів масиву a і виведи її.",a:[4,7,1,9,3,6],h:[5,-2,8,0,3,-1],loop:true,sl:{pre:1,body:1,post:1},chips:["s0","sa0","sadd","ps","az"],sol:{pre:["s0"],body:["sadd"],post:["ps"]},
+  exp:function(a){return {out:a.reduce(function(x,y){return x+y},0)}},why:"Перед циклом s = 0, у циклі додаємо кожен a[i], після циклу виводимо. Якщо почати з s = a[0], перший елемент додасться двічі."},
+ {t:"Найважчий контейнер",task:"Знайди найбільший елемент масиву a і виведи його.",a:[3,8,2,11,5,7],h:[-6,-3,-9,-4,-8,-5],loop:true,sl:{pre:1,body:1,post:1},chips:["s0","sa0","smax","sadd","ps"],sol:{pre:["sa0"],body:["smax"],post:["ps"]},
+  exp:function(a){return {out:Math.max.apply(null,a)}},why:"Початкове значення має бути реальним елементом масиву. Якщо взяти s = 0, програма зламається на масиві з самими від’ємними числами."},
+ {t:"Додатний заряд",task:"Скільки в масиві a додатних елементів? Виведи кількість. Нуль не є додатним числом.",a:[3,-2,0,5,-7,4],h:[-1,-2,-3,0,-4,-5],loop:true,sl:{pre:1,body:1,post:1},chips:["s0","c1","c1b","cadd","ps"],sol:{pre:["s0"],body:["c1"],post:["ps"]},
+  exp:function(a){return {out:a.filter(function(x){return x>0}).length}},why:"Лічильник стартує з 0, а умова «більше нуля» не пропускає нулі. Додаємо 1, а не сам елемент: ми рахуємо, а не сумуємо."},
+ {t:"Середня вага",task:"Знайди середнє арифметичне елементів масиву a і виведи його.",a:[4,8,6,2,10,6],h:[1,9,5,5,3,7],loop:true,sl:{pre:1,body:1,post:2},chips:["s0","sadd","dl","d2","da0","ps"],sol:{pre:["s0"],body:["sadd"],post:["dl","ps"]},
+  exp:function(a){return {out:a.reduce(function(x,y){return x+y},0)/a.length}},why:"Спочатку сума, потім ділення на кількість елементів len(a), і лише після цього виведення. Порядок блоків після циклу теж має значення."}];
+function sim(L,prog,arr){var S={a:arr.slice(),i:null,s:null,t:null,out:null,th:[]},steps=[],err=null;
+ function ex(sec,k,id){if(err||!id)return;S.th=[];try{CH[id][1](S)}catch(e){err=typeof e=="string"?e:"Помилка виконання"}steps.push({sec:sec,k:k,i:S.i,a:S.a.slice(),s:S.s,t:S.t,out:S.out,th:S.th.slice(),err:err})}
+ if(L.loop){(prog.pre||[]).forEach(function(id,k){ex("pre",k,id)});for(var i=0;i<S.a.length&&!err;i++){S.i=i;(prog.body||[]).forEach(function(id,k){ex("body",k,id)})}S.i=null;(prog.post||[]).forEach(function(id,k){ex("post",k,id)})}
+ else (prog.body||[]).forEach(function(id,k){ex("body",k,id)});
+ var exp=L.exp(arr),ok=!err;
+ if(ok){if("out" in exp){ok=S.out!==null&&Math.abs(S.out-exp.out)<1e-9;if(S.out===null)err="Програма нічого не вивела: потрібен блок print."}else ok=JSON.stringify(S.a)===JSON.stringify(exp.arr)}
+ return {ok:ok,err:err,S:S,steps:steps,exp:exp}}
+function fmt(r){if(r.exp&&"out" in r.exp)return String(r.exp.out);return "["+r.exp.arr.join(", ")+"]"}
+function got(r){return "out" in r.exp?(r.S.out===null?"нічого":String(r.S.out)):"["+r.S.a.join(", ")+"]"}
+var CSS="\
+.pg{max-width:560px;margin:0 auto;color:#fff}.pg *{box-sizing:border-box}\
+.pg .pgTask{margin:10px 2px;font-size:13.5px;line-height:1.4;color:#e6e1ff!important;font-weight:600}\
+.pg .pgMach{border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+";background:linear-gradient(#1a1260,#120c40);padding:6px 10px 10px}\
+.pg .pgCells{position:relative;display:flex;gap:5px;padding-top:36px}\
+.pg .pgC{flex:1;min-width:0;text-align:center}\
+.pg .pgC b{display:flex;align-items:center;justify-content:center;height:44px;border:3px solid "+K+";border-radius:10px;background:#fff;color:"+INK+"!important;font-size:17px;font-weight:900;box-shadow:0 3px 0 "+K+";transition:background .15s}\
+.pg .pgC.th b{background:"+X.YE+"}\
+.pg .pgC i{display:block;font:700 11px monospace;color:#c9c2ff!important;margin-top:4px;font-style:normal}\
+.pg .pgClaw{position:absolute;top:0;width:34px;margin-left:-17px;transition:left .3s;pointer-events:none}\
+.pg .pgVars{display:flex;gap:6px;margin-top:8px}\
+.pg .pgV{flex:1;min-width:0;border:3px solid "+K+";border-radius:10px;background:#0e0b3a;padding:3px 6px;text-align:center}\
+.pg .pgV small{display:block;font:700 10px monospace;color:#9d94e8!important}\
+.pg .pgV b{display:block;font:900 16px monospace;color:"+X.MI+"!important;min-height:20px}\
+.pg .pgV.o{flex:1.3}.pg .pgV.o b{color:"+X.CY+"!important}\
+.pg .pgPr{margin-top:12px;background:#120c40;border:3px solid "+K+";border-radius:14px;box-shadow:0 4px 0 "+K+";padding:8px 10px 6px}\
+.pg .pgLb{font:800 10px inherit;letter-spacing:.1em;color:#9d94e8!important;text-transform:uppercase;margin:4px 0}\
+.pg .pgFor{font:700 12.5px monospace;color:"+X.CY+"!important;margin:6px 0 2px}\
+.pg .pgBody{margin-left:6px;border-left:3px solid #3a2f8f;padding-left:8px}\
+.pg .pgSl{min-height:38px;display:flex;align-items:center;padding:6px 10px;margin:5px 0;border:2px dashed #5a4fc0;border-radius:10px;font:700 12.5px monospace;color:#fff!important;white-space:pre;cursor:pointer}\
+.pg .pgSl.f{border:3px solid "+K+";background:#2c2080}.pg .pgSl.hot{border-color:"+X.YE+";background:#2a2160}.pg .pgSl.run{background:"+X.YE+";color:"+K+"!important}\
+.pg .pgPal{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}\
+.pg .pgB{font:700 12px monospace;color:"+K+"!important;background:#fff;border:3px solid "+K+";border-radius:10px;padding:7px 10px;box-shadow:0 3px 0 "+K+";cursor:pointer;white-space:pre;text-align:left;transition:transform .1s}\
+.pg .pgB.h{background:"+X.YE+";transform:translateY(-3px)}.pg .pgB.u{opacity:.22;pointer-events:none}\
+.pg .pgBar{display:flex;gap:10px;margin-top:14px}.pg .pgBar .sbBtn.go{flex:1;background:"+X.MI+"!important}.pg .pgBar .sbBtn[disabled]{background:#4a3f8f!important;color:#a99fe0!important}\
+.pg .sbBtn.clr{background:#fff!important}\
+.pg .pgMach,.pg .pgPr,.pg .pgTask,.pg .pgPal,.pg .pgBar,.pg .sbIntro,.pg #pgOut,.pg .sbRep{width:100%!important;display:block}\
+.pg .sbHd{width:100%!important;display:block;height:120px}.pg .sbHud{width:100%!important;display:flex}.pg .pgBar,.pg .pgPal{display:flex!important}\
+.pg .pgB{width:auto!important;margin:0!important;flex:none}.pg .pgBar .sbBtn{margin:0!important}.pg .pgBar .sbBtn.clr{flex:none}\
+.pg .pgSl{width:100%}.pg .pgVars{display:flex!important;width:100%}.pg .pgCells{display:flex!important;width:100%}";
+function inj(){X.inj();if(document.getElementById("pgcss"))return;var s=document.createElement("style");s.id="pgcss";s.textContent=CSS;document.head.appendChild(s)}
+var CLAW='<svg viewBox="0 0 34 36"><rect x="14" y="0" width="6" height="14" fill="#9d94e8" stroke="'+K+'" stroke-width="2.5"/><path d="M5 14h24l-4 6v10l-5 5-3-3-3 3-5-5V20z" fill="'+X.OR+'" stroke="'+K+'" stroke-width="2.5" stroke-linejoin="round"/><circle cx="17" cy="23" r="3" fill="#fff" stroke="'+K+'" stroke-width="2"/></svg>';
+GM.pg=function(g){inj();var lv=0,sc=0,att=3,prog={},hold=null,busy=false,timer=null;
+ function root(){return document.getElementById("pgroot")}
+ function L(){return LV[lv]}
+ function intro(){fr9(g.title,"","<div id='pgroot' class='pg sb'></div>");gs9("Складна місія");
+  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>ЦЕХ № 15 · АВТОМАТИКА</small><b>Програмуй маніпулятор</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(1)+X.ch(3)+'</div><h3>Навчи кран працювати з масивом</h3><p>Складай програму з блоків, і маніпулятор виконає її крок за кроком.</p>'+
+   '<div class="sbSt">'+X.ICO.read+'<span>Торкнись блока, а потім порожнього місця в програмі.</span></div>'+
+   '<div class="sbSt">'+X.ICO.scan+'<span>Програму перевірять і на прихованому масиві: вона має працювати завжди.</span></div>'+
+   '<div class="sbSt">'+X.ICO.heat+'<span>На кожне завдання 3 спроби. Блоків із запасом, не всі потрібні.</span></div>'+
+   '<button class="sbBtn n" id="pgGo">Розпочати зміну</button></div>';
+  document.getElementById("pgGo").onclick=function(){lv=0;sc=0;level()}}
+ function level(){busy=false;hold=null;att=3;var l=L();prog={pre:[],body:[],post:[]};for(var k in l.sl){for(var i=0;i<l.sl[k];i++)prog[k].push(null)}
+  fr9(g.title,"","<div id='pgroot' class='pg sb'></div>");gs9("Завдання "+(lv+1)+" / "+LV.length);draw()}
+ function hud(){var h="",i;for(i=0;i<3;i++)h+=X.hex(i<att);var d="";for(i=0;i<LV.length;i++)d+='<i class="'+(i<lv?(LV[i]._ok?"d":"x"):i==lv?"c":"")+'"></i>';return '<div class="sbHud"><div class="sbLv"><span class="l">Спроби</span>'+h+'</div><div class="sbDots">'+d+'</div></div>'}
+ function cells(a,th,ci){var h='<div class="pgClaw" id="pgCl" style="left:'+((ci+.5)/a.length*100)+'%">'+CLAW+'</div>';a.forEach(function(v,i){h+='<div class="pgC'+(th&&th.indexOf(i)>=0?" th":"")+'"><b>'+v+'</b><i>'+i+'</i></div>'});return h}
+ function slot(sec,k){var id=prog[sec][k];return '<div class="pgSl'+(id?" f":hold?" hot":"")+'" data-s="'+sec+'" data-k="'+k+'">'+(id?esc(CH[id][0]):"")+'</div>'}
+ function slots(sec){var h="";(prog[sec]||[]).forEach(function(x,k){h+=slot(sec,k)});return h}
+ function used(id){var u=false;["pre","body","post"].forEach(function(s){(prog[s]||[]).forEach(function(x){if(x===id)u=true})});return u}
+ function full(){var f=true;["pre","body","post"].forEach(function(s){(prog[s]||[]).forEach(function(x){if(!x)f=false})});return f}
+ var order=null;
+ function draw(){var l=L();if(!order||order.lv!==lv){order={lv:lv,c:shf(l.chips)}}
+  var pr=l.loop?'<div class="pgLb">Перед циклом</div>'+slots("pre")+'<div class="pgFor">for i in range(len(a)):</div><div class="pgBody">'+slots("body")+'</div><div class="pgLb">Після циклу</div>'+slots("post"):'<div class="pgLb">Програма виконується зверху вниз</div>'+slots("body");
+  var pal=order.c.map(function(id){return '<button class="pgB'+(hold===id?" h":"")+(used(id)?" u":"")+'" data-id="'+id+'">'+esc(CH[id][0])+'</button>'}).join("");
+  root().innerHTML='<div class="sbHd"'+'>'+X.bgSvg()+'<div class="sbTop"><small>ЗАВДАННЯ '+(lv+1)+'</small><b>'+esc(l.t)+'</b></div></div>'+hud()+'<div class="pgTask">'+esc(l.task)+'</div>'+
+   '<div class="pgMach"><div class="pgCells" id="pgCe">'+cells(l.a,null,0)+'</div><div class="pgVars"><div class="pgV"><small>i</small><b id="pgi">–</b></div><div class="pgV"><small>s</small><b id="pgs">–</b></div><div class="pgV"><small>t</small><b id="pgt">–</b></div><div class="pgV o"><small>print</small><b id="pgo">–</b></div></div></div>'+
+   '<div class="pgPr">'+pr+'</div><div class="pgPal" id="pgPal">'+pal+'</div><div class="pgBar"><button class="sbBtn clr" id="pgClr">Скинути</button><button class="sbBtn go" id="pgRun"'+(full()?"":" disabled")+'>Запуск</button></div><div id="pgOut"></div>';
+  Array.prototype.forEach.call(root().querySelectorAll(".pgB"),function(b){b.onclick=function(){if(busy)return;hold=hold===b.dataset.id?null:b.dataset.id;draw()}});
+  Array.prototype.forEach.call(root().querySelectorAll(".pgSl"),function(s){s.onclick=function(){if(busy)return;var sec=s.dataset.s,k=+s.dataset.k;if(hold){var old=prog[sec][k];prog[sec][k]=hold;hold=null}else if(prog[sec][k])prog[sec][k]=null;draw()}});
+  document.getElementById("pgClr").onclick=function(){if(busy)return;for(var s in prog)prog[s]=prog[s].map(function(){return null});hold=null;draw()};
+  document.getElementById("pgRun").onclick=run}
+ function setv(id,v){var e=document.getElementById(id);if(e)e.textContent=v===null||v===undefined?"–":v}
+ function show(st,l){var ce=document.getElementById("pgCe");if(!ce)return;ce.innerHTML=cells(st.a,st.th,st.th.length?st.th[0]:(st.i!=null?st.i:0));setv("pgi",st.i);setv("pgs",st.s);setv("pgt",st.t);setv("pgo",st.out);
+  Array.prototype.forEach.call(root().querySelectorAll(".pgSl"),function(s){s.classList.toggle("run",s.dataset.s===st.sec&&+s.dataset.k===st.k)})}
+ function run(){if(busy||!full())return;busy=true;hold=null;var l=L();var r=sim(l,prog,l.a);var steps=r.steps,k=0;
+  document.getElementById("pgRun").disabled=true;
+  (function tick(){if(!root())return;if(k>=steps.length){setTimeout(function(){judge(r)},500);return}show(steps[k],l);k++;timer=setTimeout(tick,430)})()}
+ function judge(r){var l=L(),msg="",ok=false;
+  Array.prototype.forEach.call(root().querySelectorAll(".pgSl"),function(s){s.classList.remove("run")});
+  if(r.err){msg="Помилка виконання: "+r.err}
+  else if(!r.ok){msg="Маніпулятор отримав "+got(r)+", а потрібно "+fmt(r)+"."}
+  else{var h=sim(l,prog,l.h);if(h.err||!h.ok){msg="На твоєму масиві все добре, але приховану перевірку a = ["+l.h.join(", ")+"] програма не пройшла: "+(h.err?h.err:"очікувалось "+fmt(h)+", отримано "+got(h)+".")}else ok=true}
+  var o=document.getElementById("pgOut");
+  if(ok){l._ok=true;sc++;o.innerHTML='<div class="sbRep g"><h4>Програма працює на будь-якому масиві!</h4><p>'+esc(l.why)+'</p><button class="sbBtn n" id="pgNx">'+(lv>=LV.length-1?"Підсумок місії":"Наступне завдання")+'</button></div>'}
+  else{att--;var hx=root().querySelector(".sbHud");if(hx)hx.outerHTML=hud();
+   if(att<=0){l._ok=false;var sol=[];["pre","body","post"].forEach(function(s){(l.sol[s]||[]).forEach(function(id){sol.push(CH[id][0].replace(/\n\s*/g," "))})});o.innerHTML='<div class="sbRep b"><h4>Спроби скінчилися</h4><p>'+esc(msg)+'</p><p>Правильна програма: <b style="font-family:monospace">'+esc(sol.join(" ; "))+'</b>.<br>'+esc(l.why)+'</p><button class="sbBtn n" id="pgNx">'+(lv>=LV.length-1?"Підсумок місії":"Наступне завдання")+'</button></div>'}
+   else{o.innerHTML='<div class="sbRep b"><h4>Не те. Лишилось спроб: '+att+'</h4><p>'+esc(msg)+'</p><button class="sbBtn n" id="pgRe">Виправити програму</button></div>';document.getElementById("pgRe").onclick=function(){busy=false;draw()}}}
+  var nx=document.getElementById("pgNx");if(nx)nx.onclick=function(){lv++;if(lv>=LV.length)fin9(sc,LV.length);else level()};
+  try{o.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(e){}}
+ intro()};
+try{GI.pg=["🤖","Маніпулятор"]}catch(e){}
+try{var L5=LES[15];if(L5&&L5.g){L5.g=L5.g.filter(function(x){return x.type!="sab"});L5.g.push({type:"pg",title:"Програмуй маніпулятор",items:[]})}}catch(e){}
+})();
+
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
 var LD={},V=window.PKV||"1";
