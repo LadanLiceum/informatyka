@@ -22558,14 +22558,7 @@ function arena(g,cf){var N=cf.n||6,qs=GQ(CUR9,N);if(qs.length<2)return fin9(0,1)
   if(mt>0){cx.textAlign="center";cx.font="bold 20px monospace";cx.fillText(msg,W/2,40)}}
  G.loop(cv,upd,draw)}
 /* реєстр: [id, назва, поведінка, керування, скін, мутатори] */
-var SH=[["m_a1","Кошик знань","fall","lane","space"],["m_a2","Метеоритний дощ","fall","tap","cyber"],["m_a3","Зенітка","fall","shoot","forest"],["m_a4","Збирач із небес","fall","free","ocean"],["m_a5","Стоп-лінія","fall","stop","ios"],["m_a6","Ніндзя-розріз","fall","swipe","end"],
-["m_b1","Ліфт відповідей","rise","lane","cave"],["m_b2","Бульбашки","rise","tap","ocean"],["m_b3","Підводний гарпун","rise","shoot","space"],["m_b4","Повітряна куля","rise","free","ios"],["m_b5","Висотомір","rise","stop","cyber"],["m_b6","Розріж бульбашку","rise","swipe","design"],
-["m_c1","Хвильовий кошик","wave","lane","ocean"],["m_c2","Хвилі сигналів","wave","tap","matrix"],["m_c3","Хвильова гармата","wave","shoot","end"],["m_c4","Ринок","wave","free","forest"],["m_c5","Змійка-розріз","wave","swipe","cave"],
-["m_d1","Орбіта: торкнись","orbit","tap","space"],["m_d2","Орбітальна гармата","orbit","shoot","cyber"],["m_d3","Супутник","orbit","free","design"],["m_d4","Стикування-2","orbit","stop","end"],["m_d5","Захоплення променем","orbit","hold","ios"],
-["m_e1","Відскок","bounce","tap","cave"],["m_e2","Більярд","bounce","shoot","forest"],["m_e3","Ловець відбитків","bounce","free","matrix"],["m_e4","Стрибучі літери","bounce","swipe","design"],["m_e5","Магніт-промінь","bounce","hold","space"],
-["m_f1","Течія","sweep","tap","ocean"],["m_f2","Тир","sweep","shoot","nether"],["m_f3","Світлофор","sweep","stop","cyber"],["m_f4","Утримай спалах","pop","hold","ios"],["m_f5","Лазерний розріз","sweep","swipe","matrix"],
-["m_g1","Вогонь по цілях","pop","tap","nether"],["m_g2","Снайпер","pop","shoot","cave"],["m_g3","Полювання на спалахи","pop","free","design"],["m_g4","Блискавка","pop","swipe","space"],
-["m_h1","Втікачі","flee","free","forest"]];
+var SH=[["m_c4","Ринок","wave","free","forest"]];
 var UQ={5:[["u5_1","Зомбі-орда","fall","shoot","cave",["junk"]],["u5_2","Крипер-тайм","pop","tap","cave",["fuse"]],["u5_3","Шахтарський кошик","fall","lane","cave",["junk"]],["u5_4","Лавові потоки","sweep","stop","nether"],["u5_5","Рибалка","wave","lane","ocean",["blink"]],["u5_6","Портал Далекого краю","orbit","hold","end",["fog"]],["u5_7","Вівці-втікачки","flee","free","forest"],["u5_8","Підземний ліфт","rise","tap","cave",["shrink"]],["u5_9","Нічне полювання","bounce","shoot","nether",["fog"]]],
 6:[["u6_1","Вагонетки: перехрестя","sweep","tap","cave",["junk"]],["u6_2","Скелет-лучник","pop","shoot","cave",["blink"]],["u6_3","Золота лихоманка","fall","free","cave",["junk"]],["u6_4","Підводний храм","rise","swipe","ocean",["shrink"]],["u6_5","Вогняний світ","wave","shoot","nether",["fog"]],["u6_6","Перлини Далекого краю","bounce","tap","end",["blink"]],["u6_7","Селянин-торговець","flee","free","forest",["junk"]],["u6_8","Дракон над Краєм","orbit","shoot","end",["shrink"]],["u6_9","Шахта обвалу","fall","stop","cave",["junk"]]],
 8:[["u8_1","Кометний кошик","fall","lane","space",["magnet"]],["u8_2","Чорна діра","orbit","free","space",["magnet"]],["u8_3","Сигнал із глибин","pop","tap","space",["fog"]],["u8_4","Метеоритний шторм","fall","shoot","space",["junk"]],["u8_5","Гіперсмуга","sweep","stop","space",["blink"]],["u8_6","Кільця Сатурна","orbit","tap","space",["shrink"]],["u8_7","Невагомість","bounce","free","space",["fog"]],["u8_8","Телепорт-лазер","sweep","swipe","space",["junk"]],["u8_9","Втеча від НЛО","flee","free","space",["junk"]],["u8_10","Реактор під тиском","rise","tap","space",["fuse"]]],
@@ -22573,7 +22566,7 @@ var UQ={5:[["u5_1","Зомбі-орда","fall","shoot","cave",["junk"]],["u5_2"
 10:[["u10_1","Матриця: ловець","fall","lane","matrix",["junk"]],["u10_2","Брутфорс","pop","tap","matrix",["fuse"]],["u10_3","Ін’єкція","fall","shoot","matrix",["blink"]],["u10_4","Сканер портів","sweep","stop","matrix",["fog"]],["u10_5","Перехоплення пакета","bounce","tap","matrix",["shrink"]],["u10_6","Root-доступ","orbit","hold","matrix",["junk"]],["u10_7","Бекдор","rise","swipe","matrix",["blink"]]],
 11:[["u11_1","Піпетка-кошик","fall","lane","design",["junk"]],["u11_2","Кисть-ловець","wave","free","design",["blink"]],["u11_3","Ретуш","pop","tap","design",["fog"]],["u11_4","Шар за шаром","rise","tap","design",["shrink"]],["u11_5","Палітра-орбіта","orbit","hold","design"]]};
 var ICN={fall:"⬇️",rise:"⬆️",wave:"🌊",orbit:"🪐",bounce:"🏀",sweep:"➡️",pop:"💥",flee:"🏃"};
-window.ARENA_SHARED=SH.map(function(x){return x[0]});window.ARENA_UNIQ={};window.ARENA_TITLES={};
+window.ARENA_SHARED=[];window.ARENA_UNIQ={};window.ARENA_TITLES={};
 function reg(x){GM[x[0]]=function(g){arena(g,{id:x[0],beh:x[2],ctl:x[3],skin:x[4],mut:x[5]||[]})};window.ARENA_TITLES[x[0]]=x[1];var ic=ICN[x[2]];GI[x[0]]=GI5[x[0]]=[ic,x[1]];ARENA_ICON[x[0]]=x[2];ARENA_SKIN[x[0]]=x[4]}
 window.ARENA_ICON={};window.ARENA_SKIN={};SH.forEach(reg);Object.keys(UQ).forEach(function(c){window.ARENA_UNIQ[c]=UQ[c].map(function(x){return x[0]});UQ[c].forEach(reg)});
 })();
@@ -35726,18 +35719,23 @@ P("Як скласти проєкт: схема",["tiles",[["🧮","Матема
 ]);
 })();
 
-/* «Ринок» (m_c4) – складна гра лише для 5–6 класів: прибрати з 8, 9, 10, 11; додати у 5 клас */
+/* «Ринок» (m_c4) – складна гра лише для 5–6 класів. Усі інші спільні аркадні ігри m_* видалено з проєкту. */
 (function(){
 if(!window.LES)return;
-var POOL=["m_c2","m_c3","m_d1","m_d2","m_e1","m_e2","m_f1","m_a1"];
-function ttl(t){return (window.ARENA_TITLES&&ARENA_TITLES[t])||(window.GI&&GI[t]&&GI[t][1])||t}
+function cls(k){return k>=500&&k<600?5:k>=600&&k<700?6:k>=800&&k<900?8:k<100?9:k>=1000&&k<1100||k>=1200&&k<1400?10:k>=1100&&k<1200?11:0}
+var SP=["s_audit","s_toggles","s_wheel","s_scratch","s_express","s_tower","s_duel","s_elim","s_streak","s_bet","s_hang","s_ghost","s_vault","s_slider","s_flash","s_liar","s_bridge","s_sw"],ri={};
+function ttl(t){return (window.ARENA_TITLES&&ARENA_TITLES[t])||(window.GI&&GI[t]&&GI[t][1])||(window.GI5&&GI5[t]&&GI5[t][1])||t}
 function has(L,t){return L.g.some(function(g){return g.type===t})}
-function repl(k){var L=LES[k];if(!L||!L.g)return;
- L.g.forEach(function(g,i){if(g.type!=="m_c4")return;
-  for(var j=0;j<POOL.length;j++){if(!has(L,POOL[j])){L.g[i]={type:POOL[j],title:ttl(POOL[j])};return}}})}
-for(var k=1;k<=1400;k++){if(k>=501&&k<=652)continue;repl(k)}
-[505,511,517,523,529,535,541,547].forEach(function(k){var L=LES[k];if(!L||!L.g||!L.q||!L.q.length||has(L,"m_c4"))return;
- L.g[3]={type:"m_c4",title:"Ринок"}});
+function bad(t,c){return (/^m_[a-h]\d$/.test(t)&&!(t==="m_c1"&&c===6))||(t==="m_c4"&&c!==5&&c!==6)}
+Object.keys(LES).forEach(function(k){k=+k;var L=LES[k];if(!L||!L.g)return;var c=cls(k);
+ L.g.forEach(function(g,i){if(!bad(g.type,c))return;
+  var cand=((window.ARENA_UNIQ&&ARENA_UNIQ[c])||[]).concat(SP),n=ri[c]=(ri[c]||0),t=null,j;
+  for(j=0;j<cand.length;j++){var x=cand[(n+j)%cand.length];if(GM[x]&&!has(L,x)){t=x;ri[c]=n+j+1;break}}
+  if(t)L.g[i]={type:t,title:ttl(t)}})});
+[505,511,517,523,529,535,541,547].forEach(function(k){var L=LES[k];if(!L||!L.g||!L.q||!L.q.length||has(L,"m_c4"))return;L.g[3]={type:"m_c4",title:"Ринок"}});
+/* 6 клас: «Ринок» у 8 уроках (на місці «Мосту» в шести, замість складної u6_ у 601 і 616) */
+[609,615,621,627,632,638].forEach(function(k){var L=LES[k];if(!L||!L.g)return;L.g.forEach(function(g,i){if(g.type==="m_c1")L.g[i]={type:"m_c4",title:"Ринок"}})});
+[601,616].forEach(function(k){var L=LES[k];if(!L||!L.g||has(L,"m_c4"))return;for(var i=L.g.length-1;i>=0;i--)if(/^u6_/.test(L.g[i].type)){L.g[i]={type:"m_c4",title:"Ринок"};return}});
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
