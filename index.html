@@ -1929,10 +1929,10 @@ GX.nextBtn=function(i,n,sc,show){var adv=false;function go(){if(adv)return;adv=t
 (function(){var old=GM.sort;
 GM.sort=function(g){if(!GX.on())return old(g);var its=shuffle(g.items),i=0,sc=0,n=its.length;
  function show(){var it=its[i],done=false,tried=0;
-  fr9(g.title,g.hint||"Перетягни блок у потрібну скриню (або торкнись блока, а потім скрині).","<div class='gxst'><div id='gxit' class='gxblk'>"+esc9(it[0])+"</div></div><div id='gxch' class='gxch'></div><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
+  fr9(g.title,g.hint||"Торкнись потрібної скрині – блок сам полетить туди (можна й перетягнути).","<div class='gxst'><div id='gxit' class='gxblk'>"+esc9(it[0])+"</div></div><div id='gxch' class='gxch'></div><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n+" · ✅ "+sc);
   var item=document.getElementById("gxit"),box=document.getElementById("gxch"),armed=false;
   g.buckets.forEach(function(bn,k){var c=document.createElement("div");c.className="gxchest c"+(k%4);c.dataset.k=k;c.innerHTML="<div class='lid'></div><div class='bx'><b>"+esc9(bn)+"</b></div>";box.appendChild(c);
-   c.onclick=function(){if(armed)put(c)}});
+   c.onclick=function(){put(c)}});
   function put(c){if(done)return;var ok=+c.dataset.k===it[1];
    if(ok){done=true;if(!tried)sc++;c.classList.add("open");GX.burst(c,"ok",1);GX.snd("chest");item.classList.add("gxsink");gs9((i+1)+" / "+n+" · ✅ "+sc);document.getElementById("fb").textContent="Так! "+(it[2]||"");var go=GX.nextBtn(i,n,function(){return sc},function(j){i=j;show()});setTimeout(go,it[2]&&it[2].length>40?2600:1500)}
    else{tried++;GX.snd("bad");GX.shake(item);GX.shake(c);c.classList.add("bad");setTimeout(function(){c.classList.remove("bad")},450);document.getElementById("fb").textContent=tried>1?"Ще ні. "+(it[2]||"")+" Спробуй ще 🔁":"Не туди 🔁 Спробуй ще раз!"}}
