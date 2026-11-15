@@ -30459,13 +30459,16 @@ window.showProg=function(){try{
 /* Фінальний екран: кнопка «Наступна гра» (усі класи) + читабельний підпис */
 (function(){
 var st=document.createElement("style");st.textContent=".endok{color:#fff!important;font-weight:800;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 2px 4px rgba(0,0,0,.5)}.nxtg{margin-top:8px}";document.head.appendChild(st);
-function nextOf(){var m=/^g(\d+)$/.exec(window.CG||"");if(!m||!window.LES||!LES[CUR9])return null;var i=+m[1],gs=LES[CUR9].g||[];
+function nextOf(ck){var L=window.LES&&LES[CUR9];if(!L)return null;
+ if(ck=="q"||ck=="big")return [null,0,"📊 Переглянути прогрес"];
+ var m=/^g(\d+)$/.exec(window.CG||"");if(!m)return null;var i=+m[1],gs=L.g||[];
  if(i+1<gs.length)return [String(CUR9),i+1,"Наступна гра ▶"];
+ if(L.q&&!L.noq)return ["q",0,"📝 Запустити тест"];if(L.big)return ["big",0,"📝 Запустити великий тест"];
  return [null,0,"📊 Переглянути прогрес"]}
-var _e=window.endScr;window.endScr=function(){var r=_e.apply(this,arguments);
+var _e=window.endScr;window.endScr=function(){var ck=window.CURK,r=_e.apply(this,arguments);
  try{var app=document.getElementById("app")||$,p=app.querySelector("p.mut");if(p&&/надіслано|повторення/i.test(p.textContent))p.classList.add("endok");
-  var nx=nextOf(),pri=app.querySelector("button.pri");
-  if(nx&&pri&&!app.querySelector(".nxtg")){var b=document.createElement("button");b.className="pri nxtg";b.textContent=nx[2];b.onclick=function(){if(nx[0]===null)showProg();else playG(nx[0],nx[1])};pri.parentNode.insertBefore(b,pri.nextSibling)}}catch(e){}
+  var nx=nextOf(ck),pri=app.querySelector("button.pri");
+  if(nx&&pri&&!app.querySelector(".nxtg")){var b=document.createElement("button");b.className="pri nxtg";b.textContent=nx[2];b.onclick=function(){var k=nx[0];if(k===null)showProg();else if(k=="q"||k=="big")playQ(CUR9,k);else playG(k,nx[1])};pri.parentNode.insertBefore(b,pri.nextSibling)}}catch(e){}
  return r};window.endScr._nx=1;
 })();
 
