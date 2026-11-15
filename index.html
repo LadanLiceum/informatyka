@@ -22562,7 +22562,6 @@ var SH=[["m_c4","Ринок","wave","free","forest"]];
 var UQ={5:[["u5_1","Зомбі-орда","fall","shoot","cave",["junk"]],["u5_2","Крипер-тайм","pop","tap","cave",["fuse"]],["u5_3","Шахтарський кошик","fall","lane","cave",["junk"]],["u5_4","Лавові потоки","sweep","stop","nether"],["u5_5","Рибалка","wave","lane","ocean",["blink"]],["u5_6","Портал Далекого краю","orbit","hold","end",["fog"]],["u5_7","Вівці-втікачки","flee","free","forest"],["u5_8","Підземний ліфт","rise","tap","cave",["shrink"]],["u5_9","Нічне полювання","bounce","shoot","nether",["fog"]]],
 6:[["u6_1","Вагонетки: перехрестя","sweep","tap","cave",["junk"]],["u6_2","Скелет-лучник","pop","shoot","cave",["blink"]],["u6_3","Золота лихоманка","fall","free","cave",["junk"]],["u6_4","Підводний храм","rise","swipe","ocean",["shrink"]],["u6_5","Вогняний світ","wave","shoot","nether",["fog"]],["u6_6","Перлини Далекого краю","bounce","tap","end",["blink"]],["u6_7","Селянин-торговець","flee","free","forest",["junk"]],["u6_8","Дракон над Краєм","orbit","shoot","end",["shrink"]],["u6_9","Шахта обвалу","fall","stop","cave",["junk"]]],
 8:[["u8_1","Кометний кошик","fall","lane","space",["magnet"]],["u8_2","Чорна діра","orbit","free","space",["magnet"]],["u8_3","Сигнал із глибин","pop","tap","space",["fog"]],["u8_4","Метеоритний шторм","fall","shoot","space",["junk"]],["u8_5","Гіперсмуга","sweep","stop","space",["blink"]],["u8_6","Кільця Сатурна","orbit","tap","space",["shrink"]],["u8_7","Невагомість","bounce","free","space",["fog"]],["u8_8","Телепорт-лазер","sweep","swipe","space",["junk"]],["u8_9","Втеча від НЛО","flee","free","space",["junk"]],["u8_10","Реактор під тиском","rise","tap","space",["fuse"]]],
-9:[["u9_1","Фаєрвол","fall","shoot","cyber",["junk"]],["u9_2","Пакетний дощ","fall","lane","cyber",["blink"]],["u9_3","Вірус-втікач","flee","free","cyber",["junk"]],["u9_4","Кіберзламник","pop","tap","cyber",["fog"]],["u9_5","Потік даних","sweep","swipe","cyber",["shrink"]],["u9_6","Бульбашки месенджера","rise","tap","ios",["blink"]],["u9_7","Кошик сповіщень","fall","lane","ios",["junk"]],["u9_8","Свайп-ловець","bounce","swipe","ios",["shrink"]],["u9_9","Хмарні орбіти","orbit","hold","ios",["fog"]],["u9_10","Лазерна сітка","sweep","stop","cyber",["junk"]]],
 10:[["u10_1","Матриця: ловець","fall","lane","matrix",["junk"]],["u10_2","Брутфорс","pop","tap","matrix",["fuse"]],["u10_3","Ін’єкція","fall","shoot","matrix",["blink"]],["u10_4","Сканер портів","sweep","stop","matrix",["fog"]],["u10_5","Перехоплення пакета","bounce","tap","matrix",["shrink"]],["u10_6","Root-доступ","orbit","hold","matrix",["junk"]],["u10_7","Бекдор","rise","swipe","matrix",["blink"]]],
 11:[["u11_1","Піпетка-кошик","fall","lane","design",["junk"]],["u11_2","Кисть-ловець","wave","free","design",["blink"]],["u11_3","Ретуш","pop","tap","design",["fog"]],["u11_4","Шар за шаром","rise","tap","design",["shrink"]],["u11_5","Палітра-орбіта","orbit","hold","design"]]};
 var ICN={fall:"⬇️",rise:"⬆️",wave:"🌊",orbit:"🪐",bounce:"🏀",sweep:"➡️",pop:"💥",flee:"🏃"};
@@ -26423,7 +26422,7 @@ function banner(el,txt,good){var b=document.createElement("div");b.className="gn
 function reg(id,title,emo){window.GI&&(GI[id]=[emo,title]);window.GI5&&(GI5[id]=[emo,title]);window.ARENA_TITLES&&(ARENA_TITLES[id]=title);window.GNEW=window.GNEW||[];if(!GNEW.some(function(x){return x[0]===id}))GNEW.push([id,title,emo])}
 css("gn-c-base",".gn-ban{margin:8px 0;padding:10px 12px;border-radius:12px;font-weight:800;text-align:center;font-size:15px;background:#ffe3d0;border:2px solid #ff9f6b;color:#4a1d00;animation:gnPop .45s ease-out}.gn-ban.good{background:#d9ffe9;border-color:#3dffa2;color:#00391d}@keyframes gnPop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}.gn-st{margin:4px 0;text-align:center;font-weight:700;font-size:14px}");
 
-/* ============ 1. Перетягування канату ============ */
+/* (перетягування канату видалено з проекту) */
 var kidSVG0=function(){return "<svg viewBox='0 0 52 66' width='52' height='66'><ellipse cx='24' cy='63' rx='17' ry='3' fill='rgba(0,0,0,.3)'/><path d='M14 62 l9 -20 M30 62 l-5 -20' stroke='#2a3b6e' stroke-width='7' stroke-linecap='round'/><path d='M12 63 h8 M28 63 h8' stroke='#222' stroke-width='4' stroke-linecap='round'/><path d='M23 44 L31 22' stroke='#ff6b35' stroke-width='14' stroke-linecap='round'/><circle cx='34' cy='13' r='9' fill='#ffd7a8' stroke='#232448' stroke-width='1.7'/><path d='M25 11 a9.5 9.5 0 0 1 19 0 z' fill='#2f6fd6' stroke='#232448' stroke-width='1.5'/><path d='M43 11 h8' stroke='#2f6fd6' stroke-width='3.5' stroke-linecap='round'/><circle cx='38' cy='14' r='1.4' fill='#232448'/><path d='M36 18.5 q3 2.5 6 0' stroke='#c0392b' stroke-width='1.3' fill='none'/><path d='M31 28 L49 33' stroke='#ffd7a8' stroke-width='6' stroke-linecap='round'/><circle cx='49' cy='33' r='3.6' fill='#ffd7a8' stroke='#232448' stroke-width='1.2'/></svg>"}
 var botSVG0=function(){return "<svg viewBox='0 0 52 66' width='52' height='66' style='transform:scaleX(-1)'><ellipse cx='24' cy='63' rx='17' ry='3' fill='rgba(0,0,0,.3)'/><path d='M14 62 l9 -20 M30 62 l-5 -20' stroke='#5b6478' stroke-width='7' stroke-linecap='round'/><path d='M10 63 h10 M26 63 h10' stroke='#2b3040' stroke-width='5' stroke-linecap='round'/><path d='M23 44 L31 24' stroke='#9aa3b8' stroke-width='15' stroke-linecap='round'/><circle cx='28' cy='34' r='3' fill='#e03a3a'/><rect x='25' y='3' width='19' height='17' rx='4' fill='#c6cde0' stroke='#232448' stroke-width='1.7'/><path d='M34 3 v-5' stroke='#232448' stroke-width='2'/><circle cx='34' cy='-2' r='2.6' fill='#e03a3a'/><rect x='29' y='8' width='11' height='5' rx='2' fill='#232448'/><circle cx='32.5' cy='10.5' r='1.5' fill='#3dffa2'/><circle cx='37' cy='10.5' r='1.5' fill='#3dffa2'/><path d='M30 16.5 h9' stroke='#232448' stroke-width='1.4'/><path d='M31 28 L49 33' stroke='#9aa3b8' stroke-width='6' stroke-linecap='round'/><circle cx='49' cy='33' r='4' fill='#5b6478' stroke='#232448' stroke-width='1.2'/></svg>"}
 var flagSVG0=function(){return "<svg viewBox='0 0 40 52' width='34' height='44'><path d='M8 50 V4' stroke='#3a3a3a' stroke-width='3' stroke-linecap='round'/><path d='M10 5 h26 l-7 8 l7 8 h-26z' fill='#e03a3a' stroke='#8f1f1f' stroke-width='1.3'><animate attributeName='d' dur='.9s' repeatCount='indefinite' values='M10 5 h26 l-7 8 l7 8 h-26z;M10 5 h24 l-5 8 l5 8 h-24z;M10 5 h26 l-7 8 l7 8 h-26z'/></path><circle cx='8' cy='3' r='3' fill='#ffd23f'/></svg>"}
@@ -26431,27 +26430,6 @@ css("gn-tug",".gt-wrap{position:relative;height:150px;margin:6px 0 4px;border-ra
 function kidSVG(){return MC()?"<svg viewBox='0 0 52 66' width='52' height='66' shape-rendering='crispEdges'><ellipse cx='24' cy='63' rx='15' ry='3' fill='rgba(0,0,0,.3)'/><g transform='translate(10 7) scale(3.5)'>"+MCX.G('steve')+"</g></svg>":kidSVG0()}
 function botSVG(){return MC()?"<svg viewBox='0 0 52 66' width='52' height='66' style='transform:scaleX(-1)' shape-rendering='crispEdges'><ellipse cx='24' cy='63' rx='15' ry='3' fill='rgba(0,0,0,.3)'/><g transform='translate(10 7) scale(3.5)'>"+MCX.G('creeper')+"</g></svg>":botSVG0()}
 function flagSVG(){return MC()?"<svg viewBox='0 0 40 52' width='34' height='44' shape-rendering='crispEdges'><g transform='translate(4 8) scale(4)'>"+MCX.G('beacon')+"</g></svg>":flagSVG0()}
-GM.n_tug=function(g){
- function fp(p){return (12+76*(4-p)/8)+"%"}
- function sc(S,pos){return S.N*Math.max(0,Math.min(4,pos))/4}
- G.run(g,{nb:1,n:9,wait:1500,hint:MC()?"Ти й Кріпер тягнете канат. Правильна відповідь тягне маяк до тебе, хибна – до Кріпера.":"Ти й бот тягнете канат. Правильна відповідь тягне прапорець до тебе, хибна – до бота. Підтягни прапорець на 4 кроки до себе!",
- max:function(N){return N},
- init:function(S,N){S.N=N;S.pos=0;S.pts=0;S.streak=0;S.over=false},
- draw:function(q,A){var S=A.S;if(S.over){fin9(Math.min(S.N,Math.round(S.pts*10)/10),S.N);return}
-  var el=A.el,w=document.createElement("div");w.className="gt-wrap";
-  w.innerHTML="<svg class='gt-bg' viewBox='0 0 340 150' preserveAspectRatio='none'><circle cx='296' cy='26' r='15' fill='#ffe14a'/><path d='M0 84 Q50 40 110 78 T230 74 T340 80 V84 Z' fill='#6bbf5a'/><ellipse cx='170' cy='130' rx='46' ry='10' fill='#8a5a2b'/><ellipse cx='170' cy='128' rx='40' ry='7' fill='#a8743d'/><g fill='#fff'><ellipse cx='70' cy='26' rx='20' ry='7'/><ellipse cx='82' cy='21' rx='11' ry='7'/><ellipse cx='220' cy='38' rx='16' ry='6'/></g></svg><div class='gt-z l'>ТИ</div><div class='gt-z r'>"+(MC()?"КРІПЕР":"БОТ")+"</div><div class='gt-mid'></div><div class='gt-rope'></div><div class='gt-flag' style='left:"+fp(S.pos)+"'>"+flagSVG()+"</div><div class='gt-p gt-m'>"+kidSVG()+"</div><div class='gt-p gt-b'>"+botSVG()+"</div>";
-  el.appendChild(w);
-  var ds=document.createElement("div");ds.className="gt-dots";function dots(p){var s="";for(var k=4;k>=-4;k--)s+=(k===p?"●":"○");ds.textContent="ТИ  "+s+(MC()?"  КРІПЕР":"  БОТ")}dots(S.pos);el.appendChild(ds);
-  var done=false;
-  G.quiz(A,q,ops(q,4),function(o,b,list){if(done)return;done=true;mark(list,o,b);
-   var old=S.pos,note="",flag=w.querySelector(".gt-flag");
-   if(o.ok){S.streak++;if(Math.random()<.35&&S.streak<2){note=MC()?"Кріпер теж потягнув, нічия кроку.":"Бот теж потягнув, нічия кроку.";w.querySelector(".gt-b").classList.add("pull");w.querySelector(".gt-m").classList.add("pull")}else{S.pos++;note="Ти потягнув!";w.querySelector(".gt-m").classList.add("pull")}}
-   else{S.streak=0;S.pos--;note=(MC()?"Кріпер потягнув. Правильно: ":"Бот потягнув. Правильно: ")+q.a[0];w.querySelector(".gt-b").classList.add("pull")}
-   flag.style.left=fp(S.pos);dots(S.pos);
-   var gain=sc(S,S.pos)-sc(S,old);S.pts=Math.max(0,S.pts+gain);
-   if(S.pos>=4){S.over=true;banner(el,(MC()?"Перемога! Маяк у тебе!":"Перемога! Прапорець у тебе!"),true)}else if(S.pos<=-4){S.over=true;banner(el,(MC()?"Кріпер переміг. Бабах! Спробуй ще!":"Бот переміг. Спробуй ще!"))}
-   A.done(o.ok,gain,note)})}})};
-reg("n_tug","Перетягування канату","🪢");
 
 /* ============ 2. Боулінг ============ */
 css("gn-bowl",".gb-lane{position:relative;height:178px;margin:6px 0;border-radius:12px;background:linear-gradient(#e9c27e,#c8924a);overflow:hidden;border:2px solid rgba(0,0,0,.25);box-shadow:inset 0 0 0 4px rgba(255,255,255,.12)}.gb-gut{position:absolute;top:0;bottom:0;width:11%;background:linear-gradient(90deg,#3b2a1a,#6b4a2b)}.gb-gut.l{left:0}.gb-gut.r{right:0}.gb-pin{position:absolute;width:16px;height:28px;margin-left:-8px;border-radius:8px 8px 5px 5px;background:linear-gradient(#fff 0 58%,#e33 58% 70%,#fff 70%);border:1px solid #888;transition:transform .55s ease-out,opacity .55s}.gb-pin.d{opacity:0}.gb-ball{position:absolute;left:50%;bottom:6px;width:28px;height:28px;margin-left:-14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7d8cff,#1b1f6b 60%,#0a0c33);box-shadow:0 3px 4px rgba(0,0,0,.4);transition:bottom .85s cubic-bezier(.4,.1,.6,1),left .85s ease-in,transform .85s linear}.gb-lane.go .gb-ball{transform:rotate(540deg)}.gb-lane{height:200px;border:3px solid #7cf0ff;box-shadow:0 4px 0 rgba(0,0,0,.3);background:linear-gradient(#1a0f3d 0,#3b1a7a 26%,rgba(0,0,0,0) 26%),repeating-linear-gradient(90deg,#efc27a 0 15px,#d9a24f 15px 16px)}.gb-lane:before{content:'';position:absolute;left:0;right:0;top:0;height:26%;background:repeating-linear-gradient(90deg,#ff3d9a 0 8px,transparent 8px 30px,#33e0ff 30px 38px,transparent 38px 60px);opacity:.55;filter:blur(1px)}.gb-lane:after{content:'';position:absolute;left:50%;bottom:62px;width:90px;height:12px;margin-left:-45px;background:linear-gradient(135deg,transparent 45%,#7a4a1a 46% 54%,transparent 55%) 0 0/18px 12px;opacity:.5}.gb-gut{width:12%;background:linear-gradient(90deg,#1b1b2a,#4a4a62 45%,#14141f);box-shadow:inset 0 0 10px #000}.gb-pin{width:15px;height:26px;margin-left:-7px;margin-top:6px;border-radius:50% 50% 42% 42%/45% 45% 55% 55%;background:linear-gradient(90deg,#d8dbe6,#fff 40%,#d0d3e0);border:1px solid #8a8fa5;box-shadow:0 4px 3px rgba(0,0,0,.35)}.gb-pin:before{content:'';position:absolute;left:50%;top:-7px;width:9px;height:10px;margin-left:-4.5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d8dbe6);border:1px solid #8a8fa5}.gb-pin:after{content:'';position:absolute;left:-1px;right:-1px;top:7px;height:4px;background:#e33}.gb-ball{width:32px;height:32px;margin-left:-16px;background:radial-gradient(circle at 34% 26%,rgba(255,255,255,.85) 0 7%,transparent 8%),radial-gradient(circle at 52% 40%,#000 0 5%,transparent 6%),radial-gradient(circle at 66% 48%,#000 0 5%,transparent 6%),radial-gradient(circle at 56% 60%,#000 0 5%,transparent 6%),radial-gradient(circle at 35% 30%,#ff7ac6,#a8187a 60%,#4a0838)}");
@@ -36529,7 +36507,7 @@ Object.keys(LES).map(Number).sort(function(a,b){return a-b}).forEach(function(k)
  if(P[c]===undefined)P[c]=(c*7)%L.length;
  var TH=/^(anim|show|list|tbl|merge|wrap|vec|layers|cells|shop|chart|garden|ifelse|until)6$|^t8_(\d+|bin)$|^(app7|aud7|query|lab|transl|spot|patrol|layout|txtfmt|pagesetup|styler|findrep|spell|clip|photo|sorter|critic|objhunt|exec|script|scrui|costumes|pen|ornament)$/,thn=X.g.filter(function(g){return TH.test(g.type)}).length,want=Math.max(1,((c===5||c===6)?3:4)-thn),simple=(X.g0||X.g).filter(function(g){return IS[g.type]}),rest=X.g.filter(function(g){return !IS[g.type]}),by={};simple.forEach(function(g){if(!by[g.type])by[g.type]=g});
  var out=[],t=0;
- while(out.length<want&&t<L.length+5){var ty=L[P[c]%L.length];P[c]++;t++;if(ty==="mine"&&c!==5&&c!==6)continue;if((ty==="n_bowl"||ty==="n_rocket"||ty==="n_robot"||ty==="n_bingo"||ty==="n_maze"||ty==="n_tug"||ty==="n_sling"||ty==="n_dive"||ty==="n_stars"||ty==="n_probe")&&(c===5||c===6))continue;var o=by[ty]||(T[ty]?{type:ty,title:T[ty]}:null);if(o&&out.indexOf(o)<0&&!out.some(function(x){return x.type===o.type}))out.push(o)}
+ while(out.length<want&&t<L.length+5){var ty=L[P[c]%L.length];P[c]++;t++;if(ty==="mine"&&c!==5&&c!==6)continue;if((ty==="n_bowl"||ty==="n_rocket"||ty==="n_robot"||ty==="n_bingo"||ty==="n_maze"||ty==="n_sling"||ty==="n_dive"||ty==="n_stars"||ty==="n_probe")&&(c===5||c===6))continue;var o=by[ty]||(T[ty]?{type:ty,title:T[ty]}:null);if(o&&out.indexOf(o)<0&&!out.some(function(x){return x.type===o.type}))out.push(o)}
  X.g=out.concat(rest)})
 })();
 
@@ -36573,8 +36551,8 @@ s.textContent=o;document.head.appendChild(s)
 if(!window.LES)return;
 var CL=function(k){return k>=500&&k<600?5:k>=600&&k<700?6:k>=700&&k<800?7:k>=800&&k<900?8:k<100?9:(k>=1000&&k<1100||k>=1200&&k<1400)?10:k>=1100&&k<1200?11:0};
 function seq(p,n){var a=[];for(var i=1;i<=n;i++)a.push(p+i);return a}
-var CX={5:/^(boss|dig|def|bld|adv|mcart|m_c4|ender)$/,6:/^(mc_(?!archer).*|ender|mcart|m_c4)$/,7:/^x_/,8:/^u8_/,9:/^u9_/,10:/^u10_/,11:/^u11_/};
-var POOL={5:["boss","dig","def","bld","adv"],8:seq("u8_",10),9:seq("u9_",10),10:seq("u10_",7),11:seq("u11_",5)};
+var CX={5:/^(boss|dig|def|bld|adv|mcart|m_c4|ender)$/,6:/^(mc_(?!archer).*|ender|mcart|m_c4)$/,7:/^x_/,8:/^u8_/,10:/^u10_/,11:/^u11_/};
+var POOL={5:["boss","dig","def","bld","adv"],8:seq("u8_",10),10:seq("u10_",7),11:seq("u11_",5)};
 var pi={};
 function ttl(t){var l=(window.GI&&GI[t])||(window.GI5&&GI5[t]);return l&&l[1]?l[1]:t}
 for(var k in LES){var c=CL(+k),L=LES[k];if(!c||!L||!L.g||!CX[c])continue;
@@ -36592,15 +36570,27 @@ for(var k in LES){var L=LES[k];if(!L||!L.g)continue;L.g.forEach(function(g){var 
  if(window.GI7&&!GI7[g.type])GI7[g.type]=l;if(window.GI5&&!GI5[g.type])GI5[g.type]=l;if(window.GI&&!GI[g.type])GI[g.type]=l})}
 })();
 
-/* 9 клас: схема уроку = читалка + 3 прості + 1 складна + тест (підсумкові: великий тест на 24 замість звичайного на 12) */
+/* 9 клас: тимчасова схема: читалка + 4 прості + тест (великі ігри 9 класу видалені, потім додамо нові) (підсумкові: великий тест на 24 замість звичайного на 12) */
 (function(){
 var AR={pac:1,snake:1,flap:1,inv:1,brk:1,frog:1,race:1},AUTH={cross:1,quest:1,tf:1,cloze:1,sort:1,seq:1,pairs:1};
 try{for(var n=1;n<=52;n++){var L=LES[n];if(!L||!L.g)continue;
  var cx=null,sm=[];
- L.g.forEach(function(g){if(g.hide)return;var t=g.type;if(/^u9_/.test(t)){if(!cx)cx=g}else if(!AR[t])sm.push(g)});
- var au=sm.filter(function(g){return AUTH[g.type]}),rs=sm.filter(function(g){return !AUTH[g.type]}),keep=au.concat(rs).slice(0,3);
- L.g=L.g.filter(function(g){return g===cx||keep.indexOf(g)>-1})}}catch(e){}
+ L.g.forEach(function(g){if(g.hide)return;var t=g.type;if(/^u9_/.test(t)){}else if(!AR[t])sm.push(g)});
+ var au=sm.filter(function(g){return AUTH[g.type]}),rs=sm.filter(function(g){return !AUTH[g.type]}),keep=au.concat(rs).slice(0,4);
+ L.g=L.g.filter(function(g){return keep.indexOf(g)>-1})}}catch(e){}
 try{L9.forEach(function(x){x[2]=""})}catch(e){}
+})();
+
+/* повністю видалені з проекту ігри (не стоять в жодному уроці): аркадні 9 класу, старі заготовки, безіменні, Minecraft-ігри u5/u6, що випали */
+(function(){
+var DEL=["hunt","build","ribbon","scn","crates","pac","snake","inv","flap","brk","frog","chick","elytra","arch","boat","dock","radar","grav","belt","boss8","sim","ast","s_words","s_type","u5_1","u5_2","u5_3","u5_4","u5_5","u5_6","u5_7","u5_8","u5_9","u6_1","u6_4","u6_9"],D={};DEL.forEach(function(t){D[t]=1});
+try{DEL.forEach(function(t){try{delete GM[t]}catch(e){}["GI","GI5","GI7","ARENA_TITLES","ARENA_ICON","ARENA_SKIN"].forEach(function(n){try{if(window[n])delete window[n][t]}catch(e){}})});
+ function f(a){return Array.isArray(a)?a.filter(function(x){return !D[Array.isArray(x)?x[0]:x]}):a}
+ try{if(window.GNEW)window.GNEW=f(window.GNEW)}catch(e){}
+ try{if(window.ARENA_SHARED)window.ARENA_SHARED=f(window.ARENA_SHARED)}catch(e){}
+ try{var U=window.ARENA_UNIQ;if(U)Object.keys(U).forEach(function(k){var u=U[k];if(u&&typeof u==="object"){["s","m"].forEach(function(z){if(u[z])u[z]=f(u[z])})}})}catch(e){}
+ for(var k in LES){var L=LES[k];if(L&&L.g)L.g=L.g.filter(function(g){return !D[g.type]})}
+}catch(e){}
 })();
 
 /* 9 клас: «Космостанція» – кімнати станції, робот-талісман, товсті темні контури, цукеркові кольори, білі картки */
@@ -36624,6 +36614,7 @@ B+"label{color:"+MI+";font-weight:800;font-size:12px;letter-spacing:.08em}",
 B+".card{margin-top:14px;background:#fff;color:"+INK+";"+OL+";border-radius:22px;padding:16px}",
 B+".card h2,"+B+".card h3,"+B+".card b,"+B+".card p,"+B+".card li,"+B+".card span,"+B+".card div{color:"+INK+";text-shadow:none}",
 B+".card .mut{color:#5a5388}",
+B+".card .arp .aq,"+B+".card .arp .ao span,"+B+".card .arp .ao{color:#fff!important}",
 B+".card .ach .ai,"+B+".card .ach .ai i,"+B+".card .ach .ai u{color:"+INK+"}",
 B+".lv{margin-top:14px;background:#ffffff14;border:2px solid #ffffff2e;border-radius:20px;padding:14px;box-shadow:none}",
 B+".lv,"+B+".lv b,"+B+".lv .at{color:#fff!important;opacity:1}"+B+".lv .mut{color:#ffffffc0!important}",
@@ -36856,6 +36847,398 @@ function run(){var m=document.getElementById("app");if(!m||!document.body.classL
   else if(m.querySelector(":scope>.top")&&m.querySelector(":scope>.card>h2")&&m.querySelector(":scope>.mb.tk"))lessonX(m);
   else if(m.querySelector(".gbn>svg"))gameX(m);else readerX(m)}catch(e){m.insertAdjacentHTML("afterbegin","<i class='cs-mark' hidden></i>")}}
 try{var ap=document.getElementById("app");if(ap){new MutationObserver(run).observe(ap,{childList:true});run()}}catch(e){}
+})();
+
+/* «Саботажник» — складна гра 9 класу (Космостанція). Власна графіка, без емодзі. */
+(function(){
+var K="#0a0830",INK="#1a1040",OR="#ff8a3d",MI="#4cf0b6",PK="#ff6fb5",YE="#ffd23f",LV="#b79cff",RD="#ff3d5a",CY="#25f4ee";
+var gid=0;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function shf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+/* ---------- персонажі (оригінальні) ---------- */
+function ch(k){var id="sg"+(++gid),o="";
+ var sw='stroke="'+K+'" stroke-width="3" stroke-linejoin="round"';
+ if(k==0){/* Вега — пілот */
+  o='<rect x="52" y="44" width="14" height="28" rx="5" fill="#6a5acd" '+sw+'/><rect x="21" y="46" width="40" height="34" rx="15" fill="'+OR+'" '+sw+'/><rect x="21" y="63" width="40" height="6" fill="#ffd9a8" stroke="'+K+'" stroke-width="2"/><circle cx="31" cy="55" r="4" fill="'+YE+'" stroke="'+K+'" stroke-width="2"/><rect x="26" y="76" width="12" height="12" rx="5" fill="#c95b12" '+sw+'/><rect x="44" y="76" width="12" height="12" rx="5" fill="#c95b12" '+sw+'/><line x1="41" y1="9" x2="41" y2="1" stroke="'+K+'" stroke-width="3"/><circle cx="41" cy="3" r="3.5" fill="'+RD+'" stroke="'+K+'" stroke-width="2" class="sbBl"/><circle cx="41" cy="30" r="22" fill="#f4f1ff" '+sw+'/><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b4bd6"/><stop offset="1" stop-color="#15103f"/></linearGradient></defs><ellipse cx="41" cy="31" rx="16" ry="13" fill="url(#'+id+')" stroke="'+K+'" stroke-width="2.5"/><ellipse cx="34" cy="31" rx="2.6" ry="3.6" fill="#fff" class="ey"/><ellipse cx="48" cy="31" rx="2.6" ry="3.6" fill="#fff" class="ey"/><path d="M30 24q5-5 12-4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/>'}
+ else if(k==1){/* Т-9 — бот */
+  o='<rect x="22" y="50" width="38" height="30" rx="9" fill="'+MI+'" '+sw+'/><rect x="29" y="57" width="24" height="12" rx="4" fill="'+INK+'" stroke="'+K+'" stroke-width="2"/><circle cx="35" cy="63" r="2.4" fill="'+YE+'" class="sbBl"/><circle cx="41" cy="63" r="2.4" fill="'+PK+'" class="sbBl2"/><circle cx="47" cy="63" r="2.4" fill="'+CY+'" class="sbBl"/><rect x="26" y="78" width="11" height="10" rx="4" fill="#2aa882" '+sw+'/><rect x="45" y="78" width="11" height="10" rx="4" fill="#2aa882" '+sw+'/><rect x="12" y="52" width="9" height="20" rx="4" fill="#2aa882" '+sw+'/><rect x="61" y="52" width="9" height="20" rx="4" fill="#2aa882" '+sw+'/><line x1="41" y1="9" x2="41" y2="2" stroke="'+K+'" stroke-width="3"/><circle cx="41" cy="3" r="3.5" fill="'+YE+'" stroke="'+K+'" stroke-width="2"/><rect x="9" y="22" width="7" height="14" rx="3" fill="#2aa882" '+sw+'/><rect x="66" y="22" width="7" height="14" rx="3" fill="#2aa882" '+sw+'/><rect x="13" y="9" width="56" height="42" rx="12" fill="'+MI+'" '+sw+'/><rect x="19" y="16" width="44" height="28" rx="8" fill="'+INK+'" stroke="'+K+'" stroke-width="2"/><rect x="27" y="24" width="9" height="12" rx="3" fill="'+CY+'" class="ey"/><rect x="46" y="24" width="9" height="12" rx="3" fill="'+CY+'" class="ey"/>'}
+ else if(k==2){/* Нова — прибулець-біолог */
+  o='<rect x="29" y="52" width="24" height="30" rx="12" fill="'+PK+'" '+sw+'/><path d="M30 60q-12 4-14 16M52 60q12 4 14 16" stroke="'+K+'" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="29" y="79" width="9" height="9" rx="4" fill="#c9407f" '+sw+'/><rect x="44" y="79" width="9" height="9" rx="4" fill="#c9407f" '+sw+'/><path d="M32 12q-6-10-12-8M50 12q6-10 12-8" stroke="'+K+'" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="20" cy="4" r="3.5" fill="'+YE+'" stroke="'+K+'" stroke-width="2" class="sbBl"/><circle cx="62" cy="4" r="3.5" fill="'+CY+'" stroke="'+K+'" stroke-width="2" class="sbBl2"/><ellipse cx="41" cy="30" rx="21" ry="25" fill="'+LV+'" '+sw+'/><ellipse cx="31" cy="30" rx="5.2" ry="6.6" fill="'+INK+'" class="ey"/><ellipse cx="51" cy="30" rx="5.2" ry="6.6" fill="'+INK+'" class="ey"/><ellipse cx="41" cy="20" rx="3.6" ry="4.6" fill="'+INK+'" class="ey"/><circle cx="32.5" cy="27.5" r="1.6" fill="#fff"/><circle cx="52.5" cy="27.5" r="1.6" fill="#fff"/><path d="M36 44q5 3 10 0" stroke="'+K+'" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="24" cy="40" r="2.6" fill="'+PK+'" opacity=".7"/><circle cx="58" cy="40" r="2.6" fill="'+PK+'" opacity=".7"/>'}
+ else{/* Орест — інженер */
+  o='<rect x="21" y="48" width="40" height="32" rx="12" fill="#3b82f6" '+sw+'/><rect x="21" y="62" width="40" height="7" fill="'+YE+'" stroke="'+K+'" stroke-width="2"/><rect x="36" y="60" width="10" height="11" rx="2" fill="#c9a227" stroke="'+K+'" stroke-width="2"/><rect x="26" y="77" width="12" height="11" rx="5" fill="#1f56b8" '+sw+'/><rect x="44" y="77" width="12" height="11" rx="5" fill="#1f56b8" '+sw+'/><g transform="rotate(25 66 66)"><rect x="64" y="52" width="5" height="26" rx="2" fill="#b9b5d9" '+sw+'/><circle cx="66.5" cy="52" r="6" fill="#b9b5d9" '+sw+'/><rect x="64.5" y="46" width="4" height="7" fill="'+INK+'"/></g><circle cx="41" cy="30" r="21" fill="#2a2370" '+sw+'/><path d="M18 26q0-22 23-22t23 22z" fill="'+YE+'" '+sw+'/><rect x="38" y="1" width="6" height="8" rx="2" fill="#fff" stroke="'+K+'" stroke-width="2"/><rect x="14" y="24" width="54" height="5" rx="2" fill="#e0a800" stroke="'+K+'" stroke-width="2"/><circle cx="32" cy="36" r="8" fill="#0e0b3a" '+sw+'/><circle cx="50" cy="36" r="8" fill="#0e0b3a" '+sw+'/><circle cx="32" cy="36" r="4.2" fill="'+OR+'" class="ey"/><circle cx="50" cy="36" r="4.2" fill="'+OR+'" class="ey"/><rect x="38" y="35" width="6" height="3" fill="'+K+'"/>'}
+ return '<svg viewBox="0 0 82 92" class="sbCh" aria-hidden="true">'+o+'</svg>'}
+var NAMES=["Вега","Т-9","Нова","Орест"],ROLE=["пілот","бортовий бот","біолог","інженер"];
+/* ---------- іконки ---------- */
+function hex(on){return '<svg viewBox="0 0 28 32" class="sbHx'+(on?"":" off")+'"><path d="M14 2l11 6.4v15.2L14 30 3 23.6V8.4z" fill="'+(on?OR:"#2a2160")+'" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"/>'+(on?'<path d="M9 11l5-3 5 3" stroke="#fff" stroke-width="2" fill="none" opacity=".6" stroke-linecap="round"/>':'<path d="M9 9l6 7-4 6" stroke="'+RD+'" stroke-width="2.4" fill="none" stroke-linecap="round"/>')+'</svg>'}
+var ICO={
+ scan:'<svg viewBox="0 0 32 32"><circle cx="14" cy="14" r="9" fill="#0e0b3a" stroke="'+K+'" stroke-width="3"/><circle cx="14" cy="14" r="9" fill="none" stroke="'+CY+'" stroke-width="2"/><path d="M8 14h12M14 8v12" stroke="'+CY+'" stroke-width="1.5" opacity=".7"/><path d="M21 21l8 8" stroke="'+K+'" stroke-width="6" stroke-linecap="round"/><path d="M21 21l8 8" stroke="'+YE+'" stroke-width="2.6" stroke-linecap="round"/></svg>',
+ vote:'<svg viewBox="0 0 32 32"><rect x="4" y="12" width="24" height="16" rx="4" fill="'+RD+'" stroke="'+K+'" stroke-width="3"/><path d="M11 4h10l-2 8h-6z" fill="#fff" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"/><path d="M11 20h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>',
+ read:'<svg viewBox="0 0 32 32"><rect x="5" y="4" width="22" height="24" rx="4" fill="#fff" stroke="'+K+'" stroke-width="3"/><path d="M10 11h12M10 16h12M10 21h7" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round"/></svg>',
+ find:'<svg viewBox="0 0 32 32"><circle cx="16" cy="12" r="8" fill="'+LV+'" stroke="'+K+'" stroke-width="3"/><circle cx="13" cy="11" r="1.8" fill="'+K+'"/><circle cx="19" cy="11" r="1.8" fill="'+K+'"/><path d="M12 15q4 3 8 0" stroke="'+K+'" stroke-width="2" fill="none"/><path d="M6 29q0-9 10-9t10 9z" fill="'+PK+'" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"/></svg>',
+ heat:'<svg viewBox="0 0 32 32"><rect x="11" y="3" width="10" height="20" rx="5" fill="#fff" stroke="'+K+'" stroke-width="3"/><circle cx="16" cy="25" r="6" fill="'+RD+'" stroke="'+K+'" stroke-width="3"/><rect x="14.5" y="12" width="3" height="12" fill="'+RD+'"/></svg>'};
+var CSS="\
+.card:has(.sb)>h2,.card:has(.sb)>p.mut{display:none!important}\
+.card:has(.sb){background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.sb{--k:"+K+";font-family:inherit;color:#fff;position:relative;max-width:560px;margin:0 auto}\
+.sb *{box-sizing:border-box}\
+.sbHd{position:relative;border:3px solid "+K+";border-radius:20px;box-shadow:0 5px 0 "+K+";overflow:hidden;height:132px;background:#0b0830}\
+.sbHd svg.bg{position:absolute;inset:0;width:100%;height:100%}\
+.sbHd.al{animation:sbAl 1.1s ease-in-out infinite}\
+.sbTop{position:absolute;left:12px;top:10px;right:84px}\
+.sbTop small{display:inline-block;background:"+RD+";color:#fff;font-weight:800;font-size:10px;letter-spacing:.14em;padding:2px 8px;border:2px solid "+K+";border-radius:6px}\
+.sbTop b{display:block;margin-top:6px;font-size:21px;line-height:1.1;font-weight:900;color:#fff;text-shadow:0 2px 0 "+K+",0 0 14px #5b4bd6}\
+.sbRing{position:absolute;right:10px;top:10px;width:64px;height:64px}\
+.sbRing svg{width:100%;height:100%;transform:rotate(-90deg)}\
+.sbRing b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:#fff;text-shadow:0 2px 0 "+K+"}\
+.sbRing.lo b{color:"+RD+";animation:sbPu .5s infinite}\
+.sbHud{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 2px 10px}\
+.sbLv{display:flex;gap:4px;align-items:center}.sbLv svg{width:26px;height:30px}\
+.sbLv .l{font-size:10px;font-weight:800;letter-spacing:.1em;color:#c9c2ff;margin-right:4px;text-transform:uppercase}\
+.sbDots{display:flex;gap:5px}.sbDots i{width:16px;height:8px;border-radius:4px;border:2px solid "+K+";background:#2a2160}.sbDots i.d{background:"+MI+"}.sbDots i.x{background:"+RD+"}.sbDots i.c{background:"+YE+";box-shadow:0 0 8px "+YE+"}\
+.sbRow{display:flex;gap:8px;align-items:center;margin:0 0 10px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}\
+.sbPh{flex:none;width:74px;text-align:center;position:relative}\
+.sbCh{width:74px;height:84px;display:block;animation:sbBob 2.6s ease-in-out infinite}\
+.sbRow:nth-child(2) .sbCh{animation-delay:-.7s}.sbRow:nth-child(3) .sbCh{animation-delay:-1.3s}.sbRow:nth-child(4) .sbCh{animation-delay:-1.9s}\
+.sbCh .ey{transform-box:fill-box;transform-origin:center;animation:sbBlink 4.2s infinite}\
+.sbCh .sbBl{animation:sbLed 1s infinite}.sbCh .sbBl2{animation:sbLed 1s infinite .5s}\
+.sbNm{display:inline-block;margin-top:-6px;position:relative;background:"+YE+";color:"+K+";font-weight:900;font-size:10.5px;padding:1px 7px;border:2px solid "+K+";border-radius:6px}\
+.sbBb{flex:1;min-width:0;position:relative;background:#fff;color:"+INK+";border:3px solid "+K+";border-radius:16px;box-shadow:0 4px 0 "+K+";padding:9px 12px 9px 12px;font-size:13.5px;line-height:1.35;font-weight:600;transition:transform .12s,background .15s}\
+.sbBb:before{content:'';position:absolute;left:-9px;top:50%;margin-top:-7px;width:14px;height:14px;background:inherit;border-left:3px solid "+K+";border-bottom:3px solid "+K+";transform:rotate(45deg);border-radius:0 0 0 4px}\
+.sbBb span{display:block;font-size:9.5px;font-weight:800;letter-spacing:.12em;color:#7a6fd0;text-transform:uppercase;margin-bottom:2px}\
+.sbRow:active .sbBb{transform:translateY(2px)}\
+.sbRow.on .sbBb{background:#fff0a8;box-shadow:0 4px 0 "+K+",0 0 0 3px "+YE+",0 0 18px "+YE+"}\
+.sbRow.on .sbBb span{color:#a35c00}\
+.sbRow.on .sbBb:after{content:'ПІДОЗРЮВАНИЙ';position:absolute;right:8px;top:-10px;background:"+RD+";color:#fff;font-size:9px;font-weight:900;letter-spacing:.1em;padding:2px 7px;border:2px solid "+K+";border-radius:6px;transform:rotate(3deg)}\
+.sbRow.cl{opacity:.55}.sbRow.cl .sbCh{filter:grayscale(.7)}\
+.sbRow.cl .sbBb:after{content:'ЧИСТИЙ (скан)';position:absolute;right:8px;top:-10px;background:"+MI+";color:"+K+";font-size:9px;font-weight:900;letter-spacing:.1em;padding:2px 7px;border:2px solid "+K+";border-radius:6px}\
+.sbRow.lock{pointer-events:none}\
+.sbRow.lie .sbBb{background:#ffd9df;border-color:"+K+";box-shadow:0 4px 0 "+K+",0 0 0 3px "+RD+"}\
+.sbRow.lie .sbBb span{color:"+RD+"}\
+.sbRow.lie .sbBb:after{content:'САМОЗВАНЕЦЬ';position:absolute;right:8px;top:-10px;background:"+RD+";color:#fff;font-size:9px;font-weight:900;letter-spacing:.1em;padding:2px 7px;border:2px solid "+K+";border-radius:6px;transform:rotate(3deg)}\
+.sbRow.lie .ey{fill:"+RD+"!important}\
+.sbRow.lie .sbCh{animation:sbGl .35s steps(2) 4}\
+.sbRow.lie.out .sbCh{animation:sbFly 1.2s cubic-bezier(.5,0,.9,.4) forwards}\
+.sbRow.tr .sbBb{background:#d9fff0}\
+.sbRow.tr .sbBb:after{content:'ЧЕСНИЙ';position:absolute;right:8px;top:-10px;background:"+MI+";color:"+K+";font-size:9px;font-weight:900;letter-spacing:.1em;padding:2px 7px;border:2px solid "+K+";border-radius:6px}\
+.sbBar{display:flex;gap:10px;margin-top:6px}\
+.sbBtn{font:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+";font-weight:900;font-size:15px;padding:10px 14px;color:"+K+";background:"+YE+";transition:transform .1s,box-shadow .1s}\
+.sbBtn:active{transform:translateY(4px);box-shadow:0 1px 0 "+K+"}\
+.sbBtn svg{width:26px;height:26px;flex:none}\
+.sbBtn.v{flex:1;background:"+RD+";color:#fff;text-shadow:0 2px 0 "+K+"}\
+.sbBtn.v[disabled]{background:#4a3f8f;color:#a99fe0;text-shadow:none;cursor:default;box-shadow:0 5px 0 "+K+"}\
+.sbBtn.s{background:"+CY+"}.sbBtn.s[disabled]{background:#2f3f78;color:#7d8cc0;cursor:default}\
+.sbBtn.s small{background:"+K+";color:"+CY+";border-radius:8px;padding:0 6px;font-size:11px}\
+.sbBtn.n{width:100%;background:"+MI+"}\
+.sbRep{margin-top:12px;border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+";background:#1d1550;padding:12px 14px;font-size:13.5px;line-height:1.4;animation:sbIn .35s}\
+.sbRep h4{margin:0 0 4px;font-size:15px;font-weight:900}.sbRep.g h4{color:"+MI+"}.sbRep.b h4{color:"+RD+"}\
+.sbRep p{margin:0 0 10px;color:#e6e1ff}\
+.sbIntro{border:3px solid "+K+";border-radius:20px;box-shadow:0 5px 0 "+K+";background:linear-gradient(180deg,#241a6b,#150f45);padding:14px}\
+.sbIntro h3{margin:0 0 4px;font-size:22px;font-weight:900;text-shadow:0 2px 0 "+K+"}\
+.sbIntro p{margin:0 0 12px;color:#d6d0ff;font-size:13.5px;line-height:1.4}\
+.sbSt{display:flex;gap:10px;align-items:center;margin:0 0 9px;background:#2c2080;border:3px solid "+K+";border-radius:14px;padding:7px 10px;font-size:13px;font-weight:600;line-height:1.3}\
+.sbSt svg{width:34px;height:34px;flex:none}\
+.sbCrew{display:flex;justify-content:space-around;margin:4px 0 12px}.sbCrew .sbCh{width:62px;height:72px}\
+@keyframes sbBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}\
+@keyframes sbBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}\
+@keyframes sbLed{0%,100%{opacity:1}50%{opacity:.25}}\
+@keyframes sbAl{0%,100%{box-shadow:0 5px 0 "+K+",0 0 0 rgba(255,61,90,0)}50%{box-shadow:0 5px 0 "+K+",0 0 22px rgba(255,61,90,.85)}}\
+@keyframes sbPu{50%{transform:scale(1.25)}}\
+@keyframes sbIn{from{opacity:0;transform:translateY(10px)}}\
+@keyframes sbGl{0%{transform:translate(-3px,1px)}50%{transform:translate(3px,-1px);filter:hue-rotate(90deg)}100%{transform:none}}\
+@keyframes sbFly{0%{transform:translate(0,0) rotate(0)}15%{transform:translate(-8px,0) rotate(-8deg)}100%{transform:translate(-140px,-60px) rotate(-420deg) scale(.1);opacity:0}}\
+@keyframes sbSh{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}\
+@keyframes sbTw{50%{opacity:.25}}\
+.sbSh{animation:sbSh .45s}\
+.sb .sbTop b,.sb .sbRing b{color:#fff!important}\
+.sb .sbRing.lo b{color:"+RD+"!important}\
+.sb .sbIntro h3,.sb .sbSt,.sb .sbSt span{color:#fff!important}.sb .sbIntro p,.sb .sbSt{color:#e6e1ff!important}\
+.sb .sbLv .l{color:#c9c2ff!important}.sb .sbRep p{color:#e6e1ff!important}.sb .sbRep.g h4{color:"+MI+"!important}.sb .sbRep.b h4{color:"+RD+"!important}\
+.sb .sbBb{color:"+INK+"!important;background:#fff!important}.sb .sbBb span{color:#7a6fd0!important}\
+.sb .sbRow.on .sbBb{background:#fff0a8!important}.sb .sbRow.lie .sbBb{background:#ffd9df!important}.sb .sbRow.tr .sbBb{background:#d9fff0!important}\
+.sb .sbRow.on .sbBb span{color:#a35c00!important}.sb .sbRow.lie .sbBb span{color:"+RD+"!important}\
+.sb .sbRow{border:0!important;background:none!important;box-shadow:none!important;padding:0!important;min-height:0!important}\
+.sb .sbBtn{width:auto!important;margin:0!important;color:"+K+"!important;background:"+YE+"!important;border:3px solid "+K+"!important}\
+.sb .sbBtn.s{flex:none;background:"+CY+"!important}.sb .sbBtn.s[disabled]{background:#2f3f78!important;color:#7d8cc0!important}\
+.sb .sbBtn.v{flex:1;background:"+RD+"!important;color:#fff!important}.sb .sbBtn.v[disabled]{background:#4a3f8f!important;color:#a99fe0!important}\
+.sb .sbBtn.n{width:100%!important;display:flex;background:"+MI+"!important}\
+.sb .sbBtn.s small{color:"+CY+"!important;background:"+K+"!important}\
+.sbFl{position:fixed;inset:0;pointer-events:none;z-index:50;background:radial-gradient(circle,transparent 40%,rgba(255,61,90,.55));animation:sbIn .6s reverse forwards}";
+function inj(){if(document.getElementById("sbcss"))return;var s=document.createElement("style");s.id="sbcss";s.textContent=CSS;document.head.appendChild(s)}
+function bgSvg(){var st="",i;for(i=0;i<26;i++){st+='<circle cx="'+((i*47+13)%360)+'" cy="'+((i*29+7)%132)+'" r="'+(i%3?0.9:1.5)+'" fill="#fff" style="animation:sbTw '+(1.5+i%4)+'s infinite '+(i%5*.3)+'s"/>'}
+ return '<svg class="bg" viewBox="0 0 360 132" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="sbb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1060"/><stop offset="1" stop-color="#4a1d7a"/></linearGradient><radialGradient id="sbp" cx=".35" cy=".3"><stop offset="0" stop-color="#ffb36b"/><stop offset="1" stop-color="#b23a6b"/></radialGradient></defs><rect width="360" height="132" fill="url(#sbb)"/>'+st+'<ellipse cx="292" cy="96" rx="92" ry="12" transform="rotate(-14 292 96)" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="3"/><circle cx="292" cy="96" r="52" fill="url(#sbp)" stroke="'+K+'" stroke-width="3"/><path d="M250 84q40-12 84 4" stroke="#fff" stroke-opacity=".3" stroke-width="5" fill="none"/><g><rect x="0" y="108" width="360" height="24" fill="#120c40" stroke="'+K+'" stroke-width="3"/><g fill="#2a2160" stroke="'+K+'" stroke-width="2"><rect x="10" y="113" width="40" height="14" rx="4"/><rect x="58" y="113" width="40" height="14" rx="4"/><rect x="106" y="113" width="40" height="14" rx="4"/></g><circle cx="22" cy="120" r="3" fill="'+MI+'" style="animation:sbLed 1.2s infinite"/><circle cx="70" cy="120" r="3" fill="'+YE+'" style="animation:sbLed 1.2s infinite .4s"/><circle cx="118" cy="120" r="3" fill="'+PK+'" style="animation:sbLed 1.2s infinite .8s"/><path d="M26 120h16M74 120h16M122 120h16" stroke="#fff" stroke-opacity=".3" stroke-width="2"/></g><g style="animation:sbTw 6s infinite"><path d="M-10 40l20-3" stroke="#fff" stroke-width="2" opacity=".5"/></g></svg>'}
+function ring(){return '<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="#120c40" stroke="'+K+'" stroke-width="3"/><circle cx="32" cy="32" r="21" fill="none" stroke="#2a2160" stroke-width="6"/><circle id="sbRg" cx="32" cy="32" r="21" fill="none" stroke="'+MI+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="131.9" stroke-dashoffset="0"/></svg>'}
+/* ---------- гра ---------- */
+GM.sab=function(g){inj();
+ var R=g.items,n=R.length,round=0,sc=0,lives=3,hints=2,timer=null,locked=false,sel={},crew=[],t0=0,tmax=30;
+ function root(){return document.getElementById("sbroot")}
+ function stop(){if(timer){clearInterval(timer);timer=null}}
+ function hud(rs){var h="";for(var i=0;i<3;i++)h+=hex(i<lives);var d="";for(i=0;i<n;i++)d+='<i class="'+((i<round||(rs&&i==round))?(R[i]._ok?"d":"x"):i==round?"c":"")+'"></i>';
+  return '<div class="sbHud"><div class="sbLv"><span class="l">Корпус</span>'+h+'</div><div class="sbDots">'+d+'</div></div>'}
+ function intro(){stop();
+  fr9(g.title,"","<div id='sbroot' class='sb'></div>");gs9("Складна місія");
+  var cr="";for(var i=0;i<4;i++)cr+=ch(i);
+  root().innerHTML='<div class="sbHd al">'+bgSvg()+'<div class="sbTop"><small>ТРИВОГА · ОРБІТА-9</small><b>Саботажник на борту</b></div></div>'+
+   '<div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+cr+'</div><h3>Хтось підмінює дані</h3><p>Екіпаж станції дає свідчення про тему уроку. Серед них — самозванці: вони кажуть неправду. Знайди їх раніше, ніж спливе час.</p>'+
+   '<div class="sbSt">'+ICO.read+'<span>Прочитай усі свідчення уважно — брехня звучить правдоподібно.</span></div>'+
+   '<div class="sbSt">'+ICO.scan+'<span>У тебе 2 скани: вони позначають одного чесного члена екіпажу.</span></div>'+
+   '<div class="sbSt">'+ICO.heat+'<span>Кожна помилка пробиває корпус. Три пробоїни — місія провалена.</span></div>'+
+   '<button class="sbBtn n" id="sbGo">Розпочати зміну</button></div>';
+  document.getElementById("sbGo").onclick=start}
+ function start(){round=0;sc=0;lives=3;hints=2;R.forEach(function(r){r._ok=false});play()}
+ function play(){stop();locked=false;sel={};
+  var r=R[round],need=r.lies.length,items=[];
+  r.truth.forEach(function(t){items.push({t:t,lie:false})});r.lies.forEach(function(t){items.push({t:t,lie:true})});
+  var ord=shf([0,1,2,3]);crew=shf(items).map(function(it,i){it.c=ord[i];return it});
+  tmax=r.time||(need>1?45:32);t0=Date.now();
+  fr9(g.title,"","<div id='sbroot' class='sb'></div>");gs9("Раунд "+(round+1)+" / "+n);
+  var rows="";crew.forEach(function(c,i){rows+='<div class="sbRow" data-i="'+i+'"><div class="sbPh">'+ch(c.c)+'<span class="sbNm">'+NAMES[c.c]+'</span></div><div class="sbBb"><span>'+ROLE[c.c]+'</span>'+esc(c.t)+'</div></div>'});
+  root().innerHTML='<div class="sbHd al" id="sbHd">'+bgSvg()+'<div class="sbTop"><small>'+(need>1?"ДВОЄ САМОЗВАНЦІВ":"ТРИВОГА")+'</small><b>'+esc(r.topic)+'</b></div><div class="sbRing" id="sbRn">'+ring()+'<b id="sbT">'+tmax+'</b></div></div>'+hud()+
+   '<div id="sbRows">'+rows+'</div><div class="sbBar"><button class="sbBtn s" id="sbSc"'+(hints?'':' disabled')+'>'+ICO.scan+'Скан <small id="sbH">'+hints+'</small></button><button class="sbBtn v" id="sbVt" disabled>'+ICO.vote+(need>1?"Обрати двох":"Обрати одного")+'</button></div><div id="sbOut"></div>';
+  Array.prototype.forEach.call(root().querySelectorAll(".sbRow"),function(el){el.onclick=function(){if(locked)return;var i=+el.dataset.i;if(crew[i].scanned)return;
+   if(sel[i])delete sel[i];else{if(Object.keys(sel).length>=need){var f=Object.keys(sel)[0];delete sel[f]}sel[i]=1}upd()}});
+  document.getElementById("sbSc").onclick=scan;document.getElementById("sbVt").onclick=function(){resolve(false)};
+  timer=setInterval(tick,100)}
+ function upd(){var need=R[round].lies.length,k=Object.keys(sel).length;
+  Array.prototype.forEach.call(root().querySelectorAll(".sbRow"),function(el,i){el.classList.toggle("on",!!sel[i])});
+  var b=document.getElementById("sbVt");b.disabled=k!=need;b.lastChild.textContent=k==need?(need>1?"Голосувати":"Голосувати"):(need>1?"Обрати двох ("+k+"/2)":"Обрати одного")}
+ function scan(){if(locked||!hints)return;var c=[];crew.forEach(function(x,i){if(!x.lie&&!x.scanned)c.push(i)});
+  if(c.length<=R[round].lies.length+0&&c.length<2)return;var i=c[Math.floor(Math.random()*c.length)];crew[i].scanned=true;hints--;delete sel[i];
+  var el=root().querySelectorAll(".sbRow")[i];el.classList.add("cl");document.getElementById("sbH").textContent=hints;if(!hints)document.getElementById("sbSc").disabled=true;upd()}
+ function tick(){if(!root()){stop();return}var el=(Date.now()-t0)/1000,left=Math.max(0,tmax-el);
+  var rg=document.getElementById("sbRg");if(rg){rg.style.strokeDashoffset=(131.9*(1-left/tmax)).toFixed(1);rg.style.stroke=left<8?RD:left<16?OR:MI}
+  var t=document.getElementById("sbT");if(t)t.textContent=Math.ceil(left);var rn=document.getElementById("sbRn");if(rn)rn.classList.toggle("lo",left<8);
+  if(left<=0)resolve(true)}
+ function resolve(to){if(locked)return;locked=true;stop();var r=R[round],need=r.lies.length,ok=!to&&Object.keys(sel).length==need;
+  if(ok)crew.forEach(function(c,i){if(c.lie&&!sel[i])ok=false;if(!c.lie&&sel[i])ok=false});
+  r._ok=ok;if(ok)sc++;else lives--;
+  var rows=root().querySelectorAll(".sbRow");crew.forEach(function(c,i){var el=rows[i];el.classList.remove("on","cl");el.classList.add("lock",c.lie?"lie":"tr");if(c.lie&&ok)setTimeout(function(){el.classList.add("out")},900)});
+  var hd=document.getElementById("sbHd");hd.classList.remove("al");
+  if(!ok){root().classList.add("sbSh");var f=document.createElement("div");f.className="sbFl";document.body.appendChild(f);setTimeout(function(){f.remove()},700)}
+  var bar=root().querySelector(".sbBar");bar.style.display="none";
+  var last=round>=n-1||lives<=0,msg=ok?"Самозванця викрито!":to?"Час вийшов — самозванці втекли":"Не той! Корпус пробито";
+  var h=hud(1);root().querySelector(".sbHud").outerHTML=h;
+  document.getElementById("sbOut").innerHTML='<div class="sbRep '+(ok?"g":"b")+'"><h4>'+msg+'</h4><p>'+esc(r.why)+'</p><button class="sbBtn n" id="sbNx">'+(last?"Підсумок місії":"Наступний раунд")+'</button></div>';
+  document.getElementById("sbNx").onclick=function(){round++;if(last)done();else play()};
+  var o=document.getElementById("sbOut");setTimeout(function(){try{o.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(e){}},300)}
+ function done(){stop();fin9(sc,n)}
+ intro()};
+window.SB9={bgSvg:bgSvg,ICO:ICO,ch:ch,hex:hex,ring:ring,inj:inj,esc:esc,shf:shf,K:K,INK:INK,OR:OR,MI:MI,PK:PK,YE:YE,LV:LV,RD:RD,CY:CY};
+/* ---------- підключення до уроку 1 ---------- */
+var C1=[
+ {topic:"Типи ліцензій",time:32,
+  truth:["Freeware можна використовувати безкоштовно, але автор зберігає авторські права.","Shareware дозволяє випробувати програму певний час, а потім треба придбати ліцензію.","Відкрите ПЗ має доступний вихідний код, який можна вивчати й змінювати за умовами ліцензії."],
+  lies:["Freeware завжди має відкритий код, тому його можна змінювати й продавати як власну програму."],
+  why:"Freeware безкоштовна, але код зазвичай закритий, а авторські права залишаються за автором. Змінювати й продавати її не можна."},
+ {topic:"Операційна система",time:32,
+  truth:["Операційна система керує пристроями та пам’яттю й запускає програми.","Windows, Linux та Android — це приклади операційних систем.","Інтерфейс ОС дає змогу користувачеві взаємодіяти з пристроєм."],
+  lies:["Офісний пакет — частина ОС: без нього комп’ютер узагалі не запуститься."],
+  why:"Офісний пакет — прикладне ПЗ. Його встановлюють окремо, і комп’ютер працює й без нього."},
+ {topic:"Драйвери",time:30,
+  truth:["Драйвер — це програма, що пояснює операційній системі, як керувати пристроєм.","Для нового принтера часто потрібен драйвер від виробника.","Застарілий драйвер може спричиняти збої в роботі пристрою."],
+  lies:["Драйвер — це мікросхема всередині пристрою, яку неможливо оновити без паяльника."],
+  why:"Драйвер — це програмне забезпечення, а не деталь. Його оновлюють так само, як звичайні програми."},
+ {topic:"Сумісність ПЗ",time:30,
+  truth:["Програма для Windows зазвичай не запускається в macOS без додаткових засобів.","Розрядність системи (32 чи 64 біти) впливає на сумісність програм.","У системних вимогах указано мінімальний обсяг оперативної пам’яті та місця на диску."],
+  lies:["Якщо програма запустилась на одному комп’ютері, вона гарантовано працюватиме так само швидко на будь-якому іншому."],
+  why:"Швидкість залежить від процесора, пам’яті й системи. Сумісність — це не гарантія однакової продуктивності."},
+ {topic:"Інсталяція та деінсталяція",time:30,
+  truth:["Інсталяція — це встановлення програми на пристрій.","Програму правильно видаляти засобом деінсталяції, а не просто стирати ярлик.","Інсталятор варто завантажувати з офіційного сайту розробника."],
+  lies:["Якщо видалити ярлик із робочого столу, програма повністю зникає з комп’ютера."],
+  why:"Ярлик — лише посилання. Сама програма та її файли залишаються на диску, поки її не деінсталювати."},
+ {topic:"Типи ПЗ · двоє самозванців",time:45,
+  truth:["Системне ПЗ керує роботою пристрою: до нього належать ОС і драйвери.","Прикладне ПЗ виконує завдання користувача, наприклад текстовий редактор чи браузер."],
+  lies:["Утиліти — це апаратні пристрої для перевірки диска, а не програми.","Комерційна ліцензія завжди дозволяє безкоштовно копіювати програму друзям."],
+  why:"Утиліти — це програми для обслуговування системи. А комерційна ліцензія якраз забороняє вільне копіювання без дозволу правовласника."}];
+try{GI.sab=["🛡️","Саботажник"]}catch(e){}
+var CA=[
+ {topic:"Що таке масив",time:32,
+  truth:["Масив — впорядкована сукупність елементів одного типу, що має спільне ім’я.","Кожен елемент масиву має свій номер, який називають індексом.","Одновимірний масив можна уявити як рядок значень."],
+  lies:["Масив зберігає лише одне значення, тому для п’яти чисел потрібно п’ять окремих масивів."],
+  why:"Масив якраз і призначений для зберігання багатьох значень під одним іменем. Для п’яти чисел потрібен один масив."},
+ {topic:"Індекси елементів",time:32,
+  truth:["У Python нумерація елементів списку починається з нуля.","Перший елемент списку a має індекс 0, тобто a[0].","В масиві з 10 елементів останній має індекс 9."],
+  lies:["В масиві з 10 елементів використовують індекси від 1 до 10."],
+  why:"У Python індекси йдуть від 0 до 9. Індекс 10 уже виходить за межі масиву."},
+ {topic:"Звернення до елемента",time:30,
+  truth:["Щоб отримати третій елемент списку a, записують a[2].","За індексом можна змінити значення елемента: a[0] = 5.","Звернення за індексом поза межами масиву спричиняє помилку виконання."],
+  lies:["Запис a[3] означає, що беруться перші три елементи масиву."],
+  why:"Запис a[3] — це один елемент: четвертий за порядком, бо рахунок іде з нуля."},
+ {topic:"Довжина масиву",time:30,
+  truth:["Кількість елементів масиву називають його довжиною.","У Python довжину списку визначає функція len().","Усі елементи числового масиву мають однаковий тип."],
+  lies:["Довжина масиву з n елементів дорівнює n − 1, бо нумерація починається з нуля."],
+  why:"Довжина — це кількість елементів, тобто n. Індекс останнього елемента дорівнює n − 1, і ці два числа не слід плутати."},
+ {topic:"Навіщо потрібні масиви",time:30,
+  truth:["Масив дає змогу опрацювати багато однотипних даних одним циклом.","Температуру за тиждень зручно зберігати в одному масиві.","Масив спрощує пошук найбільшого значення серед багатьох даних."],
+  lies:["Елементи масиву можна впорядкувати лише вручну, програмно це неможливо."],
+  why:"Масиви можна впорядковувати програмно: є стандартні засоби сортування й власні алгоритми."},
+ {topic:"Типові задачі · двоє самозванців",time:45,
+  truth:["Суму елементів масиву обчислюють накопиченням у циклі.","Максимум знаходять, порівнюючи кожен елемент із поточним найбільшим."],
+  lies:["Для обчислення середнього арифметичного достатньо знати лише останній елемент масиву.","Елементи одновимірного масиву зберігаються без жодного порядку."],
+  why:"Для середнього потрібні всі елементи: їх сума, поділена на кількість. А порядок елементів у масиві чіткий: за індексами."}];
+try{var L=LES[15];if(L&&L.g){L.g.pop();L.g.push({type:"sab",title:"Саботажник",items:CA})}}catch(e){}
+})();
+
+/* «Три в ряд: Кристали» — складна гра 9 класу (Космостанція). Власна графіка. */
+(function(){
+var X=window.SB9;if(!X)return;var K=X.K,INK=X.INK,esc=X.esc,shf=X.shf,ROWS=7,COLS=6,NT=5;
+/* ---------- логіка (чиста) ---------- */
+var UID=0;function rt(){return Math.floor(Math.random()*NT)}
+function mk(t){return {t:t==null?rt():t,id:++UID,b:false}}
+function Eng(terms){
+ var B=[],cx={idx:0,solved:0,terms:terms};
+ function runs(G){G=G||B;var out=[],r,c,k;
+  for(r=0;r<ROWS;r++){c=0;while(c<COLS){k=c;while(k+1<COLS&&G[r][k+1].t===G[r][c].t)k++;if(k-c>=2){var a=[];for(var q=c;q<=k;q++)a.push([r,q]);out.push({t:G[r][c].t,cells:a})}c=k+1}}
+  for(c=0;c<COLS;c++){r=0;while(r<ROWS){k=r;while(k+1<ROWS&&G[k+1][c].t===G[r][c].t)k++;if(k-r>=2){var a2=[];for(var q2=r;q2<=k;q2++)a2.push([q2,c]);out.push({t:G[r][c].t,cells:a2})}r=k+1}}
+  return out}
+ function fresh(){var r,c;for(r=0;r<ROWS;r++){B[r]=[];for(c=0;c<COLS;c++){var g;do{g=mk()}while((c>=2&&B[r][c-1].t===g.t&&B[r][c-2].t===g.t)||(r>=2&&B[r-1][c].t===g.t&&B[r-2][c].t===g.t));B[r][c]=g}}
+  if(!moves().length)fresh()}
+ function sw(a,b,G){G=G||B;var t=G[a[0]][a[1]];G[a[0]][a[1]]=G[b[0]][b[1]];G[b[0]][b[1]]=t}
+ function moves(){var o=[],r,c,D=[[0,1],[1,0]];for(r=0;r<ROWS;r++)for(c=0;c<COLS;c++){for(var di=0;di<2;di++){var r2=r+D[di][0],c2=c+D[di][1];if(r2>=ROWS||c2>=COLS)continue;sw([r,c],[r2,c2]);var rs=runs();sw([r,c],[r2,c2]);if(rs.length)o.push({a:[r,c],b:[r2,c2],ts:rs.map(function(x){return x.t})})}}return o}
+ function step(origin){var rs=runs();if(!rs.length)return null;var S={},keep={},i,j;
+  rs.forEach(function(run){run.cells.forEach(function(p){S[p[0]*10+p[1]]=1});
+   if(run.cells.length>=4){var kp=null;run.cells.forEach(function(p){if(origin&&p[0]===origin[0]&&p[1]===origin[1])kp=p});if(!kp)kp=run.cells[Math.floor(run.cells.length/2)];keep[kp[0]*10+kp[1]]=1}});
+  var blast={},ch=true;while(ch){ch=false;Object.keys(S).forEach(function(k){k=+k;var r=Math.floor(k/10),c=k%10;if(B[r][c].b&&!keep[k]&&!blast["x"+k]){blast["x"+k]=1;ch=true;for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){var r2=r+dr,c2=c+dc;if(r2<0||c2<0||r2>=ROWS||c2>=COLS)continue;var kk=r2*10+c2;if(!keep[kk]&&!S[kk]){S[kk]=1}}}})}
+  Object.keys(keep).forEach(function(k){delete S[k]});
+  var hit=false,t=cx.idx<terms.length?terms[cx.idx].cat:-1;
+  if(t>=0){rs.forEach(function(run){if(run.t===t)hit=true});if(!hit){var n=0;Object.keys(S).forEach(function(k){k=+k;if(B[Math.floor(k/10)][k%10].t===t)n++});var inruns=0;rs.forEach(function(run){if(run.t===t)inruns++});if(n>=4&&Object.keys(S).some(function(k){return B[Math.floor(+k/10)][+k%10].b}))hit=true}}
+  var st={clear:[],kept:[],falls:[],spawns:[],hit:false,termIdx:-1};
+  Object.keys(keep).forEach(function(k){k=+k;var g=B[Math.floor(k/10)][k%10];g.b=true;st.kept.push(g.id)});
+  Object.keys(S).forEach(function(k){k=+k;var r=Math.floor(k/10),c=k%10;st.clear.push({id:B[r][c].id,r:r,c:c});B[r][c]=null});
+  for(var c3=0;c3<COLS;c3++){var col=[],r3;for(r3=ROWS-1;r3>=0;r3--)if(B[r3][c3])col.push({g:B[r3][c3],from:r3});
+   var nn=ROWS-col.length;for(r3=0;r3<ROWS;r3++)B[r3][c3]=null;
+   col.forEach(function(o,ix){var nr=ROWS-1-ix;B[nr][c3]=o.g;if(nr!==o.from)st.falls.push({id:o.g.id,r:nr,c:c3})});
+   for(j=0;j<nn;j++){var g2=mk();var nr2=nn-1-j;B[nr2][c3]=g2;st.spawns.push({g:g2,r:nr2,c:c3,from:-1-j})}}
+  if(hit){st.hit=true;st.termIdx=cx.idx;cx.idx++;cx.solved++}
+  return st}
+ function apply(a,b){sw(a,b);if(!runs().length){sw(a,b);return null}var steps=[],s,or=b;
+  while((s=step(or))){steps.push(s);or=null;if(steps.length>30)break}
+  if(!moves().length){/* перемішування */var tries=0;do{var all=[];B.forEach(function(row){row.forEach(function(g){all.push(g.t)})});all=shf(all);var i2=0;B.forEach(function(row){row.forEach(function(g){g.t=all[i2++]})});tries++}while((runs().length||!moves().length)&&tries<50);steps.push({shuffle:true})}
+  return steps}
+ fresh();
+ return {B:B,cx:cx,apply:apply,moves:moves,runs:runs,sw:sw};
+}
+window.M3E=Eng;
+/* ---------- графіка ---------- */
+function defs(){return '<svg width="0" height="0" style="position:absolute"><defs>'+
+ [["#8ff7ff","#1b79e0"],["#ff9ccf","#a03bd6"],["#fff08a","#ff8a1f"],["#9dffd8","#16a36f"],["#a9a3d6","#4a4480"]].map(function(c,i){return '<radialGradient id="m3g'+i+'" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[1]+'"/></radialGradient>'}).join('')+'</defs></svg>'}
+function gem(t,b){var o="",f='fill="url(#m3g'+t+')" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"';
+ if(t==0)o='<path d="M24 3l17 10v22L24 45 7 35V13z" '+f+'/><path d="M24 3v14m-17-4l17 4 17-4M24 17v28" stroke="#fff" stroke-opacity=".45" stroke-width="1.8" fill="none"/><circle cx="24" cy="24" r="5" fill="#0e3b7a" stroke="#fff" stroke-opacity=".7" stroke-width="2"/><path d="M13 14l8-5" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/>';
+ else if(t==1)o='<circle cx="24" cy="24" r="19" '+f+'/><ellipse cx="24" cy="24" rx="19" ry="7" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="2"/><path d="M12 15q4-8 14-8" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".85"/><circle cx="31" cy="30" r="3" fill="#fff" opacity=".6"/>';
+ else if(t==2)o='<path d="M24 4l20 36H4z" '+f+'/><path d="M24 4v36M14 22h20" stroke="#fff" stroke-opacity=".45" stroke-width="1.8" fill="none"/><path d="M17 26l5-11" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/>';
+ else if(t==3)o='<path d="M24 2l20 22-20 22L4 24z" '+f+'/><path d="M4 24h40M24 2l-8 22 8 22 8-22z" stroke="#fff" stroke-opacity=".45" stroke-width="1.8" fill="none"/><path d="M13 17l7-8" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".85"/>';
+ else o='<path d="M10 12l11-8 14 4 8 14-5 15-14 6-13-8-4-14z" '+f+'/><circle cx="19" cy="20" r="4" fill="#3a3568" stroke="'+K+'" stroke-width="1.5"/><circle cx="30" cy="31" r="3" fill="#3a3568" stroke="'+K+'" stroke-width="1.5"/><circle cx="14" cy="33" r="2" fill="#3a3568"/>';
+ if(b)o+='<circle cx="24" cy="24" r="22" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="5 4" class="m3bo"/><circle cx="24" cy="24" r="7" fill="#fff" stroke="'+K+'" stroke-width="3"/><path d="M24 17v14M17 24h14" stroke="'+K+'" stroke-width="2.5"/>';
+ return '<svg viewBox="0 0 48 48">'+o+'</svg>'}
+var CSS="\
+.card:has(.m3){background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.card:has(.m3)>h2,.card:has(.m3)>p.mut{display:none!important}\
+.m3{max-width:560px;margin:0 auto;color:#fff;font-family:inherit;position:relative}\
+.m3 *{box-sizing:border-box}\
+.m3Lg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0 8px}\
+.m3Ch{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;min-width:0;background:#241a6b;border:3px solid "+K+";border-radius:12px;padding:5px 3px 4px;font-size:9.5px;font-weight:800;line-height:1.05;color:#fff!important;transition:transform .2s,box-shadow .2s,background .2s}\
+.m3Ch svg{width:24px;height:24px;flex:none}\
+.m3Ch.fl{background:#3a2c9a;box-shadow:0 0 0 3px "+X.YE+",0 0 16px "+X.YE+";transform:scale(1.06)}\
+.m3Msg{min-height:34px;color:#e6e1ff!important;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;margin:0 2px 8px;line-height:1.3}\
+.m3Msg svg{width:22px;height:22px;flex:none}\
+.m3Bd{position:relative;margin:0 auto;border:3px solid "+K+";border-radius:18px;box-shadow:0 5px 0 "+K+";background:#120c40;padding:6px;touch-action:none;user-select:none;-webkit-user-select:none}\
+.m3In{position:relative;overflow:hidden;border-radius:12px;background:repeating-conic-gradient(#1a1260 0 25%,#150f4f 0 50%) 0 0/var(--s2) var(--s2)}\
+.m3g{position:absolute;left:0;top:0;padding:3px;transition:transform .24s cubic-bezier(.4,.1,.3,1);will-change:transform}\
+.m3g svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 0 rgba(10,8,48,.55))}\
+.m3g.sel svg{transform:scale(1.14);filter:drop-shadow(0 0 8px #fff)}\
+.m3g.pop{transition:transform .22s,opacity .22s;opacity:0;transform:var(--t) scale(1.35)!important}\
+.m3g.ht svg{animation:m3Ht .5s infinite alternate}\
+.m3bo{transform-origin:24px 24px;animation:m3Sp 3s linear infinite}\
+@keyframes m3Sp{to{transform:rotate(360deg)}}\
+@keyframes m3Ht{to{transform:scale(1.2);filter:drop-shadow(0 0 10px #ffd23f)}}\
+.m3Bar{display:flex;gap:10px;margin-top:12px;align-items:center}\
+.m3 .m3Pips{display:flex!important;flex-direction:row!important;gap:5px;flex:1;flex-wrap:wrap}.m3Pips i{display:block;flex:none;width:20px;height:10px;border-radius:5px;border:2px solid "+K+";background:#2a2160}.m3Pips i.d{background:"+X.MI+"}.m3Pips i.c{background:"+X.YE+";box-shadow:0 0 8px "+X.YE+"}\
+.m3 .sbBtn.s small{color:"+X.CY+"!important;background:"+K+"!important}\
+.m3 .m3Msg span,.m3 .m3Msg b{color:#e6e1ff!important}.m3 .m3Ch span,#m3M,.m3 .sbRing.lo #m3M{color:#fff!important}\
+";
+function inj(){X.inj();if(document.getElementById("m3css"))return;var s=document.createElement("style");s.id="m3css";s.textContent=CSS;document.head.appendChild(s)}
+var CK='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="'+X.MI+'" stroke="'+K+'" stroke-width="2.5"/><path d="M7 12.5l3.5 3.5 6.5-7" stroke="'+K+'" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var INFO='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="'+X.CY+'" stroke="'+K+'" stroke-width="2.5"/><path d="M12 11v6M12 7v2" stroke="'+K+'" stroke-width="3" stroke-linecap="round"/></svg>';
+/* ---------- гра ---------- */
+GM.m3=function(g){inj();var D=g.items,cats=D.cats,total=D.pick||8,maxMoves=D.moves||24,en=null,terms=[],moves=0,hints=2,busy=false,sel=null,solved=0,S=50,els={},ended=false;
+ function root(){return document.getElementById("m3root")}
+ function pickTerms(){var o=[];cats.forEach(function(c,ci){var l=shf(D.terms.filter(function(t){return t[1]===ci}));l.slice(0,Math.ceil(total/cats.length)).forEach(function(t){o.push({term:t[0],cat:ci,why:t[2]})})});return shf(o).slice(0,total)}
+ function intro(){fr9(g.title,"","<div id='m3root' class='m3 sb'></div>");gs9("Складна місія");
+  var cr="";for(var i=0;i<5;i++)cr+='<div style="width:46px;height:46px">'+gem(i,i==2&&0)+'</div>';
+  root().innerHTML=defs()+'<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>РЕАКТОР · ОРБІТА-9</small><b>Кристали енергії</b></div></div>'+
+   '<div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+cr+'</div><h3>Заряди реактор знаннями</h3><p>Кожен колір і форма кристала — це категорія понять. Реактор вимагає термін: збери ряд кристалів тієї категорії, до якої він належить.</p>'+
+   '<div class="sbSt">'+X.ICO.read+'<span>Міняй сусідні кристали місцями й збирай по 3 і більше в ряд.</span></div>'+
+   '<div class="sbSt">'+X.ICO.vote+'<span>Збери 4 в ряд — з’явиться ядро, що підриває сусідів.</span></div>'+
+   '<div class="sbSt">'+X.ICO.heat+'<span>Ходів обмаль: '+maxMoves+' на '+total+' термінів. Планувати треба наперед.</span></div>'+
+   '<button class="sbBtn n" id="m3Go">Розпочати зміну</button></div>';
+  document.getElementById("m3Go").onclick=start}
+ function start(){terms=pickTerms();en=Eng(terms);moves=maxMoves;hints=2;solved=0;busy=false;sel=null;ended=false;draw()}
+ function ringOff(){return (131.9*(1-moves/maxMoves)).toFixed(1)}
+ function pips(){var h="";for(var i=0;i<terms.length;i++)h+='<i class="'+(i<en.cx.idx?"d":i==en.cx.idx?"c":"")+'"></i>';return h}
+ function legend(){return cats.map(function(c,i){return '<div class="m3Ch" id="m3c'+i+'">'+gem(i)+'<span>'+esc(c)+'</span></div>'}).join("")}
+ function draw(){fr9(g.title,"","<div id='m3root' class='m3 sb'></div>");gs9("Реактор");
+  var w=Math.min(root().clientWidth||360,430)-12-6;S=Math.floor(w/COLS);var bw=S*COLS;
+  root().innerHTML=defs()+'<div class="sbHd" id="m3Hd">'+X.bgSvg()+'<div class="sbTop"><small>ЗАМОВЛЕННЯ РЕАКТОРА</small><b id="m3T"></b></div><div class="sbRing" id="m3Rn">'+X.ring()+'<b id="m3M">'+moves+'</b></div></div>'+
+   '<div class="m3Lg">'+legend()+'</div><div class="m3Msg" id="m3Ms">'+INFO+'<span>Збери 3+ кристали категорії, до якої належить термін.</span></div>'+
+   '<div class="m3Bd" style="width:'+(bw+18)+'px"><div class="m3In" id="m3In" style="width:'+bw+'px;height:'+(S*ROWS)+'px;--s2:'+(S*2)+'px"></div></div>'+
+   '<div class="m3Bar"><div class="m3Pips" id="m3P"></div><button class="sbBtn s" id="m3H" style="padding:8px 12px">'+X.ICO.scan+'Підказка <small id="m3Hn">'+hints+'</small></button></div><div id="m3Out"></div>';
+  var rg=document.getElementById("sbRg");rg.style.strokeDashoffset=ringOff();
+  els={};var In=document.getElementById("m3In");en.B.forEach(function(row,r){row.forEach(function(gm,c){add(gm,r,c,In)})});
+  In.onpointerdown=pd;In.onpointermove=pm;In.onpointerup=pu;In.onpointercancel=function(){drag=null};
+  document.getElementById("m3H").onclick=hint;upTerm()}
+ function pos(r,c){return "translate("+(c*S)+"px,"+(r*S)+"px)"}
+ function add(gm,r,c,In,fromR){var d=document.createElement("div");d.className="m3g";d.style.width=d.style.height=S+"px";d.innerHTML=gem(gm.t,gm.b);d.dataset.id=gm.id;
+  if(fromR!=null){d.style.transition="none";d.style.transform=pos(fromR,c);In.appendChild(d);void d.offsetWidth;d.style.transition="";d.style.transform=pos(r,c)}else{d.style.transform=pos(r,c);In.appendChild(d)}d.style.setProperty("--t",pos(r,c));els[gm.id]=d;return d}
+ function upTerm(){var t=terms[en.cx.idx];var e=document.getElementById("m3T");if(e)e.innerHTML=t?esc(t.term):"Усі виконано";var p=document.getElementById("m3P");if(p)p.innerHTML=pips();
+  var m=document.getElementById("m3M");if(m)m.textContent=moves;var rg=document.getElementById("sbRg");if(rg){rg.style.strokeDashoffset=ringOff();rg.style.stroke=moves<=5?X.RD:moves<=10?X.OR:X.MI}var rn=document.getElementById("m3Rn");if(rn)rn.classList.toggle("lo",moves<=5)}
+ function msg(h,t){var e=document.getElementById("m3Ms");if(e)e.innerHTML=h+"<span>"+t+"</span>"}
+ function cellOf(gm){for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++)if(en.B[r][c]&&en.B[r][c].id===gm)return [r,c]}
+ var drag=null;
+ function xy(e){var b=document.getElementById("m3In").getBoundingClientRect();return {x:e.clientX-b.left,y:e.clientY-b.top}}
+ function pd(e){if(busy||ended)return;var p=xy(e),c=Math.floor(p.x/S),r=Math.floor(p.y/S);if(r<0||c<0||r>=ROWS||c>=COLS)return;drag={r:r,c:c,x:p.x,y:p.y,moved:false};try{e.target.setPointerCapture(e.pointerId)}catch(x){}}
+ function pm(e){if(!drag||busy)return;var p=xy(e),dx=p.x-drag.x,dy=p.y-drag.y;if(Math.max(Math.abs(dx),Math.abs(dy))<S*.35)return;drag.moved=true;var r=drag.r,c=drag.c,r2=r,c2=c;if(Math.abs(dx)>Math.abs(dy))c2+=dx>0?1:-1;else r2+=dy>0?1:-1;drag=null;if(r2<0||c2<0||r2>=ROWS||c2>=COLS)return;setSel(null);trySwap([r,c],[r2,c2])}
+ function pu(e){if(!drag)return;var d=drag;drag=null;if(d.moved||busy)return;var cur=[d.r,d.c];
+  if(sel&&Math.abs(sel[0]-cur[0])+Math.abs(sel[1]-cur[1])===1){var a=sel;setSel(null);trySwap(a,cur)}else setSel(sel&&sel[0]===cur[0]&&sel[1]===cur[1]?null:cur)}
+ function setSel(p){if(sel){var o=en.B[sel[0]][sel[1]];if(o&&els[o.id])els[o.id].classList.remove("sel")}sel=p;if(p){var n=en.B[p[0]][p[1]];if(n&&els[n.id])els[n.id].classList.add("sel")}}
+ function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+ function place(id,r,c){var d=els[id];if(d){d.style.transform=pos(r,c);d.style.setProperty("--t",pos(r,c))}}
+ async function trySwap(a,b){busy=true;clearHint();var ga=en.B[a[0]][a[1]],gb=en.B[b[0]][b[1]];place(ga.id,b[0],b[1]);place(gb.id,a[0],a[1]);await wait(240);
+  var st=en.apply(a,b);
+  if(!st){place(ga.id,a[0],a[1]);place(gb.id,b[0],b[1]);await wait(240);msg(INFO,"Тут ряду не вийде — спробуй інший хід.");busy=false;return}
+  moves--;upTerm();
+  for(var i=0;i<st.length;i++){await anim(st[i])}
+  upTerm();
+  if(en.cx.idx>=terms.length||moves<=0){end()}else busy=false}
+ async function anim(s){if(s.shuffle){var In=document.getElementById("m3In");In.style.opacity=".2";await wait(200);Object.keys(els).forEach(function(k){els[k].remove()});els={};en.B.forEach(function(row,r){row.forEach(function(gm,c){add(gm,r,c,In)})});In.style.opacity="1";msg(INFO,"Ходів не лишилось — реактор перемішав кристали.");await wait(250);return}
+  s.kept.forEach(function(id){var d=els[id];if(d){var gm=null;en.B.forEach(function(row){row.forEach(function(x){if(x.id===id)gm=x})});d.innerHTML=gem(gm.t,true)}});
+  s.clear.forEach(function(o){var d=els[o.id];if(d){d.classList.add("pop")}});await wait(230);
+  s.clear.forEach(function(o){var d=els[o.id];if(d){d.remove();delete els[o.id]}});
+  var In2=document.getElementById("m3In");
+  s.falls.forEach(function(o){place(o.id,o.r,o.c)});
+  s.spawns.forEach(function(o){add(o.g,o.r,o.c,In2,o.from)});
+  if(s.hit){var t=terms[s.termIdx];flash(t.cat);msg(CK,"<b>"+esc(t.term)+"</b> — "+esc(cats[t.cat])+": "+esc(t.why||""));upTerm()}
+  await wait(290)}
+ function flash(ci){var e=document.getElementById("m3c"+ci);if(e){e.classList.add("fl");setTimeout(function(){e.classList.remove("fl")},1400)}}
+ var hintT=null;
+ function clearHint(){Array.prototype.forEach.call(document.querySelectorAll(".m3g.ht"),function(x){x.classList.remove("ht")});if(hintT){clearTimeout(hintT);hintT=null}}
+ function hint(){if(busy||ended||!hints)return;var t=terms[en.cx.idx];if(!t)return;var ms=en.moves(),best=ms.filter(function(m){return m.ts.indexOf(t.cat)>=0})[0]||ms[0];if(!best)return;hints--;document.getElementById("m3Hn").textContent=hints;if(!hints)document.getElementById("m3H").disabled=true;
+  [best.a,best.b].forEach(function(p){var gm=en.B[p[0]][p[1]];if(els[gm.id])els[gm.id].classList.add("ht")});hintT=setTimeout(clearHint,3500)}
+ function end(){ended=true;busy=true;var s=en.cx.solved,all=s>=terms.length;
+  document.getElementById("m3Out").innerHTML='<div class="sbRep '+(all?"g":"b")+'"><h4>'+(all?"Реактор заряджено повністю!":"Ходи скінчилися")+'</h4><p>Виконано замовлень: '+s+' з '+terms.length+'.'+(all?"":" Наступного разу плануй так, щоб одним ходом запускати ланцюжок.")+'</p><button class="sbBtn n" id="m3Nx">Підсумок місії</button></div>';
+  document.getElementById("m3Nx").onclick=function(){fin9(s,terms.length)};try{document.getElementById("m3Out").scrollIntoView({behavior:"smooth",block:"nearest"})}catch(e){}}
+ intro()};
+/* ---------- контент уроку 1 ---------- */
+var C1={cats:["Системне ПЗ","Прикладне ПЗ","Утиліти","Типи ліцензій"],pick:8,moves:12,terms:[
+ ["Операційна система",0,"керує пристроєм і запускає програми."],["Драйвер принтера",0,"пояснює системі, як керувати пристроєм."],["Windows",0,"операційна система."],["Linux",0,"операційна система з відкритим кодом."],["Android",0,"операційна система для смартфонів."],
+ ["Текстовий редактор",1,"виконує завдання користувача."],["Браузер",1,"прикладна програма для перегляду сайтів."],["Електронна таблиця",1,"прикладна програма для обчислень."],["Графічний редактор",1,"прикладна програма для малювання."],["Програма для презентацій",1,"прикладна програма."],
+ ["Антивірус",2,"утиліта для захисту й обслуговування системи."],["Архіватор",2,"утиліта, що стискає файли."],["Очищення диска",2,"утиліта обслуговування."],["Резервне копіювання",2,"утиліта для збереження копій даних."],
+ ["Freeware",3,"безкоштовна, але авторські права збережено."],["Shareware",3,"спробуй, а потім купи ліцензію."],["Відкрите ПЗ",3,"відкритий код за умовами ліцензії."],["Комерційна ліцензія",3,"платна, копіювати без дозволу не можна."]]};
+var C14={cats:["Об’єкти документа","Формати файлів","Стилі та структура","Спільна робота"],pick:8,moves:12,terms:[
+ ["Символ",0,"найменший об’єкт тексту."],["Абзац",0,"об’єкт тексту, що завершується натисканням Enter."],["Таблиця",0,"об’єкт для подання даних у рядках і стовпцях."],["Колонтитул",0,"область зверху чи знизу сторінки."],["Формула",0,"об’єкт для запису математичних виразів."],["Багаторівневий список",0,"об’єкт із вкладеними пунктами."],
+ ["DOCX",1,"формат документів текстового процесора."],["ODT",1,"відкритий формат текстових документів."],["PDF",1,"формат для перегляду, який зберігає вигляд сторінки."],["TXT",1,"простий текст без форматування."],["RTF",1,"універсальний формат із форматуванням."],
+ ["Стиль «Заголовок 1»",2,"задає вигляд і рівень заголовка."],["Автоматичний зміст",2,"будується зі стилів заголовків."],["Область навігації",2,"показує структуру документа за заголовками."],["Ієрархія заголовків",2,"визначає структуру документа."],["Стиль абзацу",2,"набір параметрів форматування."],
+ ["Рецензування",3,"перегляд документа іншими людьми."],["Примітка",3,"коментар до фрагмента тексту."],["Відстеження змін",3,"показує, хто і що виправив."],["Спільний доступ",3,"кілька людей працюють над одним файлом."],["Історія версій",3,"дає змогу повернутися до попередньої редакції."]]};
+try{GI.m3=["💎","Кристали"]}catch(e){}
+try{var L=LES[14];if(L&&L.g){L.g.pop();L.g.push({type:"m3",title:"Кристали реактора",items:C14})}}catch(e){}
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
