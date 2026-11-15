@@ -30439,6 +30439,20 @@ if(document.body)go();else document.addEventListener("DOMContentLoaded",go);
 var _e=window.endScr;if(typeof _e=="function"&&!_e._s56){window.endScr=function(sc,max){try{if(g56()&&!GX.mute){if(max&&sc/max>=.5){GX.snd("ok");setTimeout(function(){GX.snd("ok")},260)}else GX.snd("bad")}}catch(e){}return _e.apply(this,arguments)};window.endScr._s56=1}
 })();
 
+/* Фінальний екран: кнопка «Наступна гра» (усі класи) + читабельний підпис */
+(function(){
+var st=document.createElement("style");st.textContent=".endok{color:#fff!important;font-weight:800;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,0 2px 4px rgba(0,0,0,.5)}.nxtg{margin-top:8px}";document.head.appendChild(st);
+function nextOf(){var m=/^g(\d+)$/.exec(window.CG||"");if(!m||!window.LES||!LES[CUR9])return null;var i=+m[1],gs=LES[CUR9].g||[];
+ if(i+1<gs.length)return [String(CUR9),i+1,"Наступна гра ▶"];
+ var n=+CUR9,hi=Math.floor(n/100)*100+100,best=null;Object.keys(LES).forEach(function(k){k=+k;if(k>n&&k<hi&&LES[k].g&&LES[k].g.length&&(best==null||k<best))best=k});
+ return best!=null?[String(best),0,"Наступний урок: перша гра ▶"]:null}
+var _e=window.endScr;window.endScr=function(){var r=_e.apply(this,arguments);
+ try{var app=document.getElementById("app")||$,p=app.querySelector("p.mut");if(p&&/надіслано|повторення/i.test(p.textContent))p.classList.add("endok");
+  var nx=nextOf(),pri=app.querySelector("button.pri");
+  if(nx&&pri&&!app.querySelector(".nxtg")){var b=document.createElement("button");b.className="pri nxtg";b.textContent=nx[2];b.onclick=function(){playG(nx[0],nx[1])};pri.parentNode.insertBefore(b,pri.nextSibling)}}catch(e){}
+ return r};window.endScr._nx=1;
+})();
+
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
 var LD={},V=window.PKV||"1";
