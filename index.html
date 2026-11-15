@@ -2323,7 +2323,7 @@ GM.def=function(g){var GY=165,TX=300;
 /* ---------- БУДІВНИЦТВО: 6 різних споруд (залежно від уроку) ---------- */
 GX.BLD=[["Піраміда","піраміду","🔺"],["Вежа замку","вежу замку","🏰"],["Маяк","маяк","🗼"],["Будиночок","будиночок","🏠"],["Зіккурат","зіккурат","🛕"],["Вітряк","вітряк","🌬️"]];
 GX.bldKind=function(n){n=+n||0;var L=[];try{Object.keys(window.LES||{}).forEach(function(k){var m=+k;if(m>500&&m<700&&(LES[k].g||[]).some(function(g){return g.type=="bld"}))L.push(m)})}catch(e){}L.sort(function(a,b){return a-b});var ix=L.indexOf(n);return ix<0?(n*5+1)%6:(ix+1)%6};
-GM.bld=function(g){var GY=172,CX=238,BW=16,KI=GX.bldKind(window.CUR9||window.CG||0),KN=GX.BLD[KI];g.title="Будівництво: "+KN[0].toLowerCase();
+GM.bld=function(g){var GY=172,CX=238,BW=16,KI=GX.bldKind(window.CUR9||window.CG||0),KN=GX.BLD[KI];g.title="Збудуй: "+KN[0].toLowerCase();
  var PAL=[{a:["#e8d58f","#d8c27a","#f4e8b0"],t:["#ffd24a","#c8941a","#fff2a0"]},
   {a:["#aab0c8","#8e95b4","#d3d8ea"],b:["#8e95b4","#6d7494","#b9bfd8"],w:["#2a3a6a","#1a244a","#4a5a8a"]},
   {r:["#e84a4a","#b83030","#ff8a8a"],f:["#f4f4f4","#cfcfcf","#fff"],l:["#ffe45e","#d8a800","#fff7b0"]},
@@ -16231,9 +16231,9 @@ LES[14].q=[["Що містить карта теми «Опрацювання т
 
 /* після всіх LES: по одній ігровій пригоді в уроці 5–6 класів – вид залежить від теми (світу) */
 GX.wkey=function(n){var T=n>600?TP6:TP5,k=n%100,w="cave";T.forEach(function(t){if(k>=t.a&&k<=t.b)w=t.w});return w};
-GI5.adv=["🌌","Пригода"];GI5.dig=["⛏️","Шахта"];GI5.def=["🏰","Оборона"];GI5.boss=["🐉","Бій з босом"];GI5.bld=["🏗️","Будівництво"];
+GI5.adv=["🌌","Пригода"];GI5.dig=["⛏️","Шахта"];GI5.def=["🏰","Оборона"];GI5.boss=["🐉","Бій з босом"];GI5.bld=["🏗️","Споруди"];
 GX.ORD=["dig","def","adv","bld"];
-GX.TT={dig:"Шахта: копай до діамантів",boss:"Бій з Драконом Далекого краю",adv:"Пригода: шлях до порталу",bld:"Будівництво"};
+GX.TT={dig:"Шахта: копай до діамантів",boss:"Бій з Драконом Далекого краю",adv:"Пригода: шлях до порталу",bld:"Споруди"};
 GX.gtitle=function(ty,n){if(ty=="def"){var d=GX.world(n).dec;return d=="palm"?"Оборона маяка від потоплеників":d=="spruce"?"Оборона сніжного форту":"Оборона вежі від зомбі"}return GX.TT[ty]};
 Object.keys(LES).forEach(function(k){var n=+k;if(!(n>500&&n<700))return;var L=LES[n];if(!L.g||L.g.some(function(g){return g.type=="adv"||g.type=="dig"||g.type=="def"||g.type=="boss"||g.type=="bld"}))return;
  L.g.forEach(function(g){if(g.type=="sort")g.hide=true});var ty=L.big?"boss":GX.ORD[((n%100)-1)%4];if(GX.pool(n).length>=8)L.g.push({type:ty,title:GX.gtitle(ty,n),items:[]})});
