@@ -39797,10 +39797,11 @@ var ALM={30:"al_maze",31:"al_ord",32:"al_ord",33:"al_maze",34:"al_ord",35:"al_bu
 Object.keys(ALM).forEach(function(n){var L=LES[500+(+n)];if(!L||!L.g)return;var t=ALM[n];if(L.g.some(function(x){return x.type==t}))return;var ix=L.g.length;for(var j=0;j<L.g.length;j++)if(/^(dig|def|bld|boss|adv|mcart|ender|bow|whack|m_c4)$/.test(L.g[j].type)){ix=j;break}L.g.splice(ix,0,{type:t,title:GI[t][1]})});
 })();
 
-/* 5 клас: рівно одна велика гра на урок, рівномірно по колу (без повторів поруч); у 3 уроках з кросвордом прибрано зайву просту гру */
+/* 5 клас: рівно одна велика гра на урок; бій з драконом (boss) – в кінці кожної теми, решта 9 – рівномірно по колу (без повторів поруч); у 3 уроках з кросвордом прибрано зайву просту гру */
 (function(){var CX=["dig","def","bld","boss","adv","mcart","ender","bow","whack","m_c4"],isC={};CX.forEach(function(t){isC[t]=1});
 var TITLE={};for(var k in LES)(LES[k].g||[]).forEach(function(g){if(isC[g.type]&&!TITLE[g.type])TITLE[g.type]=g.title});
-for(var n=1;n<=52;n++){var L=LES[500+n];if(!L||!L.g)continue;var t=CX[(n-1)%CX.length];
+var END={8:1,14:1,20:1,29:1,45:1,52:1},RO=CX.filter(function(t){return t!=="boss"}),ri=0;
+for(var n=1;n<=52;n++){var L=LES[500+n];if(!L||!L.g)continue;var t=END[n]?"boss":RO[ri++%RO.length];
  L.g=L.g.filter(function(g){return !isC[g.type]});L.g.push({type:t,title:TITLE[t]||(GI[t]||[,t])[1]})}
 [10,40,44].forEach(function(n){var L=LES[500+n];if(!L||!L.g)return;var s=L.g.filter(function(g){return /^(s_|n_)|^(tf|seq|sort|cloze|pairs|mine)$/.test(g.type)});if(s.length>=3){var drop=s[s.length-1];L.g.splice(L.g.indexOf(drop),1)}});
 })();
