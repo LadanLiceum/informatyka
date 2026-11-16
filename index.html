@@ -38197,55 +38197,302 @@ for(var k=1;k<=52;k++){if(HAND[k])continue;var L=LES[k];if(!L||!L.g)continue;var
 window.DIST9=done;
 })();
 
-/* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
+/* 7 клас · урок 2 · складна гра «Мисливці на фейки»: три акти — стрічка, дошка доказів, спростування */
 (function(){
-var LD={},V=window.PKV||"1";
-function need(){var c=(window.ME&&ME.c)||"";if(window.ME&&ME.t)return["i5","i8","i9","i11"];if(c.slice(0,2)=="11")return["i11"];var a=c.charAt(0);return a=="5"?["i5"]:a=="8"?["i8"]:a=="9"?["i9"]:[]}
-function load(k){if(LD[k])return LD[k];return LD[k]=new Promise(function(res,rej){var s=document.createElement("script");s.src="packs/"+k+".js?v="+V;s.onload=function(){res()};s.onerror=function(){delete LD[k];s.remove();rej()};document.head.appendChild(s)})}
-window.loadPacks=function(){return Promise.all(need().map(load))};
-var _t=topics,busy=false;
-topics=function(){var a=arguments,self=this,n=need().filter(function(k){return !LD[k]||LD[k].ok!==1});
- if(!n.length)return _t.apply(self,a);
- if(busy)return;busy=true;
- var $a=document.getElementById("app");if($a)$a.innerHTML="<div style='text-align:center;padding:60px 16px;font-weight:800'>Завантажую матеріали класу…</div>";
- Promise.all(n.map(function(k){return load(k).then(function(){LD[k].ok=1})})).then(function(){busy=false;_t.apply(self,a)}).catch(function(){busy=false;if($a)$a.innerHTML="<div style='text-align:center;padding:50px 16px'><p style='font-weight:800'>Не вдалося завантажити матеріали класу.</p><p>Перевір інтернет і спробуй ще раз. Після першого завантаження вони зберігаються на пристрої й працюють без мережі.</p><button class='pri' onclick='topics()'>Спробувати ще раз</button></div>"})};
+var A=window.A7;if(!A)return;var O=A.O,DEFS=A.DEFS,esc=A.esc;
+var CSS=".fk *{box-sizing:border-box}.fk{max-width:560px;margin:0 auto}"+
+".fksc{border:4px solid "+O+";border-radius:18px;overflow:hidden;box-shadow:0 5px 0 "+O+";background:#2a1470}.fksc svg{display:block;width:100%;height:auto}"+
+".fktr{display:flex;align-items:center;gap:8px;margin:10px 2px 0;font-weight:900;font-size:12px;color:#fff;text-shadow:0 2px 0 #0004}.fktr i{flex:1;height:16px;border:3px solid "+O+";border-radius:9px;background:#fff;overflow:hidden;display:block}.fktr i u{display:block;height:100%;background:linear-gradient(#7df07a,#1b9a2e);transition:width .5s}"+
+".fkact{display:table;margin:10px auto 0;background:#ffe94a;border:3px solid "+O+";border-radius:10px;padding:2px 12px;color:"+O+";font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.04em}"+
+".fkpost{background:#fff;border:4px solid "+O+";border-radius:18px;box-shadow:0 5px 0 "+O+";margin:10px 0 0;padding:8px;color:"+O+"}"+
+".fkp{position:relative;border:3px dashed transparent;border-radius:12px;padding:5px 24px 5px 7px;cursor:pointer;transition:background .15s}.fkp+.fkp{margin-top:2px}"+
+".fkp.m{border-color:#e0314f;border-style:solid;background:#ffe3e8}.fkp.m:after,.fkp.hit:after,.fkp.miss:after,.fkp.bad:after{position:absolute;right:4px;top:50%;margin-top:-12px;width:24px;height:24px;border-radius:50%;border:3px solid "+O+";display:flex;align-items:center;justify-content:center;font:900 13px/1 sans-serif;color:#fff}"+
+".fkp.m:after{content:'!';background:#e0314f}.fkp.hit{border:3px solid #2fb52a;background:#e4ffe0}.fkp.hit:after{content:'\\2713';background:#2fb52a}.fkp.miss{border:3px dashed #f0a800;background:#fff6d8}.fkp.miss:after{content:'?';background:#f0a800}.fkp.bad{border:3px solid #9aa0c0;background:#eef0fa}.fkp.bad:after{content:'\\00d7';background:#9aa0c0}"+
+".fkau{display:flex;align-items:center;gap:8px}.fkau svg{width:38px;height:38px;flex:none}.fkau b{display:block;font-size:14px;font-weight:900;line-height:1.15}.fkau small{display:block;font-size:11.5px;font-weight:700;color:#6a6f96}"+
+".fkdt{font-size:12px;font-weight:800;color:#6a6f96}.fkhd{font-size:16px;font-weight:900;line-height:1.25}.fktx{font-size:13.5px;font-weight:700;line-height:1.35}.fkpc svg{display:block;width:100%;height:auto;border-radius:10px;border:3px solid "+O+"}"+
+".fksr{font:800 12.5px ui-monospace,Consolas,monospace;color:#2d5be0;word-break:break-all}.fksr.no{color:#6a6f96;font-family:inherit}"+
+".fkvb{display:flex;gap:10px;margin:12px 0 4px}.fkvb button{flex:1;border:4px solid "+O+"!important;border-radius:18px!important;padding:12px 6px!important;color:#fff!important;font-weight:900!important;font-size:16px!important;box-shadow:0 5px 0 "+O+"!important;cursor:pointer;text-shadow:0 2px 0 #0004;margin:0!important;width:auto!important;text-align:center!important;display:flex!important;align-items:center;justify-content:center}"+
+".fkvb .f{background:linear-gradient(#ff8aa0,#e01f48)!important}.fkvb .c{background:linear-gradient(#7df07a,#1b9a2e)!important}.fkvb button:disabled{opacity:.45}"+
+".fkm{border:3px solid "+O+";border-radius:14px;padding:9px 11px;margin:10px 0 0;font-weight:700;font-size:13px;line-height:1.4;color:"+O+";background:#fff}.fkm.green{background:#e4ffe0}.fkm.red{background:#ffe3e8}.fkm b{font-weight:900}.fkm ul{margin:6px 0 0;padding-left:18px}.fkm li{margin:2px 0}"+
+".fkq{background:#fff;border:3px solid "+O+";border-radius:14px;color:"+O+";text-align:center;font-weight:800;margin:10px 0 4px;padding:8px 10px;line-height:1.3;font-size:14px}"+
+".fkcl{display:flex;flex-direction:column;gap:6px;margin:8px 0 0}.fkcl div{display:flex;gap:8px;align-items:center;background:#fff8cc;border:3px solid "+O+";border-radius:12px;padding:7px 9px;font-weight:800;font-size:12.5px;color:"+O+";line-height:1.3}.fkcl div.lk{background:#d9dbee;color:#7a7fa6}.fkcl svg{width:22px;height:22px;flex:none}"+
+".fksu{display:flex;flex-direction:column;gap:9px;margin:10px 0 0}.fks{background:#fff;border:4px solid "+O+";border-radius:16px;box-shadow:0 5px 0 "+O+";padding:9px;color:"+O+";cursor:pointer}.fks .fkau b{font-size:14.5px}.fks table{width:100%;border-collapse:collapse;margin-top:6px;font-size:12px;font-weight:700}.fks td{padding:3px 4px;border-top:2px solid #e6e8f6;vertical-align:top}.fks td:first-child{color:#6a6f96;width:42%}.fks.ok{outline:4px solid #2fb52a;background:#e4ffe0}.fks.bad{outline:4px solid #e0314f;background:#ffe3e8;opacity:.75}"+
+".fksl{margin:10px 0 0}.fksl>b{display:block;font-size:12px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.05em;text-shadow:0 2px 0 #0004;margin:0 2px 5px}.fko{background:#fff;border:3px solid "+O+";border-radius:14px;box-shadow:0 4px 0 "+O+";padding:9px 11px;margin:0 0 7px;font-weight:800;font-size:13px;line-height:1.35;color:"+O+";cursor:pointer}.fko.s{background:#fff3a8;outline:4px solid #ffcf1f}.fko.ok{background:#e4ffe0;outline:4px solid #2fb52a}.fko.bad{background:#ffe3e8;outline:4px solid #e0314f}"+
+".fkin{background:#fff;border:4px solid "+O+";border-radius:18px;box-shadow:0 5px 0 "+O+";padding:12px;margin:10px 0 0;color:"+O+"}.fkin h3{margin:0 0 6px;font-size:18px;font-weight:900}.fkin p{margin:0 0 8px;font-size:13.5px;font-weight:700;line-height:1.4}.fkin ol{margin:0;padding-left:20px;font-size:13px;font-weight:700;line-height:1.45}";
+function inj(){if(document.getElementById("fkcss"))return;var s=document.createElement("style");s.id="fkcss";s.textContent=CSS;document.head.appendChild(s)}
+/* --- графіка --- */
+function av(k){var c={shok:["#ff5d73","<path d='M11 22 L11 16 L22 10 V28 L11 22Z M24 14 q4 5 0 10' fill='#fff' stroke='"+O+"' stroke-width='2.2' stroke-linejoin='round'/>"],liga:["#2d7be0","<path d='M19 8 L29 12 V20 Q29 27 19 31 Q9 27 9 20 V12Z' fill='#ffe94a' stroke='"+O+"' stroke-width='2.2' stroke-linejoin='round'/><path d='M19 14 l1.8 3.6 4 .5 -3 2.8 .8 4 -3.6 -2 -3.6 2 .8 -4 -3 -2.8 4 -.5Z' fill='"+O+"'/>"],live:["#7a5cff","<rect x='9' y='13' width='20' height='14' rx='3' fill='#fff' stroke='"+O+"' stroke-width='2.2'/><circle cx='19' cy='20' r='4' fill='#7a5cff' stroke='"+O+"' stroke-width='2'/><rect x='13' y='10' width='6' height='4' rx='1' fill='#fff' stroke='"+O+"' stroke-width='2'/>"],fan:["#ff8a3d","<path d='M19 29 C5 20 10 9 19 15 C28 9 33 20 19 29Z' fill='#fff' stroke='"+O+"' stroke-width='2.2' stroke-linejoin='round'/>"],liga2:["#2d7be0","<path d='M19 8 L29 12 V20 Q29 27 19 31 Q9 27 9 20 V12Z' fill='#ffe94a' stroke='"+O+"' stroke-width='2.2' stroke-linejoin='round'/><text x='19' y='24.5' text-anchor='middle' font-size='12' font-weight='900' fill='"+O+"'>2</text>"],owl:["#3a3f9a","<circle cx='14' cy='18' r='5' fill='#ffe94a' stroke='"+O+"' stroke-width='2.2'/><circle cx='24' cy='18' r='5' fill='#ffe94a' stroke='"+O+"' stroke-width='2.2'/><circle cx='14' cy='18' r='1.8' fill='"+O+"'/><circle cx='24' cy='18' r='1.8' fill='"+O+"'/><path d='M17 24 l2 3 2 -3Z' fill='#ff8a3d' stroke='"+O+"' stroke-width='1.5'/>"],shop:["#1b9a2e","<path d='M10 14 h18 l-2 13 h-14Z' fill='#fff' stroke='"+O+"' stroke-width='2.2' stroke-linejoin='round'/><path d='M14 14 q5 -9 10 0' fill='none' stroke='"+O+"' stroke-width='2.2'/>"]}[k];
+ return "<svg viewBox='0 0 38 38'><circle cx='19' cy='19' r='17' fill='"+c[0]+"' stroke='"+O+"' stroke-width='3'/>"+c[1]+"</svg>"}
+function pic(k){var s="<svg viewBox='0 0 300 104' xmlns='http://www.w3.org/2000/svg'>"+DEFS;
+ if(k=="cup"){s+="<rect width='300' height='104' fill='url(#sky2)'/><circle cx='150' cy='52' r='46' fill='url(#glowY)'/><path d='M128 26 h44 v18 q0 22 -22 24 q-22 -2 -22 -24Z' fill='#ffcf1f' stroke='"+O+"' stroke-width='3.5' stroke-linejoin='round'/><path d='M128 32 q-16 0 -12 14 q3 8 14 6 M172 32 q16 0 12 14 q-3 8 -14 6' fill='none' stroke='"+O+"' stroke-width='3.5'/><rect x='144' y='68' width='12' height='10' fill='#f0a800' stroke='"+O+"' stroke-width='3'/><rect x='132' y='78' width='36' height='9' rx='3' fill='#7a4bd6' stroke='"+O+"' stroke-width='3'/><path d='M137 32 q4 14 0 22' stroke='#fff' stroke-width='3' fill='none' stroke-linecap='round' opacity='.7'/>"+A.spark(70,30,.8)+A.spark(236,26,.7,"#fff")+A.spark(250,74,.6)+A.spark(52,76,.6,"#ff8fd0")}
+ else if(k=="crowd"){s+="<rect width='300' height='104' fill='url(#night)'/>";for(var r=0;r<3;r++)for(var c=0;c<11;c++){var x=14+c*27+(r%2)*12,y=42+r*20;s+="<circle cx='"+x+"' cy='"+y+"' r='8' fill='"+["#ffb14a","#ff8fd0","#6af0d8","#ffe94a","#b79cff"][(r*3+c)%5]+"' stroke='"+O+"' stroke-width='2.5'/>"}s+="<rect x='70' y='8' width='160' height='22' rx='6' fill='#ffe94a' stroke='"+O+"' stroke-width='3'/><text x='150' y='24' text-anchor='middle' font-size='13' font-weight='900' fill='"+O+"'>ФІНАЛ СЕЗОНУ</text>"}
+ else if(k=="snow"){s+="<rect width='300' height='104' fill='#cfe3ff'/><path d='M0 70 L60 40 H240 L300 70 V104 H0Z' fill='#8fa3d6' stroke='"+O+"' stroke-width='3'/><path d='M0 70 Q40 52 80 62 T160 58 T240 60 T300 68 V104 H0Z' fill='#fff' stroke='"+O+"' stroke-width='3'/><rect x='96' y='18' width='108' height='26' rx='5' fill='#5a6aa8' stroke='"+O+"' stroke-width='3'/><path d='M96 22 q54 -16 108 0' fill='#fff' stroke='"+O+"' stroke-width='3'/>";for(var i=0;i<16;i++)s+="<circle cx='"+(12+i*19)+"' cy='"+(10+(i*37)%50)+"' r='2.6' fill='#fff' stroke='"+O+"' stroke-width='1'/>";s+="<rect x='196' y='82' width='98' height='17' rx='4' fill='#fff' stroke='"+O+"' stroke-width='2'/><text x='245' y='94' text-anchor='middle' font-size='10' font-weight='800' fill='"+O+"'>архів · січень 2021</text>"}
+ else{s+="<rect width='300' height='104' fill='url(#dusk)'/><circle cx='150' cy='56' r='44' fill='url(#glowP)'/><rect x='118' y='44' width='64' height='44' rx='6' fill='#ff8fd0' stroke='"+O+"' stroke-width='3.5'/><rect x='112' y='32' width='76' height='16' rx='5' fill='#ffcf1f' stroke='"+O+"' stroke-width='3.5'/><rect x='144' y='32' width='12' height='56' fill='#fff' stroke='"+O+"' stroke-width='3'/><path d='M150 32 q-20 -22 -26 -6 q-2 8 26 6 q20 -22 26 -6 q2 8 -26 6' fill='#ffe94a' stroke='"+O+"' stroke-width='3' stroke-linejoin='round'/><text x='56' y='62' text-anchor='middle' font-size='22' font-weight='900' fill='#ffe94a' stroke='"+O+"' stroke-width='4' paint-order='stroke'>1000</text><text x='244' y='62' text-anchor='middle' font-size='15' font-weight='900' fill='#fff' stroke='"+O+"' stroke-width='4' paint-order='stroke'>СКІНІВ</text>"}
+ return s+"</svg>"}
+function scene(mode){var s="<svg viewBox='0 0 340 104' xmlns='http://www.w3.org/2000/svg'>"+DEFS+"<rect width='340' height='104' fill='url(#dusk)'/>"+A.cloud(60,20,.7,.9)+A.cloud(290,28,.6,.8)+"<rect y='84' width='340' height='20' fill='url(#floor)'/><path d='M0 84 H340' stroke='"+O+"' stroke-width='3'/>";
+ s+="<g filter='url(#sh)'><rect x='112' y='10' width='128' height='62' rx='8' fill='#141a4a' stroke='"+O+"' stroke-width='3.5'/><rect x='120' y='18' width='50' height='20' rx='4' fill='"+(mode==1?"#ff5d73":"#fff")+"' stroke='"+O+"' stroke-width='2'/><rect x='120' y='42' width='50' height='22' rx='4' fill='#fff' stroke='"+O+"' stroke-width='2'/><rect x='176' y='18' width='56' height='46' rx='4' fill='"+(mode==2?"#fff8cc":mode==3?"#e4ffe0":"#b79cff")+"' stroke='"+O+"' stroke-width='2'/><path d='M124 24 h30 M124 30 h40 M124 48 h38 M124 54 h28 M182 26 h44 M182 34 h36 M182 42 h44 M182 50 h30' stroke='"+O+"' stroke-opacity='.45' stroke-width='2.5' stroke-linecap='round'/><rect x='168' y='72' width='16' height='12' fill='#5a6aa8' stroke='"+O+"' stroke-width='3'/></g>";
+ s+="<g transform='translate(62,58)'>"+A.heroS()+"</g><g transform='translate(288,52) scale(.62)'>"+A.robotS()+"</g>";
+ if(mode==1)s+="<g transform='translate(98,24) rotate(-18)'><circle r='11' fill='#bfe9ff' fill-opacity='.6' stroke='"+O+"' stroke-width='3.5'/><path d='M8 8 L18 18' stroke='"+O+"' stroke-width='5' stroke-linecap='round'/></g>";
+ if(mode==3)s+=A.spark(100,22,.8)+A.spark(254,18,.7,"#fff");
+ return s+"</svg>"}
+function clueIco(ok){return ok?"<svg viewBox='0 0 22 22'><circle cx='11' cy='11' r='9' fill='#ffcf1f' stroke='"+O+"' stroke-width='2.5'/><path d='M6.5 11.5 l3 3 6 -6.5' fill='none' stroke='"+O+"' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/></svg>":"<svg viewBox='0 0 22 22'><rect x='4' y='10' width='14' height='10' rx='2.5' fill='#9aa0c0' stroke='"+O+"' stroke-width='2.5'/><path d='M7 10 V7 a4 4 0 0 1 8 0 V10' fill='none' stroke='"+O+"' stroke-width='2.5'/></svg>"}
+var PN={author:"автор",date:"дата",head:"заголовок",text:"текст",pic:"фото",src:"джерело"};
+GM.fhunt=function(g){inj();var P=g.posts,i=0,trust=40,verd=0,fFound=0,fTot=0,clues=[],sc2=0,sc3=0;
+ P.forEach(function(p){fTot+=Object.keys(p.flags).length});
+ function tr(d){trust=Math.max(5,Math.min(100,trust+d));var u=document.getElementById("fktu"),t=document.getElementById("fktv");if(u)u.style.width=trust+"%";if(t)t.textContent=trust+"%"}
+ function head(mode,act){return "<div class='fk'><div class='fksc'>"+scene(mode)+"</div><div class='fktr'>ДОВІРА ТРИБУН <i><u id='fktu' style='width:"+trust+"%'></u></i><span id='fktv'>"+trust+"%</span></div><div class='fkact'>"+act+"</div>"}
+ function intro(){fr9(g.title,"",head(0,"Справа сезону")+"<div class='fkin'><h3>Хтось бреше про чемпіонку</h3><p>За день до фіналу стрічку арени заполонили новини про чемпіонку Іскру. Трибуни в паніці й не знають, чому вірити. Ти мисливець на фейки, а робот Чек тобі допомагає.</p><ol><li><b>Стрічка.</b> Познач у кожному пості підозрілі місця й винеси вердикт.</li><li><b>Дошка доказів.</b> За зібраними доказами знайди, хто стоїть за фейками.</li><li><b>Спростування.</b> Склади чесний пост і поверни довіру трибун.</li></ol></div></div>");
+  gs9("Розслідування");nxt9("Почати розслідування",function(){post()})}
+ /* --- акт 1 --- */
+ function post(){var p=P[i],busy=false;
+  var h=head(1,"Акт 1 · пост "+(i+1)+"/"+P.length)+"<div class='fkq'>Торкнись усього, що видає фейк. Потім винеси вердикт.</div><div class='fkpost' id='fkpost'>"+
+   "<div class='fkp' data-p='author'><div class='fkau'>"+av(p.av)+"<div><b>"+esc(p.name)+"</b><small>"+esc(p.handle)+"</small></div></div></div>"+
+   "<div class='fkp fkdt' data-p='date'>"+(p.date?esc(p.date):"дату не вказано")+"</div>"+
+   "<div class='fkp fkhd' data-p='head'>"+esc(p.head)+"</div><div class='fkp fktx' data-p='text'>"+esc(p.text)+"</div>"+
+   "<div class='fkp fkpc' data-p='pic'>"+pic(p.pic)+"</div><div class='fkp fksr"+(p.link?"":" no")+"' data-p='src'>"+esc(p.src)+"</div></div>"+
+   "<div class='fkvb'><button class='f' id='fkF'>ФЕЙК</button><button class='c' id='fkC'>ЧИСТО</button></div><div class='fkm' id='fkm' style='display:none'></div></div>";
+  fr9(g.title,"",h);gs9("Пост "+(i+1)+" / "+P.length+" · докази: "+clues.length);
+  var box=document.getElementById("fkpost");box.onclick=function(e){if(busy)return;var t=e.target.closest(".fkp");if(t)t.classList.toggle("m")};
+  function done(fake){if(busy)return;busy=true;document.getElementById("fkF").disabled=document.getElementById("fkC").disabled=true;
+   var isF=Object.keys(p.flags).length>0,ok=fake==isF,found=0,wrong=0,li="";
+   [].forEach.call(box.querySelectorAll(".fkp"),function(el){var k=el.dataset.p,m=el.classList.contains("m");el.classList.remove("m");
+    if(p.flags[k]){if(m&&fake){el.classList.add("hit");found++}else el.classList.add("miss");li+="<li><b>"+PN[k]+":</b> "+esc(p.flags[k])+"</li>"}else if(m){el.classList.add("bad");wrong++}});
+   if(ok)verd++;fFound+=found;tr((ok?8:-10)+found*2-wrong*3);
+   var m=document.getElementById("fkm"),t;
+   if(isF){t=(ok?"<b>Так, це фейк.</b> ":"<b>Це був фейк.</b> ")+"Знайдено ознак: "+found+" з "+Object.keys(p.flags).length+"."+(wrong?" Зайвих позначок: "+wrong+".":"")+"<ul>"+li+"</ul>";
+    if(ok&&p.clue){clues.push(p.clue);t+="<br><b>Новий доказ:</b> "+esc(p.clue)}}
+   else t=(ok?"<b>Правильно, пост чистий.</b> ":"<b>Це не фейк.</b> ")+esc(p.clean)+(wrong&&ok?" Зайвих позначок: "+wrong+".":"");
+   m.className="fkm "+(ok?"green":"red");m.style.display="";m.innerHTML=t;gs9("Пост "+(i+1)+" / "+P.length+" · докази: "+clues.length);
+   nxt9(i>=P.length-1?"До дошки доказів":"Наступний пост",function(){i++;if(i>=P.length)board();else post()})}
+  document.getElementById("fkF").onclick=function(){done(true)};document.getElementById("fkC").onclick=function(){done(false)}}
+ /* --- акт 2 --- */
+ function board(){var S=g.suspects,tries=0,busy=false,all=P.filter(function(p){return p.clue}).map(function(p){return p.clue});
+  var h=head(2,"Акт 2 · дошка доказів")+"<div class='fkq'>Усі три фейки запустив один власник. Порівняй докази з профілями й обери винуватця.</div><div class='fkcl'>"+
+   all.map(function(c){var ok=clues.indexOf(c)>=0;return "<div class='"+(ok?"":"lk")+"'>"+clueIco(ok)+"<span>"+(ok?esc(c):"Доказ не здобуто: фейк у стрічці пропущено")+"</span></div>"}).join("")+"</div><div class='fksu' id='fksu'>"+
+   S.map(function(s,k){return "<div class='fks' data-k='"+k+"'><div class='fkau'>"+av(s.av)+"<div><b>"+esc(s.name)+"</b><small>"+esc(s.sub)+"</small></div></div><table>"+s.rows.map(function(r){return "<tr><td>"+esc(r[0])+"</td><td>"+esc(r[1])+"</td></tr>"}).join("")+"</table></div>"}).join("")+"</div><div class='fkm' id='fkm' style='display:none'></div></div>";
+  fr9(g.title,"",h);gs9("Докази: "+clues.length+" з "+all.length);
+  document.getElementById("fksu").onclick=function(e){var el=e.target.closest(".fks");if(!el||busy||el.classList.contains("bad"))return;var k=+el.dataset.k,s=S[k],m=document.getElementById("fkm");tries++;
+   if(s.guilty){busy=true;el.classList.add("ok");sc2=tries==1?2:tries==2?1:0;tr(tries==1?12:6);m.className="fkm green";m.style.display="";m.innerHTML="<b>Викрито.</b> "+esc(s.why);nxt9("До спростування",debunk)}
+   else{el.classList.add("bad");tr(-6);m.className="fkm red";m.style.display="";m.innerHTML="<b>Не він.</b> "+esc(s.why);if(tries>=2){busy=true;var g2=document.querySelector(".fks[data-k='"+S.findIndex(function(x){return x.guilty})+"']");if(g2)g2.classList.add("ok");m.innerHTML+="<br><b>Винуватець:</b> "+esc(S.filter(function(x){return x.guilty})[0].name)+".";nxt9("До спростування",debunk)}}}}
+ /* --- акт 3 --- */
+ function debunk(){var D=g.debunk,pick=[],busy=false;
+  var h=head(3,"Акт 3 · спростування")+"<div class='fkq'>Склади пост-спростування: обери по одному реченню в кожному блоці.</div>"+
+   D.map(function(s,k){var ord=[0,1,2].sort(function(){return Math.random()-.5});return "<div class='fksl'><b>"+esc(s.t)+"</b>"+ord.map(function(j){return "<div class='fko' data-s='"+k+"' data-j='"+j+"'>"+esc(s.o[j][0])+"</div>"}).join("")+"</div>"}).join("")+"<div class='fkm' id='fkm' style='display:none'></div></div>";
+  fr9(g.title,"",h);gs9("Спростування");
+  var root=document.querySelector(".fk");root.onclick=function(e){var el=e.target.closest(".fko");if(!el||busy)return;var s=+el.dataset.s;[].forEach.call(root.querySelectorAll(".fko[data-s='"+s+"']"),function(x){x.classList.remove("s")});el.classList.add("s");pick[s]=+el.dataset.j;
+   if(pick.filter(function(x){return x!=null}).length==D.length)nxt9("Опублікувати",pub)};
+  function pub(){if(busy)return;busy=true;var good=0,li="";D.forEach(function(s,k){var j=pick[k];[].forEach.call(root.querySelectorAll(".fko[data-s='"+k+"']"),function(x){var jj=+x.dataset.j;x.classList.remove("s");if(jj==0)x.classList.add("ok");else if(jj==j)x.classList.add("bad")});if(j==0)good++;else li+="<li>"+esc(s.o[j][1])+"</li>"});
+   sc3=good>=D.length?1:0;tr(good*10-(D.length-good)*8);if(good==D.length)tr(100);
+   var m=document.getElementById("fkm");m.className="fkm "+(good==D.length?"green":"red");m.style.display="";m.innerHTML=(good==D.length?"<b>Трибуни заспокоїлись.</b> Спокійний факт, перевірене джерело й корисна порада працюють краще за крик.":"<b>Пост можна покращити.</b><ul>"+li+"</ul>");
+   var s1=Math.round(3*(.5*verd/P.length+.5*(fTot?fFound/fTot:1)));nxt9("Результат",function(){fin9(Math.min(6,s1+sc2+sc3),6)})}}
+ intro()};
+var FK702={type:"fhunt",title:"Мисливці на фейки",
+posts:[
+ {av:"shok",name:"Новини без цензури",handle:"@shok_arena",date:"",head:"ШОК!!! ІСКРУ ДИСКВАЛІФІКОВАНО НАЗАВЖДИ!!!",text:"Підтвердили джерела! Поширюй, поки не видалили!",pic:"cup",src:"джерело не вказано",link:0,
+  flags:{date:"Немає дати публікації.",head:"Великі літери й знаки оклику тиснуть на емоції.",text:"Заклик терміново поширювати: типовий прийом фейку.",src:"«Джерела підтвердили», але жодного імені чи посилання."},clue:"У фейках повторюється фраза «Поширюй, поки не видалили»."},
+ {av:"liga",name:"Ліга арени",handle:"@liga_areny · офіційна сторінка",date:"14 листопада, 18:20",head:"Фінал сезону відбудеться в суботу о 17:00",text:"Усі квитки дійсні. Пряма трансляція буде на сайті ліги.",pic:"crowd",src:"liga-areny.ua/final",link:1,flags:{},clean:"Є автор, дата, спокійний заголовок і посилання на офіційний сайт."},
+ {av:"live",name:"Арена наживо",handle:"@arena_nazhyvo",date:"сьогодні, 03:10",head:"Трибуни завалило снігом, фінал скасовано",text:"Дивіться фото з арени сьогодні зранку.",pic:"snow",src:"джерело не вказано",link:0,
+  flags:{pic:"Фото старе: на ньому підпис архіву за січень 2021 року.",src:"Немає посилання на офіційне повідомлення ліги."},clue:"Автор фейків бере старі фото з архіву."},
+ {av:"fan",name:"Марко, вболівальник",handle:"@marko_fan",date:"учора, 21:40",head:"Іскра найкраща чемпіонка за всі сезони!",text:"Це моя думка після вчорашнього матчу. А ви як вважаєте?",pic:"cup",src:"особистий допис",link:0,flags:{},clean:"Це думка, а не фейк: автор чесно каже, що це його оцінка."},
+ {av:"liga2",name:"Ліга арени 2",handle:"@liga_areny_official_2",date:"сьогодні, 03:02",head:"Роздача: 1000 скінів кожному, хто перешле це 10 друзям",text:"Встигни за 5 хвилин! Поширюй, поки не видалили!",pic:"gift",src:"liga-areny.win-skin.xyz",link:1,
+  flags:{author:"Підробка під офіційну сторінку: зайва цифра в назві.",text:"Тиск часом і вимога переслати друзям.",src:"Адреса не збігається з офіційним сайтом liga-areny.ua."},clue:"Фейки виходять уночі, близько третьої години."}],
+suspects:[
+ {av:"fan",name:"Фан-клуб «Гроза»",sub:"вболівальники суперника",rows:[["Коли пишуть","удень, після матчів"],["Типова фраза","«На нашу думку…»"],["Фото","власні, з трибун"]],why:"Фан-клуб пише вдень, підписує свої думки й знімає сам. Жоден доказ не збігається."},
+ {av:"owl",name:"Мережа «Нічна сова»",sub:"кілька акаунтів, один власник",rows:[["Коли пишуть","02:00–04:00"],["Типова фраза","«Поширюй, поки не видалили»"],["Фото","з архівів минулих років"]],guilty:1,why:"Збігаються всі докази: нічний час, фраза-заклик і старі фото з архіву."},
+ {av:"shop",name:"Бот магазину скінів",sub:"рекламні розсилки",rows:[["Коли пишуть","уночі, 01:00–05:00"],["Типова фраза","«Купуй зараз зі знижкою»"],["Фото","картинки товарів"]],why:"Бот теж активний уночі, але фраза й фото інші. Одного збігу замало для висновку."}],
+debunk:[
+ {t:"Початок",o:[["Ми перевірили новину про дискваліфікацію Іскри: це неправда.",""],["УВАГА!!! ВАС УСІХ ОБМАНЮЮТЬ!!!","Крик великими літерами сам схожий на фейк."],["Тільки наївні вірять таким новинам.","Образи відштовхують читача й нічого не доводять."]]},
+ {t:"Доказ",o:[["Офіційний сайт liga-areny.ua підтверджує: фінал у суботу, Іскра у складі.",""],["Мені друг сказав, що все нормально.","«Друг сказав» не джерело: його не перевірити."],["Усі й так знають правду.","Немає жодного факту чи посилання."]]},
+ {t:"Порада читачам",o:[["Перш ніж поширювати, перевіряй автора, дату й джерело.",""],["Перешли це 10 друзям негайно!","Вимога терміново пересилати: прийом самих фейків."],["Знайдіть автора фейку й напишіть йому все, що думаєте.","Цькування не зупиняє фейки й шкодить людям."]]}]};
+window.FK702=FK702;
+/* поки не підключено до уроку 702 (у пам’яті) */
+try{GI.fhunt=["🔎","Мисливці на фейки"]}catch(e){}
 })();
 
-var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
-function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
-var _pt;function queuePush(){clearTimeout(_pt);_pt=setTimeout(push,1200)}
-var OUTK="inf5q";
-function obGet(){try{return JSON.parse(localStorage.getItem(OUTK)||"{}")}catch(e){return{}}}
-function obSet(o){try{localStorage.setItem(OUTK,JSON.stringify(o))}catch(e){}}
-function flush(){if(RESULTS_URL.indexOf("http")!==0)return Promise.resolve([]);var o=obGet(),ks=Object.keys(o);if(!ks.length)return Promise.resolve([]);return Promise.all(ks.map(function(k){var body=o[k];return fetch(RESULTS_URL,{method:"POST",mode:"no-cors",body:body}).then(function(){var c=obGet();if(c[k]===body){delete c[k];obSet(c)}return true}).catch(function(){return false})}))}
-function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t)return Promise.resolve();var o=obGet();var ant="";try{var A_=JSON.parse(localStorage.getItem("inf5ant")||"{}"),pre=ME.c+"|"+ME.n+"|";Object.keys(A_).forEach(function(k){if(k.indexOf(pre)===0)ant+="\n"+A_[k]})}catch(e){}o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code()+ant;obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку – відправимо пізніше")})}
-window.addEventListener("online",function(){flush()});
-var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf11l"||k=="inf10g"||k=="inf5me"))queuePush()};
-if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}return navigator.serviceWorker.ready}).then(function(){try{if(localStorage.getItem("infOff"))return;caches.open("inf-v4").then(function(c){return c.match("index.html")}).then(function(m){if(!m)return;localStorage.setItem("infOff","1");var d=document.createElement("div");d.textContent="✅ Готово: застосунок працюватиме й без інтернету";d.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:12px;font:600 14px sans-serif;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";setTimeout(function(){d.remove()},700)},4500)})}catch(e){}}).catch(function(){})});
+/* 7 клас · набір K7 для складних ігор «Сезону»: рамка, питання, HUD, повідомлення, вступ */
+(function(){
+var A=window.A7;if(!A)return;var O=A.O,DEFS=A.DEFS,esc=A.esc;
+var CSS=".k7 *{box-sizing:border-box}.k7{max-width:560px;margin:0 auto}"+
+".k7sc{border:4px solid "+O+";border-radius:18px;overflow:hidden;box-shadow:0 5px 0 "+O+";background:#2a1470;position:relative}.k7sc svg{display:block;width:100%;height:auto}"+
+".k7hud{display:flex;gap:6px;margin:10px 0 0}.k7hud div{flex:1;background:#fff;border:3px solid "+O+";border-radius:12px;box-shadow:0 3px 0 "+O+";padding:4px 4px 5px;text-align:center;color:"+O+"}.k7hud small{display:block;font-size:9.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#6a6f96}.k7hud b{display:block;font-size:16px;font-weight:900;line-height:1.15}"+
+".k7act{display:table;margin:10px auto 0;background:#ffe94a;border:3px solid "+O+";border-radius:10px;padding:2px 12px;color:"+O+";font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:.04em}"+
+".k7q{background:#fff;border:3px solid "+O+";border-radius:14px;color:"+O+";text-align:center;font-weight:800;margin:10px 0 6px;padding:8px 10px;line-height:1.3;font-size:14px}"+
+".k7o{background:#fff;border:3px solid "+O+";border-radius:14px;box-shadow:0 4px 0 "+O+";padding:9px 11px;margin:0 0 7px;font-weight:800;font-size:13.5px;line-height:1.35;color:"+O+";cursor:pointer;display:flex;gap:9px;align-items:center}.k7o i{flex:none;width:26px;height:26px;border-radius:8px;border:3px solid "+O+";display:flex;align-items:center;justify-content:center;font:900 13px/1 sans-serif;font-style:normal;color:"+O+"}.k7o.c0 i{background:#ffb14a}.k7o.c1 i{background:#6af0d8}.k7o.c2 i{background:#ff8fd0}"+
+".k7o.ok{background:#e4ffe0;outline:4px solid #2fb52a}.k7o.bad{background:#ffe3e8;outline:4px solid #e0314f}.k7o.off{pointer-events:none}.k7o.dim{opacity:.55}"+
+".k7m{border:3px solid "+O+";border-radius:14px;padding:9px 11px;margin:8px 0 0;font-weight:700;font-size:13px;line-height:1.4;color:"+O+";background:#fff}.k7m.green{background:#e4ffe0}.k7m.red{background:#ffe3e8}.k7m.blue{background:#e3f1ff}.k7m b{font-weight:900}"+
+".k7in{background:#fff;border:4px solid "+O+";border-radius:18px;box-shadow:0 5px 0 "+O+";padding:12px;margin:10px 0 0;color:"+O+"}.k7in h3{margin:0 0 6px;font-size:18px;font-weight:900}.k7in p{color:"+O+"!important;margin:0 0 8px;font-size:13.5px;font-weight:700;line-height:1.4}.k7in ol{margin:0;padding-left:20px;font-size:13px;font-weight:700;line-height:1.45}"+
+".k7row{display:flex;gap:8px;margin:10px 0 0}.k7btn{flex:1;border:4px solid "+O+"!important;border-radius:16px!important;padding:10px 6px!important;color:#fff!important;font-weight:900!important;font-size:14px!important;line-height:1.2!important;box-shadow:0 5px 0 "+O+"!important;cursor:pointer;text-shadow:0 2px 0 #0004;margin:0!important;width:auto!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;text-align:center!important;background:linear-gradient(#5cb8ff,#2d7be0)!important}.k7btn small{display:block;font-size:10.5px;font-weight:800;opacity:.95;margin-top:2px}.k7btn.y{background:linear-gradient(#ffd24a,#f0a800)!important}.k7btn.r{background:linear-gradient(#ff8aa0,#e01f48)!important}.k7btn.g{background:linear-gradient(#7df07a,#1b9a2e)!important}.k7btn.p{background:linear-gradient(#b79cff,#7a4bd6)!important}.k7btn:disabled{opacity:.45}"+
+"@keyframes k7pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}@keyframes k7sh{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}.k7shake{animation:k7sh .4s}";
+function inj(){if(document.getElementById("k7css"))return;var s=document.createElement("style");s.id="k7css";s.textContent=CSS;document.head.appendChild(s)}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function pool(g){var o=[],seen={};function add(x){if(!x||!x.q)return;var a=x.o||x.a;if(!a||a.length<3||/^Правда чи хибно/.test(x.q)||seen[x.q])return;seen[x.q]=1;o.push({q:x.q,o:[a[0],a[1],a[2]],e:x.e||""})}
+ (g.q||[]).forEach(add);if(o.length<8){try{(GX.poolAll(CUR9)||[]).forEach(add)}catch(e){}try{(LES[CUR9].q||[]).forEach(add)}catch(e){}}
+ var P=shuf(o),i=0;return {n:P.length,next:function(){if(i>=P.length){P=shuf(P);i=0}return P[i++]}}}
+function sv(w,h,inner,id){return "<svg "+(id?"id='"+id+"' ":"")+"viewBox='0 0 "+w+" "+h+"' xmlns='http://www.w3.org/2000/svg'>"+DEFS+inner+"</svg>"}
+function frame(g,scene,act){fr9(g.title,"","<div class='k7'><div class='k7sc' id='k7sc'>"+scene+"</div><div class='k7hud' id='k7hud'></div>"+(act?"<div class='k7act' id='k7act'>"+act+"</div>":"")+"<div id='k7b'></div><div class='k7m' id='k7m' style='display:none'></div></div>")}
+function hud(a){var e=document.getElementById("k7hud");if(e)e.innerHTML=a.map(function(x){return "<div><small>"+x[0]+"</small><b>"+x[1]+"</b></div>"}).join("")}
+function msg(t,k){var e=document.getElementById("k7m");if(!e)return;if(!t){e.style.display="none";return}e.style.display="";e.className="k7m "+(k||"");e.innerHTML=t}
+function act(t){var e=document.getElementById("k7act");if(e)e.textContent=t}
+function body(h){var e=document.getElementById("k7b");if(e)e.innerHTML=h;return e}
+function ask(q,cb,lead){var ord=shuf([0,1,2]),L=["А","Б","В"],b=body((lead?"<div class='k7q' style='background:#fff8cc'>"+lead+"</div>":"")+"<div class='k7q'>"+esc(q.q)+"</div>"+ord.map(function(j,k){return "<div class='k7o c"+k+"' data-j='"+j+"'><i>"+L[k]+"</i><span>"+esc(q.o[j])+"</span></div>"}).join(""));
+ b.onclick=function(e){var el=e.target.closest(".k7o");if(!el)return;b.onclick=null;var ok=el.dataset.j=="0";[].forEach.call(b.querySelectorAll(".k7o"),function(x){x.classList.add("off");if(x.dataset.j=="0")x.classList.add("ok");else if(x===el)x.classList.add("bad");else x.classList.add("dim")});
+  msg((ok?"<b>Правильно.</b> ":"<b>Хибно.</b> ")+esc(q.e),ok?"green":"red");cb(ok)}}
+function next(label,fn){nxt9(label,function(){var b=document.getElementById("gn");if(b)b.innerHTML="";fn()})}
+function intro(g,o,cb){inj();fr9(g.title,"","<div class='k7'><div class='k7sc'>"+o.scene+"</div><div class='k7act'>"+o.act+"</div><div class='k7in'><h3>"+o.title+"</h3><p>"+o.text+"</p><ol>"+o.steps.map(function(s){return "<li>"+s+"</li>"}).join("")+"</ol></div></div>");gs9(o.gs||"Складна гра");next(o.btn||"Почати",cb)}
+function hero(x,y,s,g){return "<g transform='translate("+x+","+y+") scale("+(s||1)+")'>"+(g?A.heroS().replace(/hO/g,g):A.heroS())+"</g>"}
+function hearts(n,m){var s="";for(var i=0;i<m;i++)s+="<svg viewBox='0 0 20 18' style='width:17px;height:15px;vertical-align:-2px;margin:0 1px'><path d='M10 16.5 C-3 8 3 -1.5 10 4 C17 -1.5 23 8 10 16.5Z' fill='"+(i<n?"#ff4f6d":"#d9dbee")+"' stroke='"+O+"' stroke-width='2.2' stroke-linejoin='round'/></svg>";return s}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+window.K7={inj:inj,shuf:shuf,pool:pool,sv:sv,frame:frame,hud:hud,msg:msg,act:act,body:body,ask:ask,next:next,intro:intro,hero:hero,hearts:hearts,sleep:sleep,O:O,esc:esc,A:A};
+})();
+
+/* 7 клас · складні ігри «Сезону», частина 1: «Королівська висадка», «Будівничий бій», «Пограбування сейфа» */
+(function(){
+var K=window.K7;if(!K)return;var A=K.A,O=K.O,esc=K.esc,sv=K.sv,sleep=K.sleep;
+function chest(x,y,gold,s){return "<g transform='translate("+x+","+y+") scale("+(s||1)+")'>"+(gold?"<circle r='15' fill='url(#glowY)'/>":"")+"<rect x='-10' y='-4' width='20' height='12' rx='2' fill='"+(gold?"#ffcf1f":"#b8793a")+"' stroke='"+O+"' stroke-width='2.5'/><path d='M-10 -4 q0 -8 10 -8 q10 0 10 8Z' fill='"+(gold?"#ffe94a":"#d99a55")+"' stroke='"+O+"' stroke-width='2.5' stroke-linejoin='round'/><rect x='-2.5' y='-6' width='5' height='6' rx='1' fill='"+(gold?"#fff":"#ffcf1f")+"' stroke='"+O+"' stroke-width='1.5'/></g>"}
+function lbl(x,y,t,c){return "<text x='"+x+"' y='"+y+"' text-anchor='middle' font-size='10' font-weight='900' fill='"+(c||"#fff")+"' stroke='"+O+"' stroke-width='3' paint-order='stroke'>"+t+"</text>"}
+
+/* ======================= 1 · КОРОЛІВСЬКА ВИСАДКА ======================= */
+var BZ=[[170,105,"Стадіон"],[120,66,"Вежа"],[226,138,"Ринок"],[70,142,"Порт"],[258,58,"Ліс"],[36,70,"Маяк"],[306,152,"Вулкан"]],BR=[999,122,82,40],BC=[170,105],BN=[24,15,8,3];
+function bdist(z){return Math.hypot(BZ[z][0]-BC[0],BZ[z][1]-BC[1])}
+function bmap(r,at,done){var s="<rect width='340' height='210' fill='url(#night)'/>";
+ for(var i=0;i<7;i++)s+="<path d='M"+(10+i*50)+" "+(20+(i%3)*70)+" q8 -5 16 0 t16 0' stroke='#fff' stroke-opacity='.25' stroke-width='2' fill='none'/>";
+ s+="<path d='M18 96 Q10 40 60 36 Q110 14 170 30 Q230 8 282 30 Q334 54 326 120 Q332 188 268 184 Q200 204 140 186 Q60 196 34 160 Q12 132 18 96Z' fill='url(#sand)' stroke='"+O+"' stroke-width='4'/>";
+ s+="<path d='M60 60 Q110 34 170 46 Q232 30 280 50 Q312 76 304 120 Q306 166 258 164 Q200 180 146 166 Q78 172 56 144 Q38 110 60 60Z' fill='#7df07a' stroke='"+O+"' stroke-width='3' opacity='.9'/>";
+ s+="<path d='M286 150 l14 -26 l8 10 l6 -8 l14 24Z' fill='#8a5a3a' stroke='"+O+"' stroke-width='2.5' stroke-linejoin='round'/><path d='M296 132 l4 -8 l8 10' fill='#ff8a3d' stroke='"+O+"' stroke-width='2'/>";
+ s+="<rect x='30' y='44' width='9' height='22' fill='#fff' stroke='"+O+"' stroke-width='2.5'/><path d='M27 44 h15 l-7.5 -9Z' fill='#ff4f6d' stroke='"+O+"' stroke-width='2.5' stroke-linejoin='round'/>";
+ s+="<circle cx='262' cy='44' r='9' fill='#1b9a2e' stroke='"+O+"' stroke-width='2.5'/><circle cx='248' cy='48' r='7' fill='#2fb52a' stroke='"+O+"' stroke-width='2.5'/>";
+ s+="<ellipse cx='170' cy='92' rx='24' ry='10' fill='#b79cff' stroke='"+O+"' stroke-width='2.5'/><ellipse cx='170' cy='92' rx='13' ry='4.5' fill='#7df07a' stroke='"+O+"' stroke-width='2'/>";
+ var now=BR[r],nx=BR[Math.min(3,r+1)];
+ if(r<3)s+="<circle cx='"+BC[0]+"' cy='"+BC[1]+"' r='"+nx+"' fill='none' stroke='#fff' stroke-width='3' stroke-dasharray='6 6'><animate attributeName='stroke-dashoffset' values='0;24' dur='1.2s' repeatCount='indefinite'/></circle>";
+ for(var z=0;z<7;z++){var d=bdist(z),inNow=d<=now,gold=inNow&&r<3&&d>nx,x=BZ[z][0],y=BZ[z][1];
+  s+="<g data-z='"+z+"' style='cursor:pointer' opacity='"+(inNow?1:.35)+"'><circle cx='"+x+"' cy='"+y+"' r='15' fill='"+(at==z?"#ffe94a":"#fff")+"' stroke='"+O+"' stroke-width='3'/>"+(inNow&&!(done&&at==z)?chest(x,y+1,gold,.8):"")+lbl(x,y+28,BZ[z][2])+"</g>"}
+ if(now<900)s+="<defs><mask id='bst'><rect width='340' height='210' fill='#fff'/><circle cx='"+BC[0]+"' cy='"+BC[1]+"' r='"+now+"' fill='#000'/></mask></defs><rect width='340' height='210' fill='#7a2fd0' opacity='.62' mask='url(#bst)'/><circle cx='"+BC[0]+"' cy='"+BC[1]+"' r='"+now+"' fill='none' stroke='#e9a8ff' stroke-width='3.5'/>";
+ if(at!=null)s+="<g transform='translate("+(BZ[at][0]+15)+","+(BZ[at][1]-17)+") scale(.5)'>"+A.heroS()+"</g>";
+ return sv(340,210,s,"brsv")}
+function duelS(hp,bhp,hit){var s="<rect width='340' height='150' fill='url(#dusk)'/>"+A.cloud(60,22,.7,.9)+A.cloud(280,30,.6,.8)+"<ellipse cx='170' cy='128' rx='150' ry='20' fill='url(#floor)' stroke='"+O+"' stroke-width='3'/>";
+ s+=A.bar(34,14,104,hp/3,"hG")+A.bar(202,14,104,bhp/8,"sR")+lbl(86,42,"ТИ")+lbl(254,42,"ЧЕМПІОН");
+ s+="<g"+(hit=="me"?" class='k7shake'":"")+">"+K.hero(96,92,1.25)+"</g><g"+(hit=="bot"?" class='k7shake'":"")+">"+A.botS(248,92,"sR",1.25,bhp<=0?"x":"ok",bhp<=0)+"</g>";
+ if(hit=="bot")s+=A.spark(206,82,1.4)+A.spark(224,60,.8,"#fff");if(hit=="me")s+=A.spark(132,84,1.2,"#ff8fd0");
+ return sv(340,150,s)}
+GM.broyal=function(g){K.inj();var P=K.pool(g),r=0,hp=3,gear=0,at=null,ok=0,tot=0;
+ function hud(){K.hud([["Життя",K.hearts(hp,3)],["Спорядження",gear],["Гравців",BN[Math.min(r,3)]]]);gs9("Коло "+Math.min(r+1,4)+" / 4")}
+ function round(){at=null;K.frame(g,bmap(r,null),"Коло "+(r+1)+"/4 · обери зону");hud();
+  K.body("<div class='k7q'>"+(r<3?"Торкнись зони на карті. Пунктир показує, куди стиснеться шторм. Золоті скрині лежать у зонах, які шторм накриє: +2 спорядження, але мінус життя.":"Фінальне коло. Остання скриня на стадіоні.")+"</div>");
+  document.getElementById("k7sc").onclick=function(e){var el=e.target.closest("[data-z]");if(!el||at!=null)return;var z=+el.dataset.z;if(bdist(z)>BR[r])return;land(z)}}
+ function land(z){at=z;var gold=r<3&&bdist(z)>BR[r+1];document.getElementById("k7sc").innerHTML=bmap(r,z);K.act(BZ[z][2]+" · "+(gold?"золота скриня":"звичайна скриня"));
+  K.ask(P.next(),function(good){tot++;if(good){ok++;gear+=gold?2:1}
+   if(gold)hp--;document.getElementById("k7sc").innerHTML=bmap(r,z,true);hud();
+   var m=document.getElementById("k7m");m.innerHTML+="<br>"+(good?"Скриня відкрита: спорядження +"+(gold?2:1)+".":"Скриня виявилась порожньою.")+(gold?" Шторм накрив зону: мінус одне життя.":"");
+   if(hp<=0){K.next("Далі",function(){over(false,"Шторм забрав останнє життя на колі "+(r+1)+".")});return}
+   K.next(r>=3?"До фінальної дуелі":"Шторм стискається",function(){r++;if(r>3)duel();else round()})},gold?"Золота скриня: відповідай без помилки.":"Скриня із замком-питанням.")}
+ function duel(){var bhp=8,dmg=1+Math.floor(gear/2),n=0;
+  K.frame(g,duelS(hp,bhp),"Фінальна дуель");hud();
+  function turn(){if(bhp<=0){K.next("Перемога",function(){over(true,"")});return}if(hp<=0||n>=7){K.next("Далі",function(){over(false,bhp<=4?"Чемпіон устояв, але ледве.":"Чемпіон виявився сильнішим.",bhp)});return}
+   n++;K.act("Дуель · удар "+n);K.msg("");K.ask(P.next(),function(good){tot++;if(good){ok++;bhp=Math.max(0,bhp-dmg)}else hp--;
+    document.getElementById("k7sc").innerHTML=duelS(Math.max(0,hp),bhp,good?"bot":"me");hud();
+    document.getElementById("k7m").innerHTML+="<br>"+(good?"Твій удар знімає "+dmg+" міцності.":"Чемпіон контратакує: мінус життя.");
+    K.next(bhp<=0?"Фінал":"Далі",turn)},"Сила твого удару: "+dmg+" (залежить від спорядження).")}
+  turn()}
+ function over(win,why,bhp){var sc=win?6:(r>3?(bhp<=4?4:3):Math.max(1,r+1)),place=win?1:(r>3?2:BN[Math.min(r,3)]);
+  K.frame(g,win?duelS(Math.max(1,hp),0):bmap(Math.min(r,3),at),win?"Королівська перемога":"Місце "+place);hud();
+  K.body("<div class='k7in'><h3>"+(win?"Ти останній на острові":"Гру завершено: місце "+place)+"</h3><p>"+(win?"Чемпіона переможено. Шторм розвіявся, трофей сезону твій.":esc(why))+"</p><p>Правильних відповідей: "+ok+" з "+tot+". Спорядження: "+gear+".</p></div>");
+  K.next("Результат",function(){fin9(sc,6)})}
+ K.intro(g,{scene:bmap(0,null),act:"Сезон · королівська битва",title:"Шторм даних накриває острів",text:"На острів висадилось 24 гравці. Шторм стискає безпечну зону, і до фіналу дійде лише той, хто встигне зібрати спорядження.",steps:["<b>Обирай зону</b> на карті й відкривай скриню: замок на ній питання.","<b>Золоті скрині</b> дають подвійне спорядження, але лежать там, куди йде шторм.","<b>Фінальна дуель</b> із чемпіоном: що більше спорядження, то сильніший удар."],btn:"Висадитись"},round)};
+
+/* ======================= 2 · БУДІВНИЧИЙ БІЙ ======================= */
+var TH=8;
+function tower(x,h,col,ramp,shake,name){var s="<g"+(shake?" class='k7shake'":"")+">",y0=176;
+ for(var i=0;i<h;i++){var y=y0-(i+1)*17,isR=ramp&&i>=h-2;s+="<rect x='"+(x-30)+"' y='"+y+"' width='60' height='17' rx='3' fill='"+(isR?"#ffe94a":col)+"' stroke='"+O+"' stroke-width='3'/><path d='M"+(x-10)+" "+y+" v17 M"+(x+12)+" "+y+" v17' stroke='"+O+"' stroke-opacity='.25' stroke-width='2'/>"+(isR?"<path d='M"+(x-24)+" "+(y+13)+" L"+(x+24)+" "+(y+4)+"' stroke='"+O+"' stroke-width='3' stroke-linecap='round'/>":"")}
+ return s+"</g>"+lbl(x,196,name)}
+function bbS(a,b,ramp,sh,fx){var s="<rect width='340' height='204' fill='url(#sky2)'/>"+A.cloud(60,30,.8,.9)+A.cloud(290,44,.6,.8)+"<rect y='176' width='340' height='28' fill='url(#grass)'/><path d='M0 176 H340' stroke='"+O+"' stroke-width='3'/>";
+ var gy=176-TH*17;s+="<path d='M20 "+gy+" H320' stroke='#fff' stroke-width='3' stroke-dasharray='7 6'/><g transform='translate(170,"+(gy-10)+")'><path d='M0 8 V-14' stroke='"+O+"' stroke-width='3'/><path d='M0 -14 l18 6 l-18 6Z' fill='#ffe94a' stroke='"+O+"' stroke-width='2.5' stroke-linejoin='round'/></g>"+lbl(170,gy+14,"ВЕРШИНА");
+ s+=tower(96,a,"#5cb8ff",ramp,sh=="a","ТВОЯ ВЕЖА")+tower(244,b,"#ff8aa0",false,sh=="b","ВЕЖА СУПЕРНИКА");
+ s+=K.hero(96,176-a*17-27,.9)+A.botS(244,176-b*17-25,"sV",.9,"ok");
+ if(fx=="ram")s+="<path d='M130 "+(170-a*17)+" Q170 "+(110-a*8)+" 214 "+(176-b*17-8)+"' fill='none' stroke='#ffe94a' stroke-width='5' stroke-linecap='round' stroke-dasharray='3 9'/>"+A.spark(222,176-b*17-12,1.3);
+ if(fx=="up")s+=A.spark(60,176-a*17-6,.9)+A.spark(132,176-a*17-16,.7,"#fff");
+ return sv(340,204,s)}
+GM.bbuild=function(g){K.inj();var P=K.pool(g),a=0,b=0,ramp=false,streak=0,ram=0,t=0,ok=0,tot=0,MAXT=14;
+ function hud(){K.hud([["Твоя вежа",a+"/"+TH],["Суперник",b+"/"+TH],["Таран",ram?"готовий":streak+"/3"]]);gs9("Хід "+Math.min(t+1,MAXT)+" / "+MAXT)}
+ function draw(sh,fx){document.getElementById("k7sc").innerHTML=bbS(a,b,ramp,sh,fx)}
+ function turn(){if(a>=TH||b>=TH||t>=MAXT){over();return}
+  K.frame(g,bbS(a,b,ramp),"Хід "+(t+1)+" · обери блок");hud();K.msg("");
+  K.body("<div class='k7q'>Який блок ставимо? Рампа вища, але падає, якщо наступна відповідь хибна.</div><div class='k7row'><button class='k7btn' data-k='w'>Стіна<small>+1 поверх, надійно</small></button><button class='k7btn y' data-k='r'>Рампа<small>+2 поверхи, ризик</small></button>"+(ram?"<button class='k7btn r' data-k='x'>Таран<small>−2 поверхи супернику</small></button>":"")+"</div>").onclick=function(e){var el=e.target.closest(".k7btn");if(el)build(el.dataset.k)}}
+ function build(k){K.act(k=="w"?"Стіна":k=="r"?"Рампа":"Таран");
+  K.ask(P.next(),function(good){tot++;t++;var note="",fx="",sh="";
+   if(good){ok++;streak++;fx="up";
+    if(k=="w"){a+=1;ramp=false;note="Стіна стала міцно: +1 поверх."}else if(k=="r"){a+=2;ramp=true;note="Рампа готова: +2 поверхи. Наступна помилка її обвалить."}else{b=Math.max(0,b-2);ram=0;streak=0;fx="ram";sh="b";note="Таран зніс два поверхи суперника."}
+    if(k!="x"&&streak>=3&&!ram){ram=1;note+=" Серія з трьох: таран готовий."}}
+   else{streak=0;sh="a";if(ramp){a=Math.max(0,a-2);ramp=false;note="Блок розсипався, і рампа впала: −2 поверхи."}else note="Блок розсипався. Поверх не додано.";if(k=="x"){ram=0}}
+   a=Math.min(TH,a);var bb=a<TH&&Math.random()<.62;if(bb)b=Math.min(TH,b+1);
+   draw(sh,fx);hud();document.getElementById("k7m").innerHTML+="<br>"+note+(bb?" Суперник добудував поверх.":" Суперник схибив.");
+   K.next(a>=TH||b>=TH||t>=MAXT?"Фінал":"Далі",turn)},k=="x"?"Таран спрацює лише з правильною відповіддю.":null)}
+ function over(){var win=a>=TH&&a>=b||(b<TH&&a>b),sc=win?(a-b>=3?6:5):Math.max(1,Math.round(4*a/TH));
+  K.frame(g,bbS(a,b,ramp,"",win?"up":""),win?"Перемога":"Суперник вищий");hud();
+  K.body("<div class='k7in'><h3>"+(win?"Твоя вежа вища":"Цього разу вищий суперник")+"</h3><p>Твоя вежа: "+a+" поверхів, суперника: "+b+". Правильних відповідей: "+ok+" з "+tot+".</p></div>");K.next("Результат",function(){fin9(Math.min(6,sc),6)})}
+ K.intro(g,{scene:bbS(3,2,true),act:"Сезон · будівничий бій",title:"Хто перший добудує до вершини",text:"На арені дві вежі. Прапор на вершині дістанеться тому, хто першим складе "+TH+" поверхів. Блоки тримаються лише на правильних відповідях.",steps:["<b>Стіна</b> дає один поверх і не падає.","<b>Рампа</b> дає два поверхи, але хибна відповідь наступного ходу її обвалить.","<b>Таран</b> заряджається серією з трьох правильних і зносить два поверхи суперника."],btn:"Будувати"},turn)};
+
+/* ======================= 3 · ПОГРАБУВАННЯ СЕЙФА ======================= */
+function safe(x,y,layers,open,col,shake){var s="<g"+(shake?" class='k7shake'":"")+"><g transform='translate("+x+","+y+")'><rect x='-44' y='-46' width='88' height='92' rx='10' fill='"+col+"' stroke='"+O+"' stroke-width='4'/><rect x='-36' y='-38' width='72' height='76' rx='6' fill='#fff' fill-opacity='.18' stroke='"+O+"' stroke-width='2.5'/>";
+ for(var i=0;i<3;i++){var on=i<layers;s+="<g transform='translate("+(-22+i*22)+",-20)'><circle r='8' fill='"+(on?"#ffcf1f":"#7df07a")+"' stroke='"+O+"' stroke-width='2.5'/>"+(on?"<rect x='-3' y='-1' width='6' height='5' rx='1' fill='"+O+"'/><path d='M-2.2 -1 v-2 a2.2 2.2 0 0 1 4.4 0 v2' fill='none' stroke='"+O+"' stroke-width='1.6'/>":"<path d='M-3.5 0 l2.5 2.8 l4.5 -5' fill='none' stroke='"+O+"' stroke-width='2.2' stroke-linecap='round'/>")+"</g>"}
+ s+="<circle cy='12' r='15' fill='"+(open?"#7df07a":"#d9dbee")+"' stroke='"+O+"' stroke-width='3.5'/><path d='M0 12 L0 0 M0 12 L10 18 M0 12 L-10 18' stroke='"+O+"' stroke-width='3' stroke-linecap='round'/><circle cy='12' r='3.5' fill='"+O+"'/>";
+ return s+"</g></g>"}
+function hsS(st,fx){var s="<rect width='340' height='170' fill='url(#night)'/><rect y='138' width='340' height='32' fill='url(#floor)'/><path d='M0 138 H340' stroke='"+O+"' stroke-width='3'/>";
+ for(var i=0;i<5;i++)s+="<rect x='"+(18+i*70)+"' y='14' width='26' height='10' rx='3' fill='"+(st.alarm>=6?"#ff4f6d":"#ffe94a")+"' stroke='"+O+"' stroke-width='2' opacity='.8'/>";
+ s+=safe(84,84,st.mine,false,"#5cb8ff",fx=="hitme")+safe(256,84,3-st.layer,st.win,"#ff8aa0",fx=="hit");
+ s+=lbl(84,152,"ТВІЙ СЕЙФ")+lbl(256,152,"СЕЙФ СУПЕРНИКА")+K.hero(150,116,.8)+A.botS(190,118,"sV",.75,"ok");
+ if(fx=="hit")s+=A.spark(226,56,1.1)+A.spark(290,112,.8,"#fff");if(fx=="fix")s+=A.spark(54,56,1,"#7df07a")+A.spark(116,114,.8,"#fff");if(fx=="hitme")s+=A.spark(84,84,1.4,"#ff8fd0");
+ return sv(340,170,s)}
+GM.heist=function(g){K.inj();var P=K.pool(g),st={layer:0,pr:0,alarm:0,mine:3,win:false},code=[],t=0,ok=0,tot=0;
+ function mk(){return 1+Math.floor(Math.random()*9)}
+ function hud(){st.mine=3-Math.min(3,Math.floor(st.alarm/3));K.hud([["Замки",st.layer+"/3"],["Злам твого сейфа",st.alarm+"/9"],["Код",code.length?code.join(" "):"—"]]);gs9("Хід "+(t+1))}
+ function turn(){if(st.alarm>=9){over(false);return}if(st.layer>=3){keypad();return}
+  K.frame(g,hsS(st),"Замок "+(st.layer+1)+" · ключ "+(st.pr+1)+"/2");hud();K.msg("");
+  K.body("<div class='k7q'>Суперник теж ламає твій сейф. Що робиш цього ходу?</div><div class='k7row'><button class='k7btn r' data-k='a'>Зламувати<small>ключ до чужого замка</small></button><button class='k7btn g' data-k='f' "+(st.alarm<2?"disabled":"")+">Лагодити<small>−3 до зламу твого сейфа</small></button></div>").onclick=function(e){var el=e.target.closest(".k7btn");if(el&&!el.disabled)go(el.dataset.k)}}
+ function go(k){K.act(k=="a"?"Зламуєш замок "+(st.layer+1):"Лагодиш свій сейф");
+  K.ask(P.next(),function(good){tot++;t++;var note="",fx="";
+   if(good){ok++;if(k=="a"){st.pr++;fx="hit";note="Ключ підійшов.";if(st.pr>=2){st.pr=0;st.layer++;var d=mk();code.push(d);note="Замок "+st.layer+" відкрито. На дверцятах цифра коду: <b>"+d+"</b>. Запам’ятай її."}}else{st.alarm=Math.max(0,st.alarm-3);fx="fix";note="Сейф полагоджено: злам −3."}}
+   else note=k=="a"?"Ключ зламався.":"Полагодити не вдалося.";
+   var add=good?1:2;st.alarm=Math.min(9,st.alarm+add);if(!good)fx="hitme";hud();document.getElementById("k7sc").innerHTML=hsS(st,fx);
+   document.getElementById("k7m").innerHTML+="<br>"+note+" Суперник просунувся на "+add+".";
+   K.next(st.alarm>=9?"Далі":st.layer>=3?"До кодового замка":"Далі",turn)})}
+ function keypad(){var inp=[],tries=0;K.frame(g,hsS(st),"Кодовий замок");hud();K.msg("Введи три цифри в тому порядку, у якому відкривались замки.","blue");
+  var h="<div class='k7q' id='hsd' style='font:900 26px monospace;letter-spacing:.3em'>_ _ _</div><div style='display:grid;grid-template-columns:repeat(3,1fr);gap:7px'>";for(var i=1;i<=9;i++)h+="<button class='k7btn p' data-d='"+i+"'>"+i+"</button>";
+  K.body(h+"</div>");gs9("Кодовий замок");code.length=3;K.hud([["Замки","3/3"],["Злам твого сейфа",st.alarm+"/9"],["Код","? ? ?"]]);
+  document.getElementById("k7b").onclick=function(e){var el=e.target.closest("[data-d]");if(!el||inp.length>=3)return;inp.push(+el.dataset.d);document.getElementById("hsd").textContent=[0,1,2].map(function(i){return inp[i]||"_"}).join(" ");
+   if(inp.length==3){tries++;if(inp.join("")==code.join("")){st.win=true;document.getElementById("k7sc").innerHTML=hsS(st,"hit");K.msg("<b>Сейф відкрито.</b>","green");K.next("Фінал",function(){over(true,tries)})}
+    else if(tries>=2){K.msg("<b>Код хибний.</b> Правильний код: "+code.join(" ")+". Сигналізація спрацювала.","red");K.next("Далі",function(){over(false,0,true)})}
+    else{K.msg("<b>Код хибний.</b> Остання спроба.","red");inp=[];setTimeout(function(){var d=document.getElementById("hsd");if(d)d.textContent="_ _ _"},600)}}}}
+ function over(win,tries,atCode){var sc=win?(tries==1&&st.alarm<=5?6:5):(atCode?4:Math.max(1,st.layer+1));
+  K.frame(g,hsS(st,win?"hit":"hitme"),win?"Сейф твій":"Суперник устиг першим");gs9("Фінал");K.hud([["Замки",st.layer+"/3"],["Злам твого сейфа",st.alarm+"/9"],["Відповіді",ok+"/"+tot]]);
+  K.body("<div class='k7in'><h3>"+(win?"Пограбування вдалося":atCode?"Код не підійшов":"Твій сейф зламано")+"</h3><p>"+(win?"Усі три замки й кодовий замок відкрито раніше, ніж суперник дістався до твого сейфа.":"Наступного разу стеж за шкалою зламу й лагодь сейф вчасно.")+"</p><p>Правильних відповідей: "+ok+" з "+tot+".</p></div>");K.next("Результат",function(){fin9(sc,6)})}
+ K.intro(g,{scene:hsS({layer:1,pr:0,alarm:3,mine:2,win:false}),act:"Сезон · пограбування",title:"Два сейфи, один переможець",text:"У сейфі суперника лежить трофей сезону. Суперник у цей час ламає твій. Переможе той, хто відкриє чужий сейф першим.",steps:["<b>Зламувати:</b> два ключі-відповіді відкривають замок. Замків три.","<b>Лагодити:</b> правильна відповідь відкидає суперника назад.","<b>Код:</b> кожен замок показує цифру. Запам’ятай усі три для фінального замка."],btn:"Почати злам"},turn)};
+try{GI.broyal=["🪂","Королівська висадка"];GI.bbuild=["🧱","Будівничий бій"];GI.heist=["🔐","Пограбування сейфа"]}catch(e){}
+})();
+
 /* ===== 11 клас · урок 16: три ігри-імітації редактора «ПіксельЛаб» (анімація кадрів) ===== */
 (function(){
-var CSS="<style>.psl{background:#2b2b31;border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(30,30,80,.25);border:1px solid #1d1d22;color:#d8d8e0;font-size:12px;text-align:left;margin-top:8px}"+
-".psl .mb{display:flex;gap:12px;padding:7px 10px;background:#1f1f24;align-items:center;flex-wrap:nowrap;overflow:hidden;white-space:nowrap}"+
+var CSS="<style>.psl{background:#24243b;border-radius:20px;overflow:hidden;box-shadow:0 14px 34px rgba(60,50,160,.28);border:2px solid #34345a;color:#d8d8e0;font-size:12px;text-align:left;margin-top:8px}"+
+".psl .psmb{display:flex;gap:12px;padding:7px 10px;background:#1c1c30;align-items:center;flex-wrap:nowrap;overflow:hidden;white-space:nowrap}"+
 ".psl .lg{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6d5dfc,#ff5fa2);color:#fff;font-weight:900;font-size:10px;display:grid;place-items:center;flex:none}"+
-".psl .mb span.it{opacity:.85;padding:2px 4px;border-radius:5px}.psl .mb span.it.tp{cursor:pointer;background:#33333a;opacity:1}"+
-".psl .wk{display:flex}.psl .tb{width:34px;background:#26262b;padding:6px 4px;display:flex;flex-direction:column;gap:5px;border-right:1px solid #1b1b20}"+
-".psl .tb i{display:block;width:26px;height:26px;border-radius:6px;background:#33333a}.psl .tb i.on{background:#4a3fd0}.psl .tb svg{width:26px;height:26px;display:block}"+
-".psl .cv{flex:1;padding:10px;background:#3a3a41;position:relative;min-width:0}"+
-".psl .doc{background:#fff;border-radius:3px;width:100%;aspect-ratio:4/3;position:relative;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.4)}.psl .doc svg{position:absolute;inset:0;width:100%;height:100%}"+
-".psl .pn{width:122px;background:#26262b;border-left:1px solid #1b1b20;padding:6px;flex:none}"+
+".psl .psmb span.it{opacity:.85;padding:2px 4px;border-radius:5px}.psl .psmb span.it.tp{cursor:pointer;background:#33333a;opacity:1}"+
+".psl .wk{display:flex;flex-wrap:wrap}.psl .tb{width:38px;background:#20203a;padding:6px 4px;display:flex;flex-direction:column;gap:5px;border-right:1px solid #1b1b20}"+
+".psl .tb i{display:block;width:28px;height:28px;border-radius:8px;background:#2f2f50}.psl .tb i.on{background:linear-gradient(135deg,#6d5dfc,#ff5fa2)}.psl .tb svg{width:28px;height:28px;display:block}"+
+".psl .cv{flex:1;padding:12px 10px 10px;background:repeating-conic-gradient(#2e2e4c 0 25%,#292944 0 50%) 0 0/14px 14px;position:relative;min-width:0}"+
+".psl .doc{background:#fff;border-radius:6px;width:100%;aspect-ratio:4/3;position:relative;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.45)}.psl .doc svg{position:absolute;inset:0;width:100%;height:100%}"+
+".psl .pn{width:100%;background:#20203a;border-top:1px solid #34345a;padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px}.psl .pn .pt{grid-column:1/-1;margin:0}.psl .pn .ly{margin:0}"+
 ".psl .pt{font-weight:800;color:#fff;font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin:2px 0 5px;opacity:.8}"+
-".psl .ly{display:flex;align-items:center;gap:5px;padding:5px 4px;border-radius:7px;margin-bottom:4px;background:#2f2f35;border:2px solid transparent;font-size:11px;line-height:1.15}"+
+".psl .ly{display:flex;align-items:center;gap:5px;padding:5px 4px;border-radius:7px;margin-bottom:4px;background:#2c2c4a;border:2px solid transparent;font-size:11.5px;line-height:1.15}"+
 ".psl .ly.tp{cursor:pointer;border-color:#4a4a55}.psl .ly.tp:active{transform:scale(.97)}.psl .ly.sel{background:#3d348f}.psl .ly.ok{border-color:#2ccb8a}.psl .ly.bad{border-color:#ff4d4d}"+
 ".psl .th{width:22px;height:18px;border-radius:3px;background:#fff;flex:none;overflow:hidden;position:relative}.psl .th svg{width:100%;height:100%;display:block}"+
 ".psl .eye{width:17px;height:17px;border-radius:4px;border:1px solid #555;display:grid;place-items:center;flex:none}.psl .eye.on{background:#ffd34d;border-color:#ffd34d}"+
-".psl .tl{background:#1f1f24;padding:8px 8px 10px}.psl .tlh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-weight:700;gap:6px}"+
-".psl .fr{display:flex;gap:5px}.psl .f{flex:1;min-width:0;background:#2f2f35;border-radius:7px;padding:3px;border:2px solid transparent;text-align:center;position:relative}"+
+".psl .tl{background:#1c1c30;padding:8px 8px 10px}.psl .tlh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-weight:700;gap:6px}"+
+".psl .fr{display:flex;gap:5px}.psl .f{flex:1;min-width:0;background:#2c2c4a;border-radius:7px;padding:3px;border:2px solid transparent;text-align:center;position:relative}"+
 ".psl .f.tp{cursor:pointer;border-color:#4a4a55}.psl .f.cur{border-color:#ff5fa2}.psl .f.play{border-color:#ffd34d}.psl .f.bad{border-color:#ff4d4d;box-shadow:0 0 0 3px rgba(255,77,77,.25)}.psl .f.ok{border-color:#2ccb8a;box-shadow:0 0 0 3px rgba(44,203,138,.25)}"+
 ".psl .f .ft{background:#fff;border-radius:3px;aspect-ratio:4/3;position:relative;overflow:hidden}.psl .f .ft svg{position:absolute;inset:0;width:100%;height:100%}"+
 ".psl .f em{font-style:normal;font-size:9px;opacity:.85;display:block;margin-top:2px}.psl .f.add{display:grid;place-items:center;border:2px dashed #555;background:transparent;font-size:18px;color:#777}"+
-".psl .ctl{display:flex;gap:6px;align-items:center;margin-top:7px;flex-wrap:wrap}.psl .cb{background:#33333a;border-radius:7px;padding:5px 8px;font-weight:700;border:2px solid transparent}"+
+".psl .ctl{display:flex;gap:6px;align-items:center;margin-top:7px;flex-wrap:wrap}.psl .cb{background:#2f2f50;border-radius:7px;padding:5px 8px;font-weight:700;border:2px solid transparent}"+
 ".psl .cb.tp{cursor:pointer;border-color:#4a4a55}.psl .cb.pl{background:linear-gradient(135deg,#6d5dfc,#ff5fa2);color:#fff}.psl .cb.ok{border-color:#2ccb8a}.psl .cb.bad{border-color:#ff4d4d}"+
-".psl .tabn{position:absolute;top:-1px;left:12px;font-size:10px;background:#2b2b31;padding:2px 8px;border-radius:0 0 6px 6px;z-index:2}"+
+".psl .tabn{position:absolute;top:-1px;left:12px;font-size:10px;font-weight:700;background:#24243b;padding:2px 8px;border-radius:0 0 6px 6px;z-index:2}"+
 ".pstask{background:#fff;border:1px solid #e6e7f2;border-radius:18px;padding:12px;margin-top:10px;box-shadow:0 10px 28px rgba(30,30,80,.08);text-align:left}"+
 ".pstask .tg{display:inline-block;font-size:11px;font-weight:800;color:#6d5dfc;background:#efedff;border-radius:99px;padding:3px 9px;margin-bottom:6px}"+
 ".pstask h3{font-size:15px;margin:0 0 4px;color:#15152e}.pstask p{color:#6e6e8a;font-size:13px;margin:0 0 8px}"+
@@ -38255,23 +38502,22 @@ var CSS="<style>.psl{background:#2b2b31;border-radius:18px;overflow:hidden;box-s
 ".pshd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}.pshd .hs{display:flex;gap:3px}"+
 ".psch{display:flex;gap:8px;align-items:flex-end;margin:6px 0 10px;text-align:left}.psch .av{width:42px;height:42px;flex:none}"+
 ".psch .bub{background:#fff;border:1px solid #e6e7f2;border-radius:16px 16px 16px 4px;padding:9px 12px;font-size:13px;line-height:1.35;box-shadow:0 6px 18px rgba(30,30,80,.08);color:#15152e}.psch .bub b{color:#6d5dfc}"+
-".psd .bd{display:flex;gap:10px;padding:10px}.psd .prv{width:42%;background:#3a3a41;border-radius:10px;padding:6px;flex:none}"+
-".psd .row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #35353c;gap:6px}"+
-".psd .sv{background:#3a3a41;border-radius:7px;padding:4px 9px;font-weight:800;color:#fff;cursor:pointer;border:2px solid #4a4a55;white-space:nowrap}.psd .sv.off{opacity:.35;cursor:default;border-color:transparent}"+
-".psd .mt{height:10px;border-radius:99px;background:#3a3a41;overflow:hidden;margin-top:4px}.psd .mt i{display:block;height:100%;transition:width .3s}"+
+".psd .bd{display:flex;gap:10px;padding:10px}.psd .prv{width:42%;background:#2c2c4a;border-radius:10px;padding:6px;flex:none}"+
+".psd .row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #34345a;gap:6px}"+
+".psd .sv{background:#2f2f50;border-radius:7px;padding:4px 9px;font-weight:800;color:#fff;cursor:pointer;border:2px solid #4a4a55;white-space:nowrap}.psd .sv.off{opacity:.35;cursor:default;border-color:transparent}"+
+".psd .mt{height:10px;border-radius:99px;background:#2f2f50;overflow:hidden;margin-top:4px}.psd .mt i{display:block;height:100%;transition:width .3s}"+
 ".psreq{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.psreq span{font-size:12px;font-weight:700;border-radius:99px;padding:4px 10px;background:#f1f1f8;color:#15152e}.psreq span.ok{background:#e3f8ee;color:#118a5a}.psreq span.bad{background:#ffe6e6;color:#c22}"+
 "@keyframes psShake{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}.psl.sh{animation:psShake .3s 2}"+
-"@media(max-width:360px){.psl .pn{width:104px}.psl .tb{display:none}}</style>";
+"@media(max-width:360px){.psl .tb{display:none}}</style>";
 
 /* ---- малюнки ---- */
-function ballG(x,y,sq,col){return "<g transform='translate("+x+" "+y+") scale("+(1+sq)+" "+(1-sq)+")'><circle r='14' fill='"+(col||"#ff5fa2")+"' stroke='#15152e' stroke-width='2.5'/><circle cx='-4' cy='-3' r='2.2' fill='#15152e'/><circle cx='5' cy='-3' r='2.2' fill='#15152e'/><path d='M-4 4 Q0.5 8 5 4' stroke='#15152e' stroke-width='2' fill='none' stroke-linecap='round'/><circle cx='-7' cy='-8' r='3' fill='#fff' opacity='.7'/></g>"}
-function bg(){return "<rect width='160' height='120' fill='#eef1ff'/><circle cx='138' cy='20' r='9' fill='#ffd37a'/><rect y='98' width='160' height='22' fill='#b7ecd2'/><rect y='98' width='160' height='3' fill='#83d9b3'/>"}
-/* кадр: {b:[[x,y,sq],...]} */
-function frameSVG(fr){var h="<svg viewBox='0 0 160 120'>"+bg();(fr.b||[]).forEach(function(p){var sh=8+(p[1]/84)*7;h+="<ellipse cx='"+p[0]+"' cy='101' rx='"+sh+"' ry='3' fill='rgba(21,21,46,.18)'/>"+ballG(p[0],p[1],p[2]||0,p[3])});return h+"</svg>"}
+function ballG(x,y,sq,col){col=col||"#ff5fa2";var sx=1+sq,sy=1-sq*0.9;return "<g transform='translate("+x+" "+(y+14)+") scale("+sx+" "+sy+") translate(0 -14)'><circle r='14' fill='"+col+"'/><path d='M-14 0 A14 14 0 0 0 14 0 A14 10 0 0 1 -14 0Z' fill='#15152e' opacity='.14'/><path d='M-6 -13 Q0 0 -6 13' stroke='#fff' stroke-width='3' fill='none' opacity='.55'/><path d='M7 -12 Q12 0 7 12' stroke='#fff' stroke-width='3' fill='none' opacity='.35'/><circle r='14' fill='none' stroke='#15152e' stroke-width='2.4'/><circle cx='-4.5' cy='-2' r='2' fill='#15152e'/><circle cx='4.5' cy='-2' r='2' fill='#15152e'/><path d='M-3.5 4 Q0 7 3.5 4' stroke='#15152e' stroke-width='1.8' fill='none' stroke-linecap='round'/><ellipse cx='-6' cy='-8' rx='3.4' ry='2.2' fill='#fff' opacity='.85' transform='rotate(-30 -6 -8)'/></g>"}
+function bg(){return "<rect width='160' height='120' fill='#dfe6ff'/><rect width='160' height='60' fill='#eef1ff'/><circle cx='134' cy='22' r='10' fill='#ffd37a'/><circle cx='134' cy='22' r='15' fill='#ffd37a' opacity='.25'/><g fill='#fff'><ellipse cx='36' cy='26' rx='14' ry='5'/><ellipse cx='46' cy='22' rx='9' ry='6'/><ellipse cx='96' cy='38' rx='11' ry='4'/></g><path d='M0 98 Q30 80 64 92 T120 88 T160 90 V98Z' fill='#c9f0dd'/><rect y='98' width='160' height='22' fill='#9fe3c2'/><rect y='98' width='160' height='3' fill='#6fcfa3'/><g fill='#6fcfa3'><rect x='12' y='106' width='10' height='2' rx='1'/><rect x='70' y='112' width='14' height='2' rx='1'/><rect x='128' y='105' width='9' height='2' rx='1'/></g>"}
+function frameSVG(fr){var h="<svg viewBox='0 0 160 120'>"+bg();(fr.b||[]).forEach(function(p){var sh=6+(p[1]/84)*9,op=(.08+p[1]/84*.16).toFixed(2);h+="<ellipse cx='"+p[0]+"' cy='99' rx='"+sh+"' ry='2.6' fill='#15152e' opacity='"+op+"'/>"+ballG(p[0],p[1],p[2]||0,p[3])});return h+"</svg>"}
 function eye(on){return "<span class='eye"+(on?" on":"")+"'>"+(on?"<svg width='11' height='11' viewBox='0 0 12 12'><path d='M1 6 Q6 1 11 6 Q6 11 1 6Z' fill='#15152e'/><circle cx='6' cy='6' r='1.6' fill='#ffd34d'/></svg>":"")+"</span>"}
 var ICS=["<path d='M6 4 L20 13 L13 14 L10 21Z' fill='#fff'/>","<rect x='5' y='6' width='16' height='14' fill='none' stroke='#fff' stroke-width='2' stroke-dasharray='3 2'/>","<path d='M6 20 C10 8 16 6 20 6' stroke='#fff' stroke-width='3' fill='none' stroke-linecap='round'/>","<circle cx='12' cy='12' r='6' fill='none' stroke='#fff' stroke-width='2'/><path d='M16 16 L21 21' stroke='#fff' stroke-width='3'/>","<text x='8' y='19' font-size='15' font-weight='900' fill='#fff'>T</text>"];
 function tools(on){return "<div class='tb'>"+ICS.map(function(p,i){return "<i class='"+(i==on?"on":"")+"'><svg viewBox='0 0 26 26'>"+p+"</svg></i>"}).join("")+"</div>"}
-function menu(file,items){return "<div class='mb'><span class='lg'>ПЛ</span>"+(items||["Файл","Редагування","Шар","Вікно"]).map(function(t){return "<span class='it' data-m='"+t+"'>"+t+"</span>"}).join("")+"<span style='margin-left:auto;opacity:.6'>"+file+"</span></div>"}
+function menu(file,items){return "<div class='psmb'><span class='lg'>ПЛ</span>"+(items||["Файл","Редагування","Шар","Вікно"]).map(function(t){return "<span class='it' data-m='"+t+"'>"+t+"</span>"}).join("")+"<span style='margin-left:auto;opacity:.6'>"+file+"</span></div>"}
 function heart(f){return "<svg width='18' height='16' viewBox='0 0 20 18'><path d='M10 17 L2 9 A5 5 0 0 1 10 3 A5 5 0 0 1 18 9Z' fill='"+(f?"#ff5fa2":"#e6e7f2")+"' stroke='#15152e' stroke-width='1.6'/></svg>"}
 function avatar(c,hair){return "<svg class='av' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='"+c+"' stroke='#15152e' stroke-width='2'/><circle cx='14' cy='18' r='2.4' fill='#15152e'/><circle cx='26' cy='18' r='2.4' fill='#15152e'/><path d='M13 26 Q20 31 27 26' stroke='#15152e' stroke-width='2.3' fill='none' stroke-linecap='round'/><path d='"+hair+"' stroke='#15152e' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"}
 function snd(ok){try{GX.snd(ok?"ok":"bad")}catch(e){}}
@@ -38320,7 +38566,7 @@ GM.ps_build=function(g){
    if(ok)st.score++;else ed.classList.add("sh");snd(ok);stat();expl(box,ok,S.e);
    if(S.play){player(document.getElementById("psdoc"),st.frames.map(function(f){return {b:[LYP[f.l]]}}),st.frames.map(function(){return .1}),"inf",function(k){[].forEach.call(document.querySelectorAll(".psl .f[data-f]"),function(e,i){e.classList.toggle("play",i===k)})})}
    next(step==N-1?"Завершити":"Далі →",function(){step++;if(step>=N)return fin9(st.score,N);if(STEPS[step].dup){st.frames.push({l:st.frames[st.cur].l});st.cur++}render()})}
-  if(S.k=="menu"){var mi=ed.querySelectorAll(".mb .it");[].forEach.call(mi,function(e){e.classList.add("tp")});
+  if(S.k=="menu"){var mi=ed.querySelectorAll(".psmb .it");[].forEach.call(mi,function(e){e.classList.add("tp")});
    var t=task(box,S.tag,S.t,"Торкнися пункту меню вгорі, а потім команди.",null),o=document.createElement("div");o.className="ops";t.appendChild(o);
    var used=false;[].forEach.call(mi,function(e){e.onclick=function(){if(used)return;var m=e.getAttribute("data-m"),cmd={"Файл":["Створити…","Друк…","Експорт"],"Редагування":["Скасувати","Трансформувати"],"Шар":["Новий шар","Дублювати шар"],"Вікно":["Шари","Шкала часу","Історія"]}[m];
     o.innerHTML="";cmd.forEach(function(c){var b=document.createElement("button");b.textContent=m+" → "+c;b.onclick=function(){if(used)return;used=true;var ok=m=="Вікно"&&c=="Шкала часу";b.className=ok?"ok":"bad";
@@ -38405,7 +38651,7 @@ GM.ps_order=function(g){
  function stat(){gs9("Клієнт "+Math.min(i+1,CLI.length)+" / "+CLI.length+" · ✅ "+sc)}
  function show(){var C=CLI[i],s=C.start?JSON.parse(JSON.stringify(C.start)):{fmt:"PSD",col:256,w:1200,loop:"Один раз",tr:"Ні"},sent=false;
   var h=CSS+"<div class='psch'>"+avatar(C.who[0],C.who[1])+"<div class='bub'><div style='font-size:11px;font-weight:800;color:#6e6e8a;margin-bottom:2px'>"+C.name+"</div>"+C.msg+"</div></div>"+
-   "<div class='psl psd'><div class='mb'><span class='lg'>ПЛ</span><b style='color:#fff'>Експорт для вебу</b><span style='margin-left:auto;opacity:.6'>"+C.fr+" кадр"+(C.fr==1?"":C.fr<5?"и":"ів")+"</span></div><div class='bd'>"+
+   "<div class='psl psd'><div class='psmb'><span class='lg'>ПЛ</span><b style='color:#fff'>Експорт для вебу</b><span style='margin-left:auto;opacity:.6'>"+C.fr+" кадр"+(C.fr==1?"":C.fr<5?"и":"ів")+"</span></div><div class='bd'>"+
    "<div class='prv'><div class='doc' id='psdoc'></div><div id='psdim' style='margin-top:6px;font-weight:700'></div><div style='margin-top:8px;font-weight:700'>Розмір файлу</div><div class='mt'><i id='psmt'></i></div><div id='pssz' style='margin-top:3px;font-weight:800'></div></div>"+
    "<div style='flex:1;min-width:0'>"+[["fmt","Формат"],["col","Кольори"],["w","Ширина"],["loop","Цикл"],["tr","Прозорість"]].map(function(r){return "<div class='row'><span>"+r[1]+"</span><span class='sv' data-k='"+r[0]+"'></span></div>"}).join("")+
    "<div style='font-size:10px;opacity:.6;margin-top:6px'>Торкайся значень, щоб змінювати</div></div></div></div><div id='psreq' class='psreq'></div><div id='psbox'></div>";
@@ -38439,8 +38685,94 @@ var I1=gic("<rect x='8' y='12' width='7' height='6' rx='1' fill='#fff'/><rect x=
 /* урок 16 (11 клас): 2 прості + 2 тематичні замість простих + складна «GIF на замовлення» замість складної */
 var L=LES[1116];if(L&&L.g){var simp=L.g.filter(function(x){return x.type!="u11_2"&&x.type.indexOf("u11_")!==0}).slice(0,2);
  L.g=simp.concat([{type:"ps_build",title:"Збери GIF"},{type:"ps_glitch",title:"Глюк у кадрах"},{type:"ps_order",title:"GIF на замовлення"}])}
+
+/* шапки ігор у стилі 11 класу (намальовані, без емодзі) */
+if(window.GV11){
+ GV11.meta.ps_build=["Анімація","#7c5cff","#ff3d81"];GV11.meta.ps_glitch=["Глюк","#ff5f6d","#7c5cff"];GV11.meta.ps_order=["Експорт","#00b4ff","#2bb673"];
+ var FR=function(x,y,by,sq){return "<rect x='"+x+"' y='"+y+"' width='34' height='28' rx='4' fill='#fff' opacity='.95'/><rect x='"+x+"' y='"+(y+22)+"' width='34' height='6' rx='2' fill='#fff' opacity='.55'/><ellipse cx='"+(x+17)+"' cy='"+(y+by)+"' rx='"+(6+sq)+"' ry='"+(6-sq)+"' fill='var(--a2)'/>"};
+ GV11.art.ps_build="<rect x='58' y='14' width='150' height='52' rx='8' fill='#fff' opacity='.2'/>"+[0,1,2,3].map(function(i){return "<rect x='"+(62+i*36)+"' y='17' width='6' height='4' rx='1' fill='#fff' opacity='.7'/><rect x='"+(62+i*36)+"' y='59' width='6' height='4' rx='1' fill='#fff' opacity='.7'/>"}).join("")+FR(64,26,8,0)+FR(100,26,13,0)+FR(136,26,17,2)+"<path d='M176 40 l18 0 m-7 -7 l7 7 l-7 7' stroke='#fff' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/>";
+ GV11.art.ps_glitch=FR(70,24,10,0)+FR(108,24,18,2)+"<rect x='146' y='24' width='34' height='28' rx='4' fill='#fff' opacity='.95'/><path d='M150 30 L160 40 L154 42 L170 50' stroke='var(--a1)' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/><rect x='160' y='28' width='14' height='5' fill='#ffd34d'/><circle cx='190' cy='54' r='11' fill='none' stroke='#fff' stroke-width='4'/><path d='M198 62 l9 9' stroke='#fff' stroke-width='5' stroke-linecap='round'/>";
+ GV11.art.ps_order="<rect x='76' y='12' width='60' height='56' rx='8' fill='#fff' opacity='.95'/><path d='M120 12 v14 h16' fill='#fff' stroke='var(--a1)' stroke-width='2' opacity='.5'/><text x='106' y='50' text-anchor='middle' font-size='17' font-weight='900' fill='var(--a1)' font-family='system-ui,sans-serif'>GIF</text><rect x='146' y='22' width='62' height='10' rx='5' fill='#fff' opacity='.35'/><rect x='146' y='22' width='38' height='10' rx='5' fill='#fff'/><rect x='146' y='40' width='62' height='10' rx='5' fill='#fff' opacity='.35'/><rect x='146' y='40' width='22' height='10' rx='5' fill='#ffd34d'/><path d='M150 60 l5 5 l10 -10' stroke='#fff' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/>";
+ ["ps_build","ps_glitch","ps_order"].forEach(function(k){var f=GM[k];GM[k]=function(g){GV11.t=k;return f(g)}});
+}
+
+/* читалка уроку 16: живі ілюстрації замість скріншота (SVG-анімація, без JS) */
+var BY=[18,24,40,64,84,64,40,24],BS=[0,0,0,.04,.26,.04,0,0],DUR=(BY.length*.14).toFixed(2)+"s";
+function kt(n){var a=[];for(var i=0;i<n;i++)a.push((i/n).toFixed(4));return a.join(";")}
+function bounce(x,y0,scl){/* м'яч, що стрибає по кадрах (дискретно, як GIF) */
+ var tr=BY.map(function(y){return x+" "+(y0+y*scl+14*scl)}).join(";"),sc=BY.map(function(y,i){return (1+BS[i])+" "+(1-BS[i]*.9)}).join(";"),
+  sh=BY.map(function(y){return (6+y/84*9)*scl}).join(";"),so=BY.map(function(y){return (.08+y/84*.16).toFixed(2)}).join(";"),K=kt(BY.length);
+ return "<ellipse cx='"+x+"' cy='"+(y0+99*scl)+"' rx='10' ry='"+(2.6*scl)+"' fill='#15152e'><animate attributeName='rx' values='"+sh+"' keyTimes='"+K+"' calcMode='discrete' dur='"+DUR+"' repeatCount='indefinite'/><animate attributeName='opacity' values='"+so+"' keyTimes='"+K+"' calcMode='discrete' dur='"+DUR+"' repeatCount='indefinite'/></ellipse>"+
+ "<g><animateTransform attributeName='transform' type='translate' values='"+tr+"' keyTimes='"+K+"' calcMode='discrete' dur='"+DUR+"' repeatCount='indefinite'/><g><animateTransform attributeName='transform' type='scale' values='"+sc+"' keyTimes='"+K+"' calcMode='discrete' dur='"+DUR+"' repeatCount='indefinite'/><g transform='scale("+scl+")'>"+ballG(0,-14,0)+"</g></g></g>"}
+function scene(x,y,w){var k=w/160;return "<g transform='translate("+x+" "+y+") scale("+k+")'>"+bg()+"</g>"}
+function edSVG(){var W=340,H=300,cx=46,cy=34,cw=200,ch=150,h="<svg viewBox='0 0 "+W+" "+H+"' style='display:block;width:100%;font-family:Inter,system-ui,sans-serif'>";
+ h+="<rect width='"+W+"' height='"+H+"' rx='16' fill='#24243b'/><rect width='"+W+"' height='26' rx='16' fill='#1c1c30'/><rect y='14' width='"+W+"' height='12' fill='#1c1c30'/>";
+ h+="<rect x='10' y='5' width='17' height='17' rx='5' fill='#ff5fa2'/><text x='18.5' y='17' text-anchor='middle' font-size='8' font-weight='900' fill='#fff'>ПЛ</text>";
+ ["Файл","Шар","Вікно"].forEach(function(t,i){h+="<text x='"+(36+i*36)+"' y='17' font-size='9.5' fill='#c9c9e0'>"+t+"</text>"});
+ h+="<rect x='106' y='6' width='88' height='15' rx='5' fill='#6d5dfc'/><text x='150' y='17' text-anchor='middle' font-size='8.5' font-weight='800' fill='#fff'>Вікно → Шкала часу</text>";
+ h+="<text x='330' y='17' text-anchor='end' font-size='8.5' fill='#8e8eb0'>м’яч.psd</text>";
+ /* інструменти */
+ h+="<rect x='0' y='26' width='34' height='166' fill='#20203a'/>";for(var i=0;i<4;i++)h+="<rect x='6' y='"+(34+i*28)+"' width='22' height='22' rx='6' fill='"+(i==0?"#6d5dfc":"#2f2f50")+"'/>";
+ h+="<path d='M13 39 L23 46 L18 47 L16 52Z' fill='#fff'/><rect x='12' y='67' width='10' height='9' fill='none' stroke='#fff' stroke-width='1.5' stroke-dasharray='2 1.5'/><path d='M12 105 C14 96 19 94 23 94' stroke='#fff' stroke-width='2' fill='none' stroke-linecap='round'/><text x='17' y='133' text-anchor='middle' font-size='12' font-weight='900' fill='#fff'>T</text>";
+ /* полотно */
+ h+="<rect x='34' y='26' width='"+(W-34-84)+"' height='166' fill='#2c2c48'/><rect x='"+(cx-2)+"' y='"+(cy-2)+"' width='"+(cw+4)+"' height='"+(ch+4)+"' rx='7' fill='#15152e' opacity='.4'/>";
+ h+="<svg x='"+cx+"' y='"+cy+"' width='"+cw+"' height='"+ch+"' viewBox='0 0 160 120'>"+bg()+bounce(80,0,1)+"</svg>";
+ /* шари */
+ var px=W-84;h+="<rect x='"+px+"' y='26' width='84' height='166' fill='#20203a'/><text x='"+(px+8)+"' y='42' font-size='8.5' font-weight='800' fill='#fff' letter-spacing='.6'>ШАРИ</text>";
+ ["м’яч","тінь","фон"].forEach(function(t,i){var y=50+i*26;h+="<rect x='"+(px+6)+"' y='"+y+"' width='72' height='22' rx='6' fill='"+(i==0?"#3d348f":"#2c2c4a")+"'/><rect x='"+(px+11)+"' y='"+(y+5)+"' width='12' height='12' rx='3' fill='#ffd34d'/><circle cx='"+(px+17)+"' cy='"+(y+11)+"' r='2.4' fill='#15152e'/><text x='"+(px+29)+"' y='"+(y+14.5)+"' font-size='9' fill='#e8e8f6'>"+t+"</text>"});
+ /* шкала часу */
+ var ty=192;h+="<rect y='"+ty+"' width='"+W+"' height='"+(H-ty)+"' fill='#1c1c30'/><rect y='"+(H-16)+"' width='"+W+"' height='16' rx='16' fill='#1c1c30'/>";
+ h+="<text x='12' y='"+(ty+16)+"' font-size='9.5' font-weight='800' fill='#fff'>Шкала часу · анімація кадрів</text>";
+ var n=BY.length,fw=36,gap=4,fx=12,fy=ty+24,K=kt(n);
+ for(var i=0;i<n;i++){var x=fx+i*(fw+gap);h+="<rect x='"+x+"' y='"+fy+"' width='"+fw+"' height='44' rx='6' fill='#2c2c4a'/><svg x='"+(x+3)+"' y='"+(fy+3)+"' width='"+(fw-6)+"' height='23' viewBox='0 0 160 120' preserveAspectRatio='xMidYMid slice'>"+bg()+"<ellipse cx='80' cy='99' rx='"+(6+BY[i]/84*9)+"' ry='3' fill='#15152e' opacity='.18'/>"+ballG(80,BY[i],BS[i])+"</svg><text x='"+(x+fw/2)+"' y='"+(fy+38)+"' text-anchor='middle' font-size='7.5' fill='#c9c9e0'>0,1 с</text><text x='"+(x+4)+"' y='"+(fy-3)+"' font-size='7' fill='#8e8eb0'>"+(i+1)+"</text>"}
+ h+="<rect y='"+(fy-1)+"' width='"+(fw+2)+"' height='46' rx='7' fill='none' stroke='#ff5fa2' stroke-width='2.5'><animate attributeName='x' values='"+BY.map(function(_,i){return fx-1+i*(fw+gap)}).join(";")+"' keyTimes='"+K+"' calcMode='discrete' dur='"+DUR+"' repeatCount='indefinite'/></rect>";
+ var cy2=fy+56;h+="<rect x='12' y='"+cy2+"' width='62' height='20' rx='6' fill='#2f2f50'/><text x='43' y='"+(cy2+13.5)+"' text-anchor='middle' font-size='8.5' font-weight='700' fill='#fff'>Цикл: Завжди</text>";
+ h+="<rect x='80' y='"+cy2+"' width='26' height='20' rx='6' fill='#6d5dfc'/><path d='M89 "+(cy2+5)+" l9 5 l-9 5z' fill='#fff'/>";
+ h+="<rect x='112' y='"+cy2+"' width='86' height='20' rx='6' fill='#2f2f50'/><text x='155' y='"+(cy2+13.5)+"' text-anchor='middle' font-size='8.5' font-weight='700' fill='#fff'>Дублювати кадр</text>";
+ h+="<rect x='204' y='"+cy2+"' width='124' height='20' rx='6' fill='#2f2f50'/><text x='266' y='"+(cy2+13.5)+"' text-anchor='middle' font-size='8.5' font-weight='700' fill='#fff'>Проміжні кадри</text>";
+ return h+"</svg>"}
+function flipSVG(){/* кадри поруч + як вони виглядають, коли швидко змінюються */
+ var h="<svg viewBox='0 0 340 190' style='display:block;width:100%;font-family:Inter,system-ui,sans-serif'><rect width='340' height='190' rx='16' fill='#24243b'/>";
+ var idx=[0,2,3,4],K=kt(BY.length);
+ idx.forEach(function(f,i){var x=12+i*56,y=14;h+="<rect x='"+x+"' y='"+y+"' width='50' height='42' rx='6' fill='#fff'/><svg x='"+(x+2)+"' y='"+(y+2)+"' width='46' height='38' viewBox='0 0 160 120' preserveAspectRatio='xMidYMid slice'>"+bg()+ballG(80,BY[f],BS[f])+"</svg><text x='"+(x+25)+"' y='"+(y+56)+"' text-anchor='middle' font-size='9' font-weight='700' fill='#c9c9e0'>кадр "+(i+1)+"</text>"});
+ h+="<path d='M246 40 h16 m-6 -6 l6 6 l-6 6' stroke='#ff5fa2' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/>";
+ h+="<svg x='266' y='12' width='64' height='48' viewBox='0 0 160 120'>"+bg()+bounce(80,0,1)+"</svg><text x='298' y='70' text-anchor='middle' font-size='9' font-weight='800' fill='#fff'>= рух</text>";
+ h+="<rect x='12' y='86' width='316' height='92' rx='10' fill='#1c1c30'/><text x='22' y='104' font-size='9.5' font-weight='800' fill='#fff'>Кадрів за секунду</text>";
+ [["2 к/с","ривки",500],["8 к/с","GIF",125],["24 к/с","кіно",42]].forEach(function(r,i){var x=22+i*102,y=112;
+  h+="<rect x='"+x+"' y='"+y+"' width='94' height='58' rx='8' fill='#2c2c4a'/><svg x='"+(x+4)+"' y='"+(y+4)+"' width='50' height='38' viewBox='0 0 160 120'>"+bg();
+  var vals=BY.map(function(y){return "80 "+(y+14)}).join(";"),D=(BY.length*r[2]/1000).toFixed(2)+"s";
+  h+="<g><animateTransform attributeName='transform' type='translate' values='"+vals+"' keyTimes='"+K+"' calcMode='discrete' dur='"+D+"' repeatCount='indefinite'/>"+ballG(0,-14,0)+"</g></svg>";
+  h+="<text x='"+(x+58)+"' y='"+(y+20)+"' font-size='10' font-weight='900' fill='#fff'>"+r[0]+"</text><text x='"+(x+58)+"' y='"+(y+34)+"' font-size='8.5' fill='#c9c9e0'>"+r[1]+"</text>"});
+ return h+"</svg>"}
+var _picA=pic;pic=function(v){if(v&&typeof v!="string"&&v[0]=="anim11")return "<figure style='margin:10px 0 0'><div style='border-radius:16px;overflow:hidden;box-shadow:0 10px 26px rgba(60,50,160,.22)'>"+(v[1]=="ed"?edSVG():flipSVG())+"</div><figcaption style='font:700 12px Nunito,system-ui,sans-serif;color:#6b7390;margin-top:6px'>"+(v[2]||"")+"</figcaption></figure>";return _picA(v)};
+if(L&&L.r)L.r.forEach(function(pg){if(!pg||!pg.v)return;if(pg.t=="Як рухається картинка")pg.v=["anim11","flip","Кілька кадрів, що швидко змінюються, око бачить як рух"]});
 })();
 
+/* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
+(function(){
+var LD={},V=window.PKV||"1";
+function need(){var c=(window.ME&&ME.c)||"";if(window.ME&&ME.t)return["i5","i8","i9","i11"];if(c.slice(0,2)=="11")return["i11"];var a=c.charAt(0);return a=="5"?["i5"]:a=="8"?["i8"]:a=="9"?["i9"]:[]}
+function load(k){if(LD[k])return LD[k];return LD[k]=new Promise(function(res,rej){var s=document.createElement("script");s.src="packs/"+k+".js?v="+V;s.onload=function(){res()};s.onerror=function(){delete LD[k];s.remove();rej()};document.head.appendChild(s)})}
+window.loadPacks=function(){return Promise.all(need().map(load))};
+var _t=topics,busy=false;
+topics=function(){var a=arguments,self=this,n=need().filter(function(k){return !LD[k]||LD[k].ok!==1});
+ if(!n.length)return _t.apply(self,a);
+ if(busy)return;busy=true;
+ var $a=document.getElementById("app");if($a)$a.innerHTML="<div style='text-align:center;padding:60px 16px;font-weight:800'>Завантажую матеріали класу…</div>";
+ Promise.all(n.map(function(k){return load(k).then(function(){LD[k].ok=1})})).then(function(){busy=false;_t.apply(self,a)}).catch(function(){busy=false;if($a)$a.innerHTML="<div style='text-align:center;padding:50px 16px'><p style='font-weight:800'>Не вдалося завантажити матеріали класу.</p><p>Перевір інтернет і спробуй ще раз. Після першого завантаження вони зберігаються на пристрої й працюють без мережі.</p><button class='pri' onclick='topics()'>Спробувати ще раз</button></div>"})};
+})();
+
+var RESULTS_URL="https://script.google.com/macros/s/AKfycbwKvbE8yUEM9zHKO7FIaSnq9zVe2pXg7sCTO9jLsxVDPgVuI4NxlgipOoQn6V4DwuNm/exec",RESULTS_KEY="inf-x7k29";
+function note(t){var d=document.getElementById("nt");if(!d){d=document.createElement("div");d.id="nt";d.style.cssText="position:fixed;right:10px;bottom:10px;background:#2b2f55;color:#fff;padding:6px 12px;border-radius:10px;font:700 14px Nunito,system-ui,sans-serif;z-index:9;opacity:0;transition:opacity .3s";document.body.appendChild(d)}d.textContent=t;d.style.opacity=1;clearTimeout(d._t);d._t=setTimeout(function(){d.style.opacity=0},2200)}
+var _pt;function queuePush(){clearTimeout(_pt);_pt=setTimeout(push,1200)}
+var OUTK="inf5q";
+function obGet(){try{return JSON.parse(localStorage.getItem(OUTK)||"{}")}catch(e){return{}}}
+function obSet(o){try{localStorage.setItem(OUTK,JSON.stringify(o))}catch(e){}}
+function flush(){if(RESULTS_URL.indexOf("http")!==0)return Promise.resolve([]);var o=obGet(),ks=Object.keys(o);if(!ks.length)return Promise.resolve([]);return Promise.all(ks.map(function(k){var body=o[k];return fetch(RESULTS_URL,{method:"POST",mode:"no-cors",body:body}).then(function(){var c=obGet();if(c[k]===body){delete c[k];obSet(c)}return true}).catch(function(){return false})}))}
+function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t)return Promise.resolve();var o=obGet();var ant="";try{var A_=JSON.parse(localStorage.getItem("inf5ant")||"{}"),pre=ME.c+"|"+ME.n+"|";Object.keys(A_).forEach(function(k){if(k.indexOf(pre)===0)ant+="\n"+A_[k]})}catch(e){}o[ME.c+"|"+ME.n]=RESULTS_KEY+"\n"+code()+ant;obSet(o);return flush().then(function(r){if(ENDING)return;if(r.length&&r.every(Boolean))note("Результат відправлено");else note("Немає зв’язку – відправимо пізніше")})}
+window.addEventListener("online",function(){flush()});
+var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf11l"||k=="inf10g"||k=="inf5me"))queuePush()};
+if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}return navigator.serviceWorker.ready}).then(function(){try{if(localStorage.getItem("infOff"))return;caches.open("inf-v4").then(function(c){return c.match("index.html")}).then(function(m){if(!m)return;localStorage.setItem("infOff","1");var d=document.createElement("div");d.textContent="✅ Готово: застосунок працюватиме й без інтернету";d.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:12px;font:600 14px sans-serif;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";setTimeout(function(){d.remove()},700)},4500)})}catch(e){}}).catch(function(){})});
 setTimeout(flush,1500);
 setTimeout(push,3000);
 topics();
