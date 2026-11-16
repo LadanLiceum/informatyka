@@ -37896,6 +37896,266 @@ window.CP9=window.CP9||{};CP9.wr=W19;
 try{var L=LES[18];if(L&&L.g){L.g.pop();L.g.push({type:"wr",title:"Проводка",items:W19})}}catch(e){}
 })();
 
+/* «Автобій екіпажів» — складна гра 9 класу (Космостанція): збери команду ботів, відповіді дають бафи між боями. */
+(function(){
+var X=window.SB9;if(!X)return;var K=X.K,INK=X.INK,esc=X.esc,shf=X.shf,YE=X.YE,MI=X.MI,RD=X.RD,CY=X.CY,OR=X.OR,PK=X.PK,LV=X.LV;
+var CSS="\
+html body .card:has(.aq),html body #app .card:has(.aq){background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.card:has(.aq)>h2,.card:has(.aq)>p.mut{display:none!important}\
+html body #app #gb>.aq,html body #app .aq.sb{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.aq{max-width:560px;margin:0 auto;color:#fff}.aq *{box-sizing:border-box}\
+.aq .abHud{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 0}\
+.aq .abHud div{border:3px solid "+K+";border-radius:12px;background:#241a6b;padding:6px 4px 5px;text-align:center;box-shadow:0 3px 0 "+K+"}\
+.aq .abHud small{display:block;font:800 9px inherit;letter-spacing:.08em;color:#e3defc!important;text-transform:uppercase}\
+.aq .abHud b{display:block;font:900 17px monospace;color:#fff!important;margin-top:1px}\
+.aq .abSc{border:3px solid "+K+";border-radius:18px;box-shadow:0 5px 0 "+K+";overflow:hidden;background:#15103f;margin-top:10px}\
+.aq .abSc svg{display:block;width:100%;height:auto}\
+.aq .abMs{min-height:38px;display:flex;align-items:center;font-size:13px;font-weight:700;line-height:1.35;color:#f1eeff!important;margin:10px 2px 8px;-webkit-text-fill-color:currentColor!important}\
+.aq .abMs b{color:"+YE+"!important}\
+.aq .abPn{border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+";background:#1d1550;padding:12px;animation:sbIn .3s}\
+.aq .abPn h4{margin:0 0 4px;font-size:15px;font-weight:900;color:#fff!important}.aq .abPn p{margin:0 0 10px;font-size:13px;line-height:1.4;color:#f1eeff!important}\
+.aq .abHs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}\
+.aq .abHc{border:3px solid "+K+";border-radius:14px;background:#2c2080;padding:6px;text-align:center;cursor:pointer;box-shadow:0 3px 0 "+K+";color:#fff}\
+.aq .abHc.s{border-color:"+YE+";background:#463aa8}\
+.aq .abHc svg{display:block;width:100%;height:56px}\
+.aq .abHc b{display:block;font-size:13px;font-weight:900;color:#fff!important}.aq .abHc span{display:block;font-size:11px;line-height:1.3;color:#e3defc!important;margin-top:2px}\
+.aq .abOp{display:flex!important;align-items:center;width:100%!important;text-align:left;margin:0 0 8px!important;padding:10px 12px!important;border:3px solid "+K+"!important;border-radius:12px!important;background:#fff!important;color:"+INK+"!important;-webkit-text-fill-color:"+INK+"!important;font:800 13px/1.35 inherit!important;cursor:pointer}\
+.aq .abOp.g{background:"+MI+"!important}.aq .abOp.b{background:"+PK+"!important}.aq .abOp.x{opacity:.5}\
+.aq .abBf{display:flex!important;align-items:center;width:100%!important;text-align:left;margin:0 0 8px!important;padding:10px 12px!important;border:3px solid "+K+"!important;border-radius:12px!important;background:#2c2080!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font:800 13px/1.35 inherit!important;cursor:pointer;box-shadow:0 3px 0 "+K+"}\
+.aq .abBf small{display:block;font-weight:600;color:#e3defc!important;-webkit-text-fill-color:#e3defc!important}\
+.aq .sbBtn{width:100%!important;margin:0!important;display:flex;align-items:center;justify-content:center;text-align:center!important}\
+.aq .abRd{display:flex;gap:4px;margin:8px 2px 0}.aq .abRd i{flex:1;height:7px;border-radius:4px;background:#2c2080;border:2px solid "+K+"}.aq .abRd i.d{background:"+MI+"}.aq .abRd i.l{background:"+RD+"}.aq .abRd i.c{background:"+YE+"}\
+.aq .abDm{font:900 13px monospace;paint-order:stroke;stroke:"+K+";stroke-width:3px}";
+function inj(){X.inj();if(document.getElementById("abcss"))return;var s=document.createElement("style");s.id="abcss";s.textContent=CSS;document.head.appendChild(s)}
+var HT={W:{n:"Воїн",hp:30,atk:5,col:OR,d:"Збалансований боєць"},S:{n:"Стрілець",hp:18,atk:9,col:CY,d:"Висока шкода, тендітний"},M:{n:"Медик",hp:22,atk:2,heal:6,col:MI,d:"Лікує найслабшого"},T:{n:"Танк",hp:42,atk:3,col:LV,d:"Багато здоров’я"}};
+function hero(t,c){var col=HT[t].col,h='<ellipse cx="22" cy="49" rx="13" ry="3" fill="#000" opacity=".3"/>';
+ var w=t=="T"?30:24;
+ h+='<rect x="'+(22-w/2)+'" y="20" width="'+w+'" height="24" rx="8" fill="'+col+'" stroke="'+K+'" stroke-width="3"/><rect x="12" y="43" width="8" height="6" rx="2" fill="#2c2080" stroke="'+K+'" stroke-width="2.5"/><rect x="24" y="43" width="8" height="6" rx="2" fill="#2c2080" stroke="'+K+'" stroke-width="2.5"/>';
+ h+='<path d="M10 20a12 13 0 0 1 24 0Z" fill="#e9e4ff" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"/><rect x="13" y="12" width="18" height="8" rx="4" fill="'+K+'"/><circle cx="18" cy="16" r="1.8" fill="'+YE+'"/><circle cx="26" cy="16" r="1.8" fill="'+YE+'"/>';
+ if(t=="W")h+='<path d="M36 40L42 14" stroke="'+K+'" stroke-width="5" stroke-linecap="round"/><path d="M36 40L42 14" stroke="#fff" stroke-width="2" stroke-linecap="round"/>';
+ if(t=="S")h+='<rect x="30" y="28" width="14" height="6" rx="2" fill="#555" stroke="'+K+'" stroke-width="2.5"/>';
+ if(t=="M")h+='<path d="M22 25v10M17 30h10" stroke="#fff" stroke-width="4" stroke-linecap="round"/>';
+ if(t=="T")h+='<rect x="4" y="22" width="9" height="16" rx="3" fill="#8f7ce0" stroke="'+K+'" stroke-width="2.5"/>';
+ return h}
+function alien(i,c){var cols=[PK,"#7af3c4",YE],col=cols[i%3],h='<ellipse cx="22" cy="49" rx="13" ry="3" fill="#000" opacity=".3"/>';
+ h+='<path d="M6 44C4 20 14 8 22 8s18 12 16 36Z" fill="'+col+'" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"/>';
+ h+='<path d="M10 44q2 6 4 0q2 6 4 0q2 6 4 0q2 6 4 0q2 6 4 0" fill="'+col+'" stroke="'+K+'" stroke-width="2.5" stroke-linejoin="round"/>';
+ if(i%3==0)h+='<circle cx="22" cy="24" r="7" fill="#fff" stroke="'+K+'" stroke-width="2.5"/><circle cx="21" cy="25" r="3" fill="'+K+'"/>';
+ else if(i%3==1)h+='<circle cx="15" cy="24" r="5" fill="#fff" stroke="'+K+'" stroke-width="2.5"/><circle cx="29" cy="24" r="5" fill="#fff" stroke="'+K+'" stroke-width="2.5"/><circle cx="16" cy="25" r="2" fill="'+K+'"/><circle cx="28" cy="25" r="2" fill="'+K+'"/>';
+ else h+='<circle cx="22" cy="16" r="4" fill="#fff" stroke="'+K+'" stroke-width="2.2"/><circle cx="14" cy="28" r="4" fill="#fff" stroke="'+K+'" stroke-width="2.2"/><circle cx="30" cy="28" r="4" fill="#fff" stroke="'+K+'" stroke-width="2.2"/>';
+ h+='<path d="M14 36q8 5 16 0" fill="none" stroke="'+K+'" stroke-width="2.5" stroke-linecap="round"/>';return h}
+/* бій: повертає кадри; кожен тик діє по одному юніту */
+function sim(T,E){var fr=[],all=T.concat(E),n=0;
+ function snap(a,t,v,k){fr.push({hp:all.map(function(u){return Math.max(0,u.hp)}),a:a,t:t,v:v,k:k})}
+ for(var r=0;r<60;r++){var A=[];for(var i=0;i<all.length;i++)A.push(i);
+  for(var q=0;q<A.length;q++){var i2=A[q],u=all[i2];if(u.hp<=0)continue;var mine=i2<T.length?T:E,foe=i2<T.length?E:T,off=i2<T.length?0:T.length;
+   var tgt=null;for(var j=0;j<foe.length;j++)if(foe[j].hp>0){tgt=j;break}
+   if(tgt==null)break;
+   if(u.heal){var w=-1,m=1e9;for(var j2=0;j2<mine.length;j2++)if(mine[j2].hp>0&&mine[j2].hp<mine[j2].max&&mine[j2].hp<m){m=mine[j2].hp;w=j2}
+    if(w>=0){var add=Math.min(u.heal,mine[w].max-mine[w].hp);mine[w].hp+=add;snap(i2,(i2<T.length?0:T.length)+w,"+"+add,"h");continue}}
+   var ti=(i2<T.length?T.length:0)+tgt;foe[tgt].hp-=u.atk;snap(i2,ti,"-"+u.atk,"d")}
+  if(!T.some(function(u){return u.hp>0})||!E.some(function(u){return u.hp>0}))break}
+ return {fr:fr,win:E.every(function(u){return u.hp<=0})&&T.some(function(u){return u.hp>0})}}
+function enemies(r,wb){var o=[];for(var i=0;i<3;i++){var hp=Math.round((12+7*r+i*2)*1+wb*3);o.push({hp:hp,max:hp,atk:2+r+(i==2?1:0)})}return o}
+GM.ab=function(g){inj();var D=g.items,NR=D.rounds||5,S=null,QP=[],qi=0;
+ function root(){return document.getElementById("aqroot")}
+ function nextQ(){if(qi>=QP.length){QP=shf(D.q.slice());qi=0}return QP[qi++]}
+ function msg(t){var e=document.getElementById("abMs");if(e)e.innerHTML=t}
+ function intro(){fr9(g.title,"","<div id='aqroot' class='aq sb'></div>");gs9("Складна місія");
+  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>АРЕНА ЕКІПАЖІВ</small><b>'+esc(D.name)+'</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(1)+X.ch(2)+'</div><h3>Збери команду</h3><p>Обери трьох ботів. Бої йдуть самі: удари, лікування, поразка чи перемога.</p>'+
+   '<div class="sbSt">'+X.ICO.scan+'<span>Перед кожним боєм відповідай на питання. Правильна відповідь дає баф команді, хибна підсилює ворога.</span></div>'+
+   '<div class="sbSt">'+X.ICO.heat+'<span>Боїв: '+NR+'. Чим вищий бій, тим сильніші прибульці. Без бафів далеко не пройти.</span></div>'+
+   '<button class="sbBtn n" id="abGo">Обрати команду</button></div>';
+  document.getElementById("abGo").onclick=pick}
+ function pick(){fr9(g.title,"","<div id='aqroot' class='aq sb'></div>");gs9("Команда");var sel=[];
+  var h='<div class="sbHd">'+X.bgSvg()+'<div class="sbTop"><small>КРОК 1 З 2</small><b>Склад команди</b></div></div><div class="abMs" id="abMs">Обери трьох ботів. Перший у списку приймає удари першим.</div><div class="abHs">';
+  Object.keys(HT).forEach(function(t){var o=HT[t];h+='<div class="abHc" data-t="'+t+'"><svg viewBox="0 0 44 52">'+hero(t)+'</svg><b>'+o.n+'</b><span>'+o.d+'<br>HP '+o.hp+' · атака '+o.atk+(o.heal?' · лікує '+o.heal:'')+'</span></div>'});
+  h+='</div><div style="margin-top:10px"><button class="sbBtn n" id="abOk" disabled style="opacity:.5">Обери трьох</button></div>';
+  root().innerHTML=h;
+  root().onclick=function(e){var c=e.target.closest(".abHc");if(!c)return;var t=c.dataset.t,i=sel.indexOf(t);if(i>=0){sel.splice(i,1);c.classList.remove("s")}else if(sel.length<3){sel.push(t);c.classList.add("s")}
+   var b=document.getElementById("abOk");b.disabled=sel.length<3;b.style.opacity=sel.length<3?.5:1;b.textContent=sel.length<3?"Обери трьох ("+sel.length+"/3)":"У бій";};
+  document.getElementById("abOk").onclick=function(){if(sel.length==3)start(sel.slice())}}
+ function start(team){S={r:0,team:team,ba:0,bh:0,wb:0,win:0,lost:0,ok:0,tot:0,hist:[]};QP=shf(D.q.slice());qi=0;
+  fr9(g.title,"","<div id='aqroot' class='aq sb'></div>");gs9("Арена");
+  root().innerHTML='<div class="sbHd">'+X.bgSvg()+'<div class="sbTop"><small>БІЙ <span id="abR">1</span>/'+NR+'</small><b>'+esc(D.name)+'</b></div></div><div class="abHud" id="abHud"></div><div class="abSc"><svg id="abSv" viewBox="0 30 360 120"></svg></div><div class="abMs" id="abMs"></div><div id="abPn"></div><div class="abRd" id="abRd"></div>';
+  round()}
+ function units(){return S.team.map(function(t){var o=HT[t],m=o.hp+S.bh;return {t:t,max:m,hp:m,atk:o.atk+S.ba,heal:o.heal||0}})}
+ function hud(){document.getElementById("abHud").innerHTML='<div><small>Атака</small><b>+'+S.ba+'</b></div><div><small>Броня</small><b>+'+S.bh+'</b></div><div><small>Перемог</small><b>'+S.win+'/'+NR+'</b></div>';
+  var d="";for(var i=0;i<NR;i++)d+='<i class="'+(i<S.hist.length?(S.hist[i]?"d":"l"):i==S.r?"c":"")+'"></i>';document.getElementById("abRd").innerHTML=d;var e=document.getElementById("abR");if(e)e.textContent=Math.min(S.r+1,NR)}
+ var XS=[22,68,114],XE=[200,246,292];
+ function scene(T,E,hp){var h='<defs><radialGradient id="abg" cx=".5" cy=".2"><stop offset="0" stop-color="#3a2f9a"/><stop offset="1" stop-color="#150f3f"/></radialGradient></defs><rect width="360" height="150" fill="url(#abg)"/><path d="M0 128h360" stroke="'+K+'" stroke-width="3"/><rect y="129" width="360" height="21" fill="#1d1550"/><text x="180" y="78" text-anchor="middle" font-size="22" font-weight="900" fill="#fff" opacity=".25">VS</text>';
+  T.forEach(function(u,i){h+=unit("t"+i,XS[i],u,hero(u.t),hp?hp[i]:u.hp,true)});E.forEach(function(u,i){h+=unit("e"+i,XE[i],u,alien(i),hp?hp[T.length+i]:u.hp,false)});
+  document.getElementById("abSv").innerHTML=h}
+ function unit(id,x,u,art,hp,left){var p=Math.max(0,hp)/u.max;return '<g id="'+id+'" data-x="'+x+'" opacity="'+(hp<=0?.25:1)+'"><g transform="translate('+x+' 70)'+(left?'':' translate(44 0) scale(-1 1)')+'">'+art+'</g><rect x="'+x+'" y="62" width="40" height="7" rx="3" fill="#2c2080" stroke="'+K+'" stroke-width="2"/><rect x="'+(x+1)+'" y="63" width="'+(38*p)+'" height="5" rx="2" fill="'+(left?MI:RD)+'"/></g>'}
+ function round(){S.team.length;hud();var T=units(),E=enemies(S.r+1,S.wb);S.T=T;S.E=E;scene(T,E);var q=nextQ(),pn=document.getElementById("abPn");
+  msg("Підготовка до бою "+(S.r+1)+". Відповідай на питання, щоб підсилити команду.");
+  var ord=shf([0,1,2]),o=[q.o[0],q.o[1],q.o[2]];
+  pn.innerHTML='<div class="abPn"><h4>'+esc(q.q)+'</h4>'+ord.map(function(i){return '<button class="abOp" data-k="'+(i==0?1:0)+'">'+esc(o[i])+'</button>'}).join("")+'</div>';
+  pn.onclick=function(e){var b=e.target.closest(".abOp");if(!b)return;var ok=b.dataset.k=="1";[].forEach.call(pn.querySelectorAll(".abOp"),function(x){x.classList.add(x.dataset.k=="1"?"g":"x");x.style.pointerEvents="none"});if(!ok)b.classList.add("b");S.tot++;
+   setTimeout(function(){if(!root())return;if(ok){S.ok++;buffs(q)}else{S.wb++;msg("<b>Хибно.</b> "+esc(q.e)+" Ворог отримав додаткове здоров’я.");go()}},650)}}
+ function buffs(q){msg("<b>Правильно.</b> "+esc(q.e)+" Обери баф.");var pn=document.getElementById("abPn");
+  pn.innerHTML='<div class="abPn"><h4>Обери баф для команди</h4><button class="abBf" data-b="a"><span>Заряд зброї<small>+2 до атаки всіх ботів</small></span></button><button class="abBf" data-b="h"><span>Броня<small>+8 до максимального здоров’я всіх ботів</small></span></button></div>';
+  pn.onclick=function(e){var b=e.target.closest(".abBf");if(!b)return;if(b.dataset.b=="a")S.ba+=2;else S.bh+=8;S.T=units();scene(S.T,S.E);hud();go()}}
+ function go(){hud();S.T=units();var pn=document.getElementById("abPn");pn.innerHTML='<button class="sbBtn n" id="abFt">У бій</button>';pn.onclick=null;document.getElementById("abFt").onclick=fight;scene(S.T,S.E)}
+ function fight(){var pn=document.getElementById("abPn");pn.innerHTML="";msg("Бій іде.");var T=S.T,E=S.E,res=sim(T.map(function(u){return {t:u.t,max:u.max,hp:u.max,atk:u.atk,heal:u.heal}}),E.map(function(u){return {max:u.max,hp:u.max,atk:u.atk}})),i=0;
+  var hp0=T.map(function(u){return u.max}).concat(E.map(function(u){return u.max}));
+  function step(){if(!root())return;if(i>=res.fr.length){endFight(res);return}var f=res.fr[i++];scene(T,E,f.hp);
+   var a=document.getElementById((f.a<3?"t"+f.a:"e"+(f.a-3))),t=document.getElementById((f.t<3?"t"+f.t:"e"+(f.t-3)));
+   if(a){var dx=f.a<3?10:-10;a.setAttribute("transform","translate("+dx+" 0)")}
+   if(t){var xx=+t.dataset.x+14;var s=document.createElementNS("http://www.w3.org/2000/svg","text");s.setAttribute("x",xx);s.setAttribute("y",56);s.setAttribute("text-anchor","middle");s.setAttribute("class","abDm");s.setAttribute("fill",f.k=="h"?MI:"#fff");s.textContent=f.v;document.getElementById("abSv").appendChild(s)}
+   setTimeout(step,i>40?110:300)}
+  step()}
+ function endFight(res){var pn=document.getElementById("abPn");S.hist.push(res.win);if(res.win)S.win++;else S.lost++;hud();
+  var last=S.r+1>=NR;
+  msg(res.win?"<b>Перемога.</b> Команда відбила атаку прибульців.":"<b>Поразка.</b> Команда відступає на ремонт.");
+  pn.innerHTML='<button class="sbBtn n" id="abNx">'+(last?"Підсумок місії":"Наступний бій")+'</button>';
+  document.getElementById("abNx").onclick=function(){if(last)finish();else{S.r++;round()}}}
+ function finish(){var sc=Math.min(6,S.win+(S.lost==0?1:0));hud();document.getElementById("abPn").innerHTML='<div class="sbRep '+(S.win>=NR?"g":"b")+'"><h4>'+(S.win>=NR?"Арену пройдено":S.win>=3?"Гідний результат":"Команда потребує підготовки")+'</h4><p>Перемог: '+S.win+' з '+NR+'. Правильних відповідей: '+S.ok+' з '+S.tot+'.</p><button class="sbBtn n" id="abFn">Підсумок місії</button></div>';msg("");document.getElementById("abFn").onclick=function(){fin9(sc,6)}}
+ intro()};
+window.AB9={sim:sim,enemies:enemies,HT:HT};
+var AB19={name:"Арена «Кластер-7»",rounds:5,q:(window.CP9&&CP9.fm&&CP9.fm.q)||[]};
+try{GI.ab=["🤖","Автобій екіпажів"]}catch(e){}
+window.CP9=window.CP9||{};CP9.ab=AB19;
+/* автобій поки не підключено до уроків */
+})();
+
+/* «Космічні перегони» — складна гра 9 класу (Космостанція): гонка з воротами-питаннями, турбо за правильну відповідь. */
+(function(){
+var X=window.SB9;if(!X)return;var K=X.K,INK=X.INK,esc=X.esc,shf=X.shf,YE=X.YE,MI=X.MI,RD=X.RD,CY=X.CY,OR=X.OR,PK=X.PK,LV=X.LV;
+var LC=[OR,CY,PK],LT=["А","Б","В"];
+var CSS="\
+html body .card:has(.rq),html body #app .card:has(.rq){background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.card:has(.rq)>h2,.card:has(.rq)>p.mut{display:none!important}\
+html body #app #gb>.rq,html body #app .rq.sb{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.rq{max-width:560px;margin:0 auto;color:#fff}.rq *{box-sizing:border-box}\
+.rq .rcHud{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 0}\
+.rq .rcHud div{border:3px solid "+K+";border-radius:12px;background:#241a6b;padding:6px 4px 5px;text-align:center;box-shadow:0 3px 0 "+K+"}\
+.rq .rcHud small{display:block;font:800 9px inherit;letter-spacing:.08em;color:#e3defc!important;text-transform:uppercase}\
+.rq .rcHud b{display:block;font:900 17px monospace;color:#fff!important;margin-top:1px}\
+.rq .rcTk{position:relative;height:22px;margin:10px 2px 0;border:3px solid "+K+";border-radius:11px;background:#1d1550}\
+.rq .rcTk i{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:2.5px solid "+K+"}\
+.rq .rcTk em{position:absolute;right:6px;top:-1px;font:900 11px/16px monospace;color:"+YE+"}\
+.rq .rcCv{position:relative;border:3px solid "+K+";border-radius:18px;box-shadow:0 5px 0 "+K+";overflow:hidden;background:#0b0830;margin-top:10px;touch-action:none}\
+.rq .rcCv canvas{display:block;width:100%;height:auto}\
+.rq .rcCd{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 64px monospace;color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 4px 0 "+K+",0 0 18px "+PK+";pointer-events:none}\
+.rq .rcQ{border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+";background:#1d1550;padding:10px;margin-top:10px}\
+.rq .rcQ h4{margin:0 0 8px;font-size:14px;font-weight:900;line-height:1.3;color:#fff!important}\
+.rq .rcOp{display:flex!important;align-items:center;gap:8px;width:100%!important;text-align:left;margin:0 0 6px!important;padding:8px 10px!important;border:3px solid "+K+"!important;border-radius:12px!important;background:#2c2080!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font:800 13px/1.3 inherit!important;cursor:pointer;box-shadow:0 3px 0 "+K+"}\
+.rq .rcOp:last-child{margin:0!important}\
+.rq .rcOp b{flex:none;width:26px;height:26px;border-radius:8px;border:3px solid "+K+";display:flex;align-items:center;justify-content:center;font:900 13px monospace;color:"+INK+"!important;-webkit-text-fill-color:"+INK+"!important}\
+.rq .rcOp.s{border-color:"+YE+"!important;background:#463aa8!important}\
+.rq .rcMs{min-height:38px;display:flex;align-items:center;font-size:13px;font-weight:700;line-height:1.35;color:#f1eeff!important;margin:10px 2px 0;-webkit-text-fill-color:currentColor!important}\
+.rq .rcMs b{color:"+YE+"!important}\
+.rq .sbBtn{width:100%!important;margin:0!important;display:flex;align-items:center;justify-content:center;text-align:center!important}";
+function inj(){X.inj();if(document.getElementById("rccss"))return;var s=document.createElement("style");s.id="rccss";s.textContent=CSS;document.head.appendChild(s)}
+var NG=8,GAP=460,TOT=NG*GAP+420,VB=54;
+/* спільна фізика для гри й симуляції */
+function mkRace(acc){var r={t:0,z:0,v:VB,tb:0,tc:0,pl:1,done:null,gi:0,fin:[],
+  riv:[{b:52,p:.9},{b:54,p:.75},{b:56,p:.6},{b:58,p:.45}].map(function(o,i){return {b:o.b,p:o.p,z:-6*(i+1),v:o.b,tb:0,tc:0,done:null,gi:0}})};return r}
+function vt(o,b){return b+(o.tb>0?38:0)-(o.tc>0?34:0)}
+function step(R,dt,gateFn){R.t+=dt;
+ var u=R;u.tb=Math.max(0,u.tb-dt);u.tc=Math.max(0,u.tc-dt);u.v+=(vt(u,VB)-u.v)*Math.min(1,dt*3.5);u.z+=u.v*dt;
+ while(u.gi<NG&&u.z>=(u.gi+1)*GAP){var ok=gateFn(u.gi);if(ok){u.tb=2.4;u.tc=0}else{u.tc=1.6;u.tb=0}u.gi++}
+ if(R.done==null&&u.z>=TOT)R.done=R.t;
+ R.riv.forEach(function(o){o.tb=Math.max(0,o.tb-dt);o.tc=Math.max(0,o.tc-dt);o.v+=(vt(o,o.b)-o.v)*Math.min(1,dt*3.5);o.z+=o.v*dt;
+  while(o.gi<NG&&o.z>=(o.gi+1)*GAP){if(Math.random()<o.p){o.tb=2.4}else{o.tc=1.6}o.gi++}
+  if(o.done==null&&o.z>=TOT)o.done=R.t})}
+function rank(R){var me=R.done!=null?R.done:R.t+(TOT-R.z)/Math.max(40,R.v),n=1;R.riv.forEach(function(o){var f=o.done!=null?o.done:R.t+(TOT-o.z)/Math.max(40,o.v);if(f<me)n++});return n}
+function rate(r){return [0,6,5,4,2,1][r]}
+/* малювання */
+function ship(c,x,y,s,col,fl,rot){c.save();c.translate(x,y);c.scale(s,s);if(rot)c.rotate(rot);c.lineJoin="round";c.lineWidth=3.2;c.strokeStyle=K;
+ if(fl){c.fillStyle=YE;c.beginPath();c.moveTo(-6,14);c.lineTo(0,14+fl);c.lineTo(6,14);c.closePath();c.fill();c.stroke()}
+ c.fillStyle=col;c.beginPath();c.moveTo(0,-22);c.lineTo(15,12);c.lineTo(7,16);c.lineTo(-7,16);c.lineTo(-15,12);c.closePath();c.fill();c.stroke();
+ c.fillStyle="#fff";c.globalAlpha=.35;c.beginPath();c.moveTo(0,-18);c.lineTo(5,10);c.lineTo(0,10);c.closePath();c.fill();c.globalAlpha=1;
+ c.fillStyle="#e9e4ff";c.beginPath();c.ellipse(0,-2,5.5,8,0,0,7);c.fill();c.stroke();
+ c.fillStyle=col;c.beginPath();c.moveTo(-15,12);c.lineTo(-24,18);c.lineTo(-13,17);c.closePath();c.fill();c.stroke();c.beginPath();c.moveTo(15,12);c.lineTo(24,18);c.lineTo(13,17);c.closePath();c.fill();c.stroke();c.restore()}
+function rock(c,x,y,r){c.save();c.lineWidth=Math.max(2,r*.12);c.strokeStyle=K;c.fillStyle="#8d83c9";c.beginPath();for(var i=0;i<9;i++){var a=i/9*6.283,q=r*(.82+.18*((i*7)%3)/2);c.lineTo(x+Math.cos(a)*q,y+Math.sin(a)*q)}c.closePath();c.fill();c.stroke();
+ c.fillStyle="#6a60aa";c.beginPath();c.arc(x-r*.3,y-r*.15,r*.22,0,7);c.fill();c.beginPath();c.arc(x+r*.25,y+r*.25,r*.15,0,7);c.fill();c.restore()}
+GM.rc=function(g){inj();var D=g.items,Q=D.q,S=null,raf=0,QP=[],qi=0;
+ var W=360,H=300,HZ=92,KK=130,DD=560;
+ function root(){return document.getElementById("rqroot")}
+ function nextQ(){if(qi>=QP.length){QP=shf(Q.slice());qi=0}return QP[qi++]}
+ function msg(t){var e=document.getElementById("rcMs");if(e)e.innerHTML=t}
+ function intro(){fr9(g.title,"","<div id='rqroot' class='rq sb'></div>");gs9("Складна місія");
+  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>КУБОК ГАЛАКТИКИ</small><b>'+esc(D.name)+'</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(0)+X.ch(3)+'</div><h3>Виграти перегони</h3><p>Ти женеш трасою проти чотирьох суперників. Місць на фініші п’ять.</p>'+
+   '<div class="sbSt">'+X.ICO.scan+'<span>На трасі '+NG+' воріт з питанням. Над трасою видно питання, а ворота мають літери А, Б, В. Обери смугу з правильною відповіддю.</span></div>'+
+   '<div class="sbSt">'+X.ICO.heat+'<span>Правильна відповідь дає турбо, хибна ― зіткнення й втрату швидкості. Астероїди теж сповільнюють, а жовті стрілки дають малий прискорювач.</span></div>'+
+   '<button class="sbBtn n" id="rcGo">На старт</button></div>';
+  document.getElementById("rcGo").onclick=start}
+ function mkObj(){var o=[];for(var i=0;i<NG;i++){var base=i*GAP;for(var k=0;k<3;k++){var z=base+90+k*100+Math.random()*30,ln=Math.floor(Math.random()*3);o.push({z:z,l:ln,t:k==1?"b":"a",hit:false})}}return o}
+ function start(){QP=shf(Q.slice());qi=0;var gs=[];for(var i=0;i<NG;i++){var q=nextQ(),ord=shf([0,1,2]);gs.push({q:q,ord:ord,cl:ord.indexOf(0)})}
+  S={R:mkRace(),gs:gs,px:1,pl:1,obj:mkObj(),ok:0,tot:0,go:false,shake:0,flash:0,pop:null,fx:[],last:0,pose:0,over:false};
+  fr9(g.title,"","<div id='rqroot' class='rq sb'></div>");gs9("Перегони");
+  root().innerHTML='<div class="sbHd">'+X.bgSvg()+'<div class="sbTop"><small>ВОРОТА <span id="rcG">1</span>/'+NG+'</small><b>'+esc(D.name)+'</b></div></div><div class="rcHud" id="rcHud"></div><div class="rcTk" id="rcTk"></div><div class="rcCv" id="rcCv"><canvas id="rcC" width="'+W*2+'" height="'+H*2+'"></canvas><div class="rcCd" id="rcCd">3</div></div><div class="rcQ" id="rcQ"></div><div class="rcMs" id="rcMs">Старт через кілька секунд. Обери смугу, торкнувшись варіанта відповіді або сторони траси.</div>';
+  S.ctx=document.getElementById("rcC").getContext("2d");S.ctx.scale(2,2);qshow();hud();
+  var cv=document.getElementById("rcCv");cv.addEventListener("pointerdown",function(e){var b=cv.getBoundingClientRect(),x=(e.clientX-b.left)/b.width;lane(x<.34?0:x>.66?2:1)});
+  var n=3,cd=document.getElementById("rcCd");S.cdT=setInterval(function(){if(!root()){clearInterval(S.cdT);return}n--;if(n>0)cd.textContent=n;else{clearInterval(S.cdT);cd.textContent="СТАРТ";setTimeout(function(){cd.style.display="none"},500);S.go=true;S.last=performance.now();loop()}},800);
+  render()}
+ function lane(l){if(S.over)return;S.pl=l;[].forEach.call(document.querySelectorAll(".rcOp"),function(b,i){b.classList.toggle("s",i==l)})}
+ function curG(){return Math.min(S.R.gi,NG-1)}
+ function qshow(){var gi=curG(),G=S.gs[gi],h='<h4>'+esc(G.q.q)+'</h4>';
+  for(var i=0;i<3;i++)h+='<button class="rcOp" data-l="'+i+'"><b style="background:'+LC[i]+'">'+LT[i]+'</b><span>'+esc(G.q.o[G.ord[i]])+'</span></button>';
+  var q=document.getElementById("rcQ");q.innerHTML=h;q.onclick=function(e){var b=e.target.closest(".rcOp");if(b)lane(+b.dataset.l)};lane(S.pl)}
+ function hud(){var R=S.R,rk=rank(R);document.getElementById("rcHud").innerHTML='<div><small>Місце</small><b>'+rk+'/5</b></div><div><small>Швидкість</small><b>'+Math.round(R.v*3)+'</b></div><div><small>Відповідей</small><b>'+S.ok+'/'+S.tot+'</b></div>';
+  var t='<em>ФІНІШ</em>';var cols=[RD,"#7af3c4",YE,"#c9b8ff"];R.riv.forEach(function(o,i){t+='<i style="left:'+Math.max(3,Math.min(96,100*o.z/TOT))+'%;background:'+cols[i]+'"></i>'});t+='<i style="left:'+Math.max(3,Math.min(96,100*R.z/TOT))+'%;background:'+OR+';width:18px;height:18px;margin:-9px 0 0 -9px;z-index:2"></i>';document.getElementById("rcTk").innerHTML=t;var e=document.getElementById("rcG");if(e)e.textContent=Math.min(R.gi+1,NG)}
+ function gate(gi){var G=S.gs[gi],ok=S.pl==G.cl;S.tot++;if(ok){S.ok++;S.pop={t:"ТУРБО",c:MI,a:1.2};S.flash=.5;msg("<b>Правильно.</b> "+esc(G.q.e))}else{S.pop={t:"ЗІТКНЕННЯ",c:RD,a:1.2};S.shake=.6;msg("<b>Хибно.</b> "+esc(G.q.e))}
+  return ok}
+ function loop(){if(!root()||S.over)return;var now=performance.now(),dt=Math.min(.05,(now-S.last)/1000);S.last=now;var R=S.R,gi0=R.gi;
+  S.px+=(S.pl-S.px)*Math.min(1,dt*8);var pl=Math.round(S.px);
+  var z0=R.z;step(R,dt,function(i){return gate(i)});
+  S.obj.forEach(function(o){if(!o.hit&&o.z>z0&&o.z<=R.z&&o.l==pl&&Math.abs(S.px-o.l)<.6){o.hit=true;if(o.t=="a"){R.tc=Math.max(R.tc,.9);R.tb=0;S.shake=.35;S.pop={t:"АСТЕРОЇД",c:RD,a:1}}else{R.tb=Math.max(R.tb,1.1);S.pop={t:"ПРИСКОРЮВАЧ",c:YE,a:1}}}});
+  if(R.gi!=gi0&&R.gi<NG){qshow()}
+  S.shake=Math.max(0,S.shake-dt);S.flash=Math.max(0,S.flash-dt);if(S.pop){S.pop.a-=dt;if(S.pop.a<=0)S.pop=null}
+  render();hud();
+  if(R.done!=null){end();return}
+  raf=requestAnimationFrame(loop)}
+ function end(){S.over=true;render();var R=S.R,rk=rank(R),sc=rate(rk);
+  var q=document.getElementById("rcQ");q.innerHTML='<div class="sbRep '+(rk<=1?"g":"b")+'" style="margin:0"><h4>'+(rk==1?"Перше місце":rk<=3?"Подіум: "+rk+" місце":"Фініш: "+rk+" місце")+'</h4><p>Правильних відповідей: '+S.ok+' з '+S.tot+'. Місце на фініші: '+rk+' з 5.</p><button class="sbBtn n" id="rcFn">Підсумок місії</button></div>';
+  document.getElementById("rcFn").onclick=function(){fin9(sc,6)};msg("")}
+ function proj(d,l,px){var s=KK/(d+KK),y=HZ+(H-HZ)*s*1.0,rw=W*.5*s,cx=W/2+curve(S.R.z+d)*(1-s)*0+(1-s)*0,x=cx+(l-1)*rw*.62;return {x:x,y:y,s:s,rw:rw}}
+ function curve(z){return 0}
+ function render(){var c=S.ctx,R=S.R,sk=S.shake>0?(Math.random()-.5)*6*S.shake:0;c.save();c.translate(sk,sk*.5);
+  var gr=c.createLinearGradient(0,0,0,HZ);gr.addColorStop(0,"#120b45");gr.addColorStop(1,"#4a2a96");c.fillStyle=gr;c.fillRect(-5,-5,W+10,HZ+5);
+  for(var i=0;i<26;i++){var sx=(i*97%W),sy=(i*53%HZ);c.fillStyle="#fff";c.globalAlpha=.4+.5*((i*7)%3)/2;c.fillRect(sx,sy,1.8,1.8)}c.globalAlpha=1;
+  c.fillStyle="#ff9f5a";c.strokeStyle=K;c.lineWidth=3;c.beginPath();c.arc(262,52,30,0,7);c.fill();c.stroke();c.fillStyle="#ffd08a";c.beginPath();c.arc(252,44,10,0,7);c.fill();c.strokeStyle="#ffd9a0";c.lineWidth=5;c.beginPath();c.ellipse(262,56,50,10,-.25,0,7);c.stroke();c.strokeStyle=K;c.lineWidth=2;c.beginPath();c.ellipse(262,56,50,10,-.25,3.4,6.1);c.stroke();
+  c.fillStyle="#6b3bb5";c.beginPath();c.moveTo(0,HZ);c.lineTo(50,HZ-24);c.lineTo(95,HZ-8);c.lineTo(140,HZ-30);c.lineTo(200,HZ);c.closePath();c.fill();c.strokeStyle=K;c.lineWidth=3;c.stroke();
+  c.fillStyle="#1d1550";c.fillRect(-5,HZ,W+10,H-HZ+5);c.strokeStyle=K;c.lineWidth=3;c.beginPath();c.moveTo(-5,HZ);c.lineTo(W+5,HZ);c.stroke();
+  var N=34,pz=R.z;for(var i=N-1;i>=0;i--){var d1=DD*Math.pow(i/N,2.2),d2=DD*Math.pow((i+1)/N,2.2),a=proj(d1,1),b=proj(d2,1);var seg=Math.floor((pz+d1)/36)%2==0;
+   c.fillStyle=seg?"#38308f":"#2f2880";c.beginPath();c.moveTo(a.x-a.rw,a.y);c.lineTo(a.x+a.rw,a.y);c.lineTo(b.x+b.rw,b.y);c.lineTo(b.x-b.rw,b.y);c.closePath();c.fill();
+   c.fillStyle=seg?RD:"#fff";var e1=a.rw*.07,e2=b.rw*.07;c.beginPath();c.moveTo(a.x-a.rw,a.y);c.lineTo(a.x-a.rw+e1,a.y);c.lineTo(b.x-b.rw+e2,b.y);c.lineTo(b.x-b.rw,b.y);c.fill();c.beginPath();c.moveTo(a.x+a.rw,a.y);c.lineTo(a.x+a.rw-e1,a.y);c.lineTo(b.x+b.rw-e2,b.y);c.lineTo(b.x+b.rw,b.y);c.fill();
+   if(seg){c.fillStyle="rgba(255,255,255,.35)";[.5,-.5].forEach(function(o){var w1=Math.max(.6,a.rw*.018),w2=Math.max(.6,b.rw*.018),x1=a.x+o*a.rw*.62*2/2*1.0*1,x2=b.x+o*b.rw*.62;c.beginPath();c.moveTo(a.x+(o*1.24/2)*a.rw-w1,a.y);c.lineTo(a.x+(o*1.24/2)*a.rw+w1,a.y);c.lineTo(b.x+(o*1.24/2)*b.rw+w2,b.y);c.lineTo(b.x+(o*1.24/2)*b.rw-w2,b.y);c.fill()})}}
+  c.strokeStyle=K;c.lineWidth=3;var p0=proj(DD,1),p1=proj(0,1);c.beginPath();c.moveTo(p0.x-p0.rw,p0.y);c.lineTo(p1.x-p1.rw,p1.y);c.moveTo(p0.x+p0.rw,p0.y);c.lineTo(p1.x+p1.rw,p1.y);c.stroke();
+  /* об’єкти за глибиною: далекі першими */
+  var L=[];for(var gi=Math.max(0,R.gi-0);gi<NG;gi++){var gz=(gi+1)*GAP-R.z;if(gz>-20&&gz<DD)L.push({d:gz,k:"g",g:gi})}
+  var fz=TOT-R.z;if(fz>-20&&fz<DD)L.push({d:fz,k:"f"});
+  S.obj.forEach(function(o){var d=o.z-R.z;if(d>-10&&d<DD&&!o.hit)L.push({d:d,k:o.t,l:o.l})});
+  R.riv.forEach(function(o,i){var d=o.z-R.z;if(d>-8&&d<DD)L.push({d:d,k:"r",i:i,l:[0,2,1,0][i]})});
+  L.sort(function(a,b){return b.d-a.d});
+  L.forEach(function(o){var d=Math.max(0,o.d),s=KK/(d+KK);
+   if(o.k=="g"){var G=S.gs[o.g],a=proj(d,1),h=46*s+4,top=a.y-h*1.9;
+    c.lineWidth=Math.max(2,4*s);c.strokeStyle=K;
+    for(var l=0;l<3;l++){var p=proj(d,l),w=a.rw*.56,cc=LC[l];c.fillStyle=cc;c.globalAlpha=.28;c.fillRect(p.x-w,a.y-h*.1,w*2,2+h*.1);c.globalAlpha=1;c.fillStyle=cc;c.beginPath();c.rect(p.x-w,top,w*2,h*.9);c.fill();c.stroke();
+     c.fillStyle=INK;c.font="900 "+Math.max(8,34*s)+"px monospace";c.textAlign="center";c.textBaseline="middle";c.fillText(LT[l],p.x,top+h*.45)}
+    c.fillStyle="#fff";[-1,1].forEach(function(sg){c.fillRect(a.x+sg*a.rw*.98-3*s,top,6*s+1,h*2);c.strokeRect(a.x+sg*a.rw*.98-3*s,top,6*s+1,h*2)})}
+   else if(o.k=="f"){var a=proj(d,1),h=10*s+2;for(var q=0;q<10;q++){c.fillStyle=q%2?"#fff":K;c.fillRect(a.x-a.rw+q*a.rw*.2,a.y-h*2,a.rw*.2+.5,h)}c.strokeStyle=K;c.lineWidth=2;c.strokeRect(a.x-a.rw,a.y-h*2,a.rw*2,h)}
+   else if(o.k=="a"){var p=proj(d,o.l);rock(c,p.x,p.y-12*s,16*s+2)}
+   else if(o.k=="b"){var p=proj(d,o.l);c.fillStyle=YE;c.strokeStyle=K;c.lineWidth=Math.max(1.5,3*s);for(var q=0;q<2;q++){var yy=p.y-q*9*s-2,ww=18*s+2;c.beginPath();c.moveTo(p.x-ww,yy);c.lineTo(p.x,yy-9*s-1);c.lineTo(p.x+ww,yy);c.lineTo(p.x+ww,yy+4*s);c.lineTo(p.x,yy-5*s);c.lineTo(p.x-ww,yy+4*s);c.closePath();c.fill();c.stroke()}}
+   else if(o.k=="r"){var p=proj(d,o.l);ship(c,p.x,p.y-16*s,1.1*s+.12,["#ff5c7a","#7af3c4","#ffd24d","#c9b8ff"][o.i],6)}});
+  /* гравець */
+  var pp=proj(0,S.px),spin=R.tc>0?Math.sin(R.tc*14)*.25:0;if(R.tb>0){c.strokeStyle="rgba(255,255,255,.55)";c.lineWidth=2;for(var i=0;i<9;i++){var lx=(i*43+R.t*500)%W,ly=HZ+((i*61+R.t*400)%(H-HZ));c.beginPath();c.moveTo(lx,ly);c.lineTo(lx+(lx-W/2)*.12,ly+16);c.stroke()}}
+  ship(c,pp.x,H-34,1.45,OR,R.tb>0?18+Math.random()*8:7+Math.random()*3,spin);
+  if(S.flash>0){c.fillStyle="rgba(122,243,196,"+S.flash*.35+")";c.fillRect(0,0,W,H)}
+  if(S.shake>0&&R.tc>0){c.fillStyle="rgba(255,60,90,"+Math.min(.3,S.shake*.4)+")";c.fillRect(0,0,W,H)}
+  if(S.pop){c.globalAlpha=Math.min(1,S.pop.a*2);c.font="900 26px monospace";c.textAlign="center";c.lineWidth=6;c.strokeStyle=K;c.strokeText(S.pop.t,W/2,70);c.fillStyle=S.pop.c;c.fillText(S.pop.t,W/2,70);c.globalAlpha=1}
+  c.restore()}
+ intro()};
+window.RC9={mk:mkRace,step:step,rank:rank,NG:NG,TOT:TOT};
+var RC20={name:"Кубок галактики",q:(window.CP9&&CP9.fm&&CP9.fm.q)||[]};
+try{GI.rc=["🏁","Космічні перегони"]}catch(e){}
+window.CP9=window.CP9||{};CP9.rc=RC20;
+try{var L=LES[19];if(L&&L.g){L.g.pop();L.g.push({type:"rc",title:"Космічні перегони",items:RC20})}}catch(e){}
+})();
+
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
 var LD={},V=window.PKV||"1";
