@@ -37418,6 +37418,11 @@ html body #app #gb>.qr,html body #app .qr.sb{background:transparent!important;bo
 .qr .sbBtn{width:100%!important;margin:0!important;display:flex}.qr .sbBtn.h{width:auto!important;flex:none;padding:6px 12px;font-size:13px}\
 .qr .qrTop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 2px 0;font-size:12px;font-weight:800;color:#c9c2ff!important}\
 .qr .sbRing b{font-size:15px!important}\
+.qr .qrRow,.qr .qrRow *,.qr .qrMs,.qr .qrMs *,.qr .qrPn p,.qr .qrPn h4,.qr .qrSl,.qr .qrSl span,.qr .qrInv small{-webkit-text-fill-color:currentColor!important;opacity:1!important}\
+.qr .qrRow,.qr .qrRow span,.qr .qrPn h4{color:#fff!important}.qr .qrMs,.qr .qrMs *,.qr .qrPn p{color:#f1eeff!important}.qr .qrMs b{color:"+YE+"!important}.qr .qrInv small{color:#e3defc!important}\
+.qr .qrKp button,.qr .sbBtn,.qr .qrCd,.qr .qrOp{display:flex!important;align-items:center;justify-content:center;text-align:center!important;-webkit-text-fill-color:currentColor!important}\
+.qr .qrKp button{color:"+INK+"!important;padding:12px 0!important;line-height:1}\
+.qr .qrCd{color:"+INK+"!important}.qr .qrCd.s,.qr .qrCd.d{color:"+INK+"!important}\
 .qr .qrSh{animation:sbSh .4s}\
 @keyframes qrPu{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}";
 function inj(){X.inj();if(document.getElementById("qrcss"))return;var s=document.createElement("style");s.id="qrcss";s.textContent=CSS;document.head.appendChild(s)}
@@ -37503,6 +37508,107 @@ var C16={room:"Модуль «Дельта-9»",time:420,puzzles:[
 try{GI.qr=["🔑","Квест-кімната"]}catch(e){}
 window.CP9=window.CP9||{};CP9.qr=C1;CP9.qr16=C16;
 try{var L=LES[16];if(L&&L.g){L.g.pop();L.g.push({type:"qr",title:"Втеча з модуля",items:C16})}}catch(e){}
+})();
+
+/* «Колонія» — складна гра 9 класу (Космостанція): побудуй колонію, кожна споруда потребує правильної відповіді. */
+(function(){
+var X=window.SB9;if(!X)return;var K=X.K,INK=X.INK,esc=X.esc,shf=X.shf,YE=X.YE,MI=X.MI,RD=X.RD,CY=X.CY,OR=X.OR,PK=X.PK,LV=X.LV;
+var CSS="\
+html body .card:has(.cq),html body #app .card:has(.cq){background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.card:has(.cq)>h2,.card:has(.cq)>p.mut{display:none!important}\
+html body #app #gb>.cq,html body #app .cq.sb{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.cq{max-width:560px;margin:0 auto;color:#fff}.cq *{box-sizing:border-box}\
+.cq .clHud{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 0}\
+.cq .clHud div{border:3px solid "+K+";border-radius:12px;background:#241a6b;padding:6px 4px 5px;text-align:center;box-shadow:0 3px 0 "+K+"}\
+.cq .clHud small{display:block;font:800 9px inherit;letter-spacing:.08em;color:#c9c2ff!important;text-transform:uppercase}\
+.cq .clHud b{display:block;font:900 17px monospace;color:#fff!important;margin-top:1px}\
+.cq .clHud svg{width:18px;height:18px;vertical-align:-4px;margin-right:2px}\
+.cq .clHud .bad b{color:"+RD+"!important}.cq .clHud .ok b{color:"+MI+"!important}\
+.cq .clMap{border:3px solid "+K+";border-radius:18px;box-shadow:0 5px 0 "+K+";overflow:hidden;background:#15103f;margin-top:10px}\
+.cq .clMap svg{display:block;width:100%;height:auto}\
+.cq .clT{cursor:pointer}.cq .clT .tl{fill:#2a2a78;stroke:#4a4aa8;stroke-width:1.5}.cq .clT.e:hover .tl{fill:#34348f}.cq .clT.s .tl{fill:"+YE+";fill-opacity:.35;stroke:"+YE+";stroke-width:2.5}\
+.cq .clT.e .pl{animation:clPl 1.6s ease-in-out infinite}\
+@keyframes clPl{0%,100%{opacity:.25}50%{opacity:.8}}\
+.cq .clMs{min-height:38px;display:flex;align-items:center;font-size:13px;font-weight:700;line-height:1.35;color:#e6e1ff!important;margin:10px 2px 8px}\
+.cq .clPn{border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+";background:#1d1550;padding:12px;animation:sbIn .3s}\
+.cq .clPn h4{margin:0 0 4px;font-size:15px;font-weight:900;color:#fff!important}.cq .clPn p{margin:0 0 10px;font-size:13px;line-height:1.4;color:#d6d0ff!important}\
+.cq .clBd{display:grid;grid-template-columns:1fr 1fr;gap:8px}\
+.cq .clBc{border:3px solid "+K+";border-radius:14px;background:#2c2080;padding:8px;text-align:left;cursor:pointer;box-shadow:0 3px 0 "+K+";color:#fff}\
+.cq .clBc svg{display:block;width:100%;height:58px;margin-bottom:4px}\
+.cq .clBc b{display:block;font-size:13px;font-weight:900;color:#fff!important}.cq .clBc span{display:block;font-size:11px;line-height:1.3;color:#cfc8ff!important;margin-top:2px}\
+.cq .clOp{display:block;width:100%!important;text-align:left;margin:0 0 8px!important;padding:10px 12px!important;border:3px solid "+K+"!important;border-radius:12px!important;background:#fff!important;color:"+INK+"!important;font:800 13px/1.35 inherit!important;box-shadow:0 3px 0 "+K+";cursor:pointer}\
+.cq .clOp.g{background:"+MI+"!important}.cq .clOp.b{background:"+PK+"!important}.cq .clOp.x{opacity:.5}\
+.cq .clEx{margin:4px 0 10px;font-size:12.5px;line-height:1.4;color:#d6d0ff!important}\
+.cq .sbBtn{width:100%!important;margin:0!important;display:flex}\
+.cq .clRd{display:flex;gap:4px;margin:8px 2px 0}.cq .clRd i{flex:1;height:7px;border-radius:4px;background:#2c2080;border:2px solid "+K+"}.cq .clRd i.d{background:"+MI+"}.cq .clRd i.c{background:"+YE+"}";
+function inj(){X.inj();if(document.getElementById("clcss"))return;var s=document.createElement("style");s.id="clcss";s.textContent=CSS;document.head.appendChild(s)}
+/* --- мальовані споруди (початок координат — центр плитки) --- */
+function art(t,w,off){var o=w?' opacity=".62"':'',h="";
+ if(t=="R"){h='<ellipse cy="6" rx="21" ry="9" fill="#2a2160" stroke="'+K+'" stroke-width="3"/><path d="M-17 6V-12a17 8 0 0 1 34 0V6a17 8 0 0 1-34 0Z" fill="#6a5acd" stroke="'+K+'" stroke-width="3"/><ellipse cy="-12" rx="17" ry="8" fill="#8f82ff" stroke="'+K+'" stroke-width="3"/><circle cy="-12" r="6" fill="'+(off?'#555':YE)+'" stroke="'+K+'" stroke-width="2.5"/>'+(off?'':'<path d="M0 -26v-8M-8 -22l-6 -5M8 -22l6 -5" stroke="'+YE+'" stroke-width="2.5" stroke-linecap="round"/>')+'<path d="M-17 -3h34M-17 3h34" stroke="'+K+'" stroke-width="2" opacity=".5"/>'}
+ else if(t=="F"){h='<ellipse cy="8" rx="26" ry="11" fill="#2a2160" stroke="'+K+'" stroke-width="3"/><path d="M-22 8a22 22 0 0 1 44 0Z" fill="'+(off?'#4b5a55':'#7af3c4')+'" stroke="'+K+'" stroke-width="3"/><path d="M0 8V-14M-11 8L-9 -9M11 8L9 -9" stroke="'+K+'" stroke-width="2" opacity=".55"/><g fill="'+(off?'#666':'#2fa86a')+'" stroke="'+K+'" stroke-width="2"><path d="M-10 6c-1-8 4-11 6-11 1 7-1 10-6 11Z"/><path d="M4 6c0-8 5-10 8-9 0 6-3 9-8 9Z"/></g>'}
+ else if(t=="L"){h='<path d="M-24 4L0 16 24 4V-14L0 -2 -24 -14Z" fill="#4a3f8f" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"/><path d="M-24 -14L0 -26 24 -14 0 -2Z" fill="#8f82ff" stroke="'+K+'" stroke-width="3" stroke-linejoin="round"/><path d="M0 -2V16" stroke="'+K+'" stroke-width="3"/><path d="M-18 -2l8 4v6l-8-4Z" fill="'+(off?'#555':CY)+'" stroke="'+K+'" stroke-width="2"/><path d="M-4 -22l0 -8" stroke="'+K+'" stroke-width="3"/><path d="M-12 -32q8 -8 16 0" fill="none" stroke="'+(off?'#777':PK)+'" stroke-width="3.5" stroke-linecap="round"/><circle cx="-4" cy="-30" r="2.5" fill="'+(off?'#777':YE)+'" stroke="'+K+'" stroke-width="1.5"/>'}
+ else{h='<ellipse cy="9" rx="27" ry="11" fill="#2a2160" stroke="'+K+'" stroke-width="3"/><path d="M-24 8a14 14 0 0 1 28 0Z" fill="'+PK+'" stroke="'+K+'" stroke-width="3"/><path d="M-6 8a12 12 0 0 1 24 0Z" fill="'+(off?'#777':LV)+'" stroke="'+K+'" stroke-width="3"/><rect x="-14" y="-1" width="6" height="7" rx="2" fill="'+(off?'#555':YE)+'" stroke="'+K+'" stroke-width="1.8"/><rect x="5" y="1" width="6" height="6" rx="2" fill="'+(off?'#555':YE)+'" stroke="'+K+'" stroke-width="1.8"/>'}
+ if(w)h+='<path d="M-6 -4l6 6-4 6 8 6" fill="none" stroke="'+K+'" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
+ return '<g'+o+'>'+h+'</g>'}
+var BT={R:{n:"Реактор",d:"+4 енергії",o:4},F:{n:"Ферма",d:"+3 їжі · потребує 1 енергії",o:3,u:1},L:{n:"Лабораторія",d:"+3 науки за сол · потребує 2 енергії",o:3,u:2},H:{n:"Житло",d:"+3 колоністи (за наявності їжі) · потребує 1 енергії",o:3,u:1}};
+var IC={e:'<svg viewBox="0 0 20 20"><path d="M11 1L3 11h6l-1 8 9-11h-6z" fill="'+YE+'" stroke="'+K+'" stroke-width="1.6" stroke-linejoin="round"/></svg>',s:'<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="3.4" fill="'+CY+'" stroke="'+K+'" stroke-width="1.6"/><ellipse cx="10" cy="10" rx="9" ry="4" fill="none" stroke="'+CY+'" stroke-width="1.6" transform="rotate(-30 10 10)"/></svg>',f:'<svg viewBox="0 0 20 20"><path d="M3 12a7 7 0 0 1 14 0Z" fill="'+MI+'" stroke="'+K+'" stroke-width="1.6"/><path d="M2 15h16" stroke="'+MI+'" stroke-width="2" stroke-linecap="round"/></svg>',c:'<svg viewBox="0 0 20 20"><circle cx="10" cy="6" r="3.4" fill="'+PK+'" stroke="'+K+'" stroke-width="1.6"/><path d="M3 18a7 7 0 0 1 14 0Z" fill="'+PK+'" stroke="'+K+'" stroke-width="1.6"/></svg>'};
+var COLS=4,ROWS=3,TW=44,TH=22;
+function tpos(i){var c=i%COLS,r=Math.floor(i/COLS);return [170+(c-r)*TW,66+(c+r)*TH]}
+GM.cl=function(g){inj();var D=g.items,Q=shf(D.q.slice()).slice(0,D.rounds||8),NR=Q.length,S=null;
+ function root(){return document.getElementById("clroot")}
+ function eng(){var o={P:0,use:0,pw:[],fr:0,cap:0,sci:0,col:0},b,i;
+  S.pl.forEach(function(p){if(p&&p.t=="R")o.P+=BT.R.o/(p.w?2:1)});
+  var left=o.P;S.ord.forEach(function(i){var p=S.pl[i],bt=BT[p.t];if(p.t=="R")return;o.use+=bt.u;var ok=left>=bt.u;if(ok)left-=bt.u;o.pw[i]=ok;var out=bt.o/(p.w?3:1);out=p.w?1:out;if(ok){if(p.t=="F")o.fr+=out;else if(p.t=="L")o.sci+=out;else o.cap+=out}});
+  o.col=Math.min(o.cap,Math.floor(o.fr*2));o.left=left;o.blk=S.ord.some(function(i){return S.pl[i].t!="R"&&!o.pw[i]});return o}
+ function intro(){fr9(g.title,"","<div id='clroot' class='cq sb'></div>");gs9("Складна місія");
+  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>ПЛАНЕТА ЗНАЙДЕНА</small><b>'+esc(D.name)+'</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(3)+X.ch(0)+'</div><h3>Побудуй колонію</h3><p>Ти керуєш висадкою на нову планету. Маєш '+NR+' сол: щосоли можна звести одну споруду.</p>'+
+   '<div class="sbSt">'+X.ICO.scan+'<span>Обери вільну ділянку, потім тип споруди. Щоб її звести, дай правильну відповідь на запитання.</span></div>'+
+   '<div class="sbSt">'+X.ICO.vote+'<span>Помилка не скасує будівництво, але споруда вийде пошкодженою: вона дає в кілька разів менше.</span></div>'+
+   '<div class="sbSt">'+X.ICO.heat+'<span>Ферми, лабораторії й житла потребують енергії від реакторів. Без струму вони стоять. Мета: щонайменше 8 колоністів, 12 науки й жодного відключення.</span></div>'+
+   '<button class="sbBtn n" id="clGo">Розпочати висадку</button></div>';
+  document.getElementById("clGo").onclick=start}
+ function start(){S={pl:shf([0,1,2,3,4,5,6,7,8,9,10,11]).map(function(){return null}),ord:[],r:0,sel:null,t:null,sci:0,blk:0,ok:0,col:0,hist:[],busy:false};S.pl=[null,null,null,null,null,null,null,null,null,null,null,null];
+  fr9(g.title,"","<div id='clroot' class='cq sb'></div>");gs9("Колонія");
+  root().innerHTML='<div class="sbHd">'+X.bgSvg()+'<div class="sbTop"><small>СОЛ <span id="clR">1</span> З '+NR+'</small><b>'+esc(D.name)+'</b></div></div><div class="clHud" id="clHud"></div><div class="clMap"><svg id="clSv" viewBox="0 0 360 215"></svg></div><div class="clRd" id="clRd"></div><div class="clMs" id="clMs"></div><div id="clPn"></div>';
+  root().onclick=clk;hud();map();msg("Торкнись вільної ділянки, щоб обрати місце для споруди.")}
+ function msg(t){var e=document.getElementById("clMs");if(e)e.innerHTML=t}
+ function hud(){var o=eng(),h='<div class="'+(o.use>o.P?"bad":"ok")+'"><small>Енергія</small><b>'+IC.e+o.P+'/'+o.use+'</b></div><div><small>Їжа</small><b>'+IC.f+o.fr+'</b></div><div><small>Наука</small><b>'+IC.s+S.sci+'</b></div><div><small>Колоністи</small><b>'+IC.c+S.col+'</b></div>';document.getElementById("clHud").innerHTML=h;
+  var rd="";for(var i=0;i<NR;i++)rd+='<i class="'+(S.hist[i]===1?"d":S.hist[i]===0?"c":"")+'"></i>';document.getElementById("clRd").innerHTML=rd;var e=document.getElementById("clR");if(e)e.textContent=Math.min(S.r+1,NR)}
+ function map(){var o=eng(),h='<defs><radialGradient id="clg" cx=".5" cy=".3"><stop offset="0" stop-color="#3a2f9a"/><stop offset="1" stop-color="#15103f"/></radialGradient></defs><rect width="360" height="215" fill="url(#clg)"/>';
+  for(var k=0;k<16;k++)h+='<circle cx="'+((k*53)%360)+'" cy="'+((k*29)%40)+'" r="1" fill="#fff" opacity=".6"/>';
+  h+='<path d="M10 120Q50 44 180 40Q310 44 350 120Q310 205 180 208Q50 205 10 120Z" fill="#241a6b" stroke="'+K+'" stroke-width="3" opacity=".55"/>';
+  var ord=[];for(var i=0;i<12;i++)ord.push(i);ord.sort(function(a,b){return tpos(a)[1]-tpos(b)[1]});
+  ord.forEach(function(i){var p=tpos(i),x=p[0],y=p[1],pl=S.pl[i],c='clT '+(pl?"b":"e")+(S.sel===i?" s":"");
+   h+='<g class="'+c+'" data-a="pl" data-i="'+i+'" transform="translate('+x+','+y+')"><path class="tl" d="M0 -'+TH+'L'+TW+' 0 0 '+TH+' -'+TW+' 0Z"/>'+(pl?'':'<circle class="pl" r="3" fill="'+YE+'" cy="0"/>')+(pl?'<g transform="translate(0,-2) scale(.86)">'+art(pl.t,pl.w,pl.t!="R"&&!o.pw[i])+'</g>'+(pl.t!="R"&&!o.pw[i]?'<g transform="translate(0,-30)"><circle r="8" fill="'+RD+'" stroke="'+K+'" stroke-width="2.5"/><path d="M1 -5L-3 1h4l-1 4 4-6h-4z" fill="#fff"/></g>':''):'')+'</g>'});
+  document.getElementById("clSv").innerHTML=h}
+ function menu(){var h='<div class="clPn"><h4>Що будуємо?</h4><p>Ділянка обрана. Обери споруду.</p><div class="clBd">';["R","F","L","H"].forEach(function(t){h+='<div class="clBc" data-a="bt" data-t="'+t+'"><svg viewBox="-34 -36 68 58">'+art(t,0,0)+'</svg><b>'+BT[t].n+'</b><span>'+BT[t].d+'</span></div>'});document.getElementById("clPn").innerHTML=h+'</div></div>'}
+ function ask(){var q=Q[S.r],ops=shf(q.o.map(function(t,k){return {t:t,ok:k===0}})),h='<div class="clPn"><h4>Запит до центру: '+BT[S.t].n+'</h4><p>'+esc(q.q)+'</p>';ops.forEach(function(o,k){h+='<button class="clOp" data-a="an" data-k="'+(o.ok?1:0)+'">'+esc(o.t)+'</button>'});h+='</div>';document.getElementById("clPn").innerHTML=h}
+ function after(ok){var q=Q[S.r];S.pl[S.sel]={t:S.t,w:!ok};S.ord.push(S.sel);S.hist.push(ok?1:0);if(ok)S.ok++;var o=eng();S.sci+=o.sci;S.col=o.col;if(o.blk)S.blk++;S.r++;hud();map();
+  var m=(ok?"Споруду зведено.":"Відповідь хибна: споруда пошкоджена.")+" "+esc(q.e||"");if(o.blk)m+=' <b style="color:'+RD+'">Відключення: частина споруд без струму. Потрібен ще реактор.</b>';
+  var h='<div class="clPn"><h4>'+(ok?"Правильно":"Помилка")+'</h4><p>'+m+'</p><button class="sbBtn n" data-a="nx">'+(S.r>=NR?"Підсумок висадки":"Наступна сол")+'</button></div>';document.getElementById("clPn").innerHTML=h;S.sel=null;S.t=null;msg("")}
+ function clk(e){var t=e.target.closest?e.target.closest("[data-a]"):null;if(!t||!S||S.busy)return;var a=t.dataset.a;
+  if(a=="pl"){var i=+t.dataset.i;if(S.pl[i]){msg("Ділянка вже зайнята.");return}if(S.t)return;S.sel=i;map();menu();msg("Обери споруду для цієї ділянки.")}
+  else if(a=="bt"){if(S.sel==null)return;S.t=t.dataset.t;ask();msg("Дай правильну відповідь, щоб звести споруду.")}
+  else if(a=="an"){var ok=t.dataset.k=="1",q=Q[S.r];var bs=document.querySelectorAll(".clOp");[].forEach.call(bs,function(b){b.classList.add(b.dataset.k=="1"?"g":"x");b.style.pointerEvents="none"});if(!ok)t.classList.add("b");S.busy=true;setTimeout(function(){S.busy=false;if(root())after(ok)},600)}
+  else if(a=="nx"){if(S.r>=NR)finish();else{document.getElementById("clPn").innerHTML="";msg("Торкнись вільної ділянки.")}}}
+ function finish(){var o=eng(),g1=S.col>=8,g2=S.sci>=12,g3=S.blk===0,gl=(g1?1:0)+(g2?1:0)+(g3?1:0),sc=Math.min(6,gl+Math.round(3*S.ok/NR));
+  function row(ok,t){return '<p style="margin:0 0 4px;color:'+(ok?MI:"#ffb3c4")+'!important;font-weight:800">'+(ok?"✓ ":"✗ ")+t+'</p>'}
+  document.getElementById("clPn").innerHTML='<div class="sbRep '+(gl>=2?"g":"b")+'"><h4>'+(gl==3?"Колонія процвітає":gl==2?"Колонія вижила":"Колонія в скруті")+'</h4>'+row(g1,"Колоністів: "+S.col+" з 8")+row(g2,"Науки: "+S.sci+" з 12")+row(g3,S.blk?"Відключень: "+S.blk:"Жодного відключення")+'<p style="margin:6px 0 10px">Правильних відповідей: '+S.ok+' з '+NR+'.</p><button class="sbBtn n" id="clNx">Підсумок місії</button></div>';
+  document.getElementById("clNx").onclick=function(){fin9(sc,6)}}
+ intro()};
+var CL17={name:"Колонія «Оріон-4»",rounds:8,q:[
+ {q:"Яка команда додає елемент x у кінець списку a?",o:["a.append(x)","a.push(x)","a + x"],e:"Метод append додає елемент у кінець списку."},
+ {q:"Що поверне len([4, 8, 15, 16])?",o:["4","16","3"],e:"len повертає кількість елементів, а не їхнє значення."},
+ {q:"Як звернутись до першого елемента списку a?",o:["a[0]","a[1]","a(0)"],e:"Нумерація індексів у Python починається з нуля."},
+ {q:"Чому дорівнює a[2], якщо a = [7, 3, 9, 1]?",o:["9","3","1"],e:"Індекс 2 — третій елемент: 7, 3, 9."},
+ {q:"Який цикл перебирає всі елементи списку a?",o:["for x in a:","for x in len(a):","while a:"],e:"Конструкція for x in a бере елементи по черзі."},
+ {q:"Що виведе print(sum([2, 4, 6]))?",o:["12","246","3"],e:"sum додає всі елементи: 2 + 4 + 6."},
+ {q:"Як знайти найбільший елемент списку a?",o:["max(a)","big(a)","a.max"],e:"Вбудована функція max повертає найбільше значення."},
+ {q:"Що станеться при a = [1, 2, 3] та print(a[3])?",o:["Помилка IndexError","Виведе 3","Виведе 0"],e:"Останній індекс цього списку — 2, тож індекс 3 поза межами."},
+ {q:"Яка команда створить список із п’яти нулів?",o:["[0] * 5","[5] * 0","0 * [5]"],e:"Множення списку на число повторює його вміст."}]};
+try{GI.cl=["🏗️","Колонія"]}catch(e){}
+window.CP9=window.CP9||{};CP9.cl=CL17;
+try{var L=LES[17];if(L&&L.g){L.g.pop();L.g.push({type:"cl",title:"Колонія",items:CL17})}}catch(e){}
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
