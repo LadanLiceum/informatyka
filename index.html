@@ -38048,7 +38048,7 @@ html body #app #gb>.rq,html body #app .rq.sb{background:transparent!important;bo
 .rq .rcMs b{color:"+YE+"!important}\
 .rq .sbBtn{width:100%!important;margin:0!important;display:flex;align-items:center;justify-content:center;text-align:center!important}";
 function inj(){X.inj();if(document.getElementById("rccss"))return;var s=document.createElement("style");s.id="rccss";s.textContent=CSS;document.head.appendChild(s)}
-var NG=8,GAP=460,TOT=NG*GAP+420,VB=54;
+var NG=8,GAP=720,TOT=NG*GAP+420,VB=54;
 /* спільна фізика для гри й симуляції */
 function mkRace(acc){var r={t:0,z:0,v:VB,tb:0,tc:0,pl:1,done:null,gi:0,fin:[],
   riv:[{b:52,p:.9},{b:54,p:.75},{b:56,p:.6},{b:58,p:.45}].map(function(o,i){return {b:o.b,p:o.p,z:-6*(i+1),v:o.b,tb:0,tc:0,done:null,gi:0}})};return r}
@@ -38079,10 +38079,10 @@ GM.rc=function(g){inj();var D=g.items,Q=D.q,S=null,raf=0,QP=[],qi=0;
  function intro(){fr9(g.title,"","<div id='rqroot' class='rq sb'></div>");gs9("Складна місія");
   root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>КУБОК ГАЛАКТИКИ</small><b>'+esc(D.name)+'</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(0)+X.ch(3)+'</div><h3>Виграти перегони</h3><p>Ти женеш трасою проти чотирьох суперників. Місць на фініші п’ять.</p>'+
    '<div class="sbSt">'+X.ICO.scan+'<span>На трасі '+NG+' воріт з питанням. Над трасою видно питання, а ворота мають літери А, Б, В. Обери смугу з правильною відповіддю.</span></div>'+
-   '<div class="sbSt">'+X.ICO.heat+'<span>Правильна відповідь дає турбо, хибна ― зіткнення й втрату швидкості. Астероїди теж сповільнюють, а жовті стрілки дають малий прискорювач.</span></div>'+
+   '<div class="sbSt">'+X.ICO.heat+'<span>Правильна відповідь дає турбо, хибна ― зіткнення й втрату швидкості. Жовті стрілки на трасі дають малий прискорювач.</span></div>'+
    '<button class="sbBtn n" id="rcGo">На старт</button></div>';
   document.getElementById("rcGo").onclick=start}
- function mkObj(){var o=[];for(var i=0;i<NG;i++){var base=i*GAP;for(var k=0;k<3;k++){var z=base+90+k*100+Math.random()*30,ln=Math.floor(Math.random()*3);o.push({z:z,l:ln,t:k==1?"b":"a",hit:false})}}return o}
+ function mkObj(){var o=[];for(var i=0;i<NG;i++){var base=i*GAP;for(var k=0;k<3;k++){var z=base+120+k*170+Math.random()*50,ln=Math.floor(Math.random()*3);o.push({z:z,l:ln,t:"b",hit:false})}}return o}
  function start(){QP=shf(Q.slice());qi=0;var gs=[];for(var i=0;i<NG;i++){var q=nextQ(),ord=shf([0,1,2]);gs.push({q:q,ord:ord,cl:ord.indexOf(0)})}
   S={R:mkRace(),gs:gs,px:1,pl:1,obj:mkObj(),ok:0,tot:0,go:false,shake:0,flash:0,pop:null,fx:[],last:0,pose:0,over:false};
   fr9(g.title,"","<div id='rqroot' class='rq sb'></div>");gs9("Перегони");
@@ -38154,6 +38154,50 @@ var RC20={name:"Кубок галактики",q:(window.CP9&&CP9.fm&&CP9.fm.q)|
 try{GI.rc=["🏁","Космічні перегони"]}catch(e){}
 window.CP9=window.CP9||{};CP9.rc=RC20;
 try{var L=LES[19];if(L&&L.g){L.g.pop();L.g.push({type:"rc",title:"Космічні перегони",items:RC20})}}catch(e){}
+})();
+
+/* Розстановка складних ігор по всіх уроках 9 класу: ротація sab → qr → cl → wr → rc (без повторів поруч). Контент уроків без власного наповнення збирається з пулу питань уроку. */
+(function(){
+var X=window.SB9;if(!X)return;var esc=X.esc,shf=X.shf;
+var ROT=["sab","qr","cl","wr","rc"],TT={sab:"Саботажник",qr:"Втеча з модуля",cl:"Колонія",wr:"Проводка",rc:"Космічні перегони"};
+var HAND={14:1,15:1,16:1,17:1,18:1,19:1};
+function norm(k){var seen={},o=[];function add(x){if(!x||!x.q||!x.a||x.a.length<2)return;var q=String(x.q).replace(/^Правда чи хибно\?\s*/,""),tf=/^Правда чи хибно/.test(x.q);if(seen[q])return;seen[q]=1;o.push({q:q,a:x.a.slice(),e:x.e||"",tf:tf})}
+ try{(GX.poolAll(k)||[]).forEach(add)}catch(e){}try{(LES[k].q||[]).forEach(add)}catch(e){}return o}
+function cut(s){return String(s).replace(/[?:.\s]+$/,"")}
+function stm(it,truth){if(it.tf){var t=it.a[0]=="Правда";return {t:it.q,v:truth?t:!t}}
+ var a=truth?it.a[0]:it.a[1+Math.floor(Math.random()*(it.a.length-1))];if(it.q.indexOf("▁▁▁")>=0)return {t:it.q.replace(/▁+/,a),v:truth};return {t:cut(it.q)+" — "+a,v:truth}}
+function mcq(P){return P.filter(function(x){return !x.tf&&x.a.length>=3}).map(function(x){return {q:x.q,o:[x.a[0],x.a[1],x.a[2]],e:x.e||"Правильна відповідь: "+x.a[0]+"."}})}
+function pad(a,n){var o=a.slice(),i=0;if(!o.length)return o;while(o.length<n)o.push(a[i++%a.length]);return o}
+function mkSab(P,k){var T=P.filter(function(x){return (x.tf?x.a[0]=="Правда":true)&&(x.q.length+x.a[0].length<115)}),L=P.filter(function(x){return x.tf?true:x.a.length>=2}),R=[],n=5;T=shf(T);L=shf(L);
+ for(var i=0;i<n;i++){var tr=[T[(3*i)%T.length],T[(3*i+1)%T.length],T[(3*i+2)%T.length]],lie=L[(i+7)%L.length],ls=stm(lie,false);
+  if(ls.v){ls=stm(lie,true);ls.t=ls.t}
+  var why=lie.tf?"Це твердження хибне. "+(lie.e||""):"Правильна відповідь: "+lie.a[0]+". "+(lie.e||"");
+  R.push({topic:"Свідчення "+(i+1)+" з "+n,time:32,truth:tr.map(function(x){return stm(x,true).t}),lies:[ls.v?stm(lie,false).t:ls.t],why:why})}
+ return R}
+function mkQr(P,k){var sw=P.filter(function(x){return x.q.length+x.a[0].length<100}),pr=P.filter(function(x){return !x.tf&&x.q.length<=64&&x.a[0].length<=36});
+ sw=shf(sw);pr=shf(pr);var u={},pp=[];pr.forEach(function(x){if(!u[x.a[0]]){u[x.a[0]]=1;pp.push(x)}});
+ function rows(off){var r=[];for(var i=0;i<6;i++){var it=sw[(off+i)%sw.length],tr=i%2==0;var s=stm(it,tr);r.push([s.t,s.v])}return shf(r)}
+ function hintSw(r){var n=[];r.forEach(function(x,i){if(x[1])n.push(i+1)});return "Вірні твердження мають номери за порядком у списку: "+n.join(", ")+"."}
+ function pairs(off){var r=[];for(var i=0;i<4;i++){var it=pp[(off+i)%pp.length];r.push([it.q,it.a[0]])}return r}
+ var r0=rows(0),r3=rows(6),p1=pairs(0),p2=pairs(4);
+ var dg=shf([1,2,3,4,5,6,7,8,9]).slice(0,4);
+ return {room:"Модуль «Дельта-"+(k%90+10)+"»",time:420,puzzles:[
+  {spot:"ТЕРМІНАЛ",title:"Термінал: аудит тверджень",intro:"На екрані список тверджень. Частина з них хибна.",task:"Увімкни тумблери біля ВІРНИХ тверджень. Хибні мають лишитись вимкненими.",type:"switch",rows:r0,digit:dg[0],hint:"Вірні твердження: "+r0.map(function(x,i){return x[1]?i+1:0}).filter(Boolean).join(", ")+" за порядком.",reward:"Термінал видав картку-ключ: тепер можна відкрити шафу."},
+  {spot:"ПАНЕЛЬ",title:"Щиток: з’єднай пари",intro:"Щиток працює лише з правильними з’єднаннями.",task:"З’єднай кожне питання з його відповіддю: торкнись питання, потім відповіді.",type:"pairs",pairs:p1,digit:dg[1],hint:"Починай з пари, у якій впевнений: «"+p1[0][0]+"».",reward:"Щиток відкрив пароль від сейфа."},
+  {spot:"ШАФА",need:0,lockMsg:"Шафа потребує картки-ключа. Її видає термінал.",title:"Шафа: ще пари",intro:"Картка-ключ підійшла. У шафі нові ярлики й описи.",task:"З’єднай кожне питання з його відповіддю.",type:"pairs",pairs:p2,digit:dg[2],hint:"Відповідь до «"+p2[0][0]+"» — «"+p2[0][1]+"».",reward:"У шафі лежав аркуш із підказкою до сейфа."},
+  {spot:"СЕЙФ",need:1,lockMsg:"Сейф потребує пароля. Його видає щиток.",title:"Сейф: аудит тверджень",intro:"Пароль підійшов. Сейф перевіряє, чи ти відрізняєш правду від хибності.",task:"Увімкни тумблери біля ВІРНИХ тверджень.",type:"switch",rows:r3,digit:dg[3],hint:"Вірні твердження: "+r3.map(function(x,i){return x[1]?i+1:0}).filter(Boolean).join(", ")+" за порядком.",reward:"Сейф відкрито."}]}}
+function mkCl(P){var q=mcq(P);return {name:"Колонія «Оріон-4»",rounds:8,q:pad(shf(q),9)}}
+function mkRc(P){var q=mcq(P);return {name:"Кубок галактики",q:pad(shf(q),8)}}
+function mkWr(P){var pr=P.filter(function(x){return !x.tf&&x.q.length<=64&&x.a[0].length<=34}),u={},pp=[];shf(pr).forEach(function(x){if(!u[x.a[0]]){u[x.a[0]]=1;pp.push(x)}});
+ var np=Math.max(1,Math.min(3,Math.floor(pp.length/4))),pn=[];for(var i=0;i<np;i++)pn.push(pp.slice(i*4,i*4+4).map(function(x){return [esc(x.q),esc(x.a[0]),x.e||""]}));
+ return {name:"Проводка станції",energy:5,panels:pn}}
+var MK={sab:mkSab,qr:mkQr,cl:mkCl,wr:mkWr,rc:mkRc};
+var done=[];
+for(var k=1;k<=52;k++){if(HAND[k])continue;var L=LES[k];if(!L||!L.g)continue;var ty=ROT[(((k-15)%5)+5)%5],P=norm(k),it;
+ try{it=(k==1&&ty=="qr"&&window.CP9&&CP9.qr)?CP9.qr:MK[ty](P,k)}catch(e){continue}
+ var ix=-1;for(var i=L.g.length-1;i>=0;i--){if(/^(s_|n_)/.test(L.g[i].type)){ix=i;break}}if(ix<0)ix=L.g.length-1;
+ L.g.splice(ix,1);L.g.push({type:ty,title:TT[ty],items:it});done.push(k+":"+ty)}
+window.DIST9=done;
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
