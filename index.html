@@ -7929,22 +7929,10 @@ R("Доступність: колір і альтернативний текст
  ["Не покладайся лише на колір","Alt-текст для змістовних зображень","Доступність корисна всім"],"Багато країн, зокрема ЄС, вимагають, щоб державні сайти відповідали стандартам доступності WCAG.","Інклюзивність")]);
 
 /* ---- 16 ---- */
-ins(16,"Як рухається картинка",[
-R("Принципи анімації",["flow",["Підготовка","Основний рух","Затухання","Реакція"]],
- "Класичні принципи анімації, сформульовані художниками студії Disney, працюють і в простих GIF. <b>Стиснення й розтягування</b> надають предмету «живості». <b>Підготовка</b> (розмах перед ударом) допомагає глядачу очікувати рух. <b>Сповільнення на початку й кінці</b> (ease in/out) робить рух природним. <b>Вторинний рух</b> (волосся, хвіст) додає правдоподібності.<br><br>Навіть для короткої анімації тривалістю 2 секунди корисно продумати розкадровку: який стан на початку, який наприкінці та які ключові проміжні.",
- ["Підготовка й реакція роблять рух живим","Ease in/out – природний рух","Спершу розкадровка, потім кадри"],"Класичні 12 принципів анімації з’явилися у книзі «The Illusion of Life» (1981).","Принципи"),
-R("Покадрова анімація в Photoshop: крок за кроком",["flow",["Вікно → Шкала часу","Створити анімацію кадрів","Дублювати кадр","Змінити видимість шарів","Затримка й цикл"]],
- "Створи кілька шарів із різними станами об’єкта. Відкрий <b>Вікно → Шкала часу</b> й обери «Створити анімацію кадрів». Перший кадр – початковий стан. Натисни <b>«Дублювати вибрані кадри»</b>, а потім змінюй видимість шарів чи положення об’єкта. Для кожного кадру задай <b>затримку</b> (наприклад, 0,1 с). Параметр <b>«Створити проміжні кадри»</b> автоматично додає плавний перехід між двома кадрами.<br><br>Перевір результат кнопкою відтворення, а потім збережи через <b>Файл → Експортувати → Зберегти для Web (GIF)</b> із потрібною кількістю кольорів.",
- ["Кадри – це стани шарів","Затримка задає швидкість","Створити проміжні кадри – для плавності"],"Для плавності більшості GIF вистачає 8–12 кадрів на секунду.","Покрокова вказівка"),
-R("Оптимізація GIF",["flow",["Менший розмір","Менше кольорів","Менше кадрів","Дизеринг"]],
- "GIF – формат із обмеженнями: <b>не більше 256 кольорів</b> і без стиснення з втратами для фото. Щоб зробити GIF легким, зменши розмір полотна (400–600 пікселів достатньо), зменш кількість кадрів і кольорів (наприклад, 64 замість 256), застосуй <b>дизеринг</b> лише за потреби: він імітує відтінки точками, але збільшує файл.<br><br>Для складних анімацій із фото краще використати <b>відео (MP4)</b> чи <b>WebP</b>: вони важать у кілька разів менше, ніж GIF. Саме тому багато сайтів автоматично перетворюють «гіфки» на відео.",
- ["GIF – не більше 256 кольорів","Менше кадрів і розмір – легший файл","Для фото краще відео чи WebP"],"GIF з’явився 1987 року – раніше за JPEG і PNG, і досі дуже популярний у месенджерах.","Оптимізація"),
-R("Анімація в інтерфейсах: мікровзаємодії",["flow",["Дія користувача","Реакція елемента","Підтвердження"]],
- "Не вся анімація – це мультфільми. У сучасних застосунках багато <b>мікровзаємодій</b>: кнопка злегка змінює колір при натисканні, лічильник «лайків» підстрибує, індикатор завантаження пульсує. Такі дрібниці роблять інтерфейс живішим і підказують, що дію зараховано.<br><br>Правила хорошої мікроанімації: вона <b>швидка</b> (150–400 мс), <b>доречна</b> (не відволікає) і <b>функціональна</b> (щось повідомляє). Надмірна анімація втомлює, а на слабких пристроях може гальмувати.",
- ["Мікроанімація – короткий зворотний зв’язок","Тривалість 150–400 мс","Анімація має щось повідомляти"],"Кнопка «Завантаження», що перетворюється на галочку по завершенню, – класична мікровзаємодія.","Інтерфейс"),
-R("Тематичне оцінювання: як готуватись",["flow",["Повтори терміни","Пройди ігри","Розв’яжи тренувальні тести","Здай тематичне"]],
- "Тематичне оцінювання з растрової графіки перевіряє: розуміння понять (піксель, роздільна здатність, глибина кольору, колірні режими), вміння обирати інструменти (виділення, шари, маски, трансформація, текст), знання прийомів корекції (рівні, криві, тон/насиченість), а також підготовку графіки для вебу й базову анімацію.<br><br>Як готуватися: ще раз прочитай читалки уроків 7–15, пройди ігри (вони зібрані з тих самих понять) і розв’яжи тренувальні тести. Особливо зверни увагу на формули (розмір файлу), гарячі клавіші та відмінності форматів.",
- ["Терміни, інструменти, корекція, вебекспорт","Повтори читалки та ігри","Запам’ятай формули й гарячі клавіші"],"Найкращий спосіб запам’ятати інструмент – застосувати його на власній фотографії.","Підготовка")]);
+ins(16,"Створюємо GIF",[
+R("Легкий GIF",["flow",["Менший розмір","Менше кадрів","Менше кольорів","Для фото – WebP чи MP4"]],
+ "GIF має <b>не більше 256 кольорів</b>. Щоб файл був легким, зменш полотно (400–600 пікселів), кількість кадрів і кольорів (наприклад, 64). Для анімації з фото краще <b>WebP</b> чи відео – вони важать у кілька разів менше.",
+ ["До 256 кольорів","Менше кадрів і пікселів – легший файл","Фото-анімація – WebP чи MP4"],"GIF з’явився 1987 року й досі живе в месенджерах.","Оптимізація")]);
 })();
 
 /* ===== 11 клас · розширення читалок (уроки 17–27) ===== */
@@ -38234,6 +38222,225 @@ function push(){if(ENDING||RESULTS_URL.indexOf("http")!==0||!ME||!CK[ME.c]||ME.t
 window.addEventListener("online",function(){flush()});
 var _sv=sv;sv=function(k,v){_sv(k,v);if(!ENDING&&(k=="inf5"||k=="inf5a"||k=="inf9"||k=="inf10"||k=="inf5l"||k=="inf6l"||k=="inf11l"||k=="inf10g"||k=="inf5me"))queuePush()};
 if("serviceWorker" in navigator)window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").then(function(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}return navigator.serviceWorker.ready}).then(function(){try{if(localStorage.getItem("infOff"))return;caches.open("inf-v4").then(function(c){return c.match("index.html")}).then(function(m){if(!m)return;localStorage.setItem("infOff","1");var d=document.createElement("div");d.textContent="✅ Готово: застосунок працюватиме й без інтернету";d.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:12px;font:600 14px sans-serif;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90vw;text-align:center";document.body.appendChild(d);setTimeout(function(){d.style.transition="opacity .6s";d.style.opacity="0";setTimeout(function(){d.remove()},700)},4500)})}catch(e){}}).catch(function(){})});
+/* ===== 11 клас · урок 16: три ігри-імітації редактора «ПіксельЛаб» (анімація кадрів) ===== */
+(function(){
+var CSS="<style>.psl{background:#2b2b31;border-radius:18px;overflow:hidden;box-shadow:0 14px 34px rgba(30,30,80,.25);border:1px solid #1d1d22;color:#d8d8e0;font-size:12px;text-align:left;margin-top:8px}"+
+".psl .mb{display:flex;gap:12px;padding:7px 10px;background:#1f1f24;align-items:center;flex-wrap:nowrap;overflow:hidden;white-space:nowrap}"+
+".psl .lg{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6d5dfc,#ff5fa2);color:#fff;font-weight:900;font-size:10px;display:grid;place-items:center;flex:none}"+
+".psl .mb span.it{opacity:.85;padding:2px 4px;border-radius:5px}.psl .mb span.it.tp{cursor:pointer;background:#33333a;opacity:1}"+
+".psl .wk{display:flex}.psl .tb{width:34px;background:#26262b;padding:6px 4px;display:flex;flex-direction:column;gap:5px;border-right:1px solid #1b1b20}"+
+".psl .tb i{display:block;width:26px;height:26px;border-radius:6px;background:#33333a}.psl .tb i.on{background:#4a3fd0}.psl .tb svg{width:26px;height:26px;display:block}"+
+".psl .cv{flex:1;padding:10px;background:#3a3a41;position:relative;min-width:0}"+
+".psl .doc{background:#fff;border-radius:3px;width:100%;aspect-ratio:4/3;position:relative;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.4)}.psl .doc svg{position:absolute;inset:0;width:100%;height:100%}"+
+".psl .pn{width:122px;background:#26262b;border-left:1px solid #1b1b20;padding:6px;flex:none}"+
+".psl .pt{font-weight:800;color:#fff;font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin:2px 0 5px;opacity:.8}"+
+".psl .ly{display:flex;align-items:center;gap:5px;padding:5px 4px;border-radius:7px;margin-bottom:4px;background:#2f2f35;border:2px solid transparent;font-size:11px;line-height:1.15}"+
+".psl .ly.tp{cursor:pointer;border-color:#4a4a55}.psl .ly.tp:active{transform:scale(.97)}.psl .ly.sel{background:#3d348f}.psl .ly.ok{border-color:#2ccb8a}.psl .ly.bad{border-color:#ff4d4d}"+
+".psl .th{width:22px;height:18px;border-radius:3px;background:#fff;flex:none;overflow:hidden;position:relative}.psl .th svg{width:100%;height:100%;display:block}"+
+".psl .eye{width:17px;height:17px;border-radius:4px;border:1px solid #555;display:grid;place-items:center;flex:none}.psl .eye.on{background:#ffd34d;border-color:#ffd34d}"+
+".psl .tl{background:#1f1f24;padding:8px 8px 10px}.psl .tlh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-weight:700;gap:6px}"+
+".psl .fr{display:flex;gap:5px}.psl .f{flex:1;min-width:0;background:#2f2f35;border-radius:7px;padding:3px;border:2px solid transparent;text-align:center;position:relative}"+
+".psl .f.tp{cursor:pointer;border-color:#4a4a55}.psl .f.cur{border-color:#ff5fa2}.psl .f.play{border-color:#ffd34d}.psl .f.bad{border-color:#ff4d4d;box-shadow:0 0 0 3px rgba(255,77,77,.25)}.psl .f.ok{border-color:#2ccb8a;box-shadow:0 0 0 3px rgba(44,203,138,.25)}"+
+".psl .f .ft{background:#fff;border-radius:3px;aspect-ratio:4/3;position:relative;overflow:hidden}.psl .f .ft svg{position:absolute;inset:0;width:100%;height:100%}"+
+".psl .f em{font-style:normal;font-size:9px;opacity:.85;display:block;margin-top:2px}.psl .f.add{display:grid;place-items:center;border:2px dashed #555;background:transparent;font-size:18px;color:#777}"+
+".psl .ctl{display:flex;gap:6px;align-items:center;margin-top:7px;flex-wrap:wrap}.psl .cb{background:#33333a;border-radius:7px;padding:5px 8px;font-weight:700;border:2px solid transparent}"+
+".psl .cb.tp{cursor:pointer;border-color:#4a4a55}.psl .cb.pl{background:linear-gradient(135deg,#6d5dfc,#ff5fa2);color:#fff}.psl .cb.ok{border-color:#2ccb8a}.psl .cb.bad{border-color:#ff4d4d}"+
+".psl .tabn{position:absolute;top:-1px;left:12px;font-size:10px;background:#2b2b31;padding:2px 8px;border-radius:0 0 6px 6px;z-index:2}"+
+".pstask{background:#fff;border:1px solid #e6e7f2;border-radius:18px;padding:12px;margin-top:10px;box-shadow:0 10px 28px rgba(30,30,80,.08);text-align:left}"+
+".pstask .tg{display:inline-block;font-size:11px;font-weight:800;color:#6d5dfc;background:#efedff;border-radius:99px;padding:3px 9px;margin-bottom:6px}"+
+".pstask h3{font-size:15px;margin:0 0 4px;color:#15152e}.pstask p{color:#6e6e8a;font-size:13px;margin:0 0 8px}"+
+".pstask .ops{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pstask .ops button{margin:0;text-align:left;padding:10px;font-size:13px;line-height:1.25;white-space:normal}"+
+".pstask .ops button.ok{border-color:#2ccb8a!important;background:#e9fbf3!important}.pstask .ops button.bad{border-color:#ff4d4d!important;background:#fff0f0!important}"+
+".psx{margin-top:8px;font-size:13px;line-height:1.35;background:#f6f4ff;border-left:4px solid #6d5dfc;border-radius:10px;padding:8px 10px;color:#15152e;text-align:left}.psx.bad{border-left-color:#ff4d4d;background:#fff4f4}.psx.ok{border-left-color:#2ccb8a;background:#effcf6}"+
+".pshd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}.pshd .hs{display:flex;gap:3px}"+
+".psch{display:flex;gap:8px;align-items:flex-end;margin:6px 0 10px;text-align:left}.psch .av{width:42px;height:42px;flex:none}"+
+".psch .bub{background:#fff;border:1px solid #e6e7f2;border-radius:16px 16px 16px 4px;padding:9px 12px;font-size:13px;line-height:1.35;box-shadow:0 6px 18px rgba(30,30,80,.08);color:#15152e}.psch .bub b{color:#6d5dfc}"+
+".psd .bd{display:flex;gap:10px;padding:10px}.psd .prv{width:42%;background:#3a3a41;border-radius:10px;padding:6px;flex:none}"+
+".psd .row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #35353c;gap:6px}"+
+".psd .sv{background:#3a3a41;border-radius:7px;padding:4px 9px;font-weight:800;color:#fff;cursor:pointer;border:2px solid #4a4a55;white-space:nowrap}.psd .sv.off{opacity:.35;cursor:default;border-color:transparent}"+
+".psd .mt{height:10px;border-radius:99px;background:#3a3a41;overflow:hidden;margin-top:4px}.psd .mt i{display:block;height:100%;transition:width .3s}"+
+".psreq{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.psreq span{font-size:12px;font-weight:700;border-radius:99px;padding:4px 10px;background:#f1f1f8;color:#15152e}.psreq span.ok{background:#e3f8ee;color:#118a5a}.psreq span.bad{background:#ffe6e6;color:#c22}"+
+"@keyframes psShake{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}.psl.sh{animation:psShake .3s 2}"+
+"@media(max-width:360px){.psl .pn{width:104px}.psl .tb{display:none}}</style>";
+
+/* ---- малюнки ---- */
+function ballG(x,y,sq,col){return "<g transform='translate("+x+" "+y+") scale("+(1+sq)+" "+(1-sq)+")'><circle r='14' fill='"+(col||"#ff5fa2")+"' stroke='#15152e' stroke-width='2.5'/><circle cx='-4' cy='-3' r='2.2' fill='#15152e'/><circle cx='5' cy='-3' r='2.2' fill='#15152e'/><path d='M-4 4 Q0.5 8 5 4' stroke='#15152e' stroke-width='2' fill='none' stroke-linecap='round'/><circle cx='-7' cy='-8' r='3' fill='#fff' opacity='.7'/></g>"}
+function bg(){return "<rect width='160' height='120' fill='#eef1ff'/><circle cx='138' cy='20' r='9' fill='#ffd37a'/><rect y='98' width='160' height='22' fill='#b7ecd2'/><rect y='98' width='160' height='3' fill='#83d9b3'/>"}
+/* кадр: {b:[[x,y,sq],...]} */
+function frameSVG(fr){var h="<svg viewBox='0 0 160 120'>"+bg();(fr.b||[]).forEach(function(p){var sh=8+(p[1]/84)*7;h+="<ellipse cx='"+p[0]+"' cy='101' rx='"+sh+"' ry='3' fill='rgba(21,21,46,.18)'/>"+ballG(p[0],p[1],p[2]||0,p[3])});return h+"</svg>"}
+function eye(on){return "<span class='eye"+(on?" on":"")+"'>"+(on?"<svg width='11' height='11' viewBox='0 0 12 12'><path d='M1 6 Q6 1 11 6 Q6 11 1 6Z' fill='#15152e'/><circle cx='6' cy='6' r='1.6' fill='#ffd34d'/></svg>":"")+"</span>"}
+var ICS=["<path d='M6 4 L20 13 L13 14 L10 21Z' fill='#fff'/>","<rect x='5' y='6' width='16' height='14' fill='none' stroke='#fff' stroke-width='2' stroke-dasharray='3 2'/>","<path d='M6 20 C10 8 16 6 20 6' stroke='#fff' stroke-width='3' fill='none' stroke-linecap='round'/>","<circle cx='12' cy='12' r='6' fill='none' stroke='#fff' stroke-width='2'/><path d='M16 16 L21 21' stroke='#fff' stroke-width='3'/>","<text x='8' y='19' font-size='15' font-weight='900' fill='#fff'>T</text>"];
+function tools(on){return "<div class='tb'>"+ICS.map(function(p,i){return "<i class='"+(i==on?"on":"")+"'><svg viewBox='0 0 26 26'>"+p+"</svg></i>"}).join("")+"</div>"}
+function menu(file,items){return "<div class='mb'><span class='lg'>ПЛ</span>"+(items||["Файл","Редагування","Шар","Вікно"]).map(function(t){return "<span class='it' data-m='"+t+"'>"+t+"</span>"}).join("")+"<span style='margin-left:auto;opacity:.6'>"+file+"</span></div>"}
+function heart(f){return "<svg width='18' height='16' viewBox='0 0 20 18'><path d='M10 17 L2 9 A5 5 0 0 1 10 3 A5 5 0 0 1 18 9Z' fill='"+(f?"#ff5fa2":"#e6e7f2")+"' stroke='#15152e' stroke-width='1.6'/></svg>"}
+function avatar(c,hair){return "<svg class='av' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='"+c+"' stroke='#15152e' stroke-width='2'/><circle cx='14' cy='18' r='2.4' fill='#15152e'/><circle cx='26' cy='18' r='2.4' fill='#15152e'/><path d='M13 26 Q20 31 27 26' stroke='#15152e' stroke-width='2.3' fill='none' stroke-linecap='round'/><path d='"+hair+"' stroke='#15152e' stroke-width='5' fill='none' stroke-linecap='round'/></svg>"}
+function snd(ok){try{GX.snd(ok?"ok":"bad")}catch(e){}}
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function alive(e){return e&&document.body.contains(e)}
+/* програвач кадрів у полотні */
+function player(doc,frames,delays,loop,onFrame){var k=0,n=0,stop=false;function step(){if(stop||!alive(doc))return;doc.innerHTML=frameSVG(frames[k]);if(onFrame)onFrame(k);var d=Math.max(90,Math.min(1600,(delays[k]||.1)*1400));k++;if(k>=frames.length){k=0;n++;if(loop!=="inf"&&n>=loop){setTimeout(function(){if(onFrame)onFrame(-1)},d);return}}setTimeout(step,d)}step();return function(){stop=true}}
+/* блок завдання з варіантами */
+function task(box,tag,title,sub,opts,cb){var t=document.createElement("div");t.className="pstask";t.innerHTML=(tag?"<span class='tg'>"+tag+"</span>":"")+"<h3>"+title+"</h3>"+(sub?"<p>"+sub+"</p>":"")+(opts?"<div class='ops'></div>":"");box.appendChild(t);
+ if(opts){var o=t.querySelector(".ops"),done=false,items=sh(opts.map(function(x,i){return {t:x,ok:i===0}}));items.forEach(function(x){var b=document.createElement("button");b.textContent=x.t;x.b=b;b.onclick=function(){if(done)return;done=true;items.forEach(function(y){if(y.ok)y.b.className="ok"});if(!x.ok)b.className="bad";cb(x.ok,opts[0])};o.appendChild(b)})}return t}
+function expl(box,ok,txt){var x=document.createElement("div");x.className="psx "+(ok?"ok":"bad");x.innerHTML="<b>"+(ok?"Правильно. ":"Не зовсім. ")+"</b>"+txt;box.appendChild(x);return x}
+function next(label,fn){nxt9(label,fn)}
+
+/* ================= 1. Збери GIF ================= */
+var LY=[["top","м’яч угорі",[80,30,0]],["fly","м’яч летить",[80,60,.05]],["sq","м’яч сплющ.",[80,84,.28]]];
+var LYP={};LY.forEach(function(l){LYP[l[0]]=l[2]});
+GM.ps_build=function(g){
+ var st={frames:[],cur:-1,tl:false,delay:null,loop:null,vis:{},score:0},step=0;
+ var STEPS=[
+  {k:"menu",tag:"Крок 1 · Шкала часу",t:"Відкрий панель для покадрової анімації",s:"Знайди її в головному меню редактора.",ops:["Вікно → Шкала часу","Шар → Новий шар","Файл → Друк"],e:"Панель <b>Шкала часу</b> вмикають у меню <b>Вікно</b>, а в ній обирають «Створити анімацію кадрів»."},
+  {k:"layer",want:"top",tag:"Крок 2 · Кадр 1",t:"Кадр 1: м’яч угорі",s:"Торкнися шару, який має бути видимим у цьому кадрі.",e:"Кожен кадр запам’ятовує, <b>які шари видимі</b>. На першому кадрі видно лише «м’яч угорі» (і фон)."},
+  {k:"dup",tag:"Крок 3 · Новий кадр",t:"Додай другий кадр",s:"Торкнися потрібної кнопки під шкалою часу.",e:"Кнопка <b>«Дублювати кадр»</b> копіює поточний кадр, а далі в ньому змінюють видимість шарів."},
+  {k:"layer",want:"fly",tag:"Крок 4 · Кадр 2",t:"Кадр 2: м’яч падає",s:"Увімкни шар для цього кадру.",e:"Між верхньою точкою й ударом потрібен <b>проміжний стан</b> – «м’яч летить»."},
+  {k:"layer",want:"sq",dup:1,tag:"Крок 5 · Кадр 3",t:"Кадр 3: удар об землю",s:"Кадр уже дубльовано. Обери шар.",e:"Сплющений м’яч у момент удару – принцип <b>стиснення й розтягування</b>: рух здається живим."},
+  {k:"q",tag:"Крок 6 · Кадри 4–5",t:"Кадри 4 і 5 – копії кадрів 2 і 1. Навіщо?",ops:["Щоб м’яч повернувся вгору тим самим шляхом","Щоб файл став важчим","Щоб змінився колір м’яча"],e:"Стрибок симетричний: угору м’яч летить через ті самі стани, тому кадри 2 і 1 повторюються у <b>зворотному порядку</b>.",act:function(){st.frames.push({l:"fly"},{l:"top"});st.cur=4}},
+  {k:"q",tag:"Крок 7 · Затримка",t:"Яку затримку поставити кожному кадру?",s:"М’яч має стрибати швидко й плавно.",ops:["0,1 с","5 с","0 с – без затримки"],e:"<b>Затримка</b> – час показу кадру. 0,1 с дає приблизно 10 кадрів на секунду: для GIF цього достатньо.",act:function(){st.delay="0,1 с"}},
+  {k:"q",tag:"Крок 8 · Цикл",t:"Стікер має стрибати безкінечно. Який цикл?",ops:["Завжди","Один раз","3 рази"],e:"Параметр <b>Цикл: Завжди</b> повторює анімацію без кінця – так працюють стікери й гіфки в месенджерах.",act:function(){st.loop="Завжди"}},
+  {k:"q",play:1,tag:"Крок 9 · Експорт",t:"Анімація готова! У якому форматі зберегти для месенджера?",ops:["GIF","PSD","JPEG"],e:"<b>GIF</b> зберігає кадри й цикл і відкривається будь-де. PSD – робочий файл редактора з шарами, а JPEG не анімується."}
+ ];
+ var N=STEPS.length;
+ function stat(){gs9("Крок "+Math.min(step+1,N)+" / "+N+" · ✅ "+st.score)}
+ function render(passive){
+  var S=STEPS[step],act=!passive,cf=st.cur>=0?st.frames[st.cur]:null,vis=cf?cf.l:null;
+  var h=CSS+"<div class='psl'>"+menu("м’яч.psd")+"<div class='wk'>"+tools(0)+"<div class='cv'><div class='tabn'>"+(st.cur>=0?"Кадр "+(st.cur+1):"Без кадрів")+"</div><div class='doc' id='psdoc'>"+frameSVG({b:vis?[LYP[vis]]:[]})+"</div></div>"+
+   "<div class='pn'><div class='pt'>Шари</div>"+LY.map(function(l){return "<div class='ly"+(act&&S.k=="layer"?" tp":"")+(vis==l[0]?" sel":"")+"' data-l='"+l[0]+"'>"+eye(vis==l[0])+"<span class='th'>"+frameSVG({b:[l[2]]})+"</span>"+l[1]+"</div>"}).join("")+
+   "<div class='ly'>"+eye(1)+"<span class='th' style='background:#b7ecd2'></span>фон</div></div></div>";
+  if(st.tl){h+="<div class='tl'><div class='tlh'><span>Шкала часу · анімація кадрів</span><span style='opacity:.75'>Цикл: "+(st.loop||"—")+"</span></div><div class='fr'>";
+   for(var i=0;i<5;i++){var f=st.frames[i];h+=f?"<div class='f"+(i==st.cur?" cur":"")+"' data-f='"+i+"'><div class='ft'>"+frameSVG({b:f.l?[LYP[f.l]]:[]})+"</div><em>"+(st.delay||"—")+"</em></div>":"<div class='f add'>+</div>"}
+   var dc=act&&S.k=="dup"?" tp":"";h+="</div><div class='ctl'><span class='cb"+dc+"' data-c='del'>Видалити кадр</span><span class='cb"+dc+"' data-c='dup'>Дублювати кадр</span><span class='cb pl"+dc+"' data-c='play'>▶</span></div></div>"}
+  h+="</div><div id='psbox'></div>";
+  fr9(g.title,"Збери GIF-стікер «Стрибок м’яча» в редакторі ПіксельЛаб: шари, кадри, затримка, цикл, експорт. Кожен правильний крок з першої спроби – бал.",h);stat();
+  if(passive)return;
+  var box=document.getElementById("psbox"),ed=document.querySelector(".psl");
+  function fin(ok,mutate){
+   if(mutate){var keep=box.innerHTML;mutate();render(true);box=document.getElementById("psbox");box.innerHTML=keep;ed=document.querySelector(".psl")}
+   if(ok)st.score++;else ed.classList.add("sh");snd(ok);stat();expl(box,ok,S.e);
+   if(S.play){player(document.getElementById("psdoc"),st.frames.map(function(f){return {b:[LYP[f.l]]}}),st.frames.map(function(){return .1}),"inf",function(k){[].forEach.call(document.querySelectorAll(".psl .f[data-f]"),function(e,i){e.classList.toggle("play",i===k)})})}
+   next(step==N-1?"Завершити":"Далі →",function(){step++;if(step>=N)return fin9(st.score,N);if(STEPS[step].dup){st.frames.push({l:st.frames[st.cur].l});st.cur++}render()})}
+  if(S.k=="menu"){var mi=ed.querySelectorAll(".mb .it");[].forEach.call(mi,function(e){e.classList.add("tp")});
+   var t=task(box,S.tag,S.t,"Торкнися пункту меню вгорі, а потім команди.",null),o=document.createElement("div");o.className="ops";t.appendChild(o);
+   var used=false;[].forEach.call(mi,function(e){e.onclick=function(){if(used)return;var m=e.getAttribute("data-m"),cmd={"Файл":["Створити…","Друк…","Експорт"],"Редагування":["Скасувати","Трансформувати"],"Шар":["Новий шар","Дублювати шар"],"Вікно":["Шари","Шкала часу","Історія"]}[m];
+    o.innerHTML="";cmd.forEach(function(c){var b=document.createElement("button");b.textContent=m+" → "+c;b.onclick=function(){if(used)return;used=true;var ok=m=="Вікно"&&c=="Шкала часу";b.className=ok?"ok":"bad";
+     fin(ok,function(){st.tl=true;st.frames=[{l:null}];st.cur=0})};o.appendChild(b)})}})}
+  else if(S.k=="layer"){task(box,S.tag,S.t,S.s,null);var used2=false;[].forEach.call(ed.querySelectorAll(".ly[data-l]"),function(e){e.onclick=function(){if(used2)return;used2=true;var ok=e.getAttribute("data-l")==S.want;
+    fin(ok,function(){st.frames[st.cur].l=S.want});var x=document.querySelector(".psl .ly[data-l='"+S.want+"']");if(x)x.classList.add("ok");if(!ok){var w=document.querySelector(".psl .ly[data-l='"+e.getAttribute("data-l")+"']");if(w)w.classList.add("bad")}}})}
+  else if(S.k=="dup"){task(box,S.tag,S.t,S.s,null);var used3=false;[].forEach.call(ed.querySelectorAll(".cb[data-c]"),function(e){e.onclick=function(){if(used3)return;used3=true;var c=e.getAttribute("data-c"),ok=c=="dup";
+    fin(ok,function(){st.frames.push({l:st.frames[st.cur].l});st.cur++});var d=document.querySelector(".psl .cb[data-c=dup]");if(d)d.classList.add("ok");if(!ok){var w=document.querySelector(".psl .cb[data-c="+c+"]");if(w)w.classList.add("bad")}}})}
+  else task(box,S.tag,S.t,S.s,S.ops,function(ok){fin(ok,S.act)})
+ }
+ render()};
+
+/* ================= 2. Глюк у кадрах ================= */
+var ARC=[[30,40,0],[50,22,0],[70,14,0],[90,14,0],[110,22,0],[130,40,0]];
+function arc(){return ARC.map(function(p){return {b:[p.slice()]}})}
+var GL=[
+ {tag:"Глюк 1",bug:"М’яч «телепортується» туди-сюди",mk:function(){var f=arc(),t=f[2];f[2]=f[4];f[4]=t;return {f:f,d:[.1,.1,.1,.1,.1,.1],loop:"inf",bad:[2,4]}},
+  q:"Що полагодить анімацію?",ops:["Поміняти кадри місцями у правильному порядку","Додати кольорів","Поставити цикл «Один раз»"],e:"Кадри стоять <b>не по порядку</b>, тому м’яч стрибає назад. На шкалі часу кадри перетягують у потрібну позицію."},
+ {tag:"Глюк 2",bug:"М’яч надовго «зависає» в повітрі",mk:function(){return {f:arc(),d:[.1,.1,.1,1.2,.1,.1],loop:"inf",bad:3}},
+  q:"Як виправити цей кадр?",ops:["Поставити затримку 0,1 с, як в інших","Видалити всі кадри","Зберегти у PSD"],e:"У цього кадру <b>завелика затримка</b> (1,2 с). Затримка – час показу кадру, тож її вирівнюють з іншими."},
+ {tag:"Глюк 3",bug:"На мить з’являються два м’ячі",mk:function(){var f=arc();f[1].b.push([110,22,0]);return {f:f,d:[.1,.1,.1,.1,.1,.1],loop:"inf",bad:1}},
+  q:"Що сталося в цьому кадрі?",ops:["Увімкнено зайвий шар – треба вимкнути «око»","Не вистачає кольорів","Неправильна роздільна здатність"],e:"Кадр пам’ятає <b>видимість шарів</b>. Тут лишився видимим шар з іншого кадру – вимикаємо його «око»."},
+ {tag:"Глюк 4",bug:"М’яч блимає й зникає",mk:function(){var f=arc();f[4]={b:[]};return {f:f,d:[.1,.1,.1,.1,.1,.1],loop:"inf",bad:4}},
+  q:"Як полагодити порожній кадр?",ops:["Увімкнути шар із м’ячем у цьому кадрі","Збільшити затримку до 3 с","Додати ще порожніх кадрів"],e:"У кадрі <b>вимкнено всі шари</b> з м’ячем, тому він «зникає». Вмикаємо потрібний шар."},
+ {tag:"Глюк 5",bug:"М’яч стрибає ривками, різко",mk:function(){var f=arc();return {f:[f[0],f[5]],d:[.25,.25],loop:"inf",bad:[0,1]}},
+  q:"Як зробити рух плавним?",ops:["«Створити проміжні кадри» між цими двома","Зменшити кількість кадрів до одного","Змінити формат на JPEG"],e:"Між двома далекими кадрами бракує проміжних. Команда <b>«Створити проміжні кадри»</b> додає їх автоматично."},
+ {tag:"Глюк 6",bug:"Анімація програється один раз і зупиняється",mk:function(){return {f:arc(),d:[.1,.1,.1,.1,.1,.1],loop:1,bad:"loop"}},
+  q:"Що змінити, щоб стікер крутився безкінечно?",ops:["Цикл: Завжди","Затримку: 0 с","Формат: PNG"],e:"Параметр <b>Цикл</b> задає кількість повторів. Для безкінечної анімації – «Завжди»."}
+];
+GM.ps_glitch=function(g){
+ var rs=GL.slice(0,5).concat([GL[5]]),i=0,sc=0,lives=3,MX=rs.length*2;
+ function stat(){gs9("Глюк "+Math.min(i+1,rs.length)+" / "+rs.length+" · ✅ "+sc)}
+ function show(){var R=rs[i],m=R.mk(),stop=null,found=false;
+  var h=CSS+"<div class='pshd'><span class='mut' style='font-weight:700'>Знайди кадр-зламанця і полагодь</span><span class='hs'>"+[0,1,2].map(function(k){return heart(k<lives)}).join("")+"</span></div>"+
+   "<div class='psl'>"+menu("стрибок.psd")+"<div class='wk'>"+tools(3)+"<div class='cv'><div class='tabn'>Перегляд ▶</div><div class='doc' id='psdoc'></div></div></div>"+
+   "<div class='tl'><div class='tlh'><span>Шкала часу · "+m.f.length+" кадр"+(m.f.length<5?"и":"ів")+"</span><span class='cb tp' data-b='loop' style='padding:3px 8px'>Цикл: "+(m.loop=="inf"?"Завжди":"Один раз")+"</span></div><div class='fr'>"+
+   m.f.map(function(f,k){return "<div class='f tp' data-b='"+k+"'><div class='ft'>"+frameSVG(f)+"</div><em>"+String(m.d[k]).replace(".",",")+" с</em></div>"}).join("")+"</div>"+
+   "<div class='ctl'><span class='cb pl tp' data-c='again'>▶ Ще раз</span><span class='cb' style='margin-left:auto'>Помилка: "+R.bug.toLowerCase()+"</span></div></div></div><div id='psbox'></div>";
+  fr9(g.title,"Кожна анімація має одну помилку. Подивись, як вона грає, торкнися зламаного кадру (або налаштування) і обери виправлення. Неправильне місце забирає серце.",h);stat();
+  var doc=document.getElementById("psdoc"),ed=document.querySelector(".psl"),box=document.getElementById("psbox"),fr=ed.querySelectorAll(".f[data-b]");
+  function hl(k){[].forEach.call(fr,function(e,j){e.classList.toggle("play",j===k)})}
+  function run(){if(stop)stop();stop=player(doc,m.f,m.d,m.loop,hl)}run();
+  ed.querySelector("[data-c=again]").onclick=run;
+  task(box,R.tag,"Де помилка?","Торкнися кадру на шкалі часу або налаштування циклу.",null);
+  [].forEach.call(ed.querySelectorAll("[data-b]"),function(e){e.onclick=function(){if(found)return;found=true;var bl=[].concat(m.bad).map(String),ok=bl.indexOf(e.getAttribute("data-b"))>=0;
+   bl.forEach(function(b){var gd=ed.querySelector("[data-b='"+b+"']");if(gd)gd.classList.add("ok")});if(!ok){e.classList.add("bad");ed.classList.add("sh");lives--;ed.parentNode.querySelector(".hs").innerHTML=[0,1,2].map(function(k){return heart(k<lives)}).join("")}else sc++;snd(ok);stat();
+   expl(box,ok,ok?"Саме тут ховається глюк.":"Глюк ось тут – його підсвічено зеленим.");
+   if(lives<=0){if(stop)stop();expl(box,false,"Серця скінчилися. Спробуй ще раз – ти вже знаєш, де шукати.");return next("Результат",function(){fin9(sc,MX)})}
+   task(box,"Ремонт",R.q,null,R.ops,function(ok2){if(ok2)sc++;snd(ok2);stat();expl(box,ok2,R.e);
+    if(ok2){/* показуємо полагоджену анімацію */var a=arc();if(stop)stop();stop=player(doc,a,[.1,.1,.1,.1,.1,.1],"inf",null)}
+    next(i==rs.length-1?"Результат":"Наступний глюк →",function(){if(stop)stop();i++;if(i>=rs.length)fin9(sc,MX);else show()})})}})}
+ show()};
+
+/* ================= 3. GIF на замовлення ================= */
+var OPT={fmt:["GIF","WebP","PNG","JPEG","PSD"],col:[256,128,64,32],w:[1200,800,480,320],loop:["Завжди","Один раз","3 рази"],tr:["Так","Ні"]};
+var ANIM={GIF:1,WebP:1};
+function size(s,fr){var w=s.w,h=Math.round(w*.75),b;
+ if(s.fmt=="GIF")b=w*h*fr*(Math.log(s.col)/Math.LN2)/8*.35;else if(s.fmt=="WebP")b=w*h*fr*3*.02;else if(s.fmt=="PNG")b=w*h*4*.45;else if(s.fmt=="JPEG")b=w*h*3*.1;else b=w*h*4*1.6*3;return b/1024}
+function kb(v){return v>=1024?(Math.round(v/102.4)/10).toString().replace(".",",")+" МБ":Math.round(v)+" КБ"}
+var CLI=[
+ {who:["#ffd37a","M8 12 Q20 0 32 12"],name:"Дарина",msg:"Привіт! Потрібен <b>стікер для месенджера</b>: м’ячик хай стрибає <b>безкінечно</b>, а файл – <b>легкий</b>, до 500 КБ.",fr:8,pic:{b:[[80,60,.05]]},
+  req:[["Анімований формат",function(s){return s.fmt=="GIF"||s.fmt=="WebP"}],["Цикл: безкінечно",function(s){return ANIM[s.fmt]&&s.loop=="Завжди"}],["До 500 КБ",function(s,z){return z<=500}]],
+  q:"Чому не PSD? Він же якісніший!",ops:["PSD – робочий файл редактора, месенджери його не показують","PSD не зберігає шари","PSD має лише 2 кольори"],e:"<b>PSD</b> зберігає шари для подальшої роботи, але для показу людям експортують у GIF, PNG, JPEG чи WebP."},
+ {who:["#a6e3ff","M10 10 L30 10"],name:"Олег, кав’ярня",msg:"Для сайту кав’ярні: анімований банер із <b>фото заходу сонця</b>, щоб <b>плавні відтінки</b> не псувалися. Ширина 800 пікселів, <b>до 1 МБ</b>.",fr:24,pic:{b:[]},
+  req:[["Анімований формат",function(s){return !!ANIM[s.fmt]}],["Плавні відтінки фото",function(s){return s.fmt=="WebP"}],["Ширина 800 px",function(s){return s.w==800}],["До 1 МБ",function(s,z){return z<=1024}]],
+  q:"Чому GIF псує фото із заходом сонця?",ops:["GIF має не більше 256 кольорів","GIF не підтримує анімацію","GIF – це векторний формат"],e:"<b>GIF</b> обмежений 256 кольорами, тому плавні переходи фото стають смугастими. <b>WebP</b> зберігає мільйони відтінків і важить менше."},
+ {who:["#c8b6ff","M8 14 Q20 2 32 14"],name:"Шкільний сайт",msg:"Логотип ліцею має <b>блимнути 3 рази</b> і зупинитися, ширина <b>320 px</b>. Формат – щоб відкривався всюди, як звичайна гіфка.",fr:6,pic:{b:[[80,50,0,"#6d5dfc"]]},
+  req:[["Формат GIF",function(s){return s.fmt=="GIF"}],["Повтор 3 рази",function(s){return s.fmt=="GIF"&&s.loop=="3 рази"}],["Ширина 320 px",function(s){return s.w==320}]],
+  q:"Що задає «затримка» кадру?",ops:["Скільки часу показується кадр","Скільки кольорів у кадрі","Розмір кадру в пікселях"],e:"<b>Затримка</b> – час показу одного кадру. Менша затримка – швидша анімація."},
+ {who:["#ffb3c7","M9 9 Q20 18 31 9"],name:"Друкарня «Аркуш»",msg:"Надішліть, будь ласка, <b>робочий файл із шарами</b>: дизайнер ще підправить постер перед друком.",fr:1,pic:{b:[[60,70,0],[100,50,0,"#ffd34d"]]},
+  req:[["Файл зберігає шари",function(s){return s.fmt=="PSD"}]],
+  q:"Яку колірну модель використовують для друку?",ops:["CMYK","RGB","HEX"],e:"Принтери друкують фарбами: блакитна, пурпурова, жовта й чорна – це <b>CMYK</b>. RGB – для екранів."},
+ {who:["#b7ecd2","M10 12 Q20 4 30 12"],name:"Інтернет-магазин",msg:"Потрібна <b>статична іконка</b> кошика з <b>прозорим фоном</b> для сайту, без анімації. Ширина <b>320 px</b>.",fr:1,pic:{b:[[80,60,0,"#2ccb8a"]]},
+  req:[["Статичний формат з прозорістю",function(s){return s.fmt=="PNG"}],["Прозорість увімкнено",function(s){return s.fmt=="PNG"&&s.tr=="Так"}],["Ширина 320 px",function(s){return s.w==320}]],
+  q:"Чому для іконки не підходить JPEG?",ops:["JPEG не підтримує прозорість","JPEG не можна відкрити в браузері","JPEG завжди важить більше за 10 МБ"],e:"<b>JPEG</b> не має прозорості, а <b>PNG</b> має і стискає без втрат – ідеально для іконок і логотипів."},
+ {who:["#ffd37a","M8 9 L32 9"],name:"Адмін мем-каналу",msg:"Мем-реакція на <b>40 кадрів</b> важить як фільм! Зробіть GIF, що <b>безкінечно крутиться</b> й важить <b>до 1 МБ</b>.",fr:40,pic:{b:[[80,84,.28]]},start:{fmt:"GIF",col:256,w:1200,loop:"Завжди",tr:"Ні"},
+  req:[["Формат GIF",function(s){return s.fmt=="GIF"}],["Цикл: безкінечно",function(s){return s.loop=="Завжди"}],["До 1 МБ",function(s,z){return z<=1024}]],
+  q:"Що з цього робить GIF легшим?",ops:["Менше кадрів, кольорів і пікселів","Більша роздільна здатність","Збереження в PSD"],e:"Розмір GIF залежить від <b>кількості кадрів, кольорів і розміру полотна</b>. Зменшуєш будь-що з цього – файл легшає."}
+];
+GM.ps_order=function(g){
+ var i=0,sc=0,MX=CLI.length*2,best=0;
+ function stat(){gs9("Клієнт "+Math.min(i+1,CLI.length)+" / "+CLI.length+" · ✅ "+sc)}
+ function show(){var C=CLI[i],s=C.start?JSON.parse(JSON.stringify(C.start)):{fmt:"PSD",col:256,w:1200,loop:"Один раз",tr:"Ні"},sent=false;
+  var h=CSS+"<div class='psch'>"+avatar(C.who[0],C.who[1])+"<div class='bub'><div style='font-size:11px;font-weight:800;color:#6e6e8a;margin-bottom:2px'>"+C.name+"</div>"+C.msg+"</div></div>"+
+   "<div class='psl psd'><div class='mb'><span class='lg'>ПЛ</span><b style='color:#fff'>Експорт для вебу</b><span style='margin-left:auto;opacity:.6'>"+C.fr+" кадр"+(C.fr==1?"":C.fr<5?"и":"ів")+"</span></div><div class='bd'>"+
+   "<div class='prv'><div class='doc' id='psdoc'></div><div id='psdim' style='margin-top:6px;font-weight:700'></div><div style='margin-top:8px;font-weight:700'>Розмір файлу</div><div class='mt'><i id='psmt'></i></div><div id='pssz' style='margin-top:3px;font-weight:800'></div></div>"+
+   "<div style='flex:1;min-width:0'>"+[["fmt","Формат"],["col","Кольори"],["w","Ширина"],["loop","Цикл"],["tr","Прозорість"]].map(function(r){return "<div class='row'><span>"+r[1]+"</span><span class='sv' data-k='"+r[0]+"'></span></div>"}).join("")+
+   "<div style='font-size:10px;opacity:.6;margin-top:6px'>Торкайся значень, щоб змінювати</div></div></div></div><div id='psreq' class='psreq'></div><div id='psbox'></div>";
+  fr9(g.title,"Ти – дизайнер у студії. Налаштуй експорт так, щоб виконати всі побажання клієнта, натисни «Надіслати», а потім відповідай на його питання.",h);stat();
+  var doc=document.getElementById("psdoc"),stop=null;
+  var fr=C.fr>1?arc().slice(0,6):[C.pic];if(C.fr>1&&C.pic.b.length){fr=[0,1,2,3].map(function(k){var p=C.pic.b[0];return {b:[[p[0],p[1]-[0,14,22,14][k],[.2,0,0,0][k],p[3]]]}})}
+  if(C===CLI[1])fr=null;
+  if(fr)stop=player(doc,fr,fr.map(function(){return .12}),"inf",null);else doc.innerHTML="<svg viewBox='0 0 160 120'><defs><linearGradient id='sn' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#6d5dfc'/><stop offset='.55' stop-color='#ff8fb8'/><stop offset='1' stop-color='#ffd37a'/></linearGradient></defs><rect width='160' height='120' fill='url(#sn)'/><circle cx='80' cy='86' r='20' fill='#fff3b0'/><rect y='92' width='160' height='28' fill='#3d348f'/><path d='M0 100 Q40 94 80 100 T160 100' stroke='#ffd37a' stroke-width='2' fill='none' opacity='.7'/></svg>";
+  function upd(){var anim=!!ANIM[s.fmt],z=size(s,anim?C.fr:1);
+   [].forEach.call(document.querySelectorAll(".psd .sv"),function(e){var k=e.getAttribute("data-k"),off=(k=="col"&&s.fmt!="GIF")||(k=="loop"&&!anim)||(k=="tr"&&!(s.fmt=="PNG"||s.fmt=="GIF"||s.fmt=="WebP"||s.fmt=="PSD"));e.classList.toggle("off",off);e.textContent=off?"—":(k=="w"?s.w+" px":s[k])});
+   document.getElementById("psdim").textContent=s.w+" × "+Math.round(s.w*.75)+" px";var mt=document.getElementById("psmt"),lim=2048;mt.style.width=Math.min(100,z/lim*100)+"%";mt.style.background=z<=500?"#2ccb8a":z<=1024?"#ffd34d":"#ff4d4d";
+   var sz=document.getElementById("pssz");sz.textContent="≈ "+kb(z);sz.style.color=z<=500?"#2ccb8a":z<=1024?"#ffd34d":"#ff6b6b";return z}
+  var z=upd();
+  [].forEach.call(document.querySelectorAll(".psd .sv"),function(e){e.onclick=function(){if(sent||e.classList.contains("off"))return;var k=e.getAttribute("data-k"),a=OPT[k],p=a.indexOf(s[k]);s[k]=a[(p+1)%a.length];z=upd()}});
+  var box=document.getElementById("psbox"),btn=document.createElement("button");btn.className="pri";btn.style.cssText="width:100%;margin-top:10px";btn.textContent="Надіслати клієнту";box.appendChild(btn);
+  btn.onclick=function(){if(sent)return;sent=true;btn.remove();var all=true,rq=document.getElementById("psreq");
+   rq.innerHTML=C.req.map(function(r){var ok=r[1](s,z);if(!ok)all=false;return "<span class='"+(ok?"ok":"bad")+"'>"+(ok?"✔ ":"✖ ")+r[0]+"</span>"}).join("");
+   if(all)sc++;snd(all);stat();if(!all)document.querySelector(".psd").classList.add("sh");
+   expl(box,all,all?"Клієнт задоволений: усі побажання виконано.":"Клієнт повернув замовлення – червоним позначено, що не так. Ось як правильно: "+hintFor(i)+".");
+   setTimeout(function(){if(!alive(box))return;task(box,"Питання клієнта",C.q,"Поясни одним варіантом.",C.ops,function(ok){if(ok)sc++;snd(ok);stat();expl(box,ok,C.e);
+    next(i==CLI.length-1?"Результат":"Наступний клієнт →",function(){if(stop)stop();i++;if(i>=CLI.length)fin9(sc,MX);else show()})})},500)}}
+ function hintFor(k){return ["GIF, цикл «Завжди», ширина 480 px або менше","WebP, ширина 800 px","GIF, цикл «3 рази», ширина 320 px","PSD – робочий формат із шарами","PNG, прозорість «Так», ширина 320 px","GIF, цикл «Завжди», ширина 320 px і 128 кольорів або менше"][k]}
+ show()};
+
+/* іконки й назви для списку ігор */
+function gic(inner){return "<svg viewBox='0 0 40 40' width='30' height='30'><rect x='3' y='5' width='34' height='30' rx='7' fill='#2b2b31' stroke='#15152e' stroke-width='2'/>"+inner+"</svg>"}
+var I1=gic("<rect x='8' y='12' width='7' height='6' rx='1' fill='#fff'/><rect x='17' y='12' width='7' height='6' rx='1' fill='#fff'/><rect x='26' y='12' width='7' height='6' rx='1' fill='#ff5fa2'/><circle cx='20' cy='27' r='4' fill='#ff5fa2' stroke='#fff' stroke-width='1.2'/>"),
+    I2=gic("<circle cx='16' cy='20' r='6' fill='#ff5fa2' stroke='#fff' stroke-width='1.2'/><path d='M26 11 L30 20 L25 20 L29 29' stroke='#ffd34d' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/>"),
+    I3=gic("<rect x='8' y='11' width='24' height='18' rx='3' fill='#3a3a41' stroke='#fff' stroke-width='1.2'/><text x='20' y='24' text-anchor='middle' font-size='9' font-weight='900' fill='#ffd34d'>GIF</text>");
+[["ps_build","Збери GIF",I1],["ps_glitch","Глюк у кадрах",I2],["ps_order","GIF на замовлення",I3]].forEach(function(x){GI[x[0]]=[x[2],x[1]];if(window.GI5)GI5[x[0]]=[x[2],x[1]]});
+/* урок 16 (11 клас): 2 прості + 2 тематичні замість простих + складна «GIF на замовлення» замість складної */
+var L=LES[1116];if(L&&L.g){var simp=L.g.filter(function(x){return x.type!="u11_2"&&x.type.indexOf("u11_")!==0}).slice(0,2);
+ L.g=simp.concat([{type:"ps_build",title:"Збери GIF"},{type:"ps_glitch",title:"Глюк у кадрах"},{type:"ps_order",title:"GIF на замовлення"}])}
+})();
+
 setTimeout(flush,1500);
 setTimeout(push,3000);
 topics();
