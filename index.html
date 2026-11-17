@@ -27126,7 +27126,7 @@ var _e=endScr;endScr=function(a,b,c,d){_e(a,b,c,d);try{var card=$.querySelector(
 var t=p>=.8?"Чудова робота, "+nm+"! 🎉":p>=.5?"Гарний результат, "+nm+"! 👍":"Не здавайся, "+nm+"! 💪";
 var m=p>=.8?"Ти справжній майстер інформатики. Так тримати!":p>=.5?"Ще трохи практики – і буде ідеально. Спробуй ще раз!":"Помилки – це частина навчання. Прочитай урок ще раз і повтори – вийде краще!";
 var cols=["#ff5d73","#ffd24a","#4ade80","#38bdf8","#c084fc"],cf="";if(p>=.5)for(var i=0;i<22;i++)cf+="<i style='left:"+(Math.random()*100)+"%;background:"+cols[i%5]+";animation-delay:"+(Math.random()*3)+"s'></i>";
-var d1=document.createElement("div");d1.className="endx";d1.innerHTML=cf+"<h3 class='exs'>"+t+"</h3><p class='exm'>"+m+"</p><p class='exm'>Дякуємо за гру! Мяу 🐾</p>";card.insertBefore(d1,card.firstChild);
+var d1=document.createElement("div");d1.className="endx";d1.innerHTML=cf+"<h3 class='exs'>"+t+"</h3><p class='exm'>"+m+"</p><p class='exm'>"+(document.body.classList.contains('g10it')?"&gt;_ Сесію завершено. exit 0 ✔":"Дякуємо за гру! Мяу 🐾")+"</p>";card.insertBefore(d1,card.firstChild);
 var bs=Array.prototype.slice.call($.querySelectorAll("button")),mn=null,ag=null,q;for(q=bs.length-1;q>=0;q--){if(!mn&&/В меню/.test(bs[q].textContent))mn=bs[q];else if(!ag&&/Ще раз/.test(bs[q].textContent))ag=bs[q]}
 bs.forEach(function(b){if(b!==mn&&b!==ag&&/В меню/.test(b.textContent)&&b.parentNode)b.parentNode.removeChild(b)});
 if(mn&&ag){var row=document.createElement("div");row.className="exr";mn.className="pri alt";mn.textContent="← В меню";ag.className="pri";row.appendChild(mn);row.appendChild(ag);card.parentNode.insertBefore(row,card.nextSibling)}
@@ -39818,6 +39818,93 @@ for(var n=1;n<=52;n++){var L=LES[500+n];if(!L||!L.g)continue;var t=END[n]?"boss"
 var EX={n_ttt:"cell",n_mil:"diamond",n_board:"compass",n_bomb:"boom",n_navy:"boat",n_reveal:"picture",sort:"chest",cross:"table",n_melody:"wave",n_farm:"sprout"};if(window.PXG){var _ic=PXG.icon;PXG.icon=function(t){return _ic(t)||EX[t]||null}}
 var _f=fr9;fr9=function(){var r=_f.apply(this,arguments);try{if(document.body.classList.contains("g5")&&window.PXG&&window.PXI){var b=document.querySelector("#app .gbn");var t=window.BNT||"";var nm=PXG.icon(t),u=nm&&PXI.url(nm);
  if(b&&u&&!b.querySelector(".pxs")){var d=document.createElement("span");d.className="pxs";d.innerHTML="<img alt='' src='"+u+"'>";b.appendChild(d);b.classList.add("pxh")}}}catch(e){}return r}})();
+
+/* 10-ІТ: «Термінал» – учень пише справжній Python-код (Brython у Web Worker, packs/pyw.js), автоперевірка тестами.
+   Замінює складну гру в уроках, для яких є набір завдань TERM10[k]. */
+(function(){
+if(!window.LES||!window.GM)return;
+var TERM10={
+1008:{title:"Термінал: цикли",tasks:[
+ {t:"Виведи числа від 1 до 5 – кожне з нового рядка.",code:"for i in range(1, 2):\n    print(i)\n",
+  tests:[{inp:[],out:"1\n2\n3\n4\n5"}],
+  hint:"range(a, b) не включає b. Щоб дійти до 5, кінець має бути 6.",
+  sol:"for i in range(1, 6):\n    print(i)"},
+ {t:"У списку marks – оцінки. Порахуй їхню суму в циклі (накопиченням) і виведи її.",code:"marks = [10, 8, 11, 9]\ntotal = 0\nfor m in marks:\n    # додай m до total\n    pass\nprint(total)\n",
+  tests:[{inp:[],out:"38"}],
+  hint:"Шаблон накопичення: total = 0 перед циклом, у тілі total += m.",
+  sol:"marks = [10, 8, 11, 9]\ntotal = 0\nfor m in marks:\n    total += m\nprint(total)"},
+ {t:"Зворотний відлік. Програма отримує число n. Виведи числа від n до 1 (кожне з нового рядка), а потім слово Старт!",code:"n = int(input())\nwhile n > 0:\n    print(n)\n    # зменш n, інакше цикл буде нескінченним\nprint('Старт!')\n",
+  tests:[{inp:["3"],out:"3\n2\n1\nСтарт!"},{inp:["1"],out:"1\nСтарт!"},{inp:["5"],out:"5\n4\n3\n2\n1\nСтарт!"}],
+  hint:"У тілі while умова має колись стати хибною: додай n -= 1.",
+  sol:"n = int(input())\nwhile n > 0:\n    print(n)\n    n -= 1\nprint('Старт!')"},
+ {t:"Програма отримує рядок чисел через пробіл. Порахуй, скільки серед них парних, і виведи цю кількість.",code:"a = list(map(int, input().split()))\ncount = 0\nfor x in a:\n    # якщо x парне – збільш count\n    pass\nprint(count)\n",
+  tests:[{inp:["4 7 10 3 8"],out:"3"},{inp:["1 3 5"],out:"0"},{inp:["2 2 2 2"],out:"4"}],
+  hint:"Число парне, якщо x % 2 == 0. Тоді count += 1.",
+  sol:"a = list(map(int, input().split()))\ncount = 0\nfor x in a:\n    if x % 2 == 0:\n        count += 1\nprint(count)"},
+ {t:"Відбір. Програма отримує рядок чисел. Побудуй новий список лише з чисел, не менших за 10, і виведи його.",code:"a = list(map(int, input().split()))\nbig = []\n# пройди по a і додай у big потрібні числа\nprint(big)\n",
+  tests:[{inp:["5 12 7 20 10"],out:"[12, 20, 10]"},{inp:["1 2 3"],out:"[]"},{inp:["10 9 11"],out:"[10, 11]"}],
+  hint:"for x in a: if x >= 10: big.append(x). Або коротко: big = [x for x in a if x >= 10].",
+  sol:"a = list(map(int, input().split()))\nbig = []\nfor x in a:\n    if x >= 10:\n        big.append(x)\nprint(big)"}
+]}};
+window.TERM10=TERM10;
+if(window.GI)GI.term=["⌨️","Термінал"];
+Object.keys(TERM10).forEach(function(k){var L=LES[k];if(!L||!L.g)return;var T=TERM10[k];
+ var i=-1;L.g.forEach(function(g,j){if(/^u10_/.test(g.type))i=j});
+ var ng={type:"term",title:T.title,k:+k};if(i>=0)L.g[i]=ng;else L.g.push(ng)});
+
+var css="<style>.tm10{font-family:ui-monospace,Menlo,Consolas,monospace}.tm10 .tq{background:#0b1a12;border:1px solid #1f6b3a;border-radius:10px;padding:10px 12px;color:#c8ffd9;font:14px/1.4 system-ui,sans-serif;margin-bottom:8px}.tm10 .tq b{color:#39ff88}"+
+".tm10 .ted{display:flex;background:#06100b;border:1px solid #1f6b3a;border-radius:10px;overflow:hidden}.tm10 .tln{padding:8px 6px;color:#2f7a4a;text-align:right;user-select:none;font-size:13px;line-height:1.5;white-space:pre;background:#081510;min-width:22px}"+
+".tm10 textarea{flex:1;min-width:0;min-height:170px;background:transparent!important;color:#d9ffe6!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;width:auto!important;outline:0;resize:vertical;padding:8px!important;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;tab-size:4;white-space:pre;font-size:13px!important;line-height:1.5!important;overflow:auto;caret-color:#39ff88}"+
+".tm10 .tkb{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}.tm10 .tkb button{display:block!important;width:auto!important;margin:0!important;box-shadow:none!important;text-align:center!important;flex:1 0 auto;min-width:34px;padding:6px 4px!important;background:#0f2a1b;color:#9dffc2;border:1px solid #1f6b3a;border-radius:6px;font:13px ui-monospace,monospace}"+
+".tm10 .trow{display:flex;gap:6px;margin:6px 0}.tm10 .trow button{display:block!important;width:auto!important;margin:0!important;text-align:center!important;flex:1;padding:10px!important;border-radius:8px;font-weight:700;border:1px solid #39ff88;background:#103d24;color:#eafff1}.tm10 .trow .run{background:#1fbf5f;color:#02140a}.tm10 .trow button:disabled{opacity:.45}"+
+".tm10 .tout{background:#000;border:1px solid #1f6b3a;border-radius:10px;padding:8px 10px;color:#b6ffcf;font-size:12.5px;line-height:1.45;white-space:pre-wrap;word-break:break-word;min-height:44px;max-height:220px;overflow:auto}.tm10 .tout .e{color:#ff7b7b}.tm10 .tout .ok{color:#39ff88;font-weight:700}.tm10 .tout .mu{color:#5f9f78}"+
+".tm10 .tdots{display:flex;gap:5px;justify-content:center;margin:2px 0 8px}.tm10 .tdots i{width:26px;height:6px;border-radius:3px;background:#1a3a28}.tm10 .tdots i.c{background:#39ff88}.tm10 .tdots i.s{background:#ffb84d}.tm10 .tdots i.a{outline:1px solid #9dffc2}</style>";
+
+var W=null,ready=false,busy=null,q=[];
+function mkW(){try{W=new Worker("packs/pyw.js")}catch(e){W=null;return}ready=false;W.onmessage=function(e){var d=e.data;if(d&&d.ready){ready=true;var f=q.shift();if(f)f();return}if(busy){var b=busy;busy=null;clearTimeout(b.t);b.cb(d)}};W.onerror=function(){if(busy){var b=busy;busy=null;clearTimeout(b.t);b.cb({ok:0,out:"",fail:"Не вдалося запустити Python."})}}}
+function run(code,inp,cb){if(!W)mkW();if(!W)return cb({ok:0,out:"",fail:"Інтерпретатор недоступний на цьому пристрої."});
+ var go=function(){busy={cb:cb,t:setTimeout(function(){var b=busy;busy=null;try{W.terminate()}catch(e){}W=null;mkW();b&&b.cb({ok:0,out:"",fail:"Програма працює понад 3 секунди – схоже на нескінченний цикл."})},3000)};W.postMessage({code:code,inp:inp})};
+ if(ready)go();else q.push(go)}
+function norm(s){return String(s).replace(/\r/g,"").split("\n").map(function(l){return l.replace(/\s+$/,"")}).join("\n").replace(/\n+$/,"")}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+
+GM.term=function(g){var T=TERM10[g.k||CUR9];if(!T)return fin9(0,1);var ts=T.tasks,N=ts.length,i=0,sc=0,st=[],codes=ts.map(function(t){return t.code});if(!W)mkW();
+ function show(){var t=ts[i],fails=0,solved=st[i]==="c";
+  fr9(g.title||T.title,"Пиши справжній код Python і тисни «Запуск». Перевірка проганяє програму на тестах. Код можна правити скільки завгодно.",css+
+  "<div class='tm10'><div class='tdots'>"+ts.map(function(_,j){return "<i class='"+(st[j]||"")+(j==i?" a":"")+"'></i>"}).join("")+"</div>"+
+  "<div class='tq'><b>Завдання "+(i+1)+"/"+N+".</b> "+esc(t.t)+(t.tests[0].inp.length?"<br><span style='color:#7fd6a0;font-size:12.5px'>Приклад вводу: "+esc(t.tests[0].inp.join(" / "))+" → вивід: "+esc(t.tests[0].out.replace(/\n/g," ⏎ "))+"</span>":"")+"</div>"+
+  "<div class='ted'><div class='tln' id='tln'>1</div><textarea id='tta' spellcheck='false' autocapitalize='off' autocorrect='off' autocomplete='off'></textarea></div>"+
+  "<div class='tkb'>"+["⇥","(",")",":","[","]","=","'","+","<",">","%"].map(function(k){return "<button data-k=\""+k+"\">"+k+"</button>"}).join("")+"</div>"+
+  "<div class='trow'><button class='run' id='trun'>▶ Запуск</button><button id='thint'>💡 Підказка</button></div>"+
+  "<div class='tout' id='tout'><span class='mu'>"+(ready?"&gt; Python готовий. Пиши код і тисни «Запуск».":"&gt; Завантажую Python… (перший раз може тривати кілька секунд)")+"</span></div>"+
+  "<div class='trow'><button id='tskip'>"+(i<N-1?"Пропустити →":"Завершити")+"</button></div></div>");
+  gs9((i+1)+" / "+N+" · ✅ "+sc);
+  var ta=document.getElementById("tta"),ln=document.getElementById("tln"),out=document.getElementById("tout"),rb=document.getElementById("trun"),sk=document.getElementById("tskip");
+  ta.value=codes[i];
+  function lines(){var n=ta.value.split("\n").length,s="";for(var j=1;j<=n;j++)s+=j+"\n";ln.textContent=s;ln.scrollTop=ta.scrollTop}
+  function ins(s){var a=ta.selectionStart,b=ta.selectionEnd;ta.value=ta.value.slice(0,a)+s+ta.value.slice(b);ta.selectionStart=ta.selectionEnd=a+s.length;codes[i]=ta.value;lines();ta.focus()}
+  ta.oninput=function(){codes[i]=ta.value;lines()};ta.onscroll=function(){ln.scrollTop=ta.scrollTop};
+  ta.onkeydown=function(e){if(e.key==="Tab"){e.preventDefault();ins("    ")}else if(e.key==="Enter"){e.preventDefault();var a=ta.selectionStart,ls=ta.value.lastIndexOf("\n",a-1)+1,cur=ta.value.slice(ls,a),ind=(cur.match(/^ */)||[""])[0];if(/:\s*$/.test(cur))ind+="    ";ins("\n"+ind)}};
+  [].forEach.call(document.querySelectorAll(".tkb button"),function(b){b.onmousedown=function(e){e.preventDefault()};b.onclick=function(){var k=b.getAttribute("data-k");ins(k==="⇥"?"    ":k)}});
+  lines();
+  if(!ready){var wt=setInterval(function(){if(ready){clearInterval(wt);if(out.textContent.indexOf("Завантажую")>=0)out.innerHTML="<span class='mu'>&gt; Python готовий. Пиши код і тисни «Запуск».</span>"}},300)}
+  document.getElementById("thint").onclick=function(){out.innerHTML="<span class='mu'>💡 "+esc(t.hint)+"</span>"};
+  sk.onclick=function(){if(!st[i])st[i]="s";next()};
+  rb.onclick=function(){if(rb.disabled)return;rb.disabled=true;out.innerHTML="<span class='mu'>&gt; Виконую…</span>";var code=ta.value,res=[],j=0;
+   (function one(){if(j>=t.tests.length)return done();var tc=t.tests[j];run(code,tc.inp,function(d){res.push({tc:tc,d:d});if(!d.ok||norm(d.out)!==norm(tc.out))return done();j++;one()})})();
+   function done(){rb.disabled=false;var last=res[res.length-1],d=last.d,okAll=res.length===t.tests.length&&d.ok&&norm(d.out)===norm(last.tc.out),h="";
+    var shown=res[0].d;h+="<span class='mu'>&gt; вивід"+(t.tests[0].inp.length?" (ввід: "+esc(t.tests[0].inp.join(" / "))+")":"")+":</span>\n"+esc(shown.ok?shown.out:shown.out||"")+(shown.fail?"<span class='e'>"+esc(shown.fail)+"</span>":"");
+    if(okAll){h+="\n<span class='ok'>✔ Усі тести пройдено ("+t.tests.length+"/"+t.tests.length+")</span>";if(st[i]!=="c"){st[i]="c";sc++;A9snd("ok")}gs9((i+1)+" / "+N+" · ✅ "+sc);sk.textContent=i<N-1?"Далі →":"Завершити";sk.className="run";sk.style.background="#1fbf5f";sk.style.color="#02140a"}
+    else{fails++;if(d.ok){var tc=last.tc;h+="\n<span class='e'>✘ Тест "+res.length+"/"+t.tests.length+" не пройдено.</span>"+(tc.inp.length?"\n<span class='mu'>ввід: "+esc(tc.inp.join(" / "))+"</span>":"")+"\n<span class='mu'>очікувалось:</span>\n"+esc(tc.out)+"\n<span class='mu'>твоя програма вивела:</span>\n"+esc(norm(d.out)||"(нічого)")}
+     else if(res.length>1){h+="\n<span class='e'>✘ На тесті "+res.length+" (ввід: "+esc(last.tc.inp.join(" / "))+") сталася помилка:</span>\n<span class='e'>"+esc(d.fail||d.out)+"</span>"}
+     if(fails>=3)h+="\n\n<span class='mu'>Розв’язок-зразок:</span>\n"+esc(t.sol);
+     else if(fails>=2)h+="\n<span class='mu'>💡 "+esc(t.hint)+"</span>";A9snd("bad")}
+    out.innerHTML=h;out.scrollTop=0}};
+ }
+ function next(){i++;if(i>=N)return fin9(sc,N);show()}
+ show()};
+function A9snd(k){try{if(window.A9&&A9.snd)A9.snd(k);else if(window.snd9)snd9(k)}catch(e){}}
+})();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
