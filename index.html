@@ -27178,8 +27178,13 @@ var B5T=[
 var B6T=[
 "Вогняний світ сповнений дивних машин. Дізнайся, які цифрові пристрої нас оточують, як вони працюють і що таке цифрові технології.",
 "У пустелі слайди – як оази. Збирай презентації з тексту, зображень, звуку й анімації та проводь власний показ.",
-"На сніжній рівнині чисті сторінки чекають на слова. Створюй, редагуй і форматуй текстові документи: шрифти, абзаци, списки й таблиці."];
-function brief(w,txt,k,n,cls){var W=WN[w];if(!W)return;var h=document.querySelector("#app .hero");if(!h||document.querySelector("#app .wbr"))return;
+"На сніжній рівнині чисті сторінки чекають на слова. Створюй, редагуй і форматуй текстові документи: шрифти, абзаци, списки й таблиці.",
+"В океані барв живуть картинки. Дізнайся, чим растрова графіка відрізняється від векторної, малюй у графічному редакторі й зберігай зображення в потрібному форматі.",
+"У Далекому краї все можна порахувати й змоделювати. Будуй моделі, заповнюй електронні таблиці, рахуй за формулами й показуй дані на діаграмах.",
+"Знову Вогняний світ – тепер тут оживають програми. Працюй зі змінними, повторюй команди в циклах і обирай шлях через розгалуження.",
+"Піщані оази – фінальний світ. Тут ти сам плануєш і створюєш проєкт, поєднуючи все, чого навчився за рік, і презентуєш результат."];
+var N6=["Кузня пристроїв","Оаза слайдів","Сніжна рівнина","Океан барв","Край моделей","Вогняний світ","Піщані оази"];
+function brief(w,txt,k,n,nm){var W=WN[w];if(!W)return;if(nm)W=[W[0],nm,W[2]];var h=document.querySelector("#app .hero");if(!h||document.querySelector("#app .wbr"))return;
  var d=document.createElement("div");d.className="wbr";d.style.setProperty("--wc",W[2]);
  d.innerHTML="<div class='wi'>"+W[0]+"</div><div><b>Світ "+k+" з "+n+" · «"+W[1]+"»</b><p>"+txt+"</p></div>";h.parentNode.insertBefore(d,h.nextSibling)}
 var st=document.createElement("style");st.textContent=".wbr{display:flex;gap:12px;align-items:center;margin:0 0 12px;padding:12px 14px;border-radius:16px;border:1px solid color-mix(in srgb,var(--wc) 55%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--wc) 20%,rgba(10,10,30,.55)),rgba(10,10,30,.55));position:relative;overflow:hidden;animation:wbG 5s ease-in-out infinite}.wbr .wi{flex:0 0 46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:26px;background:color-mix(in srgb,var(--wc) 25%,transparent);animation:wbF 4.5s ease-in-out infinite}.wbr b{display:block;font-size:12.5px;letter-spacing:.3px;color:var(--wc);margin-bottom:3px}.wbr p{margin:0;font-size:13.5px;line-height:1.4;color:#fff}.wbr::after{content:'';position:absolute;top:0;bottom:0;width:50px;left:-70px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);transform:skewX(-18deg);animation:wbS 8s ease-in-out infinite;pointer-events:none}@keyframes wbF{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@keyframes wbG{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 22px color-mix(in srgb,var(--wc) 32%,transparent)}}@keyframes wbS{0%,60%{left:-70px}100%{left:120%}}@media(prefers-reduced-motion:reduce){.wbr,.wbr .wi,.wbr::after{animation:none}}";document.head.appendChild(st);
@@ -27211,7 +27216,7 @@ var _s5=section5;section5=function(k){_s5(k);k=k||1;var t=TP5[k-1];if(t)brief(t.
 
 
 
-var _s6=section6;section6=function(k){_s6(k);k=k||1;var t=TP6[k-1];if(t)brief(t.w,B6T[k-1],k,TP6.length)};
+var _s6=section6;section6=function(k){_s6(k);k=k||1;var t=TP6[k-1];if(t)brief(t.w,B6T[k-1],k,TP6.length,N6[k-1])};
 })();
 
 /* Анімовані піксельні сцени-обкладинки тем (5–6 клас): по одній на світ */
