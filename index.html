@@ -34978,7 +34978,7 @@ var pend=0;new MutationObserver(function(){if(pend)return;pend=1;setTimeout(func
 if(document.readyState!=="loading")startObs();else document.addEventListener("DOMContentLoaded",startObs);
 /* --- прихована для учнів кнопка «Мій клас» під екраном входу --- */
 var _pQ=playQ;playQ=function(){REV=0;return _pQ.apply(this,arguments)};var _pG=playG;playG=function(){REV=0;return _pG.apply(this,arguments)};
-var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button></div>");var mv=function(){var l=document.querySelector("#app .uxtl"),ap=document.getElementById("app");var ab=ap&&ap.querySelector(".abt");if(l&&ap&&(ab?ab.previousElementSibling!==l:ap.lastElementChild!==l))ap.insertBefore(l,ab||null)};setTimeout(mv,80);setTimeout(mv,500);setTimeout(mv,1500)}catch(e){}return r};
+var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.getElementById("app");if(a&&!a.querySelector(".uxtl"))a.insertAdjacentHTML("beforeend","<div class='uxtl'><button onclick='uxTch()'>👩‍🏫 Мій клас (для вчителя)</button><button onclick='uxSet()'>⚙️ Налаштування</button></div>");var mv=function(){var l=document.querySelector("#app .uxtl"),ap=document.getElementById("app");var ab=ap&&ap.querySelector(".abt");if(l&&ap&&(ab?ab.previousElementSibling!==l:ap.lastElementChild!==l))ap.insertBefore(l,ab||null)};setTimeout(mv,80);setTimeout(mv,500);setTimeout(mv,1500)}catch(e){}return r};
 /* --- випадкова затримка відправки, щоб розтягти пік навантаження на таблицю --- */
 var _fl=flush;flush=function(){if(ENDING)return _fl();return new Promise(function(res){setTimeout(function(){_fl().then(res,function(){res([false])})},Math.floor(Math.random()*4000))})};
 /* --- стилі --- */
@@ -39905,6 +39905,25 @@ GM.term=function(g){var T=TERM10[g.k||CUR9];if(!T)return fin9(0,1);var ts=T.task
  function next(){i++;if(i>=N)return fin9(sc,N);show()}
  show()};
 function A9snd(k){try{if(window.A9&&A9.snd)A9.snd(k);else if(window.snd9)snd9(k)}catch(e){}}
+})();
+
+/* Налаштування на стартовій: завантажити всі уроки в кеш (для спільних планшетів) */
+(function(){
+var FILES=["index.html","manifest.json","icon.svg","icon-192.png","icon-512.png","apple-touch-icon.png","packs/i5.js","packs/i8.js","packs/i9.js","packs/i11.js","packs/pyw.js"];
+function ver(){try{return (window.APPV||"")}catch(e){return ""}}
+window.uxSet=function(){var o=document.createElement("div");o.className="ofl";
+ o.innerHTML="<div class='oflb'><h3>⚙️ Налаштування</h3><p>Для спільного планшета: одним натиском завантаж уроки <b>усіх класів</b>, і застосунок працюватиме без інтернету в будь-якому класі. Роби це після кожного оновлення (до 15 МБ, краще через Wi‑Fi).</p>"+
+ "<div class='oflp'><i id='oflbar'></i></div><div id='oflt' class='oflt'>"+(navigator.onLine?"":"Зараз немає інтернету.")+"</div>"+
+ "<button id='oflgo' class='blk ok'>⬇️ Завантажити всі уроки</button><button id='oflx' class='blk'>Закрити</button></div>";
+ document.body.appendChild(o);
+ o.querySelector("#oflx").onclick=function(){o.remove()};
+ o.querySelector("#oflgo").onclick=function(){var b=this,t=o.querySelector("#oflt"),bar=o.querySelector("#oflbar"),done=0,fail=0;b.disabled=true;t.textContent="Перевіряю оновлення…";
+  var upd=(navigator.serviceWorker&&navigator.serviceWorker.getRegistration)?navigator.serviceWorker.getRegistration().then(function(r){return r&&r.update()}).catch(function(){}):Promise.resolve();
+  upd.then(function(){return Promise.all(FILES.map(function(u){return fetch(u+"?all="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return caches.keys().then(function(ks){var k=ks.filter(function(x){return /^inf-v\d/.test(x)}).sort(function(a,b){return parseInt(a.slice(5))-parseInt(b.slice(5))}).pop();return k&&caches.open(k).then(function(c){return c.put(u,r)})})}).then(function(){done++},function(){fail++}).then(function(){bar.style.width=Math.round((done+fail)/FILES.length*100)+"%";t.textContent="Завантажено "+done+" з "+FILES.length})}))})
+  .then(function(){b.disabled=false;if(fail){t.textContent="⚠️ Не вдалося завантажити "+fail+" з "+FILES.length+". Перевір інтернет і спробуй ще раз."}else{t.textContent="✅ Готово! Усі уроки збережено на пристрої.";b.textContent="🔄 Перезапустити застосунок";b.onclick=function(){location.reload()}}})};
+};
+var st=document.createElement("style");st.textContent=".ofl{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}.oflb{background:#fff;color:#1d2033;border-radius:16px;padding:18px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35);font:15px/1.45 system-ui,sans-serif}.oflb h3{margin:0 0 8px;font-size:19px}.oflb p{margin:0 0 12px}.oflp{height:10px;border-radius:5px;background:#e6e8f2;overflow:hidden;margin:4px 0 6px}.oflp i{display:block;height:100%;width:0;background:linear-gradient(90deg,#27c47a,#1fa3ff);transition:width .3s}.oflt{min-height:20px;font-size:13.5px;color:#4a4f6a;margin-bottom:10px}.oflb .blk{width:100%;margin-top:6px}";
+document.head.appendChild(st);
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
