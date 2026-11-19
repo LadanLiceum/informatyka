@@ -39910,19 +39910,30 @@ function A9snd(k){try{if(window.A9&&A9.snd)A9.snd(k);else if(window.snd9)snd9(k)
 /* Налаштування на стартовій: завантажити всі уроки в кеш (для спільних планшетів) */
 (function(){
 var FILES=["index.html","manifest.json","icon.svg","icon-192.png","icon-512.png","apple-touch-icon.png","packs/i5.js","packs/i8.js","packs/i9.js","packs/i11.js","packs/pyw.js"];
+var QK=["inf5q","inf5sq"];
+function qg(k){try{return JSON.parse(localStorage.getItem(k)||"{}")||{}}catch(e){return{}}}
+function qn(){var n=0;QK.forEach(function(k){n+=Object.keys(qg(k)).length});return n}
+function sendAll(){var ok=0,U=window.RESULTS_URL||"";if(U.indexOf("http")!==0)return Promise.resolve(0);
+ return Promise.all(QK.map(function(qk){var o=qg(qk);return Promise.all(Object.keys(o).map(function(k){var body=o[k];
+  return fetch(U,{method:"POST",mode:"no-cors",body:body}).then(function(){var c=qg(qk);if(c[k]===body){delete c[k];try{localStorage.setItem(qk,JSON.stringify(c))}catch(e){}}ok++}).catch(function(){})}))})).then(function(){return ok})}
+window.uxSendAll=sendAll;
 function ver(){try{return (window.APPV||"")}catch(e){return ""}}
 window.uxSet=function(){var o=document.createElement("div");o.className="ofl";
- o.innerHTML="<div class='oflb'><h3>⚙️ Налаштування</h3><p>Для спільного планшета: одним натиском завантаж уроки <b>усіх класів</b>, і застосунок працюватиме без інтернету в будь-якому класі. Роби це після кожного оновлення (до 15 МБ, краще через Wi‑Fi).</p>"+
+ o.innerHTML="<div class='oflb'><h3>⚙️ Налаштування</h3><div class='oflh'>📤 <b>Оцінки, що чекають відправки:</b> <span id='oflq'>"+qn()+"</span></div><button id='oflup' class='blk'>📤 Вивантажити оцінки зараз</button><div id='oflut' class='oflt'></div><hr style='border:0;border-top:1px solid #e3e5ef;margin:10px 0'><p>Для спільного планшета: одним натиском завантаж уроки <b>усіх класів</b>, і застосунок працюватиме без інтернету в будь-якому класі. Роби це після кожного оновлення (до 15 МБ, краще через Wi‑Fi).</p>"+
  "<div class='oflp'><i id='oflbar'></i></div><div id='oflt' class='oflt'>"+(navigator.onLine?"":"Зараз немає інтернету.")+"</div>"+
  "<button id='oflgo' class='blk ok'>⬇️ Завантажити всі уроки</button><button id='oflx' class='blk'>Закрити</button></div>";
  document.body.appendChild(o);
  o.querySelector("#oflx").onclick=function(){o.remove()};
+ o.querySelector("#oflup").onclick=function(){var b=this,t=o.querySelector("#oflut"),n=qn();if(!n){t.textContent="✅ Усі оцінки вже відправлено.";return}
+  if(!navigator.onLine){t.textContent="⚠️ Немає інтернету. Підключи пристрій до мережі.";return}
+  b.disabled=true;t.textContent="Відправляю "+n+"…";
+  sendAll().then(function(r){b.disabled=false;var left=qn();o.querySelector("#oflq").textContent=left;t.textContent=left?"⚠️ Не відправилось "+left+". Перевір інтернет і натисни ще раз.":"✅ Готово! Відправлено "+r+". Оцінки вже в таблиці."})};
  o.querySelector("#oflgo").onclick=function(){var b=this,t=o.querySelector("#oflt"),bar=o.querySelector("#oflbar"),done=0,fail=0;b.disabled=true;t.textContent="Перевіряю оновлення…";
   var upd=(navigator.serviceWorker&&navigator.serviceWorker.getRegistration)?navigator.serviceWorker.getRegistration().then(function(r){return r&&r.update()}).catch(function(){}):Promise.resolve();
   upd.then(function(){return Promise.all(FILES.map(function(u){return fetch(u+"?all="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return caches.keys().then(function(ks){var k=ks.filter(function(x){return /^inf-v\d/.test(x)}).sort(function(a,b){return parseInt(a.slice(5))-parseInt(b.slice(5))}).pop();return k&&caches.open(k).then(function(c){return c.put(u,r)})})}).then(function(){done++},function(){fail++}).then(function(){bar.style.width=Math.round((done+fail)/FILES.length*100)+"%";t.textContent="Завантажено "+done+" з "+FILES.length})}))})
   .then(function(){b.disabled=false;if(fail){t.textContent="⚠️ Не вдалося завантажити "+fail+" з "+FILES.length+". Перевір інтернет і спробуй ще раз."}else{t.textContent="✅ Готово! Усі уроки збережено на пристрої.";b.textContent="🔄 Перезапустити застосунок";b.onclick=function(){location.reload()}}})};
 };
-var st=document.createElement("style");st.textContent=".ofl{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}.oflb{background:#fff;color:#1d2033;border-radius:16px;padding:18px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35);font:15px/1.45 system-ui,sans-serif}.oflb h3{margin:0 0 8px;font-size:19px}.oflb p{margin:0 0 12px}.oflp{height:10px;border-radius:5px;background:#e6e8f2;overflow:hidden;margin:4px 0 6px}.oflp i{display:block;height:100%;width:0;background:linear-gradient(90deg,#27c47a,#1fa3ff);transition:width .3s}.oflt{min-height:20px;font-size:13.5px;color:#4a4f6a;margin-bottom:10px}.oflb .blk{width:100%;margin-top:6px}";
+var st=document.createElement("style");st.textContent=".ofl{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px}.oflb{background:#fff;color:#1d2033;border-radius:16px;padding:18px;max-width:420px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.35);font:15px/1.45 system-ui,sans-serif}.oflb h3{margin:0 0 8px;font-size:19px}.oflb p{margin:0 0 12px}.oflp{height:10px;border-radius:5px;background:#e6e8f2;overflow:hidden;margin:4px 0 6px}.oflp i{display:block;height:100%;width:0;background:linear-gradient(90deg,#27c47a,#1fa3ff);transition:width .3s}.oflh{font-size:14px;margin:4px 0 2px}.oflt{min-height:20px;font-size:13.5px;color:#4a4f6a;margin-bottom:10px}.oflb .blk{width:100%;margin-top:6px}";
 document.head.appendChild(st);
 })();
 
