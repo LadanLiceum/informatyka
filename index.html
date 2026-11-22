@@ -38155,7 +38155,7 @@ try{var L=LES[19];if(L&&L.g){L.g.pop();L.g.push({type:"rc",title:"Космічн
 /* Розстановка складних ігор по всіх уроках 9 класу: ротація sab → qr → cl → wr → rc (без повторів поруч). Контент уроків без власного наповнення збирається з пулу питань уроку. */
 (function(){
 var X=window.SB9;if(!X)return;var esc=X.esc,shf=X.shf;
-var ROT=["sab","qr","cl","wr","rc"],TT={sab:"Саботажник",qr:"Втеча з модуля",cl:"Колонія",wr:"Проводка",rc:"Космічні перегони"};
+var ROT=["sab","qr","cl","wr","rc","gb"],TT={sab:"Саботажник",qr:"Втеча з модуля",cl:"Колонія",wr:"Проводка",rc:"Космічні перегони",gb:"Гравітаційний більярд"};
 var HAND={14:1,15:1,16:1,17:1,18:1,19:1};
 function norm(k){var seen={},o=[];function add(x){if(!x||!x.q||!x.a||x.a.length<2)return;var q=String(x.q).replace(/^Правда чи хибно\?\s*/,""),tf=/^Правда чи хибно/.test(x.q);if(seen[q])return;seen[q]=1;o.push({q:q,a:x.a.slice(),e:x.e||"",tf:tf})}
  try{(GX.poolAll(k)||[]).forEach(add)}catch(e){}try{(LES[k].q||[]).forEach(add)}catch(e){}return o}
@@ -38187,9 +38187,9 @@ function mkRc(P){var q=mcq(P);return {name:"Кубок галактики",q:pad
 function mkWr(P){var pr=P.filter(function(x){return !x.tf&&x.q.length<=64&&x.a[0].length<=34}),u={},pp=[];shf(pr).forEach(function(x){if(!u[x.a[0]]){u[x.a[0]]=1;pp.push(x)}});
  var np=Math.max(1,Math.min(3,Math.floor(pp.length/4))),pn=[];for(var i=0;i<np;i++)pn.push(pp.slice(i*4,i*4+4).map(function(x){return [esc(x.q),esc(x.a[0]),x.e||""]}));
  return {name:"Проводка станції",energy:5,panels:pn}}
-var MK={sab:mkSab,qr:mkQr,cl:mkCl,wr:mkWr,rc:mkRc};window.DIST9MK={norm:norm,sab:mkSab,qr:mkQr,cl:mkCl,wr:mkWr,rc:mkRc};
+var MK={sab:mkSab,qr:mkQr,cl:mkCl,wr:mkWr,rc:mkRc,gb:mkRc};window.DIST9MK={norm:norm,sab:mkSab,qr:mkQr,cl:mkCl,wr:mkWr,rc:mkRc};
 var done=[];
-for(var k=1;k<=52;k++){if(HAND[k])continue;var L=LES[k];if(!L||!L.g)continue;var ty=ROT[(((k-15)%5)+5)%5],P=norm(k),it;
+for(var k=1;k<=52;k++){if(HAND[k])continue;var L=LES[k];if(!L||!L.g)continue;var ty=ROT[(((k-15)%6)+6)%6],P=norm(k),it;
  try{it=(k==1&&ty=="qr"&&window.CP9&&CP9.qr)?CP9.qr:MK[ty](P,k)}catch(e){continue}
  var ix=-1;for(var i=L.g.length-1;i>=0;i--){if(/^(s_|n_)/.test(L.g[i].type)){ix=i;break}}if(ix<0)ix=L.g.length-1;
  L.g.splice(ix,1);L.g.push({type:ty,title:TT[ty],items:it});done.push(k+":"+ty)}
