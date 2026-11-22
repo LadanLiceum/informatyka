@@ -39939,6 +39939,211 @@ document.head.appendChild(st);
 
 /* 9 клас: Мільйонер – білий текст на темно-синіх плашках */
 (function(){var s=document.createElement("style");s.textContent="body.g9 .mil .blk,body.g9 .mil .blk *,body.g9 .mil .q,body.g9 .mil .q *{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.5)}body.g9 .mil .blk.ok,body.g9 .mil .blk.ok *{color:#0b3d1a!important;text-shadow:none}";document.head.appendChild(s)})();
+/* 9 клас, урок 17: Бінго → Запуск ракети */
+(function(){var L=window.LES&&LES[17];if(!L||!L.g)return;L.g.forEach(function(g){if(g.type==="n_bingo"){g.type="n_rocket";g.title=(window.GI&&GI.n_rocket&&GI.n_rocket[1])||"Запуск ракети"}})})();
+
+/* 9 клас «Космостанція»: складна гра «Гравітаційний більярд».
+   Зонд запускається рогаткою, планети гнуть траєкторію гравітацією, три чорні діри – варіанти А/Б/В.
+   Влучив у діру з правильною відповіддю – бал. */
+(function(){
+var X=window.SB9;if(!X||!window.GM)return;var K=X.K,INK=X.INK,esc=X.esc,shf=X.shf,YE=X.YE,MI=X.MI,RD=X.RD,CY=X.CY,OR=X.OR,PK=X.PK,LV=X.LV;
+var LC=[OR,CY,PK],LT=["А","Б","В"],NR=6,SHOTS=3;
+var W=340,H=392,BR=9,PR=19,LX=170,LY=356;
+var CSS="\
+html body .card:has(.gbq),html body #app .card:has(.gbq){background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.card:has(.gbq)>h2,.card:has(.gbq)>p.mut{display:none!important}\
+html body #app .gbq.sb{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}\
+.gbq{max-width:560px;margin:0 auto;color:#fff}.gbq *{box-sizing:border-box}\
+.gbq .gbHud{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 0}\
+.gbq .gbHud div{border:3px solid "+K+";border-radius:12px;background:#241a6b;padding:6px 4px 5px;text-align:center;box-shadow:0 3px 0 "+K+"}\
+.gbq .gbHud small{display:block;font:800 9px inherit;letter-spacing:.08em;color:#e3defc!important;text-transform:uppercase}\
+.gbq .gbHud b{display:block;font:900 17px monospace;color:#fff!important;margin-top:1px}\
+.gbq .gbHud i{display:inline-block;width:11px;height:11px;margin:3px 2px 0;border-radius:50%;border:2.5px solid "+K+";background:#3a2f7d}\
+.gbq .gbHud i.on{background:"+CY+";box-shadow:0 0 6px "+CY+"}\
+.gbq .gbQ{border:3px solid "+K+";border-radius:16px;box-shadow:0 5px 0 "+K+";background:#1d1550;padding:10px;margin-top:10px}\
+.gbq .gbQ h4{margin:0 0 8px;font-size:14px;font-weight:900;line-height:1.3;color:#fff!important}\
+.gbq .gbO{display:flex;align-items:center;gap:8px;margin:0 0 6px;padding:7px 9px;border:3px solid "+K+";border-radius:12px;background:#2c2080;font:800 13px/1.3 inherit;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:0 3px 0 "+K+"}\
+.gbq .gbO span{color:#fff!important;-webkit-text-fill-color:#fff!important}\
+.gbq .gbO:last-child{margin:0}\
+.gbq .gbO b{flex:none;width:26px;height:26px;border-radius:50%;border:3px solid "+K+";display:flex;align-items:center;justify-content:center;font:900 13px monospace;color:"+INK+"!important;-webkit-text-fill-color:"+INK+"!important}\
+.gbq .gbO.ok{background:#14594a;border-color:"+MI+"}.gbq .gbO.bad{background:#5a1630;border-color:"+RD+"}\
+.gbq .gbCv{position:relative;border:3px solid "+K+";border-radius:20px;box-shadow:0 5px 0 "+K+";overflow:hidden;background:#0b0830;margin-top:10px;touch-action:none;user-select:none;-webkit-user-select:none}\
+.gbq .gbCv canvas{display:block;width:100%;height:auto;touch-action:none}\
+.gbq .gbTip{position:absolute;left:0;right:0;top:30px;text-align:center;font:800 12px inherit;color:#fff!important;-webkit-text-fill-color:#fff!important;pointer-events:none;text-shadow:0 2px 0 "+K+"}\
+.gbq .gbMs{position:absolute;left:10px;right:10px;bottom:10px;border:3px solid "+K+";border-radius:14px;background:rgba(36,26,107,.96);padding:9px 11px;font:700 13px/1.4 inherit;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:0 3px 0 "+K+";min-height:20px}\
+.gbq .gbMs:empty{display:none}.gbq .gbMs b.g{color:"+MI+"!important;-webkit-text-fill-color:"+MI+"!important}.gbq .gbMs b.r{color:"+RD+"!important;-webkit-text-fill-color:"+RD+"!important}.gbq .gbMs b.y{color:"+YE+"!important;-webkit-text-fill-color:"+YE+"!important}\
+.gbq .gbNx{display:block;width:100%;margin-top:8px}\
+.gbq .gbFin{text-align:center}.gbq .gbFin .gbBig{font:900 44px monospace;color:"+YE+";text-shadow:0 4px 0 "+K+"}\
+";
+function inj(){X.inj();if(document.getElementById("gbcss"))return;var s=document.createElement("style");s.id="gbcss";s.textContent=CSS;document.head.appendChild(s)}
+
+/* ---------- фізика (спільна для гри, перевірки рівня й прицілу) ---------- */
+var GK=1.15e6;
+function step(L,b,dt){
+ for(var i=0;i<L.pl.length;i++){var p=L.pl[i],dx=p.x-b.x,dy=p.y-b.y,d2=dx*dx+dy*dy,d=Math.sqrt(d2),a=GK*p.m/Math.max(d2,900);b.vx+=dx/d*a*dt;b.vy+=dy/d*a*dt}
+ b.x+=b.vx*dt;b.y+=b.vy*dt;var bn=0;
+ var x0=20+BR,x1=W-20-BR,y0=20+BR,y1=H-20-BR;
+ if(b.x<x0){b.x=x0;b.vx=-b.vx*.86;bn=1}if(b.x>x1){b.x=x1;b.vx=-b.vx*.86;bn=1}
+ if(b.y<y0){b.y=y0;b.vy=-b.vy*.86;bn=1}if(b.y>y1){b.y=y1;b.vy=-b.vy*.86;bn=1}
+ for(i=0;i<L.pl.length;i++){var q=L.pl[i],ex=b.x-q.x,ey=b.y-q.y,ed=Math.sqrt(ex*ex+ey*ey),mn=q.r+BR;if(ed<mn){var nx=ex/ed,ny=ey/ed,vn=b.vx*nx+b.vy*ny;b.x=q.x+nx*mn;b.y=q.y+ny*mn;if(vn<0){b.vx-=1.8*vn*nx;b.vy-=1.8*vn*ny}bn=2}}
+ for(i=0;i<L.bu.length;i++){var u=L.bu[i],ux=b.x-u.x,uy=b.y-u.y,ud=Math.sqrt(ux*ux+uy*uy),um=u.r+BR;if(ud<um){var mx=ux/ud,my=uy/ud,vm=b.vx*mx+b.vy*my;b.x=u.x+mx*um;b.y=u.y+my*um;if(vm<0){b.vx-=2.1*vm*mx;b.vy-=2.1*vm*my}u.hit=.35;bn=3}}
+ var f=Math.pow(.62,dt);b.vx*=f;b.vy*=f;
+ for(i=0;i<3;i++){var h=L.ho[i],hx=h.x-b.x,hy=h.y-b.y;if(hx*hx+hy*hy<PR*PR*.72)return {hole:i,bn:bn}}
+ return {bn:bn}}
+function sim(L,vx,vy,max){var b={x:LX,y:LY,vx:vx,vy:vy};for(var t=0;t<(max||900);t++){var r=step(L,b,1/120);if(r.hole!=null)return r.hole;if(b.vx*b.vx+b.vy*b.vy<144)return -1}return -1}
+
+/* ---------- рівні ---------- */
+var SLOTS=[[62,70],[170,58],[278,70],[56,176],[284,176],[110,128],[230,128],[170,150]];
+function mkLevel(r){
+ for(var tr=0;tr<60;tr++){
+  var sl=shf(SLOTS.slice()).slice(0,3).sort(function(a,b){return a[0]-b[0]}),ho=sl.map(function(s){return {x:s[0]+(Math.random()*16-8),y:s[1]+(Math.random()*12-6)}});
+  var np=r<2?1:2,pl=[],bu=[],ok=true;
+  for(var i=0;i<np;i++){var pr=r<2?24:20+Math.random()*6,p=null;
+   for(var t=0;t<40;t++){var c={x:105+Math.random()*130,y:140+Math.random()*110,r:pr,m:.8+Math.random()*.5,hue:(r*2+i)%5,rot:Math.random()*6.28};
+    if(ho.every(function(h){return Math.hypot(h.x-c.x,h.y-c.y)>c.r+PR+30})&&pl.every(function(q){return Math.hypot(q.x-c.x,q.y-c.y)>q.r+c.r+40})&&Math.hypot(c.x-LX,c.y-LY)>c.r+70){p=c;break}}
+   if(!p){ok=false;break}pl.push(p)}
+  if(!ok)continue;
+  if(r>=3)for(i=0;i<(r>=5?2:1);i++){for(t=0;t<40;t++){var u={x:50+Math.random()*240,y:105+Math.random()*165,r:11,hit:0};
+   if(ho.every(function(h){return Math.hypot(h.x-u.x,h.y-u.y)>PR+u.r+24})&&pl.every(function(q){return Math.hypot(q.x-u.x,q.y-u.y)>q.r+u.r+22})&&bu.every(function(q){return Math.hypot(q.x-u.x,q.y-u.y)>40})&&Math.hypot(u.x-LX,u.y-LY)>60){bu.push(u);break}}}
+  var L={ho:ho,pl:pl,bu:bu},hit=[0,0,0];
+  for(var a=0;a<90&&(hit[0]<2||hit[1]<2||hit[2]<2);a++){var an=-Math.PI*(.06+.88*a/89);for(var pw=0;pw<6;pw++){var sp=260+pw*85,h=sim(L,Math.cos(an)*sp,Math.sin(an)*sp,700);if(h>=0)hit[h]++}}
+  if(hit[0]>=2&&hit[1]>=2&&hit[2]>=2)return L}
+ return {ho:[{x:62,y:70},{x:170,y:58},{x:278,y:70}],pl:[{x:170,y:220,r:22,m:1,hue:0,rot:0}],bu:[]}}
+
+/* ---------- малювання ---------- */
+var PLC=[["#ff9a3d","#c2410c","#ffd08a"],["#5ac8ff","#1e5bd8","#b8ecff"],["#b79cff","#5b2fd0","#e6dcff"],["#4cf0b6","#0f8a6a","#c9ffe9"],["#ff6fb5","#b0246b","#ffd0e6"]];
+var STARS=[];for(var si=0;si<70;si++)STARS.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.3,p:Math.random()*6.28});
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function table(c,t){
+ var g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1a1150");g.addColorStop(1,"#0c0a35");c.fillStyle=g;c.fillRect(0,0,W,H);
+ /* борт */
+ rr(c,4,4,W-8,H-8,22);var rg=c.createLinearGradient(0,0,W,H);rg.addColorStop(0,"#7c5cff");rg.addColorStop(.5,"#5b3fd6");rg.addColorStop(1,"#3b26a8");c.fillStyle=rg;c.fill();c.lineWidth=3;c.strokeStyle=K;c.stroke();
+ rr(c,8,8,W-16,H-16,19);c.strokeStyle="rgba(255,255,255,.25)";c.lineWidth=2;c.stroke();
+ /* поле */
+ rr(c,18,18,W-36,H-36,14);var fg=c.createRadialGradient(W/2,H*.42,20,W/2,H/2,H*.7);fg.addColorStop(0,"#2a1d7a");fg.addColorStop(.6,"#170f52");fg.addColorStop(1,"#0b0733");c.fillStyle=fg;c.fill();c.lineWidth=3;c.strokeStyle=K;c.stroke();
+ c.save();rr(c,18,18,W-36,H-36,14);c.clip();
+ c.strokeStyle="rgba(140,120,255,.10)";c.lineWidth=1;for(var x=18;x<W;x+=22){c.beginPath();c.moveTo(x,18);c.lineTo(x,H-18);c.stroke()}for(var y=18;y<H;y+=22){c.beginPath();c.moveTo(18,y);c.lineTo(W-18,y);c.stroke()}
+ for(var i=0;i<STARS.length;i++){var s=STARS[i];c.globalAlpha=.35+.45*Math.abs(Math.sin(t*1.3+s.p));c.fillStyle="#fff";c.beginPath();c.arc(s.x,s.y,s.r,0,6.29);c.fill()}c.globalAlpha=1;
+ /* туманність */
+ var ng=c.createRadialGradient(80,300,5,80,300,120);ng.addColorStop(0,"rgba(255,111,181,.16)");ng.addColorStop(1,"rgba(255,111,181,0)");c.fillStyle=ng;c.fillRect(0,0,W,H);
+ var ng2=c.createRadialGradient(270,110,5,270,110,110);ng2.addColorStop(0,"rgba(37,244,238,.12)");ng2.addColorStop(1,"rgba(37,244,238,0)");c.fillStyle=ng2;c.fillRect(0,0,W,H);
+ /* зона запуску */
+ c.setLineDash([5,5]);c.strokeStyle="rgba(255,210,63,.45)";c.lineWidth=2;c.beginPath();c.arc(LX,LY,24,Math.PI,0);c.stroke();c.setLineDash([]);
+ c.restore();
+ /* заклепки й вогники на борту */
+ var pts=[[14,14],[W-14,14],[14,H-14],[W-14,H-14],[W/2,10],[W/2,H-10],[10,H/2],[W-10,H/2]];
+ for(i=0;i<pts.length;i++){var on=Math.floor(t*2+i)%3==0;c.beginPath();c.arc(pts[i][0],pts[i][1],4,0,6.29);c.fillStyle=i<4?"#e6dcff":(on?YE:"#8a72e8");c.fill();c.lineWidth=2;c.strokeStyle=K;c.stroke()}}
+function field(c,p,t){c.save();c.setLineDash([3,7]);c.lineDashOffset=-t*14;for(var k=1;k<=3;k++){c.globalAlpha=.30-.07*k;c.strokeStyle=PLC[p.hue][2];c.lineWidth=1.5;c.beginPath();c.arc(p.x,p.y,p.r+k*17*p.m,0,6.29);c.stroke()}c.restore()}
+function planet(c,p,t){var C=PLC[p.hue];
+ c.save();c.beginPath();c.arc(p.x,p.y,p.r,0,6.29);var g=c.createRadialGradient(p.x-p.r*.4,p.y-p.r*.45,p.r*.1,p.x,p.y,p.r);g.addColorStop(0,C[2]);g.addColorStop(.45,C[0]);g.addColorStop(1,C[1]);c.fillStyle=g;c.fill();
+ c.clip();c.globalAlpha=.28;c.fillStyle=C[1];for(var k=-2;k<=2;k++){c.beginPath();c.ellipse(p.x,p.y+k*p.r*.38+Math.sin(t*.6+p.rot)*2,p.r*1.3,p.r*.09,.15,0,6.29);c.fill()}
+ c.globalAlpha=.35;c.fillStyle="#000";c.beginPath();c.arc(p.x+p.r*.35,p.y+p.r*.1,p.r*.16,0,6.29);c.fill();c.beginPath();c.arc(p.x-p.r*.2,p.y+p.r*.5,p.r*.1,0,6.29);c.fill();
+ c.globalAlpha=.5;c.fillStyle="#fff";c.beginPath();c.ellipse(p.x-p.r*.38,p.y-p.r*.42,p.r*.22,p.r*.12,-.6,0,6.29);c.fill();c.restore();
+ c.beginPath();c.arc(p.x,p.y,p.r,0,6.29);c.lineWidth=3;c.strokeStyle=K;c.stroke();
+ if(p.r>21){c.save();c.translate(p.x,p.y);c.rotate(-.35);c.beginPath();c.ellipse(0,0,p.r*1.55,p.r*.36,0,0,Math.PI);c.lineWidth=5;c.strokeStyle=K;c.stroke();c.lineWidth=2.5;c.strokeStyle=C[2];c.stroke();c.restore()}}
+function bumper(c,u,t){var k=u.hit>0?1+u.hit:1;c.save();c.translate(u.x,u.y);c.scale(k,k);c.rotate(t*.8);
+ c.beginPath();for(var i=0;i<8;i++){var a=i*Math.PI/4,rr2=i%2?u.r*.78:u.r;c.lineTo(Math.cos(a)*rr2,Math.sin(a)*rr2)}c.closePath();
+ var g=c.createRadialGradient(-3,-3,1,0,0,u.r);g.addColorStop(0,"#fff6c8");g.addColorStop(1,u.hit>0?YE:"#a58bff");c.fillStyle=g;c.fill();c.lineWidth=2.6;c.strokeStyle=K;c.stroke();
+ c.beginPath();c.arc(0,0,3.2,0,6.29);c.fillStyle=K;c.fill();c.restore()}
+function hole(c,h,i,t,st){var col=LC[i];
+ c.save();c.translate(h.x,h.y);
+ var gl=c.createRadialGradient(0,0,4,0,0,PR+12);gl.addColorStop(0,"rgba(0,0,0,.0)");gl.addColorStop(.6,col+"55");gl.addColorStop(1,col+"00");c.fillStyle=gl;c.beginPath();c.arc(0,0,PR+12,0,6.29);c.fill();
+ c.beginPath();c.arc(0,0,PR,0,6.29);c.fillStyle="#05031a";c.fill();
+ c.save();c.clip();for(var k=0;k<3;k++){c.rotate(t*(1.6+k*.5)+k*2.1);c.beginPath();c.arc(0,0,PR-4-k*4,0,Math.PI*1.1);c.lineWidth=3-k*.6;c.strokeStyle=k==1?"#fff":col;c.globalAlpha=.85-k*.2;c.stroke()}c.restore();c.globalAlpha=1;
+ c.beginPath();c.arc(0,0,4.5,0,6.29);c.fillStyle="#000";c.fill();
+ c.beginPath();c.arc(0,0,PR,0,6.29);c.lineWidth=3;c.strokeStyle=K;c.stroke();c.beginPath();c.arc(0,0,PR-2.5,0,6.29);c.lineWidth=1.8;c.strokeStyle=col;c.stroke();
+ if(st)c.globalAlpha=1;
+ /* значок літери */
+ var bx=PR*.72,by=-PR*.78;c.beginPath();c.arc(bx,by,10,0,6.29);c.fillStyle=col;c.fill();c.lineWidth=2.6;c.strokeStyle=K;c.stroke();
+ c.fillStyle=INK;c.font="900 11px Nunito,Poppins,system-ui,sans-serif";c.textAlign="center";c.textBaseline="middle";c.fillText(LT[i],bx,by+.5);
+ if(st){c.beginPath();c.arc(0,0,PR+5+Math.sin(t*8)*2,0,6.29);c.lineWidth=4;c.strokeStyle=st=="ok"?MI:RD;c.stroke()}
+ c.restore()}
+function probe(c,b,t,sc){c.save();c.translate(b.x,b.y);c.scale(sc,sc);c.rotate(t*3);
+ var g=c.createRadialGradient(-3,-3,1,0,0,BR);g.addColorStop(0,"#ffffff");g.addColorStop(.55,"#d8f7ff");g.addColorStop(1,"#5ac8ff");
+ c.beginPath();c.arc(0,0,BR,0,6.29);c.fillStyle=g;c.fill();c.lineWidth=2.8;c.strokeStyle=K;c.stroke();
+ c.beginPath();c.arc(0,0,BR*.42,0,6.29);c.fillStyle=YE;c.fill();c.lineWidth=1.8;c.stroke();
+ c.lineWidth=2;c.beginPath();c.moveTo(-BR,0);c.lineTo(-BR-4,0);c.moveTo(BR,0);c.lineTo(BR+4,0);c.stroke();c.restore()}
+function launcher(c,t,aim){c.save();c.translate(LX,LY+4);
+ c.beginPath();c.moveTo(-26,16);c.lineTo(-16,-2);c.lineTo(16,-2);c.lineTo(26,16);c.closePath();var g=c.createLinearGradient(0,-2,0,16);g.addColorStop(0,"#8a72e8");g.addColorStop(1,"#4b33b8");c.fillStyle=g;c.fill();c.lineWidth=3;c.strokeStyle=K;c.stroke();
+ c.beginPath();c.arc(-16,-2,4,0,6.29);c.arc(16,-2,4,0,6.29);c.fillStyle=YE;c.fill();c.lineWidth=2;c.stroke();
+ if(aim){c.lineWidth=2.5;c.strokeStyle=YE;c.beginPath();c.moveTo(-16,-2);c.lineTo(aim.x-LX,aim.y-LY-4);c.lineTo(16,-2);c.stroke()}
+ c.restore()}
+
+GM.gb=function(g){inj();var D=g.items||{q:[]},Q=(D.q||[]).filter(function(q){return q&&q.o&&q.o.length>=3}),S=null,raf=0;
+ if(!Q.length){try{var P=DIST9MK.norm(CUR9);Q=DIST9MK.rc(P,CUR9).q}catch(e){Q=[]}}
+ if(!Q.length)return fin9(0,1);
+ function root(){return document.getElementById("gbroot")}
+ function intro(){fr9(g.title,"","<div id='gbroot' class='gbq sb'></div>");gs9("Складна місія");
+  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>ОБСЕРВАТОРІЯ СТАНЦІЇ</small><b>Гравітаційний більярд</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(1)+X.ch(4)+'</div><h3>Закинь зонд у правильну чорну діру</h3><p>На полі три чорні діри з літерами А, Б, В – це варіанти відповіді. Між ними планети, які притягують зонд і гнуть його траєкторію.</p>'+
+   '<div class="sbSt">'+X.ICO.scan+'<span>Потягни від зонда назад, як рогатку: що далі тягнеш, то сильніший постріл. Жовта лінія показує початок шляху.</span></div>'+
+   '<div class="sbSt">'+X.ICO.heat+'<span>На кожне питання '+SHOTS+' спроби. Діра з хибною відповіддю завершує раунд. Влучиш із першого разу двічі поспіль – приціл подовжиться.</span></div>'+
+   '<button class="sbBtn n" id="gbGo">Почати</button></div>';
+  document.getElementById("gbGo").onclick=start}
+ function start(){var qs=shf(Q.slice());while(qs.length<NR)qs=qs.concat(shf(Q.slice()));
+  S={r:0,qs:qs.slice(0,NR),sc:0,first:0,combo:0,lens:0,t:0,last:performance.now(),fx:[],trail:[]};
+  fr9(g.title,"","<div id='gbroot' class='gbq sb'></div>");gs9("Більярд");
+  root().innerHTML='<div class="gbHud" id="gbHud"></div><div class="gbQ" id="gbQ"></div><div class="gbCv" id="gbCv"><canvas id="gbC" width="'+W*2+'" height="'+H*2+'"></canvas><div class="gbTip" id="gbTip"></div><div class="gbMs" id="gbMs"></div></div>';
+  window.GB9.cur=function(){return S};S.ctx=document.getElementById("gbC").getContext("2d");S.ctx.scale(2,2);bind();round();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+ function round(){var q=S.qs[S.r],ord=shf([0,1,2]);S.L=mkLevel(S.r);S.q=q;S.ord=ord;S.cl=ord.indexOf(0);S.shots=SHOTS;S.done=false;S.st=[null,null,null];S.b=null;S.aim=null;S.flying=false;S.trail=[];
+  var h='<h4>'+esc(q.q)+'</h4>';for(var i=0;i<3;i++)h+='<div class="gbO" id="gbO'+i+'"><b style="background:'+LC[i]+'">'+LT[i]+'</b><span>'+esc(q.o[ord[i]])+'</span></div>';document.getElementById("gbQ").innerHTML=h;
+  tip(S.r==0?"Потягни від зонда вниз і відпусти":"Раунд "+(S.r+1)+" з "+NR);if(S.r==0)try{document.getElementById("gbHud").scrollIntoView({block:"start"})}catch(e){}msg("");hud()}
+ function hud(){var sh="";for(var i=0;i<SHOTS;i++)sh+="<i class='"+(i<S.shots?"on":"")+"'></i>";document.getElementById("gbHud").innerHTML='<div><small>Раунд</small><b>'+Math.min(S.r+1,NR)+'/'+NR+'</b></div><div><small>Влучання</small><b>'+S.sc+'</b></div><div><small>Спроби</small>'+sh+'</div>';gs9("Раунд "+Math.min(S.r+1,NR)+"/"+NR+" · ✅ "+S.sc)}
+ function msg(t){var e=document.getElementById("gbMs");if(e)e.innerHTML=t}
+ function tip(t){var e=document.getElementById("gbTip");if(e)e.textContent=t}
+ function pt(e){var cv=document.getElementById("gbC"),b=cv.getBoundingClientRect();return {x:(e.clientX-b.left)/b.width*W,y:(e.clientY-b.top)/b.height*H}}
+ function bind(){var cv=document.getElementById("gbC");
+  cv.addEventListener("pointerdown",function(e){if(!S||S.flying||S.done)return;e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}S.drag=pt(e);S.aim=pt(e);tip("")});
+  cv.addEventListener("pointermove",function(e){if(!S||!S.drag)return;e.preventDefault();S.aim=pt(e)});
+  function up(e){if(!S||!S.drag)return;var v=vel();S.drag=null;S.aim=null;if(!v||v.p<.12){tip("Потягни сильніше");return}shoot(v)}
+  cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",function(){if(S){S.drag=null;S.aim=null}})}
+ function vel(){if(!S.drag||!S.aim)return null;var dx=S.drag.x-S.aim.x,dy=S.drag.y-S.aim.y,l=Math.hypot(dx,dy);if(l<2)return {p:0};var p=Math.min(l/130,1),sp=170+p*480;return {vx:dx/l*sp,vy:dy/l*sp,p:p}}
+ function shoot(v){S.acc=0;S.b={x:LX,y:LY,vx:v.vx,vy:v.vy};S.flying=true;S.shots--;S.trail=[];hud()}
+ function boom(x,y,col,n){for(var i=0;i<(n||18);i++){var a=Math.random()*6.29,s=40+Math.random()*120;S.fx.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:.6+Math.random()*.4,c:col})}}
+ function land(hi){var ok=hi==S.cl,first=S.shots==SHOTS-1;S.flying=false;S.trail=[];S.sink={i:hi,t:0};S.done=true;S.st[hi]=ok?"ok":"bad";
+  document.getElementById("gbO"+hi).classList.add(ok?"ok":"bad");if(!ok)document.getElementById("gbO"+S.cl).classList.add("ok");
+  if(ok){S.sc++;if(first){S.combo++;if(S.combo>=2&&!S.lens){S.lens=1}}else S.combo=0;boom(S.L.ho[hi].x,S.L.ho[hi].y,MI,26)}else{S.combo=0;S.shake=.4;boom(S.L.ho[hi].x,S.L.ho[hi].y,RD,16)}
+  msg((ok?"<b class='g'>Влучив!</b> ":"<b class='r'>Не та діра.</b> ")+esc(S.q.e||"")+(ok&&S.lens==1?"<br><b class='y'>Приціл подовжено до кінця гри!</b>":"")+'<button class="sbBtn n gbNx" id="gbNx">'+(S.r<NR-1?"Наступний раунд":"Підсумок")+'</button>');if(S.lens==1)S.lens=2;
+  hud();document.getElementById("gbNx").onclick=next}
+ function stop(){S.flying=false;S.b=null;if(S.shots>0){msg("");tip("Зонд зупинився. Ще спроб: "+S.shots)}
+  else{S.done=true;S.combo=0;S.st[S.cl]="ok";document.getElementById("gbO"+S.cl).classList.add("ok");msg("<b class='r'>Спроби скінчились.</b> Правильна відповідь: «"+esc(S.q.o[0])+"». "+esc(S.q.e||"")+'<button class="sbBtn n gbNx" id="gbNx">'+(S.r<NR-1?"Наступний раунд":"Підсумок")+'</button>');document.getElementById("gbNx").onclick=next}}
+ function next(){S.r++;S.sink=null;if(S.r>=NR)return finish();round()}
+ function finish(){cancelAnimationFrame(raf);S.over=true;var sc=S.sc;
+  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>ОБСЕРВАТОРІЯ СТАНЦІЇ</small><b>Сеанс завершено</b></div></div><div class="sbIntro gbFin" style="margin-top:12px"><div class="sbCrew">'+X.ch(1)+X.ch(4)+'</div><div class="gbBig">'+sc+'/'+NR+'</div><h3>'+(sc==NR?"Ідеальна гравітація!":sc>=4?"Чудові влучання!":sc>=2?"Непогано, пілоте":"Гравітація перемогла цього разу")+'</h3><p>Влучань у правильну діру: '+sc+' з '+NR+'.</p><button class="sbBtn n" id="gbFn">Підсумок місії</button></div>';
+  document.getElementById("gbFn").onclick=function(){fin9(sc,NR)}}
+ function loop(now){if(!S||S.over||!root()||!document.getElementById("gbC"))return;var dt=Math.min(.04,(now-S.last)/1000||0);S.last=now;S.t+=dt;var c=S.ctx,t=S.t;
+  if(S.flying&&S.b){S.acc=(S.acc||0)+dt;while(S.acc>=1/120&&S.flying){S.acc-=1/120;var r=step(S.L,S.b,1/120);if(r.bn==3)boom(S.b.x,S.b.y,YE,5);if(r.hole!=null){land(r.hole);break}}
+   if(S.flying){S.trail.push({x:S.b.x,y:S.b.y});if(S.trail.length>26)S.trail.shift();if(S.b.vx*S.b.vx+S.b.vy*S.b.vy<144)stop()}}
+  S.L.bu.forEach(function(u){if(u.hit>0)u.hit=Math.max(0,u.hit-dt)});
+  c.save();if(S.shake>0){S.shake-=dt;c.translate((Math.random()-.5)*6,(Math.random()-.5)*6)}
+  table(c,t);c.save();rr(c,18,18,W-36,H-36,14);c.clip();
+  S.L.pl.forEach(function(p){field(c,p,t)});
+  /* приціл */
+  var v=vel();if(v&&v.p>0){var b={x:LX,y:LY,vx:v.vx,vy:v.vy},n=S.lens?60:24,bounced=false;c.fillStyle=YE;
+   for(var i=0;i<n*4&&!bounced;i++){var rs=step({ho:[{x:-99,y:-99},{x:-99,y:-99},{x:-99,y:-99}],pl:S.L.pl,bu:S.L.bu},b,1/120);if(rs.bn&&!S.lens)bounced=true;if(i%4==0){var a=1-i/(n*4);c.globalAlpha=.25+.7*a;c.beginPath();c.arc(b.x,b.y,2.6*a+1,0,6.29);c.fill()}}c.globalAlpha=1;
+   S.L.bu.forEach(function(u){u.hit=0})}
+  S.L.ho.forEach(function(h,i){hole(c,h,i,t,S.st[i])});
+  S.L.pl.forEach(function(p){planet(c,p,t)});S.L.bu.forEach(function(u){bumper(c,u,t)});
+  /* слід зонда */
+  for(i=0;i<S.trail.length;i++){var tp=S.trail[i],a2=i/S.trail.length;c.globalAlpha=a2*.6;c.fillStyle=i%2?CY:"#fff";c.beginPath();c.arc(tp.x,tp.y,BR*a2*.8,0,6.29);c.fill()}c.globalAlpha=1;
+  /* частинки */
+  for(i=S.fx.length-1;i>=0;i--){var f=S.fx[i];f.l-=dt;if(f.l<=0){S.fx.splice(i,1);continue}f.x+=f.vx*dt;f.y+=f.vy*dt;f.vx*=.96;f.vy*=.96;c.globalAlpha=Math.min(1,f.l*2);c.fillStyle=f.c;c.beginPath();c.arc(f.x,f.y,2.4,0,6.29);c.fill()}c.globalAlpha=1;
+  c.restore();
+  var aimPt=null;if(S.drag&&S.aim){var vv=vel();if(vv&&vv.p>0){var dx=S.aim.x-S.drag.x,dy=S.aim.y-S.drag.y,l=Math.hypot(dx,dy)||1,pl2=Math.min(l,130)*.28;aimPt={x:LX+dx/l*pl2,y:LY+dy/l*pl2}}}
+  launcher(c,t,aimPt);
+  if(S.flying&&S.b)probe(c,S.b,t,1);else if(S.sink){S.sink.t+=dt;var h=S.L.ho[S.sink.i],k2=Math.max(0,1-S.sink.t*1.6);if(k2>0){c.globalAlpha=k2;probe(c,{x:h.x+Math.cos(t*9)*PR*.5*k2,y:h.y+Math.sin(t*9)*PR*.5*k2},t*3,k2);c.globalAlpha=1}}
+  else if(!S.done)probe(c,aimPt||{x:LX,y:LY},t*.2,1);
+  /* сила пострілу */
+  if(v&&v.p>0){rr(c,W-40,H-118,14,84,6);c.fillStyle="#1d1550";c.fill();c.lineWidth=2.5;c.strokeStyle=K;c.stroke();var ph=78*v.p;rr(c,W-37,H-37-ph,8,ph,4);c.fillStyle=v.p>.8?RD:v.p>.45?OR:MI;c.fill()}
+  c.restore();
+  raf=requestAnimationFrame(loop)}
+ intro()};
+
+/* іконка для шапки (стиль GIC9) */
+if(window.GIC9all){var S2="stroke='"+K+"' stroke-width='2.6' stroke-linejoin='round' stroke-linecap='round'";
+ GIC9all.gb="<circle cx='24' cy='24' r='18' fill='#2a1d7a' "+S2+"/><circle cx='24' cy='24' r='9' fill='#05031a' "+S2+"/><path d='M15 24a9 9 0 0 1 15-6.7' fill='none' stroke='"+CY+"' stroke-width='2.6' stroke-linecap='round'/><path d='M33 24a9 9 0 0 1-15 6.7' fill='none' stroke='"+PK+"' stroke-width='2.6' stroke-linecap='round'/><circle cx='38' cy='38' r='6' fill='#d8f7ff' "+S2+"/><circle cx='38' cy='38' r='2.4' fill='"+YE+"'/><circle cx='11' cy='12' r='5' fill='"+OR+"' "+S2+"/>"}
+try{GI.gb=["🎱","Гравітаційний більярд"]}catch(e){}
+window.GB9={mk:mkLevel,step:step,sim:sim};
+})();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
