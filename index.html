@@ -37526,13 +37526,13 @@ function decor(){var st="",i;for(i=0;i<9;i++)st+='<circle cx="'+(244+(i*11)%28)+
  /* люк */'<rect x="292" y="44" width="58" height="116" rx="10" fill="#2f2784" stroke="'+K+'" stroke-width="4"/><rect x="299" y="51" width="44" height="102" rx="6" fill="#241c70" stroke="#6a5fc4" stroke-width="2"/><path d="M299 102h44" stroke="#ffffff22" stroke-width="2"/><rect x="286" y="96" width="9" height="22" rx="3" fill="#0e0b3a" stroke="'+K+'" stroke-width="2.5"/><g fill="'+CY+'"><rect x="288" y="100" width="5" height="3"/><rect x="288" y="106" width="5" height="3"/><rect x="288" y="112" width="5" height="3"/></g>'}
 function hs(x,y,cls,inner,lb,id){return '<g class="qrHs" data-a="'+(id=="d"?"d":"sp")+'" data-i="'+id+'" transform="translate('+x+','+y+')"><circle class="'+(cls=="o"?"pu":"")+'" r="15" fill="'+(cls=="o"?YE:cls=="s"?MI:"#4a3f8f")+'" stroke="'+K+'" stroke-width="3"/>'+inner+(lb?'<text y="'+(196-y)+'" text-anchor="middle" font-size="9" font-weight="800" fill="#fff" stroke="'+K+'" stroke-width="3" paint-order="stroke">'+lb+'</text>':'')+'</g>'}
 var POS=[[50,84],[188,69],[258,126],[120,141]],LET=["A","Б","В","Г"];
-GM.qr=function(g){inj();var D=g.items,P=D.puzzles,n=P.length,S=null,timer=null;
+GM.qr=function(g){inj();var D=g.items,TX=Object.assign({lock:"МОДУЛЬ ЗАБЛОКОВАНО",h3:"Втеча з модуля",p:"Двері герметично замкнені.",door:"Кодовий замок люка",win:"Люк відкрито! Ви втекли"},D.tx||{}),P=D.puzzles,n=P.length,S=null,timer=null;
  function root(){return document.getElementById("qrroot")}
  function left(){return Math.max(0,S.tmax-(Date.now()-S.t0)/1000-S.pen)}
  function mmss(v){v=Math.ceil(v);return Math.floor(v/60)+":"+("0"+v%60).slice(-2)}
  function locked(i){var nd=P[i].need;return nd!=null&&nd!==undefined&&!S.sol[nd]}
  function intro(){fr9(g.title,"","<div id='qrroot' class='qr sb'></div>");gs9("Складна місія");
-  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>МОДУЛЬ ЗАБЛОКОВАНО</small><b>'+esc(D.room)+'</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(0)+X.ch(2)+'</div><h3>Втеча з модуля</h3><p>Двері герметично замкнені. Щоб вийти, відкрий усі чотири замки, збери код і введи його на дверях.</p>'+
+  root().innerHTML='<div class="sbHd al">'+X.bgSvg()+'<div class="sbTop"><small>'+esc(TX.lock)+'</small><b>'+esc(D.room)+'</b></div></div><div class="sbIntro" style="margin-top:12px"><div class="sbCrew">'+X.ch(0)+X.ch(2)+'</div><h3>'+esc(TX.h3)+'</h3><p>'+esc(TX.p)+' Щоб вийти, відкрий усі чотири замки, збери код і введи його на дверях.</p>'+
    '<div class="sbSt">'+X.ICO.scan+'<span>Торкайся яскравих точок на сцені: кожна ховає окрему загадку.</span></div>'+
    '<div class="sbSt">'+X.ICO.vote+'<span>Деякі замки відкриваються лише після інших. Кожен замок видає цифру коду.</span></div>'+
    '<div class="sbSt">'+X.ICO.heat+'<span>На втечу '+Math.round(D.time/60)+' хв. Помилка забирає 15 секунд, підказка — 20. Оцінка: замки і вихід (5 балів).</span></div>'+
@@ -37561,7 +37561,7 @@ GM.qr=function(g){inj();var D=g.items,P=D.puzzles,n=P.length,S=null,timer=null;
  function init(p){if(p.type=="switch")return {on:p.rows.map(function(){return false})};if(p.type=="pairs")return {sel:null,dn:p.pairs.map(function(){return false}),ord:shf(p.pairs.map(function(x,k){return k}))};if(p.type=="order")return {slots:p.steps.map(function(){return null}),pool:shf(p.steps.map(function(x,k){return k}))};return {}}
  function wrong(t){pen(15);msg('<span style="color:'+RD+'">'+esc(t)+' (−15 с)</span>')}
  function solve(i){S.sol[i]=true;S.dg[i]=P[i].digit;S.cur=null;msg("Замок відкрито! Цифра коду: <b>"+P[i].digit+"</b>. "+esc(P[i].reward||""));document.getElementById("qrPn").innerHTML="";scene();inv();var ok=S.sol.every(function(x){return x});if(ok)msg("Усі замки відкрито! Торкнись дверей (ВИХІД) і введи код із цифр.")}
- function door(){if(S.over)return;if(!S.sol.every(function(x){return x})){msg("Двері не відкриються без коду. Знайдено цифр: "+S.dg.filter(function(x){return x!=null}).length+" з "+n+".");return}S.cur="d";var h='<div class="qrPn"><h4>Кодовий замок люка</h4><p>Введи цифри замків у порядку номерів: A, Б, В, Г.</p><div class="qrCode" id="qrCd">'+[0,1,2,3].map(function(k){return '<b>'+(S.code[k]||"")+'</b>'}).join("")+'</div><div class="qrKp">'+[1,2,3,4,5,6,7,8,9,"←",0,"OK"].map(function(k){return '<button data-a="kp" data-k="'+k+'">'+k+'</button>'}).join("")+'</div></div>';document.getElementById("qrPn").innerHTML=h;try{document.getElementById("qrPn").scrollIntoView({behavior:"smooth",block:"nearest"})}catch(e){}}
+ function door(){if(S.over)return;if(!S.sol.every(function(x){return x})){msg("Двері не відкриються без коду. Знайдено цифр: "+S.dg.filter(function(x){return x!=null}).length+" з "+n+".");return}S.cur="d";var h='<div class="qrPn"><h4>'+esc(TX.door)+'</h4><p>Введи цифри замків у порядку номерів: A, Б, В, Г.</p><div class="qrCode" id="qrCd">'+[0,1,2,3].map(function(k){return '<b>'+(S.code[k]||"")+'</b>'}).join("")+'</div><div class="qrKp">'+[1,2,3,4,5,6,7,8,9,"←",0,"OK"].map(function(k){return '<button data-a="kp" data-k="'+k+'">'+k+'</button>'}).join("")+'</div></div>';document.getElementById("qrPn").innerHTML=h;try{document.getElementById("qrPn").scrollIntoView({behavior:"smooth",block:"nearest"})}catch(e){}}
  function clk(e){var t=e.target.closest?e.target.closest("[data-a]"):null;if(!t||!S||S.over)return;var a=t.dataset.a,k=+t.dataset.k,i=S.cur,p=i!=null&&i!=="d"?P[i]:null,st=p?S.st[i]:null;
   if(a=="sp")open(+t.dataset.i);else if(a=="d")door();
   else if(a=="hint"){if(!S.hints){msg("Підказки закінчились.");return}var c=S.cur,ps=c!=null&&c!=="d"?c:P.findIndex(function(x,j){return!S.sol[j]&&!locked(j)});if(ps<0){msg("Підказка зараз не потрібна.");return}S.hints--;pen(20);inv();msg("Підказка: "+esc(P[ps].hint))}
@@ -37575,7 +37575,7 @@ GM.qr=function(g){inj();var D=g.items,P=D.puzzles,n=P.length,S=null,timer=null;
   else if(a=="ok"){if(st.slots.indexOf(null)>=0){msg("Заповни всі кроки.");return}if(st.slots.every(function(x,j){return x===j}))solve(i);else wrong("Порядок неправильний")}
   else if(a=="kp"){var v2=t.dataset.k;if(v2=="←")S.code=S.code.slice(0,-1);else if(v2=="OK"){if(S.code===S.dg.join(""))finish(true);else{S.code="";wrong("Код неправильний")}}else if(S.code.length<4)S.code+=v2;var cd=document.getElementById("qrCd");if(cd)cd.innerHTML=[0,1,2,3].map(function(j){return '<b>'+(S.code[j]||"")+'</b>'}).join("")}}
  function finish(win){if(S.over)return;S.over=true;clearInterval(timer);S.esc=win;var cnt=0;S.sol.forEach(function(x){if(x)cnt++});var sc=cnt+(win?1:0),l=left();
-  document.getElementById("qrPn").innerHTML='<div class="sbRep '+(win?"g":"b")+'"><h4>'+(win?"Люк відкрито! Ви втекли":"Час вийшов")+'</h4><p>'+(win?"Залишилось часу: "+mmss(l)+". ":"")+'Відкрито замків: '+cnt+' з '+n+(win?". Вихід знайдено.":". Вихід лишився закритим.")+'</p><button class="sbBtn n" id="qrNx">Підсумок місії</button></div>';
+  document.getElementById("qrPn").innerHTML='<div class="sbRep '+(win?"g":"b")+'"><h4>'+(win?TX.win:"Час вийшов")+'</h4><p>'+(win?"Залишилось часу: "+mmss(l)+". ":"")+'Відкрито замків: '+cnt+' з '+n+(win?". Вихід знайдено.":". Вихід лишився закритим.")+'</p><button class="sbBtn n" id="qrNx">Підсумок місії</button></div>';
   document.getElementById("qrNx").onclick=function(){fin9(sc,n+1)};scene()}
  intro()};
 /* ---------- контент: урок 1 ---------- */
@@ -40574,20 +40574,53 @@ var st=document.createElement("style");st.textContent=css;document.head.appendCh
 })();
 
 /* 7 клас: схема уроку – читанка, 3 прості (або 2 прості + 1 тематична), 1 складна, тест 12.
-   Кінець теми (11,24,28,35,44,52) – тільки тест на 24. */
+   Кінець теми (11,24,28,35,44,52) – тільки тест на 24. Тематичні – окремий пул, складними не вважаються.
+   Складні (x_*) – по колу; де своєї немає, раунди беруться з тесту уроку. */
 (function(){if(!window.LES)return;
-var CX={arena:1,race:1,cannon:1,turret:1,lab7:1,guild:1,power:1,atelier:1,pult:1,tower:1,cmap:1,finale:1,league:1,transl:1,app7:1,aud7:1};
-function isC(t){return /^x_/.test(t)||CX[t]}
+var TI={x_zone:["Буря знань","Обери скриню з правильною відповіддю й добіжи, поки не зімкнулася буря."],x_boss:["Дуель з босом","Відповідай швидко: за 5 секунд удар стає критичним."],x_drop:["Дроп-контроль","Лови скриню з правильною відповіддю, поки не впала на склад."],x_defense:["Захист бази","Обери захисника, який знищить загрозу."],x_build:["Вежа знань","Кожна правильна відповідь додає блок, помилка руйнує верхній."],x_safe:["Злам сейфа","Правильні відповіді відкривають цифри коду. Далі зламай сейф."],x_rhythm:["Ритм-різ","Лови правильну відповідь, коли вона на білій лінії."],x_maze:["Лабіринт розвідки","Іди лабіринтом і відчиняй двері правильними відповідями."]};
+var BIG={arena:1,race:1,cannon:1,turret:1,lab7:1,guild:1,power:1,atelier:1,pult:1,tower:1,cmap:1,finale:1,league:1,app7:1,aud7:1,transl:1};
+function isC(t){return /^x_/.test(t)}
 function isS(t){return /^(s_|n_)/.test(t)||/^(tf|seq|sort|pairs|memory|odd|speed|cloze)$/.test(t)}
-var END={11:1,24:1,28:1,35:1,44:1,52:1},miss=[];
+var END={11:1,24:1,28:1,35:1,44:1,52:1},RO=["x_zone","x_boss","x_drop","x_defense","x_build","x_safe","x_rhythm","x_maze"],ri=0,cx={},need=[];
 for(var n=1;n<=52;n++){var L=LES[700+n];if(!L)continue;
  if(END[n]){L.g=[];continue}
  if(L.q&&L.q.length>12)L.q=L.q.slice(0,12);var g=L.g||[];
  var c=g.filter(function(x){return isC(x.type)}),s=g.filter(function(x){return isS(x.type)}),t=g.filter(function(x){return !isC(x.type)&&!isS(x.type)});
- var out=t.length?s.slice(0,2).concat(t.slice(0,1)):s.slice(0,3);
- if(c.length)out.push(c[0]);else miss.push(700+n);
+ t.sort(function(a,b){return (BIG[b.type]?1:0)-(BIG[a.type]?1:0)});
+ var out=t.length>=2?s.slice(0,1).concat(t.slice(0,2)):t.length?s.slice(0,2).concat(t.slice(0,1)):s.slice(0,3);
+ if(c.length){out.push(c[0]);cx[n]=c[0].type}else need.push(n);
  L.g=out}
-window.S7MISS=miss;
+need.forEach(function(n){var L=LES[700+n];if(!L.q||!L.q.length)return;var p=cx[n-1],q=cx[n+1],t,k=0;
+ do{t=RO[ri++%RO.length];k++}while((t==p||t==q)&&k<16);
+ var ix=[0,2,4,6,8,10,1,3,5,7,9,11],R=[];for(var i=0;i<ix.length&&R.length<6;i++){var x=L.q[ix[i]];if(x&&x.a&&x.a.length>=2)R.push({q:x.q,o:x.a.slice(),a:0,w:x.e||""})}
+ if(R.length<4)return;var gg={type:t,title:TI[t][0],hint:TI[t][1],rounds:R,skin:"arena"};
+ if(t=="x_safe")gg.code=String(1000+(n*7919)%9000);if(t=="x_boss"){gg.boss="Король помилок";gg.lives=3}
+ L.g.push(gg);cx[n]=t});
+})();
+/* 7 клас: «Квест-кімната» замість «Злам сейфа» – контент з пулу питань уроку, тексти й кольори під «Сезон». */
+(function(){if(!window.LES||!window.DIST9MK||!window.GM||!GM.qr)return;
+var ROOMS=["Сховище сезону","Кімната скарбів","Лабораторія ліги","Склад арени","Штаб гільдії"];
+for(var n=1;n<=52;n++){var L=LES[700+n];if(!L||!L.g)continue;
+ for(var i=0;i<L.g.length;i++){if(L.g[i].type!="x_safe")continue;var it;
+  try{it=DIST9MK.qr(DIST9MK.norm(700+n),700+n)}catch(e){it=null}
+  if(!it||!it.puzzles||it.puzzles.length<4)continue;
+  it.room=ROOMS[n%ROOMS.length]+" #"+n;
+  it.tx={lock:"КІМНАТУ ЗАМКНЕНО",h3:"Квест-кімната",p:"Ти замкнений у кімнаті арени.",door:"Кодовий замок дверей",win:"Двері відчинено! Ти вибрався"};
+  L.g[i]={type:"qr",title:"Квест-кімната",items:it}}}
+var css="\
+body.g7.s7n .qr .sbHd{background:linear-gradient(120deg,#ff3f8e,#ff9a2a)!important;border:0!important;border-radius:22px!important;box-shadow:0 7px 0 rgba(0,0,0,.25)!important;position:relative;overflow:hidden}\
+body.g7.s7n .qr .sbHd>svg{opacity:.18;mix-blend-mode:screen}\
+body.g7.s7n .qr .sbHd::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:repeating-radial-gradient(circle,rgba(255,255,255,.2) 0 4px,transparent 4px 14px);animation:s7spin 18s linear infinite;pointer-events:none}\
+body.g7.s7n .qr .sbTop b{font-style:italic;text-transform:uppercase}\
+body.g7.s7n .qr .sbCrew{display:none!important}\
+body.g7.s7n .qr .sbIntro,body.g7.s7n .qr .qrPn,body.g7.s7n .qr .sbRep{background:linear-gradient(160deg,#3a2a9c,#2a1d78)!important;border:0!important;border-radius:20px!important;box-shadow:0 6px 0 rgba(0,0,0,.3)!important}\
+body.g7.s7n .qr .qrSc{border:0!important;border-radius:20px!important;box-shadow:0 6px 0 rgba(0,0,0,.3)!important}\
+body.g7.s7n .qr .sbBtn{background:#ffd23f!important;color:#1a0e00!important;border:0!important;border-radius:16px!important;box-shadow:0 5px 0 rgba(0,0,0,.3)!important;font:900 italic 17px system-ui!important;text-transform:uppercase}\
+body.g7.s7n .qr .qrRow,body.g7.s7n .qr .qrDg{background:#4a3ab8!important;border-color:transparent!important;border-radius:14px!important}\
+body.g7.s7n .qr .qrDg.f{background:#ffd23f!important}\
+body.g7.s7n .qr .qrCd{border:0!important;border-radius:14px!important;box-shadow:0 4px 0 rgba(0,0,0,.3)!important}\
+";var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+try{if(window.GI7)GI7.qr=["🔑","Квест-кімната"]}catch(e){}
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
