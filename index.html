@@ -39840,6 +39840,33 @@ var _f=fr9;fr9=function(){var r=_f.apply(this,arguments);try{if(document.body.cl
 (function(){
 if(!window.LES||!window.GM)return;
 var TERM10={
+1016:{title:"Термінал: повороти й сусіди в матриці",tasks:[
+ {t:"Розміри поля. Виведи через пробіл кількість рядків і кількість стовпців матриці m.",code:"m = [[1, 2, 3, 4],\n     [5, 6, 7, 8],\n     [9, 0, 1, 2]]\nrows = 0   # заміни 0: скільки рядків?\ncols = 0   # заміни 0: скільки елементів в одному рядку?\nprint(rows, cols)\n",
+  tests:[{inp:[],out:"3 4"}],
+  how:["Матриця – це список рядків. Кожен рядок – теж список.","len(m) – скільки всього рядків (тут 3).","len(m[0]) – скільки елементів у першому рядку, тобто стовпців (тут 4).","Не пиши числа вручну – нехай Python порахує сам: тоді програма працюватиме для будь-якої матриці."],
+  hints:["Рядків стільки, скільки елементів у зовнішньому списку: len(m).","Стовпців стільки, скільки елементів у будь-якому рядку: len(m[0]).","rows = len(m) і cols = len(m[0])"],
+  sol:"m = [[1, 2, 3, 4],\n     [5, 6, 7, 8],\n     [9, 0, 1, 2]]\nrows = len(m)\ncols = len(m[0])\nprint(rows, cols)"},
+ {t:"Дзеркало зліва-направо. Розверни КОЖЕН рядок матриці й виведи нову матрицю.",code:"m = [[1, 2, 3],\n     [4, 5, 6]]\nres = []\nfor r in m:\n    # додай у res розвернутий рядок r\n    pass\nprint(res)\n",
+  tests:[{inp:[],out:"[[3, 2, 1], [6, 5, 4]]"}],
+  how:["Цикл for r in m по черзі дає кожен рядок: спочатку [1, 2, 3], потім [4, 5, 6].","r[::-1] – це той самий рядок задом наперед: [3, 2, 1].","res.append(...) додає готовий рядок у нову матрицю.","Тобто замість pass має бути один рядок: додати в res розвернутий r."],
+  hints:["Розвернути список: r[::-1]","Додати в список: res.append(щось)","res.append(r[::-1])"],
+  sol:"m = [[1, 2, 3],\n     [4, 5, 6]]\nres = []\nfor r in m:\n    res.append(r[::-1])\nprint(res)"},
+ {t:"Дзеркало згори-вниз. Переверни порядок РЯДКІВ (останній стає першим) і виведи результат.",code:"m = [[1, 2, 3],\n     [4, 5, 6],\n     [7, 8, 9]]\nres = m   # виправ: рядки мають іти у зворотному порядку\nprint(res)\n",
+  tests:[{inp:[],out:"[[7, 8, 9], [4, 5, 6], [1, 2, 3]]"}],
+  how:["Тут рядки всередині не змінюються – міняється лише їхній порядок.","Матриця – це список рядків, тож розвертаємо сам список m.","Згадай попереднє завдання: як розвернути список?"],
+  hints:["Той самий зріз [::-1], але для всієї матриці, а не для рядка.","res = m[::-1]"],
+  sol:"m = [[1, 2, 3],\n     [4, 5, 6],\n     [7, 8, 9]]\nres = m[::-1]\nprint(res)"},
+ {t:"Поворот на 90° за годинниковою стрілкою. Зроби в два кроки: спершу транспонуй (рядки → стовпці), потім розверни кожен рядок.",code:"m = [[1, 2, 3],\n     [4, 5, 6],\n     [7, 8, 9]]\n# Крок 1: транспонування (вже готово)\nt = [list(r) for r in zip(*m)]\n# Крок 2: розверни кожен рядок t\nrot = t   # виправ цей рядок\nprint(rot)\n",
+  tests:[{inp:[],out:"[[7, 4, 1], [8, 5, 2], [9, 6, 3]]"}],
+  how:["Транспонування: перший стовпець стає першим рядком. Після кроку 1 t = [[1, 4, 7], [2, 5, 8], [3, 6, 9]].","Порівняй з відповіддю [[7, 4, 1], ...] – кожен рядок t просто задом наперед.","Отже крок 2 – це завдання 2: розвернути кожен рядок. Можна циклом з append, а можна коротко: [r[::-1] for r in t].","Перевір себе на папері: поверни квадрат 3×3 – верхній рядок 1 2 3 стане правим стовпцем."],
+  hints:["Додай print(t) перед кроком 2 і подивись, що вийшло після транспонування.","Кожен рядок t треба розвернути: r[::-1].","rot = [r[::-1] for r in t]"],
+  sol:"m = [[1, 2, 3],\n     [4, 5, 6],\n     [7, 8, 9]]\nt = [list(r) for r in zip(*m)]\nrot = [r[::-1] for r in t]\nprint(rot)"},
+ {t:"Сапер. Програма отримує координати клітинки i та j. Порахуй, скільки навколо неї мін (одиниць) – серед 8 сусідів – і виведи число.",code:"g = [[1, 0, 0],\n     [0, 1, 0],\n     [1, 1, 0]]\ni = int(input())\nj = int(input())\ncnt = 0\nfor di in (-1, 0, 1):\n    for dj in (-1, 0, 1):\n        if di == 0 and dj == 0:\n            continue          # саму клітинку не рахуємо\n        a = i + di\n        b = j + dj\n        # перевір, що (a, b) у межах поля і там 1 – тоді cnt += 1\nprint(cnt)\n",
+  tests:[{inp:["1","1"],out:"3"},{inp:["0","0"],out:"1"},{inp:["2","2"],out:"2"},{inp:["0","2"],out:"1"}],
+  how:["Два вкладені цикли перебирають усі зсуви di, dj від -1 до 1 – це 9 клітинок квадрата 3×3 навколо (i, j).","continue пропускає зсув (0, 0) – саму клітинку.","(a, b) – координати сусіда. Біля краю поля вони можуть бути -1 або 3 – такої клітинки немає, її треба пропустити.","Умова «в межах»: 0 <= a < len(g) і 0 <= b < len(g[0]).","Тільки якщо клітинка в межах – дивимось g[a][b] == 1 і збільшуємо cnt."],
+  hints:["Тобі треба дописати лише один if (з відступом як у a = ...).","Межі: 0 <= a < 3 and 0 <= b < 3. Спершу межі, потім g[a][b] – інакше вилетиш за список.","if 0 <= a < len(g) and 0 <= b < len(g[0]) and g[a][b] == 1:\n    cnt += 1"],
+  sol:"g = [[1, 0, 0],\n     [0, 1, 0],\n     [1, 1, 0]]\ni = int(input())\nj = int(input())\ncnt = 0\nfor di in (-1, 0, 1):\n    for dj in (-1, 0, 1):\n        if di == 0 and dj == 0:\n            continue\n        a = i + di\n        b = j + dj\n        if 0 <= a < len(g) and 0 <= b < len(g[0]) and g[a][b] == 1:\n            cnt += 1\nprint(cnt)"}
+]},
 1008:{title:"Термінал: цикли",tasks:[
  {t:"Виведи числа від 1 до 5 – кожне з нового рядка.",code:"for i in range(1, 2):\n    print(i)\n",
   tests:[{inp:[],out:"1\n2\n3\n4\n5"}],
@@ -39874,7 +39901,7 @@ var css="<style>.tm10{font-family:ui-monospace,Menlo,Consolas,monospace}.tm10 .t
 ".tm10 .tkb{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}.tm10 .tkb button{display:block!important;width:auto!important;margin:0!important;box-shadow:none!important;text-align:center!important;flex:1 0 auto;min-width:34px;padding:6px 4px!important;background:#0f2a1b;color:#9dffc2;border:1px solid #1f6b3a;border-radius:6px;font:13px ui-monospace,monospace}"+
 ".tm10 .trow{display:flex;gap:6px;margin:6px 0}.tm10 .trow button{display:block!important;width:auto!important;margin:0!important;text-align:center!important;flex:1;padding:10px!important;border-radius:8px;font-weight:700;border:1px solid #39ff88;background:#103d24;color:#eafff1}.tm10 .trow .run{background:#1fbf5f;color:#02140a}.tm10 .trow button:disabled{opacity:.45}"+
 ".tm10 .tout{background:#000;border:1px solid #1f6b3a;border-radius:10px;padding:8px 10px;color:#b6ffcf;font-size:12.5px;line-height:1.45;white-space:pre-wrap;word-break:break-word;min-height:44px;max-height:220px;overflow:auto}.tm10 .tout .e{color:#ff7b7b}.tm10 .tout .ok{color:#39ff88;font-weight:700}.tm10 .tout .mu{color:#5f9f78}"+
-".tm10 .tdots{display:flex;gap:5px;justify-content:center;margin:2px 0 8px}.tm10 .tdots i{width:26px;height:6px;border-radius:3px;background:#1a3a28}.tm10 .tdots i.c{background:#39ff88}.tm10 .tdots i.s{background:#ffb84d}.tm10 .tdots i.a{outline:1px solid #9dffc2}</style>";
+".tm10 .thw{background:#0b1a12;border:1px dashed #2f7a4a;border-radius:10px;padding:6px 12px;margin-bottom:8px;color:#c8ffd9;font:13.5px/1.45 system-ui,sans-serif}.tm10 .thw summary{cursor:pointer;color:#ffd75e;font-weight:700}.tm10 .thw ol{margin:6px 0 2px;padding-left:20px}.tm10 .thw li{margin:3px 0}.tm10 .tdots{display:flex;gap:5px;justify-content:center;margin:2px 0 8px}.tm10 .tdots i{width:26px;height:6px;border-radius:3px;background:#1a3a28}.tm10 .tdots i.c{background:#39ff88}.tm10 .tdots i.s{background:#ffb84d}.tm10 .tdots i.a{outline:1px solid #9dffc2}</style>";
 
 var W=null,ready=false,busy=null,q=[];
 function mkW(){try{W=new Worker("packs/pyw.js")}catch(e){W=null;return}ready=false;W.onmessage=function(e){var d=e.data;if(d&&d.ready){ready=true;var f=q.shift();if(f)f();return}if(busy){var b=busy;busy=null;clearTimeout(b.t);b.cb(d)}};W.onerror=function(){if(busy){var b=busy;busy=null;clearTimeout(b.t);b.cb({ok:0,out:"",fail:"Не вдалося запустити Python."})}}}
@@ -39889,7 +39916,7 @@ GM.term=function(g){var T=TERM10[g.k||CUR9];if(!T)return fin9(0,1);var ts=T.task
   fr9(g.title||T.title,"Пиши справжній код Python і тисни «Запуск». Перевірка проганяє програму на тестах. Код можна правити скільки завгодно.",css+
   "<div class='tm10'><div class='tdots'>"+ts.map(function(_,j){return "<i class='"+(st[j]||"")+(j==i?" a":"")+"'></i>"}).join("")+"</div>"+
   "<div class='tq'><b>Завдання "+(i+1)+"/"+N+".</b> "+esc(t.t)+(t.tests[0].inp.length?"<br><span style='color:#7fd6a0;font-size:12.5px'>Приклад вводу: "+esc(t.tests[0].inp.join(" / "))+" → вивід: "+esc(t.tests[0].out.replace(/\n/g," ⏎ "))+"</span>":"")+"</div>"+
-  "<div class='ted'><div class='tln' id='tln'>1</div><textarea id='tta' spellcheck='false' autocapitalize='off' autocorrect='off' autocomplete='off'></textarea></div>"+
+  (t.how?"<details class='thw' open><summary>📖 Як це зробити</summary><ol>"+t.how.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+"</ol></details>":"")+"<div class='ted'><div class='tln' id='tln'>1</div><textarea id='tta' spellcheck='false' autocapitalize='off' autocorrect='off' autocomplete='off'></textarea></div>"+
   "<div class='tkb'>"+["⇥","(",")",":","[","]","=","'","+","<",">","%"].map(function(k){return "<button data-k=\""+k+"\">"+k+"</button>"}).join("")+"</div>"+
   "<div class='trow'><button class='run' id='trun'>▶ Запуск</button><button id='thint'>💡 Підказка</button></div>"+
   "<div class='tout' id='tout'><span class='mu'>"+(ready?"&gt; Python готовий. Пиши код і тисни «Запуск».":"&gt; Завантажую Python… (перший раз може тривати кілька секунд)")+"</span></div>"+
@@ -39904,7 +39931,7 @@ GM.term=function(g){var T=TERM10[g.k||CUR9];if(!T)return fin9(0,1);var ts=T.task
   [].forEach.call(document.querySelectorAll(".tkb button"),function(b){b.onmousedown=function(e){e.preventDefault()};b.onclick=function(){var k=b.getAttribute("data-k");ins(k==="⇥"?"    ":k)}});
   lines();
   if(!ready){var wt=setInterval(function(){if(ready){clearInterval(wt);if(out.textContent.indexOf("Завантажую")>=0)out.innerHTML="<span class='mu'>&gt; Python готовий. Пиши код і тисни «Запуск».</span>"}},300)}
-  document.getElementById("thint").onclick=function(){out.innerHTML="<span class='mu'>💡 "+esc(t.hint)+"</span>"};
+  var hs=t.hints||[t.hint],hn=0;document.getElementById("thint").onclick=function(){if(hn<hs.length)hn++;out.innerHTML=hs.slice(0,hn).map(function(x,j){return "<span class='mu'>💡 "+(hs.length>1?(j+1)+"/"+hs.length+": ":"")+esc(x)+"</span>"}).join("\n")+(hn>=hs.length&&hs.length>1?"\n<span class='mu'>Підказки скінчились. Ще не виходить – 3 невдалі запуски покажуть зразок.</span>":"")};
   sk.onclick=function(){if(!st[i])st[i]="s";next()};
   rb.onclick=function(){if(rb.disabled)return;rb.disabled=true;out.innerHTML="<span class='mu'>&gt; Виконую…</span>";var code=ta.value,res=[],j=0;
    (function one(){if(j>=t.tests.length)return done();var tc=t.tests[j];run(code,tc.inp,function(d){res.push({tc:tc,d:d});if(!d.ok||norm(d.out)!==norm(tc.out))return done();j++;one()})})();
@@ -39914,7 +39941,7 @@ GM.term=function(g){var T=TERM10[g.k||CUR9];if(!T)return fin9(0,1);var ts=T.task
     else{fails++;if(d.ok){var tc=last.tc;h+="\n<span class='e'>✘ Тест "+res.length+"/"+t.tests.length+" не пройдено.</span>"+(tc.inp.length?"\n<span class='mu'>ввід: "+esc(tc.inp.join(" / "))+"</span>":"")+"\n<span class='mu'>очікувалось:</span>\n"+esc(tc.out)+"\n<span class='mu'>твоя програма вивела:</span>\n"+esc(norm(d.out)||"(нічого)")}
      else if(res.length>1){h+="\n<span class='e'>✘ На тесті "+res.length+" (ввід: "+esc(last.tc.inp.join(" / "))+") сталася помилка:</span>\n<span class='e'>"+esc(d.fail||d.out)+"</span>"}
      if(fails>=3)h+="\n\n<span class='mu'>Розв’язок-зразок:</span>\n"+esc(t.sol);
-     else if(fails>=2)h+="\n<span class='mu'>💡 "+esc(t.hint)+"</span>";A9snd("bad")}
+     else if(fails>=2)h+="\n<span class='mu'>💡 "+esc(t.hint||hs[Math.min(hn,hs.length-1)])+"</span>";A9snd("bad")}
     out.innerHTML=h;out.scrollTop=0}};
  }
  function next(){i++;if(i>=N)return fin9(sc,N);show()}
@@ -40445,7 +40472,7 @@ section7=function(k){k=k||1;CUR9=0;useB7();b7s();pg7();document.body.classList.a
  var h="<div class='s7sub'><button class='s7back' onclick='topics()'>← ХАБ</button><small>СЕЗОН "+k+" · "+E(SN[k-1]).toUpperCase()+"</small></div><div class='s7big'>"+E(title(t.t)).toUpperCase()+"</div><div class='s7ms'>";
  for(var n=t.a;n<=t.b;n++){var x=T7[n-1],has=!!LES[700+n],p=P7(n),g=GR[(n-t.a)%GR.length],kind=x[1]=="p"?"практична":x[1]=="s"?"підсумковий":"",gm=games(n);
   if(!has){h+="<div class='s7m lk'><span class='s7hx'>"+I.lock+"</span><span class='s7t'><b>"+E(x[0])+"</b><small>урок "+n+" · скоро</small></span><span class='s7dash'></span></div>";continue}
-  h+="<button class='s7m' style='background:linear-gradient(90deg,"+g[0]+","+g[1]+")' onclick='lesson7("+n+")'><span class='s7hx'>"+n+"</span><span class='s7t'><b>"+E(x[0])+"</b><small>"+(kind?kind+" · ":"")+"читанка · "+gm+" "+(gm==1?"гра":gm>=2&&gm<=4?"ігри":"ігор")+" · тест</small></span><span class='s7rt'><span class='s7xpp'>"+(B7.l[700+n]?"✓ ":"+")+(100+gm*10)+" XP</span>"+stars(p)+"</span></button>"}
+  h+="<button class='s7m' style='background:linear-gradient(90deg,"+g[0]+","+g[1]+")' onclick='lesson7("+n+")'><span class='s7hx'>"+n+"</span><span class='s7t'><b>"+E(x[0])+"</b><small>"+(kind?kind+" · ":"")+(gm?"читанка · "+gm+" "+(gm==1?"гра":gm>=2&&gm<=4?"ігри":"ігор")+" · тест":"підсумковий тест · 24 питання")+"</small></span><span class='s7rt'><span class='s7xpp'>"+(B7.l[700+n]?"✓ ":"+")+(100+gm*10)+" XP</span>"+stars(p)+"</span></button>"}
  $.innerHTML=h+"</div>";pg7("l7pg");window.scrollTo(0,0)};
 /* ---- урок: шапка місії ---- */
 var _l7=lesson7;lesson7=function(n){var r=_l7.apply(this,arguments);try{document.body.classList.add("s7n");var tp=document.querySelector("#app>.top button.sm");if(tp)tp.textContent="← СЕЗОН "+(tp7(n)+1);
@@ -40544,6 +40571,23 @@ body.g7.s7n #o>button.ok{animation:s7pop .4s ease-out}body.g7.s7n #o>button.bad{
 @media (prefers-reduced-motion:reduce){body.g7.s7n *{animation:none!important}}\
 ";
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+})();
+
+/* 7 клас: схема уроку – читанка, 3 прості (або 2 прості + 1 тематична), 1 складна, тест 12.
+   Кінець теми (11,24,28,35,44,52) – тільки тест на 24. */
+(function(){if(!window.LES)return;
+var CX={arena:1,race:1,cannon:1,turret:1,lab7:1,guild:1,power:1,atelier:1,pult:1,tower:1,cmap:1,finale:1,league:1,transl:1,app7:1,aud7:1};
+function isC(t){return /^x_/.test(t)||CX[t]}
+function isS(t){return /^(s_|n_)/.test(t)||/^(tf|seq|sort|pairs|memory|odd|speed|cloze)$/.test(t)}
+var END={11:1,24:1,28:1,35:1,44:1,52:1},miss=[];
+for(var n=1;n<=52;n++){var L=LES[700+n];if(!L)continue;
+ if(END[n]){L.g=[];continue}
+ if(L.q&&L.q.length>12)L.q=L.q.slice(0,12);var g=L.g||[];
+ var c=g.filter(function(x){return isC(x.type)}),s=g.filter(function(x){return isS(x.type)}),t=g.filter(function(x){return !isC(x.type)&&!isS(x.type)});
+ var out=t.length?s.slice(0,2).concat(t.slice(0,1)):s.slice(0,3);
+ if(c.length)out.push(c[0]);else miss.push(700+n);
+ L.g=out}
+window.S7MISS=miss;
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
