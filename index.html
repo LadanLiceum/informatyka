@@ -923,7 +923,7 @@ quizG=function(QS,fin,tr,bk){var qs=spreadQ(shuffle(QS)),i=0,sc=0,streak=0,st={t
 quiz=function(){quizG(Q,function(s){if(s>S.quiz){S.quiz=s;save()}},"quiz","menu")};
 })();
 
-(function(){var h0=0;document.addEventListener("visibilitychange",function(){try{if(document.hidden){h0=Date.now()}else if(h0&&Date.now()-h0>3000&&window.__qLeave&&document.getElementById("tmri")){h0=0;window.__qLeave()}else h0=0}catch(e){}})})();
+(function(){var h0=0;document.addEventListener("visibilitychange",function(){try{if(document.hidden){h0=Date.now()}else if(h0&&Date.now()-h0>2000&&window.__qLeave&&document.getElementById("tmri")){h0=0;var f=window.__qLeave;window.__qLeave=null;f()}else h0=0}catch(e){}})})();
 
 /* 9 клас: яскравий «ігровий» дизайн у дусі блокових 3D-ігор – темний інтерфейс, цегляні кнопки з товстим низом, неонові акценти, поле зі «шпильками» */
 (function(){
@@ -40678,7 +40678,8 @@ try{if(window.GI7)GI7.qr=["🔑","Квест-кімната"]}catch(e){}
 var lb=0,inT=function(){return !!document.getElementById("tmrw")};
 function hide(on){document.body.classList.toggle("acHide",!!on)}
 window.addEventListener("blur",function(){if(!inT())return;try{acSW(1);lb=Date.now()}catch(e){}hide(1)});
-window.addEventListener("focus",function(){hide(0)});
+var b0=0;window.addEventListener("blur",function(){if(inT())b0=Date.now()});
+window.addEventListener("focus",function(){hide(0);if(b0&&Date.now()-b0>2000&&window.__qLeave&&document.getElementById("tmri")){var f=window.__qLeave;window.__qLeave=null;f()}b0=0});
 document.addEventListener("visibilitychange",function(){if(document.hidden){if(Date.now()-lb<2000){try{acSW(-1)}catch(e){}}}else if(document.hasFocus())hide(0)});
 document.addEventListener("pointerdown",function(){if(document.body.classList.contains("acHide")&&document.hasFocus())hide(0)},true);
 var css="body.acHide .card h2,body.acHide .card #o,body.acHide .card .qimg,body.acHide .card pre{filter:blur(16px)!important;pointer-events:none}\
