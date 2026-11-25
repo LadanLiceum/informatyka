@@ -890,7 +890,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function fbHtml(mood,txt,cls,extra){return "<div class='fb "+cls+"' id='fb'><div class='fm'>"+bot(mood,64)+"</div><div class='fb-t'>"+txt+(extra||"")+"</div></div>"}
 function confetti(box){for(var k=0;k<16;k++){var s=document.createElement("span");s.className="cf";var a=Math.random()*Math.PI*2,d=50+Math.random()*80;s.style.cssText="background:"+CF[k%CF.length]+";--dx:"+Math.round(Math.cos(a)*d)+"px;--dy:"+Math.round(Math.sin(a)*d-20)+"px;--r:"+Math.round(Math.random()*540-270)+"deg;animation-delay:"+(Math.random()*.08)+"s";box.appendChild(s)}}
 
-var SWC=0;try{document.addEventListener("visibilitychange",function(){if(document.hidden)SWC++})}catch(e){}
+var SWC=0;window.acSW=function(d){SWC=Math.max(0,SWC+d);return SWC};try{document.addEventListener("visibilitychange",function(){if(document.hidden)SWC++})}catch(e){}
 function antRec(les,key,st){try{if(!ME||ME.t||!st.t.length)return;var tt=st.t,avg=tt.reduce(function(a,b){return a+b},0)/tt.length,mn=Math.min.apply(null,tt);
  var o=JSON.parse(localStorage.getItem("inf5ant")||"{}");o[ME.c+"|"+ME.n+"|"+les+"|"+key]=["INF5","T",ME.c,ME.n.replace(/\|/g," "),les||0,key||"q",avg.toFixed(1),mn.toFixed(1),st.sw,st.fast,tt.length].join("|");localStorage.setItem("inf5ant",JSON.stringify(o))}catch(e){}}
 function spreadQ(a){function nz(t){return String(t).toLowerCase().replace(/[’']/g,"").replace(/[^a-zа-яіїєґ0-9 ]/g,"")}
@@ -34958,10 +34958,10 @@ function tchView(d){var rows=d.rows||[],det=d.det||[],r=document.getElementById(
    var hn=["","","","Читалка","Гра 1","Гра 2","Гра 3","Гра 4","Гра 5","Гра 6","Тест","Великий тест"];
    h=Object.keys(by).sort(function(a,b){return a.localeCompare(b,"uk")}).map(function(nm){
     var A=by[nm].sort(function(a,b){return tm(b)-tm(a)||(+b[2])-(+a[2])}),ts=A.map(tot).filter(function(v){return v!==""}),avg=ts.length?ts.reduce(function(a,b){return a+b},0)/ts.length:"";
-    var inner=A.map(function(x){var tt=String(x[14]||"").split("; "),cells="",k,t2=tot(x);
+    var inner=A.map(function(x){var tt=String(x[14]||"").split("; "),cells="",k,t2=tot(x),wq=acWarn(d.tm,x[0],x[1],x[2]);
      for(k=3;k<=11;k++){if(x[k]===""||x[k]==="-")continue;var lbl=hn[k];if(k>=4&&k<=9){var m=tt.filter(function(z){return z.indexOf((k-3)+" – ")===0})[0];if(m)lbl=m.replace(/^\d+ – /,"")}cells+="<div class='tkg'><span>"+esc(lbl)+"</span>"+col(x[k]).replace(/^<td/,"<b").replace("</td>","</b>")+"</div>"}
-     return "<details class='tkl'><summary><b>Урок "+esc(x[2])+"</b><span class='tkz'>"+(tv(x[10])?"Тест <b>"+tv(x[10])+"</b> · ":"")+(tv(x[11])?"Вел. <b>"+tv(x[11])+"</b> · ":"")+(t2===""?"":"Заг. <b>"+(Math.round(t2*10)/10)+"</b>")+"</span><span class='tkd2'>"+fd(x[13])+"</span></summary><div class='tkgs'>"+cells+"</div></details>"}).join("");
-    return "<details class='tks'"+(st?" open":"")+"><summary><b>"+esc(nm)+"</b><span class='tkz'>"+A.length+" ур."+(avg===""?"":" · сер. "+(Math.round(avg*10)/10))+"</span></summary>"+inner+"</details>"}).join("");
+     return "<details class='tkl'><summary><b>Урок "+esc(x[2])+"</b>"+(wq?"<span class='acw' title='"+esc(wq)+"'>⚠ перевір</span>":"")+"<span class='tkz'>"+(tv(x[10])?"Тест <b>"+tv(x[10])+"</b> · ":"")+(tv(x[11])?"Вел. <b>"+tv(x[11])+"</b> · ":"")+(t2===""?"":"Заг. <b>"+(Math.round(t2*10)/10)+"</b>")+"</span><span class='tkd2'>"+fd(x[13])+"</span></summary>"+(wq?"<p class='acwp'>⚠ "+esc(wq)+"</p>":"")+"<div class='tkgs'>"+cells+"</div></details>"}).join("");
+    var wn=A.filter(function(x){return acWarn(d.tm,x[0],x[1],x[2])}).length;return "<details class='tks'"+(st?" open":"")+"><summary><b>"+esc(nm)+"</b>"+(wn?"<span class='acw'>⚠ "+wn+"</span>":"")+"<span class='tkz'>"+A.length+" ур."+(avg===""?"":" · сер. "+(Math.round(avg*10)/10))+"</span></summary>"+inner+"</details>"}).join("");
    t.innerHTML=h+"<p class='mut'>Нові уроки зверху. Натисни на учня чи урок, щоб розгорнути. Бали за 12-бальною шкалою, найкращий результат; читалка в середній бал не входить. Колір: червоний до 6, жовтий 6–9, зелений від 10.</p>"}
   else{
    var R=rows.filter(function(x){return x.c===c&&(!st||x.n===st)}).sort(function(a,b){return String(a.n).localeCompare(String(b.n),"uk")});
@@ -35014,6 +35014,12 @@ var css=".tks{margin-top:8px;border:2px solid rgba(128,128,128,.35);border-radiu
 "@media (prefers-reduced-motion:reduce){.uxc,.mb.uxnext,.uxt{animation:none;transition:none}.uxb{display:none}}";
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
 })();
+
+/* --- академічна доброчесність: сигнали для вчителя --- */
+function acWarn(tm,c,n,les){if(!tm||!tm.length)return "";var r=[];tm.forEach(function(x){if(String(x[0])!==String(c)||String(x[1])!==String(n)||String(x[2])!==String(les))return;
+ var avg=+x[4],sw=+x[6],fast=+x[7],nq=+x[8]||1,w=[];if(sw>=2)w.push("виходів зі сторінки: "+sw);if(fast>=3||fast/nq>=.25)w.push("правильних швидше 3 с: "+fast);if(avg&&avg<5&&nq>=6)w.push("сер. час "+(Math.round(avg*10)/10)+" с");
+ if(w.length)r.push((x[3]=="big"?"Великий тест":"Тест")+" – "+w.join(", "))});return r.join("; ")}
+(function(){var st=document.createElement("style");st.textContent=".acw{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:8px;background:#ff4f6e;color:#fff!important;font-size:12px;font-weight:800}.acwp{margin:6px 0;color:#ff8da0!important;font-size:13px;font-weight:700}";document.head.appendChild(st)})();
 
 /* ===== Синхронізація прогресу: знімок у таблицю + відновлення при вході на будь-якому пристрої ===== */
 (function(){
@@ -40663,6 +40669,46 @@ body.g7.s7n .qr .qrDg.f{background:#ffd23f!important}\
 body.g7.s7n .qr .qrCd{border:0!important;border-radius:14px!important;box-shadow:0 4px 0 rgba(0,0,0,.3)!important}\
 ";var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
 try{if(window.GI7)GI7.qr=["🔑","Квест-кімната"]}catch(e){}
+})();
+
+/* Академічна доброчесність:
+   1) втрата фокусу під час тесту (оверлей ШІ на Android, «Обвести й шукати», інша програма) рахується як вихід зі сторінки, а питання ховається, поки учень не повернеться;
+   2) повтор пройденого тесту – лише з ключем вчителя, з іншим набором питань. */
+(function(){
+var lb=0,inT=function(){return !!document.getElementById("tmrw")};
+function hide(on){document.body.classList.toggle("acHide",!!on)}
+window.addEventListener("blur",function(){if(!inT())return;try{acSW(1);lb=Date.now()}catch(e){}hide(1)});
+window.addEventListener("focus",function(){hide(0)});
+document.addEventListener("visibilitychange",function(){if(document.hidden){if(Date.now()-lb<2000){try{acSW(-1)}catch(e){}}}else if(document.hasFocus())hide(0)});
+document.addEventListener("pointerdown",function(){if(document.body.classList.contains("acHide")&&document.hasFocus())hide(0)},true);
+var css="body.acHide .card h2,body.acHide .card #o,body.acHide .card .qimg,body.acHide .card pre{filter:blur(16px)!important;pointer-events:none}\
+body.acHide .card{position:relative}body.acHide .card::after{content:'Повернись до тесту 👀\\A Вихід зі сторінки бачить учитель';white-space:pre-line;position:absolute;left:12px;right:12px;top:40%;text-align:center;font:800 16px/1.4 system-ui;color:#fff;background:rgba(20,10,40,.85);border-radius:14px;padding:14px;z-index:50}\
+.acM{position:fixed;inset:0;z-index:9999;background:rgba(10,6,24,.7);display:flex;align-items:center;justify-content:center;padding:16px}.acM>div{background:#fff;color:#1b1430;border-radius:18px;padding:18px;max-width:360px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.4);font:15px/1.4 system-ui}\
+.acM h3{margin:0 0 6px;font-size:18px}.acM p{margin:0 0 10px;color:#4a4560}.acM input{width:100%;box-sizing:border-box;padding:10px;border:2px solid #c9c2e6;border-radius:10px;font-size:16px;margin-bottom:10px}\
+.acM .r{display:flex;gap:8px}.acM button{flex:1;padding:10px;border:0;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer}.acM .y{background:#6d4cff;color:#fff}.acM .n{background:#eee9fb;color:#3a2f6b}.acM .e{color:#d8304f;font-weight:700;min-height:1.2em}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+function modal(n,k){var m=document.createElement("div");m.className="acM";
+ m.innerHTML="<div><h3>🔒 Тест уже пройдено</h3><p>Повторити тест можна лише разом із вчителем: він введе свій ключ. Питання будуть інші.</p><input type='password' placeholder='Ключ вчителя' autocomplete='off'><div class='e'></div><div class='r'><button class='n'>Закрити</button><button class='y'>Повторити</button></div></div>";
+ document.body.appendChild(m);var inp=m.querySelector("input"),er=m.querySelector(".e"),by=m.querySelector(".y");
+ m.querySelector(".n").onclick=function(){m.remove()};
+ by.onclick=function(){var v=inp.value.trim();if(!v)return;er.textContent="Перевіряю…";by.disabled=true;
+  try{jget("tk",[v],function(d,err){by.disabled=false;if(!d||typeof d!=="object"){er.textContent=err?"Немає інтернету – ключ не перевірено.":"Ключ не підходить.";return}
+   try{localStorage.setItem("inftk",v)}catch(e){}
+   try{if(B.sc&&B.sc[n])delete B.sc[n][k];if(B.qt)delete B.qt[n+k];B.rt=B.rt||{};B.rt[n+k]=1;saveB()}catch(e){}
+   m.remove();try{playQ(n,k)}catch(e){}})}catch(e){by.disabled=false;er.textContent="Не вдалося перевірити ключ."}}}
+window.tlockMsg=function(n,k){setTimeout(function(){modal(n,k)},60)};
+try{tlockMsg=window.tlockMsg}catch(e){}
+/* повтор: інший набір питань із пулу уроку */
+function mix(n,k){var L=LES[n],orig=(k=="big"?L.big:L.q)||[],N=orig.length,seen={},pool=[];orig.forEach(function(q){seen[q.q]=1});
+ try{pool=(window.GX&&GX.poolAll?GX.poolAll(n):[])||[]}catch(e){}
+ pool=pool.filter(function(q){return q&&q.q&&q.a&&q.a.length>=2});
+ var fresh=pool.filter(function(q){return !seen[q.q]}),old=orig.slice();
+ function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+ var out=sh(fresh).slice(0,N);if(out.length<N)out=out.concat(sh(old).slice(0,N-out.length));return out}
+var _pQ=window.playQ;window.playQ=function(n,k){var rt=false;try{rt=B.rt&&B.rt[n+k]}catch(e){}
+ if(!rt)return _pQ.apply(this,arguments);var L=LES[n],f=k=="big"?"big":"q",orig=L[f];try{L[f]=mix(n,k);delete B.rt[n+k];saveB()}catch(e){}
+ try{return _pQ.apply(this,arguments)}finally{L[f]=orig}};
+try{playQ=window.playQ}catch(e){}
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
