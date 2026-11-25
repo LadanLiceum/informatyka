@@ -40363,6 +40363,8 @@ GM.cart5=function(g){var qs=GX.arc.getQs(CUR9,N);if(qs.length<2)return fin9(0,1)
 try{GI.cart5=["⛏️","Вагонетка в шахті"]}catch(e){}
 if(window.PXG){var _ic5=PXG.icon;PXG.icon=function(t){return t=="cart5"?"minecart":_ic5(t)}}
 })();
+/* іконка/назва в списку уроку 5 класу (без неї екран уроку падав) */
+try{if(window.GI5&&!GI5.cart5)GI5.cart5=["🛒","Вагонетка в шахті"]}catch(e){}
 
 /* 5–6 клас «Шахта» (GM.dig): та сама механіка, нова графіка – текстури блоків 16×16 у дусі Minecraft, чіткі пікселі. */
 (function(){
@@ -40716,6 +40718,46 @@ var _pQ=window.playQ;window.playQ=function(n,k){var rt=false;try{rt=B.rt&&B.rt[n
  if(!rt)return _pQ.apply(this,arguments);var L=LES[n],f=k=="big"?"big":"q",orig=L[f];try{L[f]=mix(n,k);delete B.rt[n+k];saveB()}catch(e){}
  try{return _pQ.apply(this,arguments)}finally{L[f]=orig}};
 try{playQ=window.playQ}catch(e){}
+})();
+
+/* Свайпи в читанці (усі класи): вліво – наступна сторінка, вправо – попередня. */
+(function(){if(typeof rdx!=="function")return;
+var cur=-1,_r=rdx;
+rdx=function(i){cur=i;var r=_r.apply(this,arguments);var c=document.querySelector("#app .card");if(c){c.classList.add("rdpg");c.classList.add(dir>0?"rdN":dir<0?"rdP":"rdO")}dir=0;try{window.scrollTo(0,0)}catch(e){}return r};
+window.rdx=rdx;
+var dir=0,sx=0,sy=0,st=0,ok=false;
+function skip(t){for(var e=t;e&&e!==document.body;e=e.parentElement){if(/^(INPUT|TEXTAREA|SELECT|PRE|TABLE)$/.test(e.tagName))return true;try{var cs=getComputedStyle(e);if((cs.overflowX=="auto"||cs.overflowX=="scroll")&&e.scrollWidth>e.clientWidth+4)return true}catch(x){}}return false}
+document.addEventListener("touchstart",function(e){ok=false;if(e.touches.length!==1||!document.querySelector("#app .card.rdpg"))return;var t=e.touches[0];if(t.clientX<24||t.clientX>innerWidth-24)return;if(skip(e.target))return;sx=t.clientX;sy=t.clientY;st=Date.now();ok=true},{passive:true});
+document.addEventListener("touchend",function(e){if(!ok)return;ok=false;var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+ if(Date.now()-st>700||Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.6)return;if(!document.querySelector("#app .card.rdpg")||!window.CURP)return;
+ var N=CURP.length;if(dx<0&&cur<N-1){dir=1;rdx(cur+1)}else if(dx>0&&cur>0){dir=-1;rdx(cur-1)}},{passive:true});
+var css=".card.rdN{animation:rdN .25s ease-out}.card.rdP{animation:rdP .25s ease-out}@keyframes rdN{from{transform:translateX(40px);opacity:.3}to{transform:none;opacity:1}}@keyframes rdP{from{transform:translateX(-40px);opacity:.3}to{transform:none;opacity:1}}\
+.rdhint{text-align:center;font-size:12px;opacity:.55;margin:4px 0}";var s=document.createElement("style");s.textContent=css;document.head.appendChild(s);
+})();
+/* Свайпи на екранах уроку й теми: вліво – наступний урок/тема, вправо – попередній(я). */
+(function(){
+var st=null;
+function mark(s){st=s;var a=document.getElementById("app");if(a&&!document.getElementById("swM")){var i=document.createElement("i");i.id="swM";i.hidden=true;a.appendChild(i)}}
+function wrapL(name,base){var f=window[name];if(typeof f!=="function")return;window[name]=function(n){var r=f.apply(this,arguments);mark({t:"L",fn:name,base:base,n:+n});return r};try{eval(name+"=window[name]")}catch(e){}}
+function wrapS(name,max){var f=window[name];if(typeof f!=="function")return;window[name]=function(k){var r=f.apply(this,arguments);mark({t:"S",fn:name,k:+(k||1),max:max});return r};try{eval(name+"=window[name]")}catch(e){}}
+[["lesson5",500],["lesson6",600],["lesson7",700],["lesson8",800],["lesson10",1000],["lesson11",1100]].forEach(function(x){wrapL(x[0],x[1])});
+/* lesson9 – 9 клас і диспетчер для інших (10-А/Б, ШІ): ключ = n */
+wrapL("lesson9",0);
+function tpLen(a){try{return window[a]?window[a].length:0}catch(e){return 0}}
+[["section5","TP5"],["section6","TP6"],["section7","TP7"],["section8","TP8"],["section11","TP11"]].forEach(function(x){wrapS(x[0],function(){return tpLen(x[1])})});
+wrapS("section9",function(k){try{return secLes(k).length?k:0}catch(e){return 0}});
+function go(d){if(!st||!document.getElementById("swM"))return false;
+ if(st.t=="L"){var n=st.n+d,key=st.base+n;if(n<1||!window.LES||!LES[key])return false;
+  if(st.fn=="lesson9"&&Math.floor(n/100)!==Math.floor(st.n/100))return false;dirA=d;window[st.fn](n);return true}
+ if(st.t=="S"){var k=st.k+d;if(k<1)return false;var m=st.max(k);if(st.fn=="section9"){if(!m)return false}else if(k>m)return false;dirA=d;window[st.fn](k);return true}return false}
+var sx=0,sy=0,t0=0,ok=false,dirA=0;
+document.addEventListener("touchstart",function(e){ok=false;if(e.touches.length!==1||!document.getElementById("swM")||document.querySelector("#app .card.rdpg"))return;var t=e.touches[0];if(t.clientX<24||t.clientX>innerWidth-24)return;
+ for(var el=e.target;el&&el!==document.body;el=el.parentElement){if(/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))return;try{var cs=getComputedStyle(el);if((cs.overflowX=="auto"||cs.overflowX=="scroll")&&el.scrollWidth>el.clientWidth+4)return}catch(x){}}
+ sx=t.clientX;sy=t.clientY;t0=Date.now();ok=true},{passive:true});
+document.addEventListener("touchend",function(e){if(!ok)return;ok=false;var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+ if(Date.now()-t0>700||Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.8)return;
+ if(go(dx<0?1:-1)){try{window.scrollTo(0,0)}catch(x){}var a=document.getElementById("app");if(a){a.classList.remove("swN","swP");void a.offsetWidth;a.classList.add(dirA>0?"swN":"swP")}}},{passive:true});
+var s=document.createElement("style");s.textContent="#app.swN{animation:rdN .25s ease-out}#app.swP{animation:rdP .25s ease-out}";document.head.appendChild(s);
 })();
 
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
