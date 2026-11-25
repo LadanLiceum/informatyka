@@ -35052,9 +35052,9 @@ function dm(a,b){if(a==null)return b;if(b==null)return a;
  if(typeof a==="object"&&typeof b==="object"&&!Array.isArray(a)&&!Array.isArray(b)){var o={};Object.keys(a).concat(Object.keys(b)).forEach(function(k){if(!(k in o))o[k]=dm(a[k],b[k])});return o}
  return a}
 function apply(R){var ch=0,L=snap(0);
- Object.keys(R||{}).forEach(function(k){var m=dm(L[k],R[k]),js=JSON.stringify(m);if(js===JSON.stringify(L[k]))return;ch=1;
+ Object.keys(R||{}).forEach(function(k){var m=dm(L[k],R[k]),js=JSON.stringify(m);if(js===JSON.stringify(L[k]))return;if(k!=="inf5ant")ch=1;
   if(k==="infux"){var u=rj("infux")||{};u[pk()]=m;localStorage.setItem("infux",JSON.stringify(u))}
-  else if(k==="inf5ant"){var a=rj("inf5ant")||{};Object.keys(m).forEach(function(q){if(!(q in a))a[q]=m[q]});localStorage.setItem("inf5ant",JSON.stringify(a))}
+  else if(k==="inf5ant"){var a=rj("inf5ant")||{};Object.keys(m).forEach(function(q){if(!(q in a)){a[q]=m[q];ch=1}});localStorage.setItem("inf5ant",JSON.stringify(a))}
   else localStorage.setItem(k,js)});return ch}
 var done={},DIAG="";
 function dlg(h){var o=document.createElement("div");o.className="sess-ov";o.innerHTML="<div class='sess-b' role='dialog'>"+h+"</div>";document.body.appendChild(o);return o}
@@ -35069,7 +35069,7 @@ function check(cb,login){fetchSt().then(function(d){
  if(d.s==="sug"){ask("Це ти?","Схоже, ти вже входив(ла) як <b>"+esc(d.n)+"</b>. Продовжити з цим іменем?","Так, це я","Ні, я інший",function(y){if(!y){cb(false,"Тоді зміни PIN або ім’я.");return}ME.n=d.n;check(cb,login)});return}
  if(d.s==="new"&&login){ask("Новий профіль","Ти входиш уперше як <b>"+esc(ME.n)+"</b>. Усе написано правильно? Запам’ятай свій PIN.","Так, усе вірно","Виправити",function(y){cb(y)});return}
  if(d.s==="ok"&&d.p){var R=null;try{R=JSON.parse(decodeURIComponent(d.p))}catch(e){}
-  if(R){sv("inf5me",JSON.stringify(ME));if(apply(R)){try{note("Відновлено прогрес ✔")}catch(e){}setTimeout(function(){location.reload()},400);return}}}
+  if(R){sv("inf5me",JSON.stringify(ME));var rk="infrl:"+ME.c+"|"+ME.n,was=0;try{was=sessionStorage.getItem(rk)}catch(e){}if(apply(R)&&!was){try{sessionStorage.setItem(rk,"1");sessionStorage.setItem("infpl:"+ME.c+"|"+ME.n,"1")}catch(e){}try{note("Відновлено прогрес ✔")}catch(e){}setTimeout(function(){location.reload()},400);return}}}
  cb(true)})}
 window.loginCheck=function(cb){check(function(ok,msg){if(ok){try{sessionStorage.setItem("infpl:"+ME.c+"|"+ME.n,"1")}catch(e){}SYNCBLOCK=false}cb(ok,msg)},1)};
 function pull(){if(!ME||ME.t)return;if(!ME.p){return}if(!on())return;var key=pk();if(done[key])return;done[key]=1;
