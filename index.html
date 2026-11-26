@@ -20273,6 +20273,7 @@ function bmap(r,at,done){var s="<defs><radialGradient id='brSea' cx='.5' cy='.5'
  for(var z=0;z<7;z++){var d=bdist(z),inNow=d<=now,gold=inNow&&r<3&&d>nx,x=BZ[z][0],y=BZ[z][1];
   s+="<g data-z='"+z+"' style='cursor:pointer' opacity='"+(inNow?1:.45)+"'><ellipse cx='"+x+"' cy='"+(y+2)+"' rx='20' ry='8' fill='"+(at==z?"#ffe94a":"#000")+"' opacity='"+(at==z?.9:.18)+"'/>"+bld(z)+(inNow&&!(done&&at==z)?(gold?"<circle cx='"+(x+14)+"' cy='"+(y+4)+"' r='13' fill='url(#brGold)'><animate attributeName='r' values='10;15;10' dur='1.4s' repeatCount='indefinite'/></circle>":"")+chest(x+14,y+5,gold,.75):"")+lbl(x,y+20,BZ[z][2])+"<circle cx='"+x+"' cy='"+y+"' r='26' fill='transparent'/></g>"}
  /* інші гравці */
+ s+="<g pointer-events='none'>";
  var others=[[95,56],[198,64],[140,128],[246,100],[64,118],[290,92],[180,160],[220,40],[110,100],[268,150]],np=Math.min(others.length,Math.round(BN[Math.min(r,3)]/2.4));
  for(var q=0;q<np;q++){var o=others[q],c=["#ff4f6d","#3ff5d2","#ffd23f","#b79cff"][q%4];s+="<g><animateTransform attributeName='transform' type='translate' values='0 0;0 -2;0 0' dur='"+(1.4+q%3*.3)+"s' repeatCount='indefinite'/><circle cx='"+o[0]+"' cy='"+o[1]+"' r='4.5' fill='"+c+"' stroke='"+O+"' stroke-width='2'/><rect x='"+(o[0]-3)+"' y='"+(o[1]-1.5)+"' width='6' height='2.5' rx='1' fill='"+O+"'/></g>"}
  /* шторм */
@@ -20284,6 +20285,7 @@ function bmap(r,at,done){var s="<defs><radialGradient id='brSea' cx='.5' cy='.5'
  /* дирижабль висадки на старті */
  if(r==0&&at==null)s+="<g><animateTransform attributeName='transform' type='translate' values='-40 0;20 0;-40 0' dur='9s' repeatCount='indefinite'/><ellipse cx='70' cy='16' rx='28' ry='10' fill='#ff9a2a' stroke='"+O+"' stroke-width='2.5'/><path d='M70 6 v20' stroke='"+O+"' stroke-opacity='.3' stroke-width='2'/><rect x='60' y='26' width='20' height='7' rx='2' fill='#7a5cff' stroke='"+O+"' stroke-width='2'/><path d='M42 16 l-8 -6 v12Z' fill='#ffd23f' stroke='"+O+"' stroke-width='2' stroke-linejoin='round'/>"+[0,1,2].map(function(i){return "<circle cx='"+(64+i*6)+"' cy='38' r='2' fill='#fff'><animate attributeName='cy' values='36;70' dur='1.6s' begin='"+(i*.5)+"s' repeatCount='indefinite'/><animate attributeName='opacity' values='1;0' dur='1.6s' begin='"+(i*.5)+"s' repeatCount='indefinite'/></circle>"}).join("")+"</g>";
  if(at!=null)s+=b7in(BZ[at][0]-12,BZ[at][1]+2,34,done?"happy":"idle");
+ s+="</g>";
  return sv(340,210,s,"brsv")}
 function duelS(hp,bhp,hit){var s="<defs><linearGradient id='duSky' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#2a1470'/><stop offset='1' stop-color='#d8548f'/></linearGradient><radialGradient id='duSpot' cx='.5' cy='0' r='1'><stop offset='0' stop-color='#fff6b0' stop-opacity='.55'/><stop offset='1' stop-color='#fff6b0' stop-opacity='0'/></radialGradient><linearGradient id='duFl' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#4a33c8'/><stop offset='1' stop-color='#1b1046'/></linearGradient></defs>";
  s+="<rect width='340' height='150' fill='url(#duSky)'/>";
