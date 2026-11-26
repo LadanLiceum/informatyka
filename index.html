@@ -22572,7 +22572,7 @@ var css=".b7{display:block;overflow:visible}.b7 .b7b{animation:b7bob 3s ease-in-
 .b7-hype .b7b{animation:b7jump .8s ease-in-out infinite}@keyframes b7jump{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}\
 .s7say{position:relative;z-index:3;display:flex;align-items:flex-end;justify-content:flex-end;gap:2px;margin:-34px 4px 2px 0}.s7peek{flex:none;filter:drop-shadow(0 6px 0 rgba(0,0,0,.25))}\
 .s7bub{position:relative;margin-bottom:34px;max-width:70%;background:#fff;color:#1b1046;font:800 14px/1.35 system-ui;padding:10px 14px;border-radius:16px;box-shadow:0 5px 0 rgba(0,0,0,.3)}.s7bub::after{content:'';position:absolute;right:-9px;bottom:14px;border:9px solid transparent;border-left-color:#fff;border-right:0}\
-.s7brief{display:flex;align-items:flex-end;gap:8px;margin:4px 0 12px}.s7brief .say{flex:1;background:#fff;color:#1b1046;border-radius:16px;padding:10px 12px;font:700 14px/1.35 system-ui;box-shadow:0 5px 0 rgba(0,0,0,.3)}.s7brief .say b{color:#ff3f8e;font-style:italic;display:block;font-size:12px}\
+.s7brief{display:flex;align-items:flex-end;gap:8px;margin:4px 0 12px}.s7brief .say{position:relative;flex:1;background:#fff;color:#1b1046;border-radius:16px;padding:10px 12px;font:700 14px/1.35 system-ui;box-shadow:0 5px 0 rgba(0,0,0,.3)}.s7brief .say::before{content:'';position:absolute;left:-9px;bottom:16px;border:9px solid transparent;border-right-color:#fff;border-left:0}.s7brief .say b{color:#ff3f8e;font-style:italic;display:block;font-size:12px}\
 body.s7n .fb{display:flex!important;align-items:center;gap:8px}body.s7n .fb .b7{flex:none}body.s7n #fb .fm .b7{margin:-6px 0}\
 body.s7n .endx~.big .b7,body.s7n .card>.big .b7{margin:0 auto}";
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
@@ -22599,6 +22599,28 @@ function start(){var a=document.getElementById("app");if(a)mo.observe(a,{childLi
 if(document.readyState=="loading")document.addEventListener("DOMContentLoaded",start);else start();
 if(typeof topics=="function"){var _tp=topics;topics=window.topics=function(){var r=_tp.apply(this,arguments);try{hubBot()}catch(e){}return r}}
 if(typeof lesson7=="function"){var _l7=lesson7;lesson7=window.lesson7=function(n){var r=_l7.apply(this,arguments);try{briefBot(+n)}catch(e){}return r}}
+})();
+/* Бот-чемпіон – герой складних ігор 7 класу (M8: Зона, Бос, Лабіринт – замість героя; Вежа, Дроп, Захист, Ритм, Квест-кімната – поруч зі сценою) */
+(function(){
+function on(){return document.body&&document.body.classList.contains("s7n")}
+if(window.M8&&M8.ART){var oh=M8.ART.hero;try{Object.defineProperty(M8.ART,"hero",{configurable:true,get:function(){return on()?BOT7("idle",null,"s7hb"):oh},set:function(v){oh=v}})}catch(e){}}
+var POS={tower:"left:4%;bottom:16%;width:19%",drop:"left:4%;bottom:12%;width:17%",def:"right:2%;bottom:34%;width:16%",rhythm:"left:3%;bottom:4%;width:20%"};
+var css=".s7hero{position:absolute;z-index:8;max-width:90px;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(0,0,0,.25))}.s7hero .b7,.m8hero .b7,.m8pl .b7{width:100%;height:auto}\
+.qrSc{position:relative}.qrSc .s7hero{left:0;bottom:15%;width:11%}.m8s.m8-zone .b7{width:46px!important;height:auto}.s7pop{animation:s7pop .35s ease-out}@keyframes s7pop{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+function addHero(){if(!on())return;
+ [].forEach.call(document.querySelectorAll(".m8s"),function(s){if(s.querySelector(".b7"))return;var k=null;for(var c in POS)if(s.classList.contains("m8-"+c))k=c;if(!k)return;
+  var d=document.createElement("div");d.className="s7hero";d.style.cssText=POS[k];d.innerHTML=BOT7("idle");s.appendChild(d)});
+ [].forEach.call(document.querySelectorAll(".qrSc"),function(s){if(s.querySelector(".s7hero"))return;var d=document.createElement("div");d.className="s7hero";d.innerHTML=BOT7("think");s.appendChild(d)})}
+/* реакція героя на відповідь */
+var tm=0;function feel(ok){[].forEach.call(document.querySelectorAll(".s7hero,.m8hero,.m8pl"),function(h){if(!h.querySelector(".b7"))return;var base=h.closest&&h.closest(".qrSc")?"think":"idle";
+ h.innerHTML=BOT7(ok?"happy":"sad",null,"s7hb");h.classList.remove("s7pop");void h.offsetWidth;h.classList.add("s7pop");clearTimeout(tm);
+ tm=setTimeout(function(){[].forEach.call(document.querySelectorAll(".s7hero,.m8hero,.m8pl"),function(x){if(x.querySelector(".b7"))x.innerHTML=BOT7(x.closest&&x.closest(".qrSc")?"think":"idle",null,"s7hb")})},1400)})}
+document.addEventListener("click",function(e){if(!on())return;var b=e.target.closest&&e.target.closest(".m8b,.qrRow,.qrCd,.qrDg,.sbBtn");if(!b)return;
+ setTimeout(function(){var ok=b.classList.contains("ok"),bad=b.classList.contains("bad");if(!ok&&!bad){var f=document.querySelector(".m8f:last-of-type");}if(ok||bad)feel(ok)},60)},true);
+var mo=new MutationObserver(function(){if(on())addHero()});
+function start(){var a=document.getElementById("app");if(a)mo.observe(a,{childList:true,subtree:true})}
+if(document.readyState=="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();
 
 /* Академічна доброчесність:
