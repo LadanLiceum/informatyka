@@ -40760,6 +40760,32 @@ document.addEventListener("touchend",function(e){if(!ok)return;ok=false;var t=e.
 var s=document.createElement("style");s.textContent="#app.swN{animation:rdN .25s ease-out}#app.swP{animation:rdP .25s ease-out}";document.head.appendChild(s);
 })();
 
+/* Легкий режим для слабких пристроїв (≤2 ГБ ОЗП або старий Android): вимикає декоративні анімації, тіні, розмиття, конфеті.
+   Налаштування ⚙️: Авто / Увімкнено / Вимкнено (localStorage "inflite"). */
+(function(){
+function pref(){try{return localStorage.getItem("inflite")||"auto"}catch(e){return "auto"}}
+function weak(){var n=navigator,dm=n.deviceMemory,hc=n.hardwareConcurrency||8,ua=n.userAgent||"";
+ if(dm&&dm<=2)return true;var av=/Android (\d+)/.exec(ua);if(!dm&&av&&+av[1]<=8)return true;if(hc<=2)return true;return false}
+function on(){var p=pref();return p=="on"||(p=="auto"&&weak())}
+window.LITE=on();
+var css="body.lite *,body.lite *::before,body.lite *::after{box-shadow:none!important;text-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}\
+body.lite .cf{display:none!important}body.lite .card>.gbn::after,body.lite .card>.gbn::before{animation:none!important}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+function apply(){if(document.body&&document.body.classList.contains("lite")!==!!window.LITE)document.body.classList.toggle("lite",!!window.LITE)}
+/* безкінечні (декоративні) анімації: CSS і SVG */
+var t=0;function calm(){if(!window.LITE)return;t=0;
+ try{if(document.getAnimations)document.getAnimations().forEach(function(a){try{var ti=a.effect&&a.effect.getTiming&&a.effect.getTiming();if(ti&&ti.iterations===Infinity){a.cancel()}}catch(e){}})}catch(e){}
+ try{[].forEach.call(document.querySelectorAll("svg"),function(s){if(s.pauseAnimations&&s.querySelector("animate,animateTransform,animateMotion"))s.pauseAnimations()})}catch(e){}}
+function sched(){apply();if(!window.LITE||t)return;t=setTimeout(calm,250)}
+function init(){apply();try{new MutationObserver(sched).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["class"]})}catch(e){}calm()}
+if(document.readyState=="loading")document.addEventListener("DOMContentLoaded",init);else init();
+/* перемикач у ⚙️ Налаштуваннях */
+function lbl(){var p=pref();return p=="on"?"Увімкнено":p=="off"?"Вимкнено":"Авто ("+(weak()?"слабкий пристрій – увімкнено":"вимкнено")+")"}
+if(typeof uxSet=="function"){var _u=uxSet;uxSet=window.uxSet=function(){var r=_u.apply(this,arguments);try{var b=document.querySelector(".oflb #oflx");if(b){var d=document.createElement("div");
+ d.innerHTML="<hr style='border:0;border-top:1px solid #e3e5ef;margin:10px 0'><div class='oflh'>🐢 <b>Легкий режим</b> (для старих планшетів): <span id='litel'>"+lbl()+"</span></div><button id='liteb' class='blk'>Перемкнути легкий режим</button>";
+ b.parentNode.insertBefore(d,b);d.querySelector("#liteb").onclick=function(){var p=pref(),n=p=="auto"?"on":p=="on"?"off":"auto";try{localStorage.setItem("inflite",n)}catch(e){}window.LITE=on();apply();if(window.LITE)calm();d.querySelector("#litel").textContent=lbl()+(n=="off"||!window.LITE?" · перезапусти застосунок, щоб повернути анімації":"")}}}catch(e){}return r}}
+})();
+
 /* ===== Розділення: знімки екрана (IMG) завантажуються окремими пакетами для 5, 8, 9 і 11 класів ===== */
 (function(){
 var LD={},V=window.PKV||"1";
