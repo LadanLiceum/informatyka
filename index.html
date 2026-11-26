@@ -22544,6 +22544,63 @@ try{if(window.GI7)GI7.qr=["🔑","Квест-кімната"]}catch(e){}
 /* 8 клас: прибрати всі старі середні аркади u8_* (як u6_* у 6 класі), без заміни */
 (function(){if(!window.LES)return;for(var k=801;k<=870;k++){var L=LES[k];if(L&&L.g)L.g=L.g.filter(function(g){return !/^u8_/.test(g.type)})}})();
 
+/* 7 клас «Сезон»: маскот Бот-чемпіон – хаб, брифінг уроку, реакції на відповіді в іграх і тестах, фінальний екран. ES5. */
+(function(){
+var K="#140c30",C="#3ff5d2",N=0;
+function glow(id){return ' filter="url(#gl'+id+')"'}
+function face(e,id){var g=glow(id);
+ if(e=="happy")return '<path d="M76 84 Q89 62 102 84" stroke="'+C+'" stroke-width="8" fill="none" stroke-linecap="round"'+g+'/><path d="M138 84 Q151 62 164 84" stroke="'+C+'" stroke-width="8" fill="none" stroke-linecap="round"'+g+'/><path d="M100 94 Q120 116 140 94 Z" fill="'+C+'"'+g+'/>';
+ if(e=="sad")return '<rect x="80" y="74" width="20" height="18" rx="8" fill="'+C+'"'+g+'/><rect x="140" y="74" width="20" height="18" rx="8" fill="'+C+'"'+g+'/><path d="M76 70 L100 64" stroke="'+C+'" stroke-width="6" stroke-linecap="round"/><path d="M164 70 L140 64" stroke="'+C+'" stroke-width="6" stroke-linecap="round"/><path d="M104 106 Q120 96 136 106" stroke="'+C+'" stroke-width="7" fill="none" stroke-linecap="round"'+g+'/><path d="M162 94 q4 9 0 13 q-4-4 0-13" fill="#7fd4ff"/>';
+ if(e=="think")return '<rect class="b7e" x="80" y="66" width="20" height="26" rx="9" fill="'+C+'"'+g+'/><path d="M140 80 L162 80" stroke="'+C+'" stroke-width="8" stroke-linecap="round"'+g+'/><circle cx="108" cy="104" r="4" fill="'+C+'"/><circle cx="120" cy="104" r="4" fill="'+C+'"/><circle cx="132" cy="104" r="4" fill="'+C+'"/>';
+ if(e=="hype"){var s="";[89,151].forEach(function(x){s+='<path d="M'+x+' 62 l5 11 l12 1 l-9 8 l3 12 l-11 -6 l-11 6 l3 -12 l-9 -8 l12 -1z" fill="#ffd23f"'+g+'/>'});return s+'<path d="M100 96 Q120 120 140 96 Z" fill="'+C+'"'+g+'/>'}
+ if(e=="wink")return '<rect class="b7e" x="78" y="64" width="22" height="30" rx="10" fill="'+C+'"'+g+'/><path d="M140 82 Q151 72 162 82" stroke="'+C+'" stroke-width="8" fill="none" stroke-linecap="round"'+g+'/><path d="M102 98 Q120 112 140 96" stroke="'+C+'" stroke-width="7" fill="none" stroke-linecap="round"'+g+'/>';
+ return '<g class="b7e"><rect x="78" y="64" width="22" height="30" rx="10" fill="'+C+'"'+g+'/><rect x="140" y="64" width="22" height="30" rx="10" fill="'+C+'"'+g+'/></g><path d="M104 100 Q120 110 136 100" stroke="'+C+'" stroke-width="7" fill="none" stroke-linecap="round"'+g+'/>'}
+function arm(x,y,ang,id){return '<g transform="rotate('+ang+' '+x+' '+y+')"><rect x="'+(x-11)+'" y="'+(y-6)+'" width="22" height="50" rx="11" fill="url(#ar'+id+')" stroke="'+K+'" stroke-width="5"/><circle cx="'+x+'" cy="'+(y+50)+'" r="15" fill="#ffd23f" stroke="'+K+'" stroke-width="5"/></g>'}
+var POSE={idle:{la:20,ra:-150},happy:{la:40,ra:-40},sad:{la:8,ra:-8,ht:6},think:{la:15,ra:-120,ht:-5},hype:{la:160,ra:-160,jump:1},wink:{la:20,ra:-110}};
+window.BOT7=function(e,w,cls){e=e||"idle";var o=POSE[e]||POSE.idle,id=++N,j=o.jump?-14:0,conf="";
+ if(e=="hype")[[30,40,"#ffd23f"],[200,30,"#3ff5d2"],[20,140,"#ff4f9a"],[214,120,"#ffd23f"],[50,20,"#3ff5d2"],[190,70,"#ff4f9a"]].forEach(function(c,i){conf+='<rect x="'+c[0]+'" y="'+(c[1]+20)+'" width="12" height="7" rx="2" fill="'+c[2]+'" transform="rotate('+(i*37)+' '+c[0]+' '+(c[1]+20)+')"/>'});
+ return '<svg class="b7 b7-'+e+(cls?" "+cls:"")+'" viewBox="0 -10 240 280" width="'+(w||120)+'" aria-hidden="true"><defs><linearGradient id="hd'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4f9a"/><stop offset="1" stop-color="#ff9a2a"/></linearGradient><linearGradient id="bd'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5cff"/><stop offset="1" stop-color="#4a33c8"/></linearGradient><linearGradient id="ar'+id+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6a4cf0"/><stop offset="1" stop-color="#4a33c8"/></linearGradient><filter id="gl'+id+'" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
+ +'<ellipse cx="120" cy="258" rx="'+(o.jump?48:62)+'" ry="9" fill="#000" opacity=".25"/><g class="b7b" transform="translate(0 '+j+')">'
+ +'<rect x="86" y="206" width="26" height="40" rx="10" fill="#3a2a9c" stroke="'+K+'" stroke-width="5"/><rect x="128" y="206" width="26" height="40" rx="10" fill="#3a2a9c" stroke="'+K+'" stroke-width="5"/><rect x="80" y="236" width="38" height="16" rx="8" fill="#ffd23f" stroke="'+K+'" stroke-width="5"/><rect x="122" y="236" width="38" height="16" rx="8" fill="#ffd23f" stroke="'+K+'" stroke-width="5"/>'
+ +arm(66,146,o.la,id)+arm(174,146,o.ra,id)
+ +'<rect x="64" y="128" width="112" height="90" rx="30" fill="url(#bd'+id+')" stroke="'+K+'" stroke-width="6"/><path d="M76 150 Q120 140 164 150" stroke="#fff" stroke-opacity=".25" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M120 156 l20 11 v22 l-20 11 l-20 -11 v-22z" fill="#ffd23f" stroke="'+K+'" stroke-width="5"/><path d="M124 162 l-10 16 h8 l-4 14 l12 -18 h-8z" fill="'+K+'"/>'
+ +'<g transform="rotate('+(o.ht||0)+' 120 128)"><line x1="120" y1="30" x2="120" y2="10" stroke="'+K+'" stroke-width="6" stroke-linecap="round"/><circle class="b7a" cx="120" cy="10" r="10" fill="#ffd23f" stroke="'+K+'" stroke-width="5"/><circle cx="36" cy="82" r="16" fill="#ffd23f" stroke="'+K+'" stroke-width="5"/><circle cx="204" cy="82" r="16" fill="#ffd23f" stroke="'+K+'" stroke-width="5"/><rect x="38" y="28" width="164" height="112" rx="40" fill="url(#hd'+id+')" stroke="'+K+'" stroke-width="6"/><path d="M58 52 Q70 38 92 36" stroke="#fff" stroke-opacity=".6" stroke-width="8" fill="none" stroke-linecap="round"/><rect x="58" y="50" width="124" height="72" rx="26" fill="#1a0f40" stroke="'+K+'" stroke-width="5"/>'+face(e,id)+'</g></g>'+conf+'</svg>'};
+function on(){return document.body&&document.body.classList.contains("s7n")}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+var css=".b7{display:block;overflow:visible}.b7 .b7b{animation:b7bob 3s ease-in-out infinite;transform-box:fill-box}.b7 .b7a{animation:b7ant 1.6s ease-in-out infinite}.b7 .b7e{animation:b7blink 4.5s infinite;transform-origin:center;transform-box:fill-box}\
+@keyframes b7bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}@keyframes b7ant{0%,100%{fill:#ffd23f}50%{fill:#fff6b0}}@keyframes b7blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}\
+.b7-hype .b7b{animation:b7jump .8s ease-in-out infinite}@keyframes b7jump{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}\
+.s7say{position:relative;z-index:3;display:flex;align-items:flex-end;justify-content:flex-end;gap:2px;margin:-34px 4px 2px 0}.s7peek{flex:none;filter:drop-shadow(0 6px 0 rgba(0,0,0,.25))}\
+.s7bub{position:relative;margin-bottom:34px;max-width:70%;background:#fff;color:#1b1046;font:800 14px/1.35 system-ui;padding:10px 14px;border-radius:16px;box-shadow:0 5px 0 rgba(0,0,0,.3)}.s7bub::after{content:'';position:absolute;right:-9px;bottom:14px;border:9px solid transparent;border-left-color:#fff;border-right:0}\
+.s7brief{display:flex;align-items:flex-end;gap:8px;margin:4px 0 12px}.s7brief .say{flex:1;background:#fff;color:#1b1046;border-radius:16px;padding:10px 12px;font:700 14px/1.35 system-ui;box-shadow:0 5px 0 rgba(0,0,0,.3)}.s7brief .say b{color:#ff3f8e;font-style:italic;display:block;font-size:12px}\
+body.s7n .fb{display:flex!important;align-items:center;gap:8px}body.s7n .fb .b7{flex:none}body.s7n #fb .fm .b7{margin:-6px 0}\
+body.s7n .endx~.big .b7,body.s7n .card>.big .b7{margin:0 auto}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+/* хаб */
+var HI=["Новий день – нові XP! Погнали? 🔥","Місія чекає. Я в тебе вірю!","Ще трохи – і новий рівень!","Квести дня самі себе не виконають 😉","Біп-буп! Радий тебе бачити!"];
+function hubBot(){if(!on())return;var c=document.querySelector(".s7seas");if(!c||document.querySelector(".s7say"))return;
+ var r=document.createElement("div");r.className="s7say";r.innerHTML="<div class='s7bub'>"+pick(HI).replace(/</g,"&lt;")+"</div><div class='s7peek'>"+BOT7("wink",86)+"</div>";c.parentNode.insertBefore(r,c.nextSibling)}
+/* брифінг уроку */
+function briefBot(n){if(!on())return;var a=document.getElementById("app");if(!a||a.querySelector(".s7brief"))return;var top=a.querySelector(".top");var t="";try{t=(window.T7&&T7[n-1]&&(T7[n-1].t||T7[n-1][0]||T7[n-1]))||""}catch(e){}if(typeof t!=="string")t="";
+ var d=document.createElement("div");d.className="s7brief";var L=window.LES&&LES[700+n],g=L&&L.g?L.g.length:0;
+ d.innerHTML=BOT7("think",72)+"<div class='say'><b>БРИФІНГ · МІСІЯ "+n+"</b>"+(g?"Спершу читанка, потім "+g+" "+(g==1?"гра":g<5?"ігри":"ігор")+" і тест. Збирай XP!":"Сьогодні підсумковий тест на 24 питання. Ти готовий!")+"</div>";
+ if(top&&top.nextSibling)a.insertBefore(d,top.nextSibling);else a.insertBefore(d,a.firstChild)}
+/* реакції на відповіді (ігри: .fb ✔/✖; тест: #fb.ok/.bad) і фінал */
+function react(n){if(!on()||!n||n.nodeType!==1)return;
+ var list=n.classList&&n.classList.contains("fb")?[n]:[].slice.call(n.querySelectorAll?n.querySelectorAll(".fb"):[]);
+ list.forEach(function(f){if(f.querySelector(".b7"))return;var fm=f.querySelector(".fm");
+  var ok=f.id=="fb"?f.classList.contains("ok")||(!f.classList.contains("bad")&&/^✔/.test(f.textContent)):/^\s*✔/.test(f.textContent);
+  var h=BOT7(ok?"happy":"sad",fm?64:48);if(fm)fm.innerHTML=h;else f.insertAdjacentHTML("afterbegin",h)});
+ var big=n.classList&&n.classList.contains("card")?n.querySelector(":scope>.big"):(n.querySelector?n.querySelector(".card>.big"):null);
+ if(big&&!big.querySelector(".b7")&&document.querySelector(".endx")){var st2=document.querySelector(".stars"),r=0;try{var m=/(\d+)\s*з\s*(\d+)/i.exec(document.querySelector(".card").textContent);if(m)r=+m[1]/+m[2]}catch(e){}
+  big.innerHTML=BOT7(r>=.85?"hype":r>=.5?"happy":"wink",150);[].forEach.call(document.querySelectorAll(".exm"),function(p){p.innerHTML=p.innerHTML.replace(/Мяу\s*🐾?/,"Біп-буп 🤖")})}}
+var mo=new MutationObserver(function(ms){if(!on())return;ms.forEach(function(m){[].forEach.call(m.addedNodes,react)})});
+function start(){var a=document.getElementById("app");if(a)mo.observe(a,{childList:true,subtree:true})}
+if(document.readyState=="loading")document.addEventListener("DOMContentLoaded",start);else start();
+if(typeof topics=="function"){var _tp=topics;topics=window.topics=function(){var r=_tp.apply(this,arguments);try{hubBot()}catch(e){}return r}}
+if(typeof lesson7=="function"){var _l7=lesson7;lesson7=window.lesson7=function(n){var r=_l7.apply(this,arguments);try{briefBot(+n)}catch(e){}return r}}
+})();
+
 /* Академічна доброчесність:
    1) втрата фокусу під час тесту (оверлей ШІ на Android, «Обвести й шукати», інша програма) рахується як вихід зі сторінки, а питання ховається, поки учень не повернеться;
    2) повтор пройденого тесту – лише з ключем вчителя, з іншим набором питань. */
