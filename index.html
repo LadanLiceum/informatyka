@@ -23382,7 +23382,7 @@ function track(){var s="<defs><pattern id='krGr' width='40' height='40' patternU
  s+="<g id='krSk'></g><g id='krK'></g><g id='krFx'></g>";return s}
 function kart(c,me){return "<g><rect x='-11' y='-7' width='22' height='14' rx='5' fill='"+c+"' stroke='"+O+"' stroke-width='2.5'/><rect x='-9' y='-10' width='6' height='3' rx='1' fill='#222'/><rect x='3' y='-10' width='6' height='3' rx='1' fill='#222'/><rect x='-9' y='7' width='6' height='3' rx='1' fill='#222'/><rect x='3' y='7' width='6' height='3' rx='1' fill='#222'/><circle cx='-1' cy='0' r='4.5' fill='"+(me?"#fff":"#1a0e3a")+"' stroke='"+O+"' stroke-width='1.5'/>"+(me?"<g class='krNi' opacity='0'><path class='krFl' d='M-11 -4 L-22 0 L-11 4z' fill='#ffd23f'/><path class='krFl' d='M-11 -2 L-17 0 L-11 2z' fill='#ff5a1f'/></g>":"")+"</g>"}
 
-GM.kart7=function(g){inj();var POOL,qi,ok,tot,log,stg,P,L,K,raf=0,last=0,phase,dt0,fin=[],placeShown;
+GM.kart7=function(g){inj();var D0=0,POOL,qi,ok,tot,log,stg,P,L,K,raf=0,last=0,phase,dt0,fin=[],placeShown;
  function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
  function reset(){POOL=shf(g.rounds||[]);qi=0;ok=0;tot=0;log=[];fin=[];
   K=[{n:"Ти",c:"#ff3f8e",me:1,s:-36,v:0,off:6,boost:0,skid:0,lap:0}].concat(RIV.map(function(r,i){return {n:r[0],c:r[1],dv:r[2],s:-12*i,v:0,off:[-6,6,-6][i],lap:0}}))}
@@ -23403,11 +23403,11 @@ GM.kart7=function(g){inj();var POOL,qi,ok,tot,log,stg,P,L,K,raf=0,last=0,phase,d
  function start(){shell();gs9("Старт!");
   $i("zbR").innerHTML="<div class='krSt'><svg id='krS' viewBox='0 0 360 240' xmlns='http://www.w3.org/2000/svg'>"+track()+"</svg><div class='krLb' id='krLb'></div><div class='krLap' id='krLap'></div><button class='krMu' id='krMu'>"+(MUTE?"🔇":"🔊")+"</button><div class='krBig' id='krBig'></div></div>"
    +"<div id='krW'></div><div class='zbMsg' id='zbM'></div><div id='krN'></div>";
-  stg=$i("krS");$i("krMu").onclick=mute;P=$i("krP");L=P.getTotalLength();
+  stg=$i("krS");$i("krMu").onclick=mute;P=$i("krP");L=P.getTotalLength();D0=0;var bd=1e9;for(var d=0;d<L;d+=2){var q=P.getPointAtLength(d),dd=Math.abs(q.x-181)+Math.abs(q.y-206);if(dd<bd){bd=dd;D0=d}}
   $i("krK").innerHTML=K.map(function(k,i){return "<g id='krK"+i+"'>"+kart(k.c,k.me)+"</g>"}).join("");draw();board();
   var n=3,big=$i("krBig");big.textContent=n;SND.beep();var iv=setInterval(function(){if(!alive(stg)){clearInterval(iv);return}n--;if(n>0){big.textContent=n;SND.beep()}else{clearInterval(iv);big.textContent="GO!";SND.beep(1);engOn();setTimeout(function(){if(alive(big))big.textContent=""},700);phase="q";last=0;raf=requestAnimationFrame(loop);ask()}},700)}
  function stop(){cancelAnimationFrame(raf);raf=0;engOff()}
- function pos(k){var d=((k.s%L)+L)%L,p=P.getPointAtLength(d),q=P.getPointAtLength((d+2)%L),a=Math.atan2(q.y-p.y,q.x-p.x),nx=-Math.sin(a),ny=Math.cos(a);return {x:p.x+nx*k.off,y:p.y+ny*k.off,a:a*180/Math.PI}}
+ function pos(k){var d=(((k.s+D0)%L)+L)%L,p=P.getPointAtLength(d),q=P.getPointAtLength((d+2)%L),a=Math.atan2(q.y-p.y,q.x-p.x),nx=-Math.sin(a),ny=Math.cos(a);return {x:p.x+nx*k.off,y:p.y+ny*k.off,a:a*180/Math.PI}}
  function draw(){K.forEach(function(k,i){var e=$i("krK"+i);if(!e)return;var p=pos(k);e.setAttribute("transform","translate("+p.x.toFixed(1)+","+p.y.toFixed(1)+") rotate("+(p.a+(k.spin||0)).toFixed(1)+")")})}
  function order(){return K.slice().sort(function(a,b){var fa=fin.indexOf(a),fb=fin.indexOf(b);if(fa>=0||fb>=0)return (fa<0?99:fa)-(fb<0?99:fb);return b.s-a.s})}
  function place(){return order().indexOf(K[0])+1}
@@ -23453,7 +23453,7 @@ var NR=8;
 var NICK=["kit","ola_07","max.exe","ліна","dan4ik","sofi","tima","yarik","nastya","bohdan_pro","iryna","zhenya","marta","vlad"];
 var NC=["#ff8ab0","#7ee787","#58c4ff","#ffd23f","#c58bff","#ff9a2a"];
 var GOOD=["Привіт усім! 👋","🔥🔥🔥","Круто виходить!","GG 😎","А коли наступний стрім?","лол 😂","Бот, ти топ!","Я з 7-Б, всім привіт","Дякую за пояснення!","👍👍","Хто тут з уроку?","Можна ще раз?"];
-var BAD=[["БЕЗКОШТОВНИЙ АЙФОН ➜ bit.ly/fr33-ph0ne","спам-посилання"],["Скиньте код із SMS, я перевірю 😉","шахрайство"],["ти нуб, вимикай стрім","образа"],["моя адреса вул. Шкільна 5, кв 12","особисті дані"],["перешли пароль від акаунта, бро","фішинг"],["ВСІ СЮДИ ➜ free-skins.xyz","спам-посилання"],["хто не підпишеться — лох","образа"],["мій телефон 097 123 45 67 пишіть","особисті дані"],["Безкоштовні гроші! Введи дані картки","шахрайство"]];
+var BAD=[["БЕЗКОШТОВНИЙ АЙФОН ➜ bit.ly/fr33-ph0ne","спам-посилання"],["Скиньте код із SMS, я перевірю 😉","шахрайство"],["твій стрім — відстій, вимикай","образа"],["моя адреса вул. Шкільна 5, кв 12","особисті дані"],["перешли пароль від акаунта, бро","фішинг"],["ВСІ СЮДИ ➜ free-skins.xyz","спам-посилання"],["всі, хто тут сидить, — невдахи 😝","образа"],["мій телефон 097 123 45 67 пишіть","особисті дані"],["Безкоштовні гроші! Введи дані картки","шахрайство"]];
 
 /* ---------- звук ---------- */
 var A=null,M=null,MUTE=false;try{MUTE=localStorage.getItem("inf7mus")=="0"}catch(e){}
