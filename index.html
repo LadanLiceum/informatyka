@@ -22523,10 +22523,155 @@ GM.card7=function(g){inj();var POOL,me,ac,turn,ok,tot,cmb,best,log,stg;
 try{if(window.GI7)GI7.card7=["🃏","Карткова дуель"];if(window.GI)GI.card7=["🃏","Карткова дуель"]}catch(e){}
 
 /* складні ігри 7 класу (нові) — по черзі в уроках, крім кінців тем */
-var CX=[["bot7","Збери бота"],["card7","Карткова дуель"]],k=0;
+var CX=[["bot7","Збери бота"],["card7","Карткова дуель"],["beat7","Біт-майстер"]],k=0;
 if(window.LES)for(var n=1;n<=52;n++){var L=LES[700+n];if(!L||!L.g||!L.g.length||!L.q||!L.q.length)continue;
  var R=[];L.q.forEach(function(x){if(x&&x.a&&x.a.length>=2)R.push({q:x.q,o:x.a.slice(),a:0,w:x.e||""})});
  if(R.length>=8){var c=CX[k++%CX.length];L.g.push({type:c[0],title:c[1],rounds:R})}}
+})();
+
+/* ===== 7 клас · складна гра «Біт-майстер» =====
+   8 питань → 4 доріжки (бочка, хай-хет, бас, мелодія) × 2 рівні. Трек грає наживо і росте з кожною правильною відповіддю.
+   Хибна відповідь — доріжка «фальшить», поки її не виправиш. Звук: WebAudio-синтез, без файлів. */
+(function(){if(!window.GM||!window.X7)return;
+var X=X7,O=X.O,esc=X.esc,shf=X.shf,alive=X.alive,vib=X.vib;
+function $i(x){return document.getElementById(x)}
+function B7(e){try{return window.BOT7?BOT7(e):""}catch(x){return ""}}
+var TR=[["dr","🥁","Бочка","#ff3f8e"],["ht","🎩","Хай-хет","#ffd23f"],["bs","🎸","Бас","#58c4ff"],["ml","🎹","Мелодія","#7ee787"]];
+var ORDER=[0,1,2,3,0,1,2,3];
+var STY={dr:[["hip","🧢 Хіп-хоп"],["dsc","🪩 Диско"]],ht:[["off","🎯 Рівний"],["swg","🌀 Свінг"]],bs:[["low","🔊 Глибокий"],["fun","🕺 Фанк"]],ml:[["arp","✨ Арпеджіо"],["chr","🎶 Хвилі"]]};
+
+/* ---------- звук ---------- */
+var A=null,MASTER=null,NOISE=null,MUTE=false;try{MUTE=localStorage.getItem("inf7mus")=="0"}catch(e){}
+function ac(){if(A)return A;var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;A=new C();MASTER=A.createGain();MASTER.gain.value=MUTE?0:.55;
+ var comp=A.createDynamicsCompressor();MASTER.connect(comp);comp.connect(A.destination);
+ var n=A.createBuffer(1,A.sampleRate*.5,A.sampleRate),d=n.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;NOISE=n;return A}
+function env(g,t,a,v,r){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(0.0001,t+a+r)}
+function kick(t,v){var o=A.createOscillator(),g=A.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(42,t+.16);env(g,t,.005,v,.32);o.connect(g);g.connect(MASTER);o.start(t);o.stop(t+.4)}
+function noise(t,v,f,len,type){var s=A.createBufferSource(),fl=A.createBiquadFilter(),g=A.createGain();s.buffer=NOISE;fl.type=type||"highpass";fl.frequency.value=f;env(g,t,.002,v,len);s.connect(fl);fl.connect(g);g.connect(MASTER);s.start(t);s.stop(t+len+.05)}
+function snare(t,v){noise(t,v*.8,1400,.18,"bandpass");var o=A.createOscillator(),g=A.createGain();o.type="triangle";o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(120,t+.1);env(g,t,.003,v*.5,.12);o.connect(g);g.connect(MASTER);o.start(t);o.stop(t+.2)}
+function tone(t,f,v,len,type,cut){var o=A.createOscillator(),g=A.createGain(),fl=A.createBiquadFilter();o.type=type;o.frequency.value=f;fl.type="lowpass";fl.frequency.setValueAtTime(cut,t);fl.frequency.exponentialRampToValueAtTime(Math.max(200,cut/4),t+len);env(g,t,.008,v,len);o.connect(fl);fl.connect(g);g.connect(MASTER);o.start(t);o.stop(t+len+.05)}
+function hz(m){return 440*Math.pow(2,(m-69)/12)}
+/* прогресія Am – F – C – G, 4 такти по 16 кроків */
+var ROOT=[45,41,48,43],CH=[[57,60,64],[53,57,60],[55,60,64],[55,59,62]];
+var PAT={
+ dr:{hip:[[0,10],[4,12]],dsc:[[0,4,8,12],[4,12]]},
+ ht:{off:[2,6,10,14],swg:[0,3,6,8,11,14]},
+ bs:{low:[0,8],fun:[0,3,6,10,12]},
+ ml:{arp:[0,4,8,12],chr:[0,6,10]}};
+function play(S,step,t){var bar=Math.floor(step/16)%4,s=step%16;
+ TR.forEach(function(tr){var k=tr[0],L=S.lv[k],sty=S.st[k]||STY[k][0][0],bad=S.bad[k];if(!L&&!bad)return;
+  var v=bad?.5:1,ss=bad?(s+3)%16:s;
+  if(k=="dr"){var p=PAT.dr[sty];if(p[0].indexOf(ss)>=0)kick(t,.9*v);if(p[1].indexOf(ss)>=0)snare(t,.5*v);if(L>=2&&(ss==7||ss==15&&bar==3))kick(t,.6*v);if(L>=2&&ss==14&&bar%2)snare(t,.25*v)}
+  if(k=="ht"){var h=PAT.ht[sty];if(h.indexOf(ss)>=0)noise(t,.22*v,7000,.05);if(L>=2&&ss%2==1&&h.indexOf(ss)<0)noise(t,.09*v,9000,.03);if(L>=2&&ss==15&&bar==3){noise(t,.12,8000,.03);noise(t+.07,.12,8000,.03)}}
+  if(k=="bs"){var b=PAT.bs[sty],r=ROOT[bar]+(bad?1:0);if(b.indexOf(ss)>=0)tone(t,hz(r+(sty=="fun"&&ss==6?12:0)),.32*v,.22,"sawtooth",900);if(L>=2&&(ss==14))tone(t,hz(r+7),.22*v,.12,"sawtooth",1200)}
+  if(k=="ml"){var m=PAT.ml[sty],c=CH[bar];if(m.indexOf(ss)>=0){var n=c[(m.indexOf(ss))%3]+12+(bad?1:0);tone(t,hz(n),.16*v,sty=="chr"?.5:.22,sty=="chr"?"triangle":"square",sty=="chr"?2400:3200)}
+   if(L>=2&&(ss==2||ss==14||ss==10&&bar%2))tone(t,hz(c[2]+24),.08*v,.15,"triangle",4000)}})}
+
+/* ---------- стилі ---------- */
+var CSS="\
+.btSt{position:relative;border-radius:22px;overflow:hidden;border:3px solid #fff;box-shadow:0 6px 0 rgba(0,0,0,.3)}.btSt>svg{display:block;width:100%;height:auto}\
+.btDj{position:absolute;left:39%;top:14%;width:22%;pointer-events:none}.btDj svg{width:100%;height:auto}\
+.btDj.beat{animation:btBp .3s ease-out}@keyframes btBp{30%{transform:translateY(-5px) scale(1.04)}}\
+.btMu{position:absolute;right:8px;top:8px;z-index:3;width:38px!important;height:38px!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:12px!important;border:2px solid #fff!important;background:rgba(10,5,40,.85)!important;font-size:18px!important;line-height:1!important;cursor:pointer;box-shadow:none!important}\
+.btHud{position:absolute;left:8px;top:8px;display:flex;gap:6px;pointer-events:none}.btHud span{background:rgba(10,5,40,.82);border:2px solid #fff;border-radius:11px;padding:3px 9px;font:900 12px system-ui;color:#fff}\
+.btP{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}\
+.zb .btP button{position:relative;width:auto!important;margin:0!important;min-height:66px;border:3px solid "+O+"!important;border-radius:16px!important;padding:10px 8px!important;background:radial-gradient(circle at 50% 35%,var(--pc),#2a1d78 120%)!important;color:#fff!important;font:800 13.5px/1.25 system-ui!important;box-shadow:0 5px 0 "+O+",inset 0 0 0 3px rgba(255,255,255,.18)!important;cursor:pointer;text-align:center;text-transform:none!important;text-shadow:0 2px 0 rgba(0,0,0,.4)}\
+.zb .btP button:nth-child(1){--pc:#ff3f8e}.zb .btP button:nth-child(2){--pc:#ff9a2a}.zb .btP button:nth-child(3){--pc:#1f9fff}.zb .btP button:nth-child(4){--pc:#2bb24c}\
+.zb .btP button:active{transform:translateY(4px);box-shadow:0 1px 0 "+O+"!important}\
+.zb .btP button.bOk{filter:brightness(1.25);box-shadow:0 0 0 5px #7ee787,0 5px 0 "+O+"!important}.zb .btP button.bBad{filter:grayscale(1) brightness(.6)}.zb .btP button.bDim{opacity:.3}\
+.btS{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}\
+.zb .btS button{width:auto!important;margin:0!important;border:3px solid "+O+"!important;border-radius:16px!important;padding:14px 6px!important;background:#fff!important;color:#1a0e3a!important;font:900 15px system-ui!important;box-shadow:0 5px 0 "+O+"!important;cursor:pointer;text-transform:none!important;min-height:0!important}\
+.zb .btS button small{display:block;font:700 11px system-ui;color:#6b5fc7;margin-top:2px}\
+.btEq{transform-box:fill-box;transform-origin:bottom}\
+.btSpk{transform-box:fill-box;transform-origin:center}.btSpk.on{animation:btSk .25s ease-out}@keyframes btSk{40%{transform:scale(1.12)}}\
+.btCr{transform-box:fill-box;transform-origin:bottom}.btCr.on{animation:btCj .3s ease-out}@keyframes btCj{40%{transform:translateY(-6px)}}\
+.btLz{animation:btLz 4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:top}@keyframes btLz{from{transform:rotate(-18deg)}to{transform:rotate(18deg)}}\
+body.lite .btLz{animation:none!important}\
+";
+var injd=0;function inj(){X.inj();if(injd)return;injd=1;var s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s)}
+
+/* ---------- сцена ---------- */
+function stage(){var s="<defs><linearGradient id='btBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0c0530'/><stop offset='1' stop-color='#2a1478'/></linearGradient><radialGradient id='btGl' cx='.5' cy='.5' r='.5'><stop offset='0' stop-color='#ff3f8e' stop-opacity='.55'/><stop offset='1' stop-color='#ff3f8e' stop-opacity='0'/></radialGradient></defs><rect width='360' height='270' fill='url(#btBg)'/>";
+ s+="<g opacity='.55'><path class='btLz' d='M60 0 L40 150 L80 150z' fill='#ff3f8e' opacity='.25'/><path class='btLz' style='animation-delay:-2s' d='M300 0 L280 150 L320 150z' fill='#58c4ff' opacity='.25'/></g>";
+ s+="<circle cx='180' cy='62' r='70' fill='url(#btGl)'/>";
+ function spk(x,id){return "<g transform='translate("+x+",58)'><rect x='-28' y='-40' width='56' height='92' rx='10' fill='#1a0e3a' stroke='#4a3ab8' stroke-width='3'/><g id='"+id+"' class='btSpk'><circle cx='0' cy='-14' r='12' fill='#2a1d78' stroke='#58c4ff' stroke-width='3'/><circle cx='0' cy='24' r='19' fill='#2a1d78' stroke='#ff3f8e' stroke-width='3'/><circle cx='0' cy='24' r='7' fill='#4a3ab8'/></g></g>"}
+ s+=spk(46,"btK1")+spk(314,"btK2");
+ s+="<rect x='112' y='92' width='136' height='22' rx='6' fill='#2a1d78' stroke='"+O+"' stroke-width='3'/><circle cx='138' cy='103' r='7' fill='#1a0e3a' stroke='#ffd23f' stroke-width='2'/><circle cx='222' cy='103' r='7' fill='#1a0e3a' stroke='#ffd23f' stroke-width='2'/><rect x='160' y='99' width='40' height='8' rx='3' fill='#58c4ff' opacity='.6'/>";
+ /* сітка 4×16 */
+ TR.forEach(function(tr,r){s+="<text x='12' y='"+(140+r*20)+"' font-size='13'>"+tr[1]+"</text>";for(var c=0;c<16;c++)s+="<rect id='btC"+r+"_"+c+"' x='"+(32+c*20)+"' y='"+(127+r*20)+"' width='17' height='16' rx='4' fill='rgba(255,255,255,.08)'/>"});
+ s+="<rect id='btPh' x='31' y='124' width='19' height='80' rx='5' fill='none' stroke='#fff' stroke-width='2'/>";
+ /* натовп */
+ var cr="";for(var i=0;i<14;i++){var x=14+i*25.5,h=24+(i*7)%12;cr+="<g class='btCr' id='btP"+i+"'><circle cx='"+x+"' cy='"+(256-h)+"' r='8' fill='#0a0420'/><rect x='"+(x-10)+"' y='"+(262-h)+"' width='20' height='"+(h+4)+"' rx='8' fill='#0a0420'/>"+(i%3==0?"<path d='M"+(x+8)+" "+(258-h)+" l8 -16' stroke='#0a0420' stroke-width='5' stroke-linecap='round'/>":"")+"</g>"}
+ s+="<rect y='212' width='360' height='58' fill='#140a46'/>"+cr;
+ return s}
+
+/* ---------- гра ---------- */
+GM.beat7=function(g){inj();var POOL,S,qi,ok,tot,log,stg,step=0,nextT=0,timer=0,t0=0,hype=0,run=false;
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function reset(){POOL=shf(g.rounds||[]);S={lv:{},st:{},bad:{}};qi=0;ok=0;tot=0;log=[];hype=0}
+ function stop(){run=false;clearInterval(timer);timer=0}
+ function sched(){if(!alive(stg)){stop();return}if(!A)return;while(nextT<A.currentTime+.12){var st=step,tt=nextT;play(S,st,tt);(function(st,tt){setTimeout(function(){vis(st)},Math.max(0,(tt-A.currentTime)*1000))})(st,tt);nextT+=60/100/4;step++}}
+ function startAudio(){if(!ac())return;try{A.resume()}catch(e){}if(run)return;run=true;nextT=A.currentTime+.08;step=0;timer=setInterval(sched,25)}
+ function vis(st){if(!alive(stg))return;var s=st%16,ph=$i("btPh");if(ph)ph.setAttribute("x",31+s*20);
+  var any=false;TR.forEach(function(tr,r){var k=tr[0],c=$i("btC"+r+"_"+s);if(!c)return;var on=hit(k,st);if(on)any=true;
+   for(var q=0;q<16;q++){var e=$i("btC"+r+"_"+q);if(e)e.setAttribute("fill",cellOn(k,q)?(S.bad[k]?"#8f96a3":tr[3]):"rgba(255,255,255,.08)")}
+   if(on)c.setAttribute("fill","#fff")});
+  if(s%4==0&&(S.lv.dr||S.bad.dr)){["btK1","btK2"].forEach(function(id){var e=$i(id);if(e){e.setAttribute("class","btSpk");void e.getBoundingClientRect();e.setAttribute("class","btSpk on")}});
+   var dj=$i("btDj");if(dj){dj.classList.remove("beat");void dj.offsetWidth;dj.classList.add("beat")}
+   var n=Math.min(14,Math.round(hype));for(var i=0;i<14;i++){var p=$i("btP"+i);if(!p)continue;if(i<n&&(i+s/4)%2<1.5){p.setAttribute("class","btCr");void p.getBoundingClientRect();p.setAttribute("class","btCr on")}}}}
+ function cellOn(k,q){var L=S.lv[k],b=S.bad[k];if(!L&&!b)return false;var sty=S.st[k]||STY[k][0][0],ss=b?(q+3)%16:q,P=PAT[k][sty];
+  if(k=="dr")return P[0].indexOf(ss)>=0||P[1].indexOf(ss)>=0||(L>=2&&ss==7);if(k=="ht")return P.indexOf(ss)>=0||(L>=2&&ss%2==1);return P.indexOf(ss)>=0||(L>=2&&(ss==14||ss==2))}
+ function hit(k,st){return cellOn(k,st%16)}
+ function mute(){MUTE=!MUTE;try{localStorage.setItem("inf7mus",MUTE?"0":"1")}catch(e){}if(MASTER)MASTER.gain.value=MUTE?0:.55;var b=$i("btMu");if(b)b.textContent=MUTE?"🔇":"🔊"}
+
+ /* --- старт --- */
+ function intro(){stop();reset();shell();gs9("Складна гра");
+  var art="<svg viewBox='0 0 360 150' xmlns='http://www.w3.org/2000/svg'>";
+  for(var b=0;b<16;b++){var h=18+((b*37)%60);art+="<rect x='"+(20+b*20.5)+"' y='"+(140-h)+"' width='14' height='"+h+"' rx='4' fill='"+["#fff","#ffd23f","#58c4ff","#1a0e3a"][b%4]+"' opacity='"+(b%4==3?.5:.85)+"'/>"}
+  art+="<text x='300' y='40' font-size='30'>🎧</text><text x='40' y='44' font-size='26'>🎵</text></svg>";
+  $i("zbR").innerHTML="<div class='zbHd'><small>СКЛАДНА ГРА · ПРЕМ'ЄРА ТРЕКУ</small><b>Біт-майстер</b>"+art+"</div>"
+   +"<div class='zbIn'><h3>Тиша перед фіналом</h3><p>Діджей-бот готує трек для фіналу сезону, але пульт заблоковано. Кожна правильна відповідь вмикає звук — і трек росте просто в тебе у вухах. <b style='color:#ffd23f'>Увімкни звук! 🔊</b></p>"
+   +"<div class='zbRu'><i>🎧</i><span><b>8 питань — 4 доріжки по 2 рівні:</b> 🥁 бочка, 🎩 хай-хет, 🎸 бас, 🎹 мелодія. Перша правильна відповідь вмикає доріжку — і ти обираєш її стиль.</span></div>"
+   +"<div class='zbRu'><i>📈</i><span><b>Друга правильна — прокачує доріжку</b>: більше нот, складніший ритм. Відповів <b>за 15 секунд</b> — натовп заводиться сильніше.</span></div>"
+   +"<div class='zbRu'><i>🙉</i><span><b>Помилка — доріжка фальшить</b>: зсунутий ритм і криві ноти. Виправиш наступною правильною відповіддю на цю доріжку.</span></div>"
+   +"<button class='zbGo' id='zbGo'>До пульта ▶</button></div>";
+  $i("zbGo").onclick=function(){ac();try{A.resume()}catch(e){}build()}}
+
+ /* --- студія --- */
+ function build(){shell();gs9("Біт-майстер");
+  $i("zbR").innerHTML="<div class='btSt'><svg id='btS' viewBox='0 0 360 270' xmlns='http://www.w3.org/2000/svg'>"+stage()+"</svg><div class='btDj' id='btDj'>"+B7("happy")+"</div><div class='btHud'><span id='btH'></span></div><button class='btMu' id='btMu'>"+(MUTE?"🔇":"🔊")+"</button></div>"
+   +"<div id='btW'></div><div class='zbMsg' id='zbM'></div><div id='btN'></div>";
+  stg=$i("btS");$i("btMu").onclick=mute;startAudio();hud();ask()}
+ function hud(){var n=0;TR.forEach(function(t){n+=S.lv[t[0]]||0});$i("btH").textContent="🎵 "+n+"/8 · 🔥 "+Math.round(hype)}
+ function ask(){if(!alive(stg))return;if(qi>=8)return finale();var tr=TR[ORDER[qi]],Q=POOL[qi%POOL.length];$i("zbM").innerHTML="";$i("btN").innerHTML="";
+  var o=shf(Q.o.map(function(t,i){return {t:t,c:i===Q.a}}));Q._o=o;
+  $i("btW").innerHTML="<div class='zbQ'><small>"+tr[1]+" "+tr[2]+" · "+((S.lv[tr[0]]||0)?"прокачка":"увімкнення")+"</small><b>"+esc(Q.q)+"</b><div class='zbT' id='zbT'><i></i></div></div><div class='btP' id='btPd'>"+o.map(function(x,i){return "<button data-i='"+i+"'>"+esc(x.t)+"</button>"}).join("")+"</div>";
+  var T=$i("zbT");T.className="zbT";void T.offsetWidth;T.firstChild.style.animation="zbTm 15s linear forwards";t0=Date.now();
+  gs9("Пульт · "+(qi+1)+"/8");
+  $i("btPd").onclick=function(e){var b=e.target.closest("button");if(!b||b.disabled)return;ans(Q,+b.getAttribute("data-i"),tr)}}
+ function ans(Q,j,tr){var c=Q._o[j].c,k=tr[0],fast=Date.now()-t0<=15000;tot++;var Tb=$i("zbT");Tb.className="zbT off";Tb.firstChild.style.animation="none";
+  [].forEach.call($i("btPd").querySelectorAll("button"),function(b,i){b.disabled=true;b.className=Q._o[i].c?"bOk":(i==j?"bBad":"bDim")});
+  if(c){ok++;hype+=fast?2.2:1.2;vib(20);var first=!S.lv[k];S.lv[k]=(S.lv[k]||0)+1;S.bad[k]=false;
+   var dj=$i("btDj");if(dj)dj.innerHTML=B7("hype");
+   if(first){$i("zbM").innerHTML="✅ "+tr[1]+" <b>"+tr[2]+"</b> увімкнено! Обери стиль:";
+    $i("btN").innerHTML="<div class='btS'>"+STY[k].map(function(s,i){return "<button data-s='"+s[0]+"'>"+s[1]+"<small>"+(i?"варіант Б":"варіант А")+"</small></button>"}).join("")+"</div>";
+    S.st[k]=STY[k][0][0];
+    $i("btN").firstChild.onclick=function(e){var b=e.target.closest("button");if(!b)return;S.st[k]=b.getAttribute("data-s");$i("btN").innerHTML="";$i("zbM").innerHTML="🎧 Стиль «"+b.textContent.replace(/варіант.*/,"")+"» — слухай!";hud();setTimeout(function(){if(alive(stg))ask()},1400)};
+    qi++;hud();return}
+   $i("zbM").innerHTML="🔥 "+tr[1]+" <b>"+tr[2]+"</b> прокачано — більше нот!"+(fast?" Натовп реве!":"");qi++;hud();setTimeout(function(){if(alive(stg))ask()},1600);return}
+  log.push(Q);S.bad[k]=true;hype=Math.max(0,hype-1);vib([30,40,30]);var dj2=$i("btDj");if(dj2)dj2.innerHTML=B7("sad");
+  $i("zbM").innerHTML="🙉 "+tr[2]+" фальшить! Правильно: <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.85;font-weight:600'>"+esc(Q.w)+"</span>":"");
+  qi++;hud();$i("btN").innerHTML="<button class='zbGo' id='btNx'>"+(qi>=8?"До прем'єри ▶":"Далі ▶")+"</button>";$i("btNx").onclick=ask}
+ function finale(){var lv=0;TR.forEach(function(t){lv+=S.lv[t[0]]||0});var stars=ok>=7?3:ok>=5?2:ok>=3?1:0;hype=Math.max(hype,stars*4);
+  var dj=$i("btDj");if(dj)dj.innerHTML=B7(stars>=2?"hype":"happy");gs9("Прем'єра!");hud();
+  var rv=log.length?"<div class='zbRv'><h4>Розбір помилок</h4>"+log.map(function(Q){return "<div>"+esc(Q.q)+"<br>✔ <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.8'>"+esc(Q.w)+"</span>":"")+"</div>"}).join("")+"</div>":"";
+  $i("btW").innerHTML="<div class='zbRes "+(stars>=2?"w":"l")+"'><h3>"+["Трек ще сирий","🎵 Непоганий трек","🔥 Хіт сезону","🏆 Легендарний біт"][stars]+"</h3><p>"+"⭐".repeat(stars)+"☆".repeat(3-stars)+"<br>Правильних: <b style='color:#fff'>"+ok+" з "+tot+"</b> · доріжок прокачано: "+lv+"/8</p></div>"+rv
+   +"<div class='zbBtns'><button class='zbGo alt' id='zbAg'>↻ Ще раз</button><button class='zbGo' id='zbEnd'>Результат</button></div>";
+  $i("zbM").innerHTML="Трек грає — послухай, що вийшло 🎧";$i("btN").innerHTML="";
+  $i("zbAg").onclick=function(){stop();intro()};var sc=ok,t=tot;$i("zbEnd").onclick=function(){stop();fin9(sc,t)}}
+ document.addEventListener("visibilitychange",function(){if(!A)return;try{document.hidden?A.suspend():(run&&A.resume())}catch(e){}});
+ intro()};
+try{if(window.GI7)GI7.beat7=["🎵","Біт-майстер"];if(window.GI)GI.beat7=["🎵","Біт-майстер"]}catch(e){}
 })();
 
 /* 7 клас «Сезон»: маскот Бот-чемпіон – хаб, брифінг уроку, реакції на відповіді в іграх і тестах, фінальний екран. ES5. */
