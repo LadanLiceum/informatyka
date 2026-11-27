@@ -720,10 +720,10 @@ GM.memory=function(g){var it=g.items,n=it.length,cards=[];it.forEach(function(p,
  var box=document.getElementById("mg");cards.forEach(function(c){var b=document.createElement("button");b.className="cell";b.textContent="?";b.onclick=function(){if(lock||b.disabled||open.indexOf(b)>=0)return;b.textContent=c[0];b.className="cell sel";open.push(b);b.ix=c[1];
   if(open.length==2){var a=open[0],d=open[1];if(a.ix===d.ix){a.className=d.className="cell ok";a.disabled=d.disabled=true;open=[];if(++found==n)setTimeout(function(){fin9(Math.max(0,n-Math.floor(err/2)),n)},600)}else{err++;gs9("Промахів: "+err);lock=true;setTimeout(function(){a.textContent=d.textContent="?";a.className=d.className="cell";open=[];lock=false},900)}}};box.appendChild(b)})};
 GM.decode=function(g){var ws=shuffle(g.items),i=0,sc=0,n=ws.length,AB="АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
- function show(){var def=ws[i][0],w=ws[i][1].toUpperCase(),got={},bad=0,done=false;fr9(g.title,g.hint||"Відгадай слово за поясненням. П'ять помилок – і слово «закрите».","<div class='fun'><b>"+def+"</b></div><div id='sl' style='font-size:1.6em;letter-spacing:.2em;text-align:center;margin:10px 0;font-weight:900'></div><div id='kb' style='display:flex;flex-wrap:wrap;gap:4px;justify-content:center'></div><p id='fb' class='mut'></p>");gs9("Слово "+(i+1)+" / "+n);
+ function show(){var def=ws[i][0],orig=String(ws[i][1]),w=orig.toUpperCase(),got={},bad=0,done=false,LAT="ABCDEFGHIJKLMNOPQRSTUVWXYZ",hl=/[A-Z]/.test(w),hc=/[А-ЯІЇЄҐ]/.test(w),KB=hl&&!hc?LAT:hl&&hc?AB+LAT:AB;for(var z=0;z<w.length;z++){if(KB.indexOf(w.charAt(z))<0)got[w.charAt(z)]=1}fr9(g.title,g.hint||"Відгадай слово за поясненням. П'ять помилок – і слово «закрите».","<div class='fun'><b>"+def+"</b></div><div id='sl' style='font-size:1.6em;letter-spacing:.2em;text-align:center;margin:10px 0;font-weight:900'></div><div id='kb' style='display:flex;flex-wrap:wrap;gap:4px;justify-content:center'></div><p id='fb' class='mut'></p>");gs9("Слово "+(i+1)+" / "+n);
   function draw(){var s="";for(var k=0;k<w.length;k++){var c=w.charAt(k);s+=(got[c]||done)?c:"_";s+=" "}document.getElementById("sl").textContent=s;document.getElementById("fb").textContent="Помилок: "+bad+" з 5"}
-  function end(win){done=true;if(win)sc++;draw();document.getElementById("fb").textContent=win?"Вірно!":"Правильно: "+w;nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)})}
-  AB.split("").forEach(function(c){var b=document.createElement("button");b.textContent=c;b.style.cssText="width:42px;padding:6px 0;margin:0;text-align:center";b.onclick=function(){if(done||b.disabled)return;b.disabled=true;if(w.indexOf(c)>=0){got[c]=1;b.className="ok";var all=true;for(var k=0;k<w.length;k++)if(!got[w.charAt(k)])all=false;draw();if(all)end(true)}else{bad++;b.className="bad";draw();if(bad>=5)end(false)}};document.getElementById("kb").appendChild(b)});draw()}
+  function end(win){done=true;if(win)sc++;draw();document.getElementById("fb").textContent=win?"Вірно! "+orig:"Правильно: "+orig;nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)})}
+  KB.split("").forEach(function(c){var b=document.createElement("button");b.textContent=c;b.style.cssText="width:42px;padding:6px 0;margin:0;text-align:center";b.onclick=function(){if(done||b.disabled)return;b.disabled=true;if(w.indexOf(c)>=0){got[c]=1;b.className="ok";var all=true;for(var k=0;k<w.length;k++)if(!got[w.charAt(k)])all=false;draw();if(all)end(true)}else{bad++;b.className="bad";draw();if(bad>=5)end(false)}};document.getElementById("kb").appendChild(b)});draw()}
  show()};
 GM.quest=function(g){var sc=0,i=0,sn=shuffle(g.items),n=sn.length;
  function show(){var s=sn[i],done=false;fr9(g.title,g.hint||"Що ти зробиш?","<div class='fun'><b>"+s[0]+"</b></div><div id='o'></div><p id='fb' class='mut'></p>");gs9((i+1)+" / "+n);
@@ -12333,7 +12333,7 @@ LES[714].g.push({type:"race",title:"Гонка з пітстопом: змінн
 ]});
 })();
 
-/* ===== 7 клас · уроки 16–18: «Автотурель» (if/else), «Лабораторія слаймів» (гіпотези, експерименти), «Гільдія рангів» (elif) ===== */
+/* ===== 7 клас · уроки 16–18: «Автотурель» (if/else), «Лабораторія слаймів» (гіпотези, експерименти), «Лут-сортувальник» (elif) ===== */
 (function(){
 var A=window.A7,O=A.O,DEFS=A.DEFS,esc=A.esc,heroS=A.heroS,cloud=A.cloud,spark=A.spark,bar=A.bar,bub=A.bub;
 function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
@@ -12484,107 +12484,47 @@ GM.lab7=function(g){var R=g.rounds,i=0,sc=0,n=R.length;
    lose(found?"У журналі є ⚠ – один контрприклад спростовує гіпотезу, хоч скільки вдалих прикладів поруч.":"Вдалі приклади ще нічого не доводять. Є значення, де гіпотеза помиляється – перевір межу умови.")};
   hd();chips()}
  show()};
-/* ---------- УРОК 18 · Гільдія рангів ---------- */
-var LG={"новачок":["🌱","mint","#7ee787"],"бронза":["🥉","brz","#ff8f1f"],"срібло":["🥈","silv","#cfd6df"],"золото":["🥇","gold","#ffd84a"]};
-function cards(names,counts,tgt,hi){var n=names.length,w=Math.floor((344-(n-1)*8)/n),s="";names.forEach(function(nm,k){var x=8+k*(w+8),y=hi===k?10:16,e=LG[nm];
- s+="<g transform='translate("+x+","+y+")' filter='url(#sh)'><rect width='"+w+"' height='104' rx='14' fill='url(#"+e[1]+")' stroke='#fff' stroke-width='3.5'/><rect x='5' y='5' width='"+(w-10)+"' height='94' rx='10' fill='none' stroke='#fff' stroke-opacity='.55' stroke-width='1.5'/><circle cx='"+w/2+"' cy='30' r='19' fill='#fff' fill-opacity='.45'/><text x='"+w/2+"' y='39' text-anchor='middle' font-size='26'>"+e[0]+"</text><text x='"+w/2+"' y='66' text-anchor='middle' font-size='"+(n>3?12:14)+"' font-weight='900' fill='"+O+"'>"+nm+"</text><rect x='"+(w/2-27)+"' y='75' width='54' height='20' rx='10' fill='#fff' opacity='.8'/><text x='"+w/2+"' y='90' text-anchor='middle' font-size='12' font-weight='900' fill='"+O+"'>"+counts[k]+(tgt?" / "+tgt[k]:"")+"</text></g>"});
- return s}
-function gbg(){return "<rect width='360' height='200' fill='url(#night)'/>"+stars(34,5)+"<ellipse cx='180' cy='196' rx='190' ry='36' fill='#7a5cff' opacity='.35' filter='url(#bl)'/>"}
-function rankOf(L,env,names){var r=runProg(L,env);return r.err?{err:r}:{k:names.indexOf(r.out[0]),steps:r.steps,r:r.out[0]}}
-GM.guild=function(g){var R=g.rounds,i=0,sc=0,n=R.length;
- function show(){var rd=R[i],lives=3,busy=false,fin=false;
-  function hd(){gs9((i+1)+" / "+n+" · "+hearts(lives)+" · ✅ "+sc)}
-  var names=rd.names;
-  fr9(g.title,g.hint||"Ланцюг if / elif / else розподіляє гравців по лігах. Умови перевіряються згори вниз: спрацьовує перша істинна.","<div class='f7s'><svg id='gus' viewBox='0 0 360 200' xmlns='http://www.w3.org/2000/svg'>"+DEFS+"<g id='gub'></g><g id='guf'></g></svg></div><div class='f7q'>"+rd.task+"</div><div class='f7c' id='guc'></div><div class='f7t' id='gut'></div><div id='gur'></div><div id='gum'></div>");
-  var svg=$i("gus"),sb=$i("gub"),sf=$i("guf"),cd=$i("guc"),tp=$i("gut"),rn=$i("gur"),tm=$i("gum");
-  function sl(ms){return sleep(ms).then(function(){if(!document.body.contains(svg))throw 0})}
-  function msg(t,k){tm.innerHTML="<div class='f7m "+k+"'>"+t+"</div>"}
-  function done(note,okk){fin=true;var rv=lives<=0;if(okk&&!rv)sc++;hd();rn.innerHTML="";msg((rv?"👀 ":"🎉 ")+note+"<br><b>"+rd.why+"</b>","green");nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)})}
-  function lose(t,extra){lives--;hd();if(lives<=0){fin=true;rn.innerHTML="";msg("❌ "+t+"<br>Життя закінчились. "+(extra||""),"red");nxt9(i<n-1?"Далі →":"Результат",function(){i++;i<n?show():fin9(sc,n)});return true}msg("❌ "+t,"red");return false}
-  hd();
-  if(rd.kind=="order")order();else if(rd.kind=="thr")thr();else if(rd.kind=="duel")duel();else bug();
-  /* --- 1: порядок гілок --- */
-  function order(){var placed=[],pool=rd.blocks.map(function(b,k){return k}),ct=names.map(function(){return 0});
-   sb.innerHTML=gbg();
-   function flat(){var L=[],M=[];placed.forEach(function(k,p){var b=rd.blocks[k];L.push((p?"elif ":"if ")+b.c+":");M.push(p);L.push("    print('"+b.r+"')");M.push(p)});if(placed.length==rd.blocks.length){L.push("else:");M.push(-1);L.push("    print('"+rd.els+"')");M.push(-1)}return{L:L,M:M}}
-   function draw(hl,chip){var f=flat();cd.innerHTML=f.L.length?f.L.map(function(l,k){return "<div class='"+(hl&&hl.indexOf(k)>=0?"now":"")+"' data-p='"+f.M[k]+"'><s>"+(k+1)+"</s>"+esc(l)+"</div>"}).join(""):"<div class='em2'>Торкайся блоків нижче – склади ланцюг. Торкнись рядка, щоб прибрати блок.</div>";
-    tp.innerHTML=pool.map(function(k){var b=rd.blocks[k];return "<button class='f7b' data-k='"+k+"'>"+esc(b.c)+" → "+b.r+"</button>"}).join("");
-    sf.innerHTML=cards(names,ct,null,chip&&chip.k)+(chip?chip.h:"");
-    rn.innerHTML=!busy&&!fin&&!pool.length?"<div class='f7go' id='gugo'>▶ ЗАПУСТИТИ</div>":"";var b=$i("gugo");if(b)b.onclick=run}
-   tp.onclick=function(e){var b=e.target.closest(".f7b");if(!b||busy||fin)return;var k=+b.getAttribute("data-k");pool=pool.filter(function(x){return x!=k});placed.push(k);draw()};
-   cd.onclick=function(e){var d=e.target.closest("[data-p]");if(!d||busy||fin)return;var p=+d.getAttribute("data-p");if(p<0)return;pool.push(placed.splice(p,1)[0]);draw()};
-   draw();
-   async function run(){busy=true;ct=names.map(function(){return 0});var L=flat().L,bad=[];msg("","");draw();
-    try{for(var k=0;k<rd.players.length;k++){var c=rd.players[k],r=rankOf(L,{cups:c},names),want=rd.truth(c);
-     if(r.err){busy=false;draw();msg("⛔ "+esc(r.err.err),"red");return}
-     var chip=function(x,y,t){return "<g style='transition:transform .45s' transform='translate("+x+","+y+")' filter='url(#sh)'><rect x='-30' y='-11' width='60' height='22' rx='10' fill='#fff' stroke='"+O+"' stroke-width='2.5'/><text y='5' text-anchor='middle' font-size='12' font-weight='900' fill='"+O+"'>"+t+"</text></g>"};
-     var cw=Math.floor((344-(names.length-1)*8)/names.length),cx=function(j){return 8+j*(cw+8)+cw/2};
-     sf.innerHTML=cards(names,ct)+chip(180,148,"cups="+c);
-     for(var q=0;q<r.steps.length;q++){draw2(r.steps[q]);await sl(230)}
-     sf.innerHTML=cards(names,ct,null,r.k)+chip(cx(r.k),60,"cups="+c);await sl(450);ct[r.k]++;if(r.k!=want)bad.push([c,r.r,names[want]]);
-     sf.innerHTML=cards(names,ct,null,r.k);await sl(120)}
-    }catch(x){if(x===0)return;throw x}
-    busy=false;cd.querySelectorAll(".now").forEach(function(d){d.className=""});
-    if(!bad.length)return done("Усіх гравців розподілено правильно: умови стоять від найвищої до найнижчої.",true);
-    lose("гравець з cups="+bad[0][0]+" потрапив у «"+bad[0][1]+"», а має бути «"+bad[0][2]+"». Якщо перша істинна гілка – менша межа, вона «перехоплює» гравців.","Умови йдуть від найвищої межі до найнижчої.");
-    if(!fin){draw()}
-    function draw2(ln){var f=flat();cd.querySelectorAll("div").forEach(function(d,k){d.className=k==ln?"now":""})}}}
-  /* --- 2: межі --- */
-  function thr(){var th=rd.start.slice(),tg=rd.target;sb.innerHTML=gbg();
-   function counts(){var ct=[0,0,0],cl=[],er=null;rd.cups.forEach(function(c){var r=rankOf(lines(),{cups:c},names);if(r.err){er=r;cl.push(-1);return}ct[r.k]++;cl.push(r.k)});return{ct:ct,cl:cl,er:er}}
-   function lines(){return["if cups >= "+th[1]+":","    print('золото')","elif cups >= "+th[0]+":","    print('срібло')","else:","    print('бронза')"]}
-   function draw(sel){var c=counts();sf.innerHTML=cards(names,c.ct,tg)+rd.cups.map(function(v,k){var x=18+k*16.5,col=LG[names[c.cl[k]]||"бронза"][2];return "<g data-i='"+k+"' style='cursor:pointer'><circle cx='"+x+"' cy='156' r='7.5' fill='"+col+"' stroke='#fff' stroke-width='1.5'/>"+(sel===k?otx(Math.min(330,Math.max(30,x)),140,"cups = "+v,11,"#ffe94a"):"")+"</g>"}).join("");
-    var L=lines();cd.innerHTML="<div><s>1</s>if cups &gt;= <b class='st' data-t='1' data-d='-50'>−</b><em>"+th[1]+"</em><b class='st' data-t='1' data-d='50'>+</b>:</div><div><s>2</s>    print('золото')</div><div><s>3</s>elif cups &gt;= <b class='st' data-t='0' data-d='-50'>−</b><em>"+th[0]+"</em><b class='st' data-t='0' data-d='50'>+</b>:</div><div><s>4</s>    print('срібло')</div><div><s>5</s>else:</div><div><s>6</s>    print('бронза')</div>";
-    tp.innerHTML="<div class='mut2'>Торкнись кружечка – побачиш кубки гравця. Мета: розподіл "+tg.join(" · ")+" (бронза · срібло · золото)</div>";
-    rn.innerHTML=!fin?"<div class='f7go' id='gugo'>✔ ПЕРЕВІРИТИ</div>":"";$i("gugo")&&($i("gugo").onclick=check)}
-   cd.onclick=function(e){var b=e.target.closest(".st");if(!b||fin)return;var t=+b.getAttribute("data-t");th[t]=Math.max(0,Math.min(1000,th[t]+(+b.getAttribute("data-d"))));draw()};
-   svg.onclick=function(e){var gg=e.target.closest("[data-i]");if(gg&&!fin)draw(+gg.getAttribute("data-i"))};
-   function check(){if(fin)return;var c=counts().ct,nm=["бронзи","срібла","золота"],d=[];for(var k=0;k<3;k++)if(c[k]!=tg[k])d.push(nm[k]+(c[k]>tg[k]?" забагато":" замало")+" ("+c[k]+" замість "+tg[k]+")");
-    if(!d.length)return done("Розподіл "+tg.join(" · ")+" – чесний!",true);
-    if(lose(d.join("; ")+". Підкрути межі.","Правильні межі: золото від "+rd.ans[1]+", срібло від "+rd.ans[0]+".")){th=[rd.ans[0],rd.ans[1]];draw()}}
-   draw();hd()}
-  /* --- 3: дуель --- */
-  function duel(){var sc_=SC({tpl:rd.tpl,slots:rd.slots,code:cd,tray:tp,onchange:upd});sb.innerHTML=gbg()+"<rect y='150' width='360' height='50' fill='url(#floor)'/>";
-   function chk(L){return rd.duels.every(function(d){var r=runProg(L,d.env);return !r.err&&r.out[0]==d.want})}
-   function arena(d,res,win){sf.innerHTML="<g transform='translate(76,112) scale(1.5)'>"+heroS()+"</g>"+slime(284,128,"sR",1.9)+(d?otx(76,52,"cups = "+d.env.a,14,"#ffe94a")+otx(284,52,"cups = "+d.env.b,14,"#ffe94a")+otx(180,100,"VS",18):"")+(res?"<g filter='url(#sh)'><rect x='100' y='158' width='160' height='28' rx='12' fill='#fff' stroke='"+O+"' stroke-width='3'/><text x='180' y='177' text-anchor='middle' font-size='14' font-weight='900' fill='"+O+"'>"+esc(res)+"</text></g>":"")+(win==1?otx(76,28,"👑",22):win==2?otx(284,28,"👑",22):"")}
-   arena(null);
-   function upd(){rn.innerHTML=!fin&&!busy&&sc_.full()?"<div class='f7go' id='gugo'>▶ ЗАПУСТИТИ</div>":"";var b=$i("gugo");if(b)b.onclick=run}
-   sc_.draw();upd();
-   async function run(){if(busy||fin)return;busy=true;sc_.lock=true;sc_.bad=-1;sc_.draw();upd();msg("","");var L=sc_.lines(),bad=[],err=null,reveal=lives<=0;
-    try{for(var k=0;k<rd.duels.length;k++){var d=rd.duels[k],r=runProg(L,d.env);
-     if(r.err){err=r;sc_.bad=r.ln;sc_.hl=[];sc_.draw();arena(null,"Помилка в коді!");break}
-     arena(d);for(var q=0;q<r.steps.length;q++){sc_.hl=[r.steps[q]];sc_.draw();await sl(280)}
-     var got=r.out[0],ok=got==d.want,w=got.indexOf("перший")>=0?1:got.indexOf("другий")>=0?2:0;arena(d,got,w);if(!ok)bad.push([d,got]);await sl(650)}
-     sc_.hl=[];sc_.draw();}catch(x){if(x===0)return;throw x}
-    busy=false;
-    if(err){lives--;hd();msg("❌ "+esc(err.err),"red");afterF();return}
-    if(!bad.length){sc_.lock=true;return done(reveal?"Ось правильна програма.":"Усі дуелі розв’язано правильно.",!reveal)}
-    lives--;hd();msg("❌ для a = "+bad[0][0].env.a+", b = "+bad[0][0].env.b+" програма вивела «"+esc(bad[0][1])+"», а треба «"+bad[0][0].want+"».","red");afterF()}
-   function afterF(){if(fin)return;if(lives<=0){sc_.sel=sc_.solve(chk)[0];sc_.lock=true;sc_.draw();fin=false;setTimeout(run,900);return}sc_.lock=false;sc_.draw();upd()}
-   }
-  /* --- 4: пошук помилок --- */
-  function bug(){var mk={};sb.innerHTML=gbg();
-   var chipY=0;function scene(k,ct){sf.innerHTML=cards(names,ct||names.map(function(){return 0}),null,k)+"<g filter='url(#sh)' transform='translate(180,"+(k==null?150:150)+")'><rect x='-46' y='-11' width='92' height='22' rx='10' fill='#fff' stroke='"+O+"' stroke-width='2.5'/><text y='5' text-anchor='middle' font-size='12' font-weight='900' fill='"+O+"'>cups = "+rd.cups+"</text></g>"}
-   scene(null);
-   function draw(res){cd.innerHTML=rd.lines.map(function(l,k){var c=(mk[k]?"mk":"")+(res&&res[k]?" "+res[k]:"");return "<div class='"+c+"' data-l='"+k+"'><s>"+(k+1)+"</s>"+esc(l)+"</div>"}).join("");
-    tp.innerHTML=fin?"":"<div class='mut2'>Торкайся рядків, у яких, на твою думку, є помилка ("+rd.bugs.length+" шт.).</div>";
-    rn.innerHTML=!fin&&!busy?"<div class='f7go' id='gugo'>🔍 ПЕРЕВІРИТИ</div>":"";$i("gugo")&&($i("gugo").onclick=check)}
-   cd.onclick=function(e){var d=e.target.closest("[data-l]");if(!d||fin||busy)return;var k=+d.getAttribute("data-l");mk[k]=!mk[k];draw()};
-   draw();
-   async function check(){var miss=rd.bugs.filter(function(b){return !mk[b]}),fa=Object.keys(mk).filter(function(k){return mk[k]&&rd.bugs.indexOf(+k)<0}).map(Number);
-    if(!miss.length&&!fa.length){fin=true;busy=true;var res={};rd.bugs.forEach(function(b){res[b]="ok"});draw(res);
-     msg("🔎 Усі помилки знайдено:<br>"+rd.bugs.map(function(b){return "<b>рядок "+(b+1)+"</b> – "+rd.expl[b]}).join("<br>"),"green");
-     await sl(1100).catch(function(){});
-     if(!document.body.contains(svg))return;
-     var L=rd.lines.slice();rd.bugs.forEach(function(b){L[b]=rd.fixed[b]});cd.innerHTML=L.map(function(l,k){return "<div class='"+(rd.bugs.indexOf(k)>=0?"ok":"")+"'><s>"+(k+1)+"</s>"+esc(l)+"</div>"}).join("");
-     var r=rankOf(L,{cups:rd.cups},names);
-     try{if(!r.err){for(var q=0;q<r.steps.length;q++){cd.querySelectorAll("div").forEach(function(d,k){d.classList.toggle("now",k==r.steps[q])});await sl(260)}scene(r.k);await sl(300)}}catch(x){if(x===0)return}
-     busy=false;return done("Після виправлень програма вивела «"+(r.r||"?")+"» – гравець із cups = "+rd.cups+" потрапляє в цю лігу.",true)}
-    var res2={};fa.forEach(function(k){res2[k]="fa"});
-    var t=(miss.length?"пропущено помилок: "+miss.length:"")+(miss.length&&fa.length?"; ":"")+(fa.length?"зайві позначки: "+fa.length+" (там усе правильно)":"");
-    if(lose(t+".","Помилки в рядках: "+rd.bugs.map(function(b){return b+1}).join(", ")+".")){mk={};rd.bugs.forEach(function(b){mk[b]=true});draw()}else{draw(res2)}}
-   }
- }
+/* ---------- УРОК 18 · Лут-сортувальник (elif у реальному часі) ---------- */
+var LT={"легендарка":["#ffd84a","#ff9a1f","gold"],"епік":["#c77dff","#7a2cff","pnk"],"рідкісне":["#58c4ff","#1f6fff","sky"],"звичайне":["#d9dee6","#8a94a3","silv"]};
+var LTI={"меч":"⚔️","щит":"🛡️","лук":"🏹"};
+function lootSvg(p,ty,y,col){var c=LT[col]||LT["звичайне"];
+ return "<g transform='translate(180,"+y+")'><circle r='34' fill='"+c[0]+"' opacity='.25' filter='url(#bl)'/><g transform='rotate(-8)'><rect x='-30' y='-26' width='60' height='50' rx='9' fill='#3a2a9c' stroke='"+O+"' stroke-width='3.5'/><rect x='-30' y='-26' width='60' height='16' rx='8' fill='#5a46d6' stroke='"+O+"' stroke-width='3.5'/><rect x='-6' y='-14' width='12' height='12' rx='3' fill='#ffd23f' stroke='"+O+"' stroke-width='2.5'/></g>"
+  +(ty?"<text x='-40' y='-22' font-size='22'>"+LTI[ty]+"</text>":"")
+  +"<rect x='-26' y='28' width='52' height='22' rx='11' fill='#fff' stroke='"+O+"' stroke-width='3'/><text y='44' text-anchor='middle' font-size='15' font-weight='900' fill='"+O+"' font-family='system-ui'>p="+p+"</text></g>"}
+GM.loot7=function(g){var R=g.rounds,ri=0,sc=0,tot=0;R.forEach(function(r){tot+=r.items.length});
+ function show(){var rd=R[ri],k=0,combo=0,best=0,raf=0,t0=0,busy=true,y=-40,cur=null;
+  var bins=rd.bins;
+  fr9(g.title,rd.hint,"<div class='f7q'>"+rd.task+"</div><div class='f7c lt7c' id='ltc' style='font-size:12px!important;line-height:1.5!important;padding:5px 8px!important'></div><div class='f7s lt7s'><svg id='lts' viewBox='0 0 360 140' xmlns='http://www.w3.org/2000/svg'>"+DEFS+"<rect width='360' height='140' fill='url(#night)'/>"+stars(30,7)
+   +"<rect x='0' y='126' width='360' height='14' fill='#2a1d78'/><path d='M0 126h360' stroke='"+O+"' stroke-width='4'/><g id='ltg'></g><g id='ltfx'></g></svg><div class='lt7cb' id='ltcb'></div></div>"
+   +"<div class='lt7b' id='ltb' style='display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0'>"+bins.map(function(b,j){var c=LT[b];return "<button data-j='"+j+"' style='background:linear-gradient("+c[0]+","+c[1]+")!important;width:auto!important;margin:0!important;padding:9px 4px!important;color:#fff!important;font:900 14px system-ui!important;border:3px solid "+O+"!important;border-radius:14px!important;min-height:0!important'><i style='font-style:normal;margin-right:5px'>"+["🟡","🟣","🔵","⚪"][["легендарка","епік","рідкісне","звичайне"].indexOf(b)]+"</i>"+b+"</button>"}).join("")+"</div><div id='ltm'></div><div class='f7go' id='ltgo'>▶ Запустити конвеєр</div>");
+  var svg=$i("lts"),gg=$i("ltg"),fx=$i("ltfx"),cd=$i("ltc"),bt=$i("ltb"),tm=$i("ltm"),cb=$i("ltcb"),go=$i("ltgo");
+  function hd(){gs9("Раунд "+(ri+1)+"/"+R.length+" · 📦 "+Math.min(k+1,rd.items.length)+"/"+rd.items.length+" · ✅ "+sc)}
+  function code(now,hit){cd.innerHTML=rd.code.map(function(l,j){var cl=now&&now.indexOf(j)>=0?(j==hit||j==hit+1?"ok":"now"):"";return "<div class='"+cl+"'><s>"+(j+1)+"</s>"+esc(l)+"</div>"}).join("")}
+  function msg(t,c){tm.innerHTML=t?"<div class='f7m "+c+"'>"+t+"</div>":""}
+  function alive(){return document.body.contains(svg)}
+  function trace(env){var r=F7.runProg(rd.code,env);return r}
+  function next(){if(!alive())return;if(k>=rd.items.length)return endR();
+   cur=rd.items[k];var env={p:cur.p};if(cur.t)env.type=cur.t;cur.r=trace(env);hd();code();msg("");y=-40;busy=false;t0=0;
+   var T=rd.speed*(1-Math.min(.35,k*.04));
+   function fr(ts){if(!alive())return;if(busy)return;if(!t0)t0=ts;y=-40+(ts-t0)/T*130;
+    gg.innerHTML=lootSvg(cur.p,cur.t,y,null);if(y>=92){pick(-1);return}raf=requestAnimationFrame(fr)}
+   raf=requestAnimationFrame(fr)}
+  function pick(j){if(busy||!cur)return;busy=true;cancelAnimationFrame(raf);var want=cur.r.out[0],ok=j>=0&&bins[j]==want;
+   var st=cur.r.steps,hit=st[st.length-2];code(st,hit);
+   var path=[];for(var q=0;q<st.length;q+=1){var l=rd.code[st[q]];if(/^\s/.test(l))continue;var m=l.match(/^(?:if|elif)\s+(.*):\s*$/);if(m)path.push(m[1]+(st.indexOf(st[q]+1)>=0?" → <b>так</b>":" → ні"));else if(/^else/.test(l))path.push("else")}
+   gg.innerHTML=lootSvg(cur.p,cur.t,Math.max(y,40),want);
+   if(ok){sc++;combo++;best=Math.max(best,combo);cb.innerHTML=combo>1?"<b>x"+combo+" КОМБО!</b>":"";cb.className="lt7cb on";setTimeout(function(){if(alive())cb.className="lt7cb"},500);
+    fx.innerHTML="<text x='300' y='40' text-anchor='middle' font-size='22' font-weight='900' fill='#7ee787' stroke='"+O+"' stroke-width='2'>+1</text>";
+    msg("✅ «"+want+"» · "+path.join(" · "),"green");try{if(window.navigator.vibrate)navigator.vibrate(15)}catch(e){}}
+   else{combo=0;cb.innerHTML="";fx.innerHTML="<text x='300' y='40' text-anchor='middle' font-size='22' font-weight='900' fill='#ff5a7a' stroke='"+O+"' stroke-width='2'>"+(j<0?"ПРОҐАВ!":"НЕ ТУДИ!")+"</text>";
+    msg("❌ Код відправить у «<b>"+want+"</b>»: "+path.join(" · "),"red")}
+   bt.querySelectorAll("button").forEach(function(b,q){var o=bins[q]==want?"#7ee787":(q==j?"#ff5a7a":"");b.style.setProperty("outline",o?"4px solid "+o:"none","important");b.style.setProperty("outline-offset","2px");b.style.setProperty("opacity",o||q==j?"1":".45","important")});
+   k++;setTimeout(function(){if(!alive())return;fx.innerHTML="";bt.querySelectorAll("button").forEach(function(b){b.style.setProperty("outline","none","important");b.style.setProperty("opacity","1","important")});next()},ok?1300:2600)}
+  function endR(){busy=true;gg.innerHTML="";code();msg("🏁 Раунд пройдено! Найкраще комбо: x"+best+"<br><b>"+rd.why+"</b>","green");
+   nxt9(ri<R.length-1?"Наступний раунд →":"Результат",function(){ri++;ri<R.length?show():fin9(sc,tot)})}
+  bt.onclick=function(e){var b=e.target.closest("button");if(b)pick(+b.getAttribute("data-j"))};
+  go.onclick=function(){go.style.display="none";try{cd.scrollIntoView({behavior:"smooth",block:"start"})}catch(e){}next()};
+  code();hd()}
  show()};
 var st=document.createElement("style");st.textContent=".f7s{margin:8px 0}.f7s svg{display:block;width:100%;border:4px solid "+O+";border-radius:20px;box-shadow:0 5px 0 "+O+"}.f7q{color:#fff;text-align:center;font-weight:800;margin:10px 4px 6px;line-height:1.3}"
 +".f7c{margin:6px 0;background:#0d1117;border-radius:12px;padding:8px 10px;color:#e6edf3;font:13px/1.8 ui-monospace,Consolas,monospace;box-shadow:inset 0 0 0 2px "+O+";white-space:pre-wrap;text-align:left}.f7c div{border-left:4px solid transparent;margin:0 -10px;padding:0 10px;min-height:1.8em}.f7c s{color:#6e7681;text-decoration:none;display:inline-block;width:1.6em}.f7c .now{background:#1f3a5f;border-left-color:#58a6ff}.f7c .er{background:#44181a;border-left-color:#f85149;color:#ff8a9a}.f7c .ok{color:#7ee787}.f7c .mk{background:#3a3210;border-left-color:#ffd84a}.f7c .fa{background:#44181a;border-left-color:#f85149}.f7c [data-l],.f7c [data-p]{cursor:pointer}.f7c .em2,.mut2{color:#8b949e;font:12.5px/1.4 system-ui,sans-serif;white-space:normal}.mut2{color:"+O+";text-align:center;font-weight:700;margin:2px 4px}"
@@ -12593,10 +12533,12 @@ var st=document.createElement("style");st.textContent=".f7s{margin:8px 0}.f7s sv
 +".f7t{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}.f7t .f7b,.f7b{width:auto;display:inline-block;border:3px solid "+O+";background:#fff;color:"+O+";border-radius:12px;padding:7px 11px;font:800 13px ui-monospace,Consolas,monospace;box-shadow:0 3px 0 "+O+";cursor:pointer}.f7b.on{background:#d6e9ff}.f7b:disabled{opacity:.5}.f7b.v1{background:#d9ffd2;font-family:inherit}.f7b.v2{background:#ffd9df;font-family:inherit}.f7t .f7b.fx{width:100%;display:block;text-align:left;padding:6px 10px}.f7b.fx pre{margin:0;font:12px/1.5 ui-monospace,Consolas,monospace}.f7b.ok{background:#d9ffd2;border-color:#2fb52a}.f7b.bad{background:#ffd9df;border-color:#e0314f}"
 +".f7go{text-align:center;padding:12px;border-radius:14px;background:linear-gradient(#8dff5a,#1fb524);color:#fff;font-size:18px;font-weight:900;border:3px solid "+O+";box-shadow:0 4px 0 "+O+";text-shadow:0 2px 0 #0003;cursor:pointer;margin:8px 0}"
 +".f7m{margin:8px 0;padding:9px 11px;border-radius:12px;border:3px solid "+O+";font-size:13px;line-height:1.4;color:"+O+";background:#fff}.f7m.red{background:#ffe3e8;border-color:#e0314f}.f7m.green{background:#e4ffe0;border-color:#2fb52a}"
-+".f7log{display:flex;flex-direction:column;gap:5px;margin:6px 0}.f7log div{background:#e4ffe0;border:3px solid #2fb52a;border-radius:10px;padding:4px 9px;color:"+O+";font-size:13px;line-height:1.3}.f7log div.bd{background:#fff3c8;border-color:#f0a800}.f7log small{font-weight:700;opacity:.8}";
++".f7log{display:flex;flex-direction:column;gap:5px;margin:6px 0}.f7log div{background:#e4ffe0;border:3px solid #2fb52a;border-radius:10px;padding:4px 9px;color:"+O+";font-size:13px;line-height:1.3}.f7log div.bd{background:#fff3c8;border-color:#f0a800}.f7log small{font-weight:700;opacity:.8}";+".lt7c div{padding:0 4px;border-radius:6px}.lt7c div.now{background:#1f3b63}.lt7c div.ok{background:#1f6f3a;color:#fff}.lt7c s{color:#6e7681;text-decoration:none;margin-right:8px}"
++".lt7s{position:relative}.lt7cb{position:absolute;right:12px;top:10px;color:#ffd23f;font:900 italic 18px system-ui;text-shadow:0 2px 0 #000;transition:transform .2s}.lt7cb.on{transform:scale(1.35)}"
++".lt7c{font-size:12px!important;line-height:1.55!important;padding:5px 8px!important}.lt7b{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}html body .lt7b button{width:auto!important;min-height:0!important;margin:0!important;border:3px solid "+O+"!important;border-radius:14px!important;padding:9px 4px!important;color:#fff!important;font:900 14px system-ui!important;text-shadow:0 2px 0 rgba(0,0,0,.45)!important;box-shadow:0 4px 0 "+O+"!important;cursor:pointer;text-transform:uppercase;transition:transform .1s}.lt7b button i{font-style:normal;margin-right:4px}.lt7b button:active{transform:translateY(3px);box-shadow:0 1px 0 "+O+"}.lt7b button.lt-ok{outline:4px solid #7ee787;outline-offset:2px}.lt7b button.lt-bad{outline:4px solid #ff5a7a;outline-offset:2px;opacity:.7}"
 document.head.appendChild(st);
 window.F7={runProg:runProg};
-if(typeof GI7!="undefined"){GI7.turret=["🎯","Автотурель"];GI7.lab7=["🧪","Лабораторія слаймів"];GI7.guild=["🏅","Гільдія рангів"]}
+if(typeof GI7!="undefined"){GI7.turret=["🎯","Автотурель"];GI7.lab7=["🧪","Лабораторія слаймів"];GI7.loot7=["📦","Лут-сортувальник"]}
 /* дані */
 function F(k,o){if(typeof LES!="undefined"&&LES[k]&&LES[k].g)LES[k].g.push(o)}
 function foes(a,k){return a.map(function(x){var e={};e[k]=x[0];return{env:e,want:x[1]}})}
@@ -12626,21 +12568,7 @@ F(717,{type:"lab7",title:"Лабораторія слаймів",hint:"Гіпо�
   hyp:["if t > 10:","    print('рухається')","elif t > 30:","    print('тане')","else:","    print('спить')"],nat:["if t > 30:","    print('тане')","elif t > 10:","    print('рухається')","else:","    print('спить')"],look:{"тане":"melt","рухається":"jump","спить":"sleep"},
   fix:[["if t > 30:","    print('тане')","if t > 10:","    print('рухається')","else:","    print('спить')"],["if t > 30:","    print('тане')","elif t > 10:","    print('рухається')","else:","    print('спить')"],["if t > 30:","    print('тане')","else if t > 10:","    print('рухається')","else:","    print('спить')"]],
   why:"Умови перевіряються згори вниз, і спрацьовує перша істинна. Для t = 35 умова t > 10 істинна раніше – до t > 30 справа не доходить. Сильніша умова має стояти першою."}]});
-F(718,{type:"guild",title:"Гільдія рангів",hint:"Ланцюг if / elif / else розподіляє гравців по лігах. Склади його так, щоб розподіл був чесним.",rounds:[
- {kind:"order",names:["новачок","бронза","срібло","золото"],els:"новачок",task:"Від 500 кубків – золото, від 200 – срібло, від 100 – бронза, решта – новачки. Постав блоки в ланцюг у правильному порядку.",
-  blocks:[{c:"cups >= 100",r:"бронза"},{c:"cups >= 500",r:"золото"},{c:"cups >= 200",r:"срібло"}],players:[40,120,250,480,520,90,610,300],truth:function(c){return c>=500?3:c>=200?2:c>=100?1:0},
-  why:"Спрацьовує перша істинна гілка, тому умови ставлять від найвищої межі до найнижчої: інакше гравець із 610 кубками «застрягне» в нижчій лізі."},
- {kind:"thr",names:["бронза","срібло","золото"],task:"20 гравців мають розійтися за лігами як 9 · 7 · 4 (бронза · срібло · золото). Підбери межі в elif-ланцюгу.",cups:[20,45,80,95,120,140,155,170,190,210,250,290,330,380,430,470,520,610,700,880],target:[9,7,4],start:[100,300],ans:[200,500],
-  why:"Межі в ланцюгу визначають розподіл: змінюєш число – міняється, хто потрапляє у яку гілку. Так працює комп’ютерний експеримент."},
- {kind:"duel",names:[],task:"Дуель двох гравців: порівняй кубки a і b. Є три випадки – нічия, виграв перший, виграв другий. Склади правильний ланцюг.",tpl:["{f}","    print('нічия')","{h}","    print('виграв перший')","else:","    print('виграв другий')"],
-  slots:{f:["if a = b:","if a == b:","if a == b"],h:["else if a > b:","elif a > b","elif a < b:","elif a > b:"]},
-  duels:[{env:{a:5,b:5},want:"нічия"},{env:{a:7,b:3},want:"виграв перший"},{env:{a:2,b:9},want:"виграв другий"},{env:{a:4,b:4},want:"нічия"},{env:{a:8,b:1},want:"виграв перший"}],
-  why:"Три випадки потребують if, elif і else. Порівнюємо «==», після умови ставимо двокрапку, а замість «else if» пишемо elif."},
- {kind:"bug",names:["новачок","бронза","срібло","золото"],task:"У програмі гільдії сховалися типові помилки. Торкайся рядків із помилками й натисни «Перевірити».",cups:350,
-  lines:["cups = 350","if cups = 500:","    print('золото')","elif cups >= 200","    print('срібло')","else if cups >= 100:","    print('бронза')","else:","print('новачок')"],bugs:[1,3,5,8],
-  fixed:{1:"if cups >= 500:",3:"elif cups >= 200:",5:"elif cups >= 100:",8:"    print('новачок')"},
-  expl:{1:"«=» присвоює, а в умові потрібне порівняння «>=» або «==»",3:"після умови elif пропущено двокрапку",5:"в Python пишуть elif, а не «else if»",8:"тіло гілки else треба писати з відступом"},
-  why:"Типові помилки: двокрапка, «=» замість «==», відступ і «else if» замість elif. Перевіряй їх, коли код не запускається."}]});
+F(718,{type:"loot7",title:"Лут-сортувальник",rounds:[{"hint": "Лут падає на конвеєр. Подивись на ланцюг if / elif / else і тицяй скриню, куди його відправить код. Встигни, поки ящик не впав!", "task": "Сортуй лут за силою p. Код перевіряє умови згори вниз.", "code": ["if p >= 80:", "    print('легендарка')", "elif p >= 50:", "    print('епік')", "elif p >= 20:", "    print('рідкісне')", "else:", "    print('звичайне')"], "bins": ["легендарка", "епік", "рідкісне", "звичайне"], "speed": 4200, "items": [{"p": 85}, {"p": 30}, {"p": 55}, {"p": 12}, {"p": 80}, {"p": 49}, {"p": 20}, {"p": 97}], "why": "Спрацьовує перша істинна умова, решта вже не перевіряються. p = 80 і p = 20 – межі, вони входять у гілку завдяки >=."}, {"hint": "Новий розробник переплутав порядок умов. Сортуй так, як ВИКОНАЄ код, а не як «логічно»!", "task": "Обережно: баговий код! Комп’ютер робить те, що написано.", "code": ["if p >= 20:", "    print('рідкісне')", "elif p >= 50:", "    print('епік')", "elif p >= 80:", "    print('легендарка')", "else:", "    print('звичайне')"], "bins": ["легендарка", "епік", "рідкісне", "звичайне"], "speed": 4000, "items": [{"p": 90}, {"p": 10}, {"p": 60}, {"p": 25}, {"p": 100}, {"p": 19}, {"p": 50}, {"p": 5}], "why": "Якщо першою стоїть найслабша умова p >= 20, вона «з’їдає» всі сильні предмети – легендарка не випаде ніколи. Тому умови ставлять від найсуворішої до найм’якшої."}, {"hint": "Тепер у луту є тип: ⚔️ меч, 🛡️ щит, 🏹 лук. Умови стали складнішими – з and.", "task": "Дивись і на силу p, і на тип предмета.", "code": ["if p >= 70 and type == 'меч':", "    print('легендарка')", "elif type == 'щит':", "    print('епік')", "elif p >= 40:", "    print('рідкісне')", "else:", "    print('звичайне')"], "bins": ["легендарка", "епік", "рідкісне", "звичайне"], "speed": 4800, "items": [{"p": 90, "t": "меч"}, {"p": 90, "t": "щит"}, {"p": 50, "t": "меч"}, {"p": 30, "t": "лук"}, {"p": 75, "t": "лук"}, {"p": 10, "t": "щит"}, {"p": 70, "t": "меч"}, {"p": 39, "t": "меч"}], "why": "and вимагає, щоб обидві частини були істинні: сильний лук – не легендарка. А щит іде в епік за будь-якої сили, бо його гілка стоїть вище за p >= 40."}]});
 })();
 
 /* ===== 7 клас · великі ігри 19–21: «Суперздібності» (power), «Ательє вікон» (atelier), «Пульт подій» (pult) ===== */
@@ -16131,6 +16059,15 @@ obT.observe(document.getElementById("app")||document.body,{childList:true,subtre
 })();
 
 (function(){var st=document.createElement("style");st.textContent=".cmi{position:relative}.cmi .cpc{position:absolute;left:8px;top:8px;background:#ffd23f;color:#111;border:2.5px solid #111;border-radius:10px;padding:1px 7px;font:900 13px/1.3 system-ui;box-shadow:2px 2px 0 #111;z-index:3}";document.head.appendChild(st)})();
+/* 8 клас (комікс): ігри sf_* (Складальник тощо) мали світлий текст на світлому фоні */
+(function(){var st=document.createElement("style");st.textContent="body.g8 .card .nar{color:#1b1430!important;text-shadow:none!important;font-weight:700}\
+html body.g8 #app .card button.ob.ok{color:#0b4d33!important;background:#c9ffe9!important;border-color:#1fbf7a!important}html body.g8 #app .card button.ob.bad{color:#7a0f2b!important;background:#ffd6e3!important;border-color:#ff4d8d!important}\
+html body.g8 #app .card button.ob.ok *,html body.g8 #app .card button.ob.bad *{color:inherit!important}";document.head.appendChild(st)})();
+(function(){var st=document.createElement("style");st.textContent="html body.g8 #app .card button.ok:not(.ob){color:#0b4d33!important;background:#c9ffe9!important;border-color:#1fbf7a!important}html body.g8 #app .card button.bad:not(.ob){color:#7a0f2b!important;background:#ffd6e3!important;border-color:#ff4d8d!important}\
+html body.g8 #app .card button.ok *,html body.g8 #app .card button.bad *{color:inherit!important}\
+html body.g8 #app .card div[style*='198, 40, 40']{background:#c62828!important;color:#fff!important;filter:none!important}\
+html body.g8 #app .card .gate .gt1,html body.g8 #app .card .gate .gt2{color:#fff!important;text-shadow:0 1px 2px #000}\
+html body.g8 #app .card .sf .msg{color:#1b1430!important;text-shadow:none!important}";document.head.appendChild(st)})();
 
 /* ===== 8 клас: тематичні ігри (комікс), прив'язані до уроків ===== */
 (function(){
@@ -22605,7 +22542,7 @@ try{GI.ai_arena=["🏁","Тест-драйв моделей"]}catch(e){}
    Складні (x_*) – по колу; де своєї немає, раунди беруться з тесту уроку. */
 (function(){if(!window.LES)return;
 var TI={x_zone:["Буря знань","Обери скриню з правильною відповіддю й добіжи, поки не зімкнулася буря."],x_boss:["Дуель з босом","Відповідай швидко: за 5 секунд удар стає критичним."],x_drop:["Дроп-контроль","Лови скриню з правильною відповіддю, поки не впала на склад."],x_defense:["Захист бази","Обери захисника, який знищить загрозу."],x_build:["Вежа знань","Кожна правильна відповідь додає блок, помилка руйнує верхній."],x_safe:["Злам сейфа","Правильні відповіді відкривають цифри коду. Далі зламай сейф."],x_rhythm:["Ритм-різ","Лови правильну відповідь, коли вона на білій лінії."],x_maze:["Лабіринт розвідки","Іди лабіринтом і відчиняй двері правильними відповідями."]};
-var BIG={arena:1,race:1,cannon:1,turret:1,lab7:1,guild:1,power:1,atelier:1,pult:1,tower:1,cmap:1,finale:1,league:1,app7:1,aud7:1,transl:1};
+var BIG={arena:1,race:1,cannon:1,turret:1,lab7:1,loot7:1,power:1,atelier:1,pult:1,tower:1,cmap:1,finale:1,league:1,app7:1,aud7:1,transl:1};
 function isC(t){return /^x_/.test(t)}
 function isS(t){return /^(s_|n_)/.test(t)||/^(tf|seq|sort|pairs|memory|odd|speed|cloze)$/.test(t)}
 var END={11:1,24:1,28:1,35:1,44:1,52:1},RO=["x_zone","x_boss","x_drop","x_defense","x_build","x_safe","x_rhythm","x_maze"],ri=0,cx={},need=[];
