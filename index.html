@@ -22249,7 +22249,7 @@ var CSS="\
 .zbQ{background:linear-gradient(160deg,#3a2a9c,#2a1d78);border-radius:18px;padding:12px 14px;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.3)}\
 .zbQ small{font:900 11px system-ui;color:var(--y);letter-spacing:.05em;text-transform:uppercase}.zbQ b{display:block;font:800 15.5px/1.35 system-ui;margin-top:3px}\
 .zbT{height:8px;border-radius:4px;background:rgba(0,0,0,.35);margin-top:9px;overflow:hidden}.zbT i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ffd23f,#ff9a2a);transform-origin:left}\
-.zbT.go i{animation:zbTm 10s linear forwards}.zbT.off i{background:#6b5fc7;animation:none}\
+.zbT.go i{animation:zbTm 20s linear forwards}.zbT.off i{background:#6b5fc7;animation:none}\
 @keyframes zbTm{to{transform:scaleX(0)}}\
 .zbO{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}\
 .zb .zbO button{position:relative;width:auto!important;margin:0!important;min-height:58px;border:3px solid "+O+"!important;border-radius:14px!important;padding:16px 8px 8px!important;background:linear-gradient(#5a46d6,#3a2a9c)!important;color:#fff!important;font:800 13.5px/1.25 system-ui!important;box-shadow:0 4px 0 "+O+"!important;cursor:pointer;overflow:hidden;text-align:center;text-transform:none!important}\
@@ -22296,7 +22296,7 @@ GM.bot7=function(g){inj();var POOL=shf(g.rounds||[]).slice(0,8),P,qi,ok,tot,log,
   var art="<svg viewBox='0 0 360 168' xmlns='http://www.w3.org/2000/svg'>"+DEFS+"<g transform='translate(95,104) scale(.76)'>"+bot({legs:2,body:2,core:2,head:2,shield:2,gun:2},null,"zbIdle")+"</g><text x='182' y='88' text-anchor='middle' font-size='34' font-weight='900' font-style='italic' fill='#fff' stroke='"+O+"' stroke-width='6' paint-order='stroke'>VS</text><g transform='translate(270,104) scale(.76)'>"+glitch()+"</g></svg>";
   $i("zbR").innerHTML="<div class='zbHd'><small>СКЛАДНА ГРА · ФІНАЛ СЕЗОНУ</small><b>Збери бота</b>"+art+"</div>"
    +"<div class='zbIn'><h3>Глітч кидає виклик</h3><p>На арену вийшов зламаний бот <b style='color:#ff8aa0'>Глітч</b>. Твій бот поки лише каркас у майстерні. Збери його по деталях — і виходь на бій!</p>"
-   +"<div class='zbRu'><i>🔧</i><span><b>6 питань — 6 деталей.</b> Правильна відповідь ставить нову деталь. Відповів <b>за 10 секунд</b> — деталь <b>золота</b> і найсильніша.</span></div>"
+   +"<div class='zbRu'><i>🔧</i><span><b>6 питань — 6 деталей.</b> Правильна відповідь ставить нову деталь. Відповів <b>за 20 секунд</b> — деталь <b>золота</b> і найсильніша.</span></div>"
    +"<div class='zbRu'><i>🪛</i><span><b>Помилка — іржава деталь.</b> Бот усе одно збереться, але буде слабшим. Під сценою видно силу твого бота і Глітча.</span></div>"
    +"<div class='zbRu'><i>⚔️</i><span><b>Бій іде сам.</b> Двічі Глітч заряджає ультимейт — відповідай правильно, і твій бот <b>відіб'є й ударить у відповідь</b>.</span></div>"
    +"<button class='zbGo' id='zbGo'>В майстерню ▶</button></div>";
@@ -22318,9 +22318,9 @@ GM.bot7=function(g){inj();var POOL=shf(g.rounds||[]).slice(0,8),P,qi,ok,tot,log,
   var T=$i("zbT");void T.offsetWidth;T.className="zbT go";t0=Date.now();
   $i("zbO").onclick=function(e){var b=e.target.closest("button");if(!b||b.disabled)return;answer(Q,+b.getAttribute("data-i"))}}
  function mark(Q,j){[].forEach.call($i("zbO").querySelectorAll("button"),function(b,i){b.disabled=true;b.className=Q._o[i].c?"ok":(i==j?"bad":"dim")})}
- function answer(Q,j){var c=Q._o[j].c,fast=Date.now()-t0<=10000,s=SL[qi];mark(Q,j);$i("zbT").className="zbT off";tot++;
+ function answer(Q,j){var c=Q._o[j].c,fast=Date.now()-t0<=20000,s=SL[qi];mark(Q,j);$i("zbT").className="zbT off";tot++;
   var lv=c?(fast?3:2):1;if(c)ok++;else log.push(Q);P[s]=lv;draw(s);
-  if(c){sp(204,120,lv==3?"#ffd23f":"#7ef0ff",14);vib(20);$i("zbM").innerHTML=lv==3?"⚡ <b>Золота деталь!</b> Швидко й правильно.":"✅ Деталь встала! <span style='opacity:.8'>Швидше за 10 с — було б золото.</span>"}
+  if(c){sp(204,120,lv==3?"#ffd23f":"#7ef0ff",14);vib(20);$i("zbM").innerHTML=lv==3?"⚡ <b>Золота деталь!</b> Швидко й правильно.":"✅ Деталь встала! <span style='opacity:.8'>Швидше за 20 с — було б золото.</span>"}
   else{var bt=$i("zbB");bt.setAttribute("class","zbShk");sp(204,120,"#8f96a3",8);vib([30,40,30]);$i("zbM").innerHTML="🪛 Іржава деталь. Правильно: <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.85;font-weight:600'>"+esc(Q.w)+"</span>":"")}
   qi++;$i("zbNw").insertAdjacentHTML("beforeend","<button class='zbGo' id='zbNx'>"+(qi>=6?"Бот зібраний — на арену! ⚔️":"Наступна деталь ▶")+"</button>");
   $i("zbNx").onclick=function(){qi>=6?fight():ask()};if(c)setTimeout(function(){var n=$i("zbNx");if(n&&qi<6)n.click()},1700)}
@@ -22363,10 +22363,170 @@ GM.bot7=function(g){inj();var POOL=shf(g.rounds||[]).slice(0,8),P,qi,ok,tot,log,
  intro()};
 try{if(window.GI7)GI7.bot7=["🤖","Збери бота"];if(window.GI)GI.bot7=["🤖","Збери бота"]}catch(e){}
 
-/* поки що «Збери бота» — складна гра в кожному уроці 7 класу (крім кінців тем) */
+/* спільне для нових складних ігор 7 класу */
+window.X7={inj:inj,esc:esc,shf:shf,alive:alive,vib:vib,O:O};
+})();
+
+/* ===== 7 клас · складна гра №18 «Карткова дуель» =====
+   Декс заздалегідь показує свій хід. Ти граєш карту-відповідь: правильна → обираєш Удар / Блок / Лікування.
+   Серія правильних підсилює карти. Стартовий екран — логіка 9 класу. */
+(function(){if(!window.GM||!window.X7)return;
+var X=X7,O=X.O,esc=X.esc,shf=X.shf,alive=X.alive,vib=X.vib;
+function $i(x){return document.getElementById(x)}
+function B7(e){try{return window.BOT7?BOT7(e):""}catch(x){return ""}}
+
+/* ---------- Декс ---------- */
+function ace(mood){var S="stroke='"+O+"' stroke-width='3.5' stroke-linejoin='round'",ang=mood=="hit";
+ return "<g class='kdAce'>"
+  +"<g transform='rotate(-18 -40 20)'><rect x='-62' y='-4' width='30' height='42' rx='5' fill='#fff' "+S+"/><text x='-47' y='24' text-anchor='middle' font-size='16' font-weight='900' fill='#ff3f8e'>⚡</text></g>"
+  +"<g transform='rotate(14 40 20)'><rect x='32' y='-4' width='30' height='42' rx='5' fill='#fff' "+S+"/><text x='47' y='24' text-anchor='middle' font-size='16' font-weight='900' fill='#58c4ff'>🛡</text></g>"
+  +"<path d='M-34 70 Q-40 10 0 6 Q40 10 34 70z' fill='#2a1d78' "+S+"/><path d='M-14 10 L0 40 L14 10' fill='#ffd23f' "+S+"/><circle cx='0' cy='52' r='6' fill='#ff3f8e' "+S+"/>"
+  +"<path d='M-46 30 Q-50 14 -34 14' fill='none' "+S+"/><path d='M46 30 Q50 14 34 14' fill='none' "+S+"/>"
+  +"<g transform='rotate(-6)'><rect x='-30' y='-74' width='60' height='80' rx='10' fill='#fff' "+S+"/><path d='M-18 -64 l4 -6 l4 6z M14 -6 l4 6 l4 -6z' fill='#58c4ff'/><path d='M-2 -8 l-4 6 h4 l-2 6 l7 -8 h-4 l2 -4z' fill='#ffd23f' stroke='"+O+"' stroke-width='1.5'/>"
+  +"<rect x='-22' y='-46' width='44' height='22' rx='9' fill='"+O+"'/>"+(ang?"<path d='M-14 -38 l8 6 m14 -6 l-8 6' stroke='#ff5a7a' stroke-width='4' stroke-linecap='round'/>":"<rect class='kdEye' x='-13' y='-41' width='8' height='12' rx='4' fill='#ff5a7a'/><rect class='kdEye' x='5' y='-41' width='8' height='12' rx='4' fill='#ff5a7a'/>")
+  +"<path d='M-8 -14 q8 6 16 0' stroke='#ff3f8e' stroke-width='3' fill='none' stroke-linecap='round'/></g>"
+  +"<path d='M-26 -74 L-30 -92 L-16 -82 L-6 -98 L6 -82 L18 -96 L22 -76z' fill='#ffd23f' "+S+" transform='rotate(-6)'/>"
+  +"</g>"}
+
+/* ---------- сцена ---------- */
+var DEFS="<defs><radialGradient id='kdFelt' cx='.5' cy='.45' r='.7'><stop offset='0' stop-color='#4a34c8'/><stop offset='1' stop-color='#22166a'/></radialGradient><linearGradient id='kdBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#120838'/><stop offset='1' stop-color='#2a1478'/></linearGradient><radialGradient id='kdSp' cx='.5' cy='0' r='1'><stop offset='0' stop-color='#ffe9a8' stop-opacity='.5'/><stop offset='1' stop-color='#ffe9a8' stop-opacity='0'/></radialGradient></defs>";
+function table(){var s="<rect width='360' height='240' fill='url(#kdBg)'/>";
+ for(var i=0;i<14;i++)s+="<path d='M"+(12+i*26)+" "+(16+(i%3)*14)+" l6 -10 l6 10 l-6 10z' fill='#fff' opacity='.06'/>";
+ s+="<polygon points='130,0 230,0 300,240 60,240' fill='url(#kdSp)'/>";
+ s+="<ellipse cx='180' cy='188' rx='176' ry='70' fill='#0d0630'/><ellipse cx='180' cy='182' rx='170' ry='64' fill='url(#kdFelt)' stroke='#ff3f8e' stroke-width='4'/><ellipse class='kdNeon' cx='180' cy='182' rx='158' ry='55' fill='none' stroke='#ffd23f' stroke-width='2' stroke-dasharray='3 9' opacity='.7'/>";
+ s+="<rect x='150' y='140' width='60' height='80' rx='9' fill='none' stroke='rgba(255,255,255,.3)' stroke-width='2.5' stroke-dasharray='6 6'/>";
+ s+="<g opacity='.5'><rect x='272' y='150' width='40' height='56' rx='6' fill='#5a46d6' stroke='"+O+"' stroke-width='2.5' transform='rotate(8 292 178)'/><rect x='268' y='146' width='40' height='56' rx='6' fill='#5a46d6' stroke='"+O+"' stroke-width='2.5'/><text x='288' y='181' text-anchor='middle' font-size='18' fill='#ffd23f'>★</text></g>";
+ return s}
+function playedCard(ok,big,c){return "<g class='kdPlay'><rect x='150' y='140' width='60' height='80' rx='9' fill='"+(ok?c:"#6b717c")+"' stroke='#fff' stroke-width='4'/><rect x='150' y='140' width='60' height='80' rx='9' fill='none' stroke='"+O+"' stroke-width='2'/><ellipse cx='180' cy='180' rx='22' ry='31' transform='rotate(25 180 180)' fill='#fff'/>"+(ok?"<text x='180' y='192' text-anchor='middle' font-size='30' font-weight='900' fill='"+c+"' stroke='"+O+"' stroke-width='1.5'>✓</text><text x='155' y='156' font-size='12' font-weight='900' fill='#fff' stroke='"+O+"' stroke-width='.8'>⚡"+big+"</text>":"<text x='180' y='190' text-anchor='middle' font-size='30' font-weight='900' fill='#2a2a2a'>✗</text><path d='M156 146 l48 68' stroke='#ff5a1f' stroke-width='3' opacity='.7'/>")+"</g>"}
+
+/* ---------- стилі ---------- */
+var CSS="\
+.kdSt{position:relative;border-radius:22px;overflow:hidden;border:3px solid #fff;box-shadow:0 6px 0 rgba(0,0,0,.3)}.kdSt>svg{display:block;width:100%;height:auto}\
+.kdMe{position:absolute;left:3%;bottom:4%;width:23%;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(0,0,0,.3))}.kdMe svg{width:100%;height:auto}\
+.kdHp{position:absolute;display:flex;align-items:center;gap:5px;background:rgba(10,5,40,.85);border:2px solid #fff;border-radius:12px;padding:3px 8px;font:900 12px system-ui;color:#fff;pointer-events:none}\
+.kdHp em{display:block;width:62px;height:8px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden}.kdHp em i{display:block;height:100%;border-radius:4px;transition:width .45s}\
+.kdHp u{text-decoration:none;color:#7ef0ff}\
+.kdInt{position:absolute;right:3%;top:9%;max-width:42%;background:#fff;color:#1a0e3a;border:3px solid #1a0e3a;border-radius:14px;padding:5px 9px;font:900 12.5px/1.25 system-ui;box-shadow:0 4px 0 rgba(0,0,0,.3)}\
+.kdInt:before{content:'';position:absolute;left:-11px;top:14px;border:8px solid transparent;border-right-color:#1a0e3a}\
+.kdInt:after{content:'';position:absolute;left:-6px;top:16px;border:6px solid transparent;border-right-color:#fff}\
+.kdInt small{display:block;font:800 10px system-ui;color:#6b5fc7;text-transform:uppercase;letter-spacing:.04em}\
+.kdInt.hv{background:#ff5a7a;color:#fff}.kdInt.hv:after{border-right-color:#ff5a7a}.kdInt.hv small{color:#ffe0e6}\
+.kdCmb{position:absolute;left:3%;top:17%;font:900 italic 16px system-ui;color:#ffd23f;text-shadow:0 2px 0 #000;pointer-events:none}\
+.kdH{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}\
+.zb .kdH button{position:relative;display:flex!important;align-items:center;justify-content:center;width:auto!important;margin:0!important;min-height:112px;border:5px solid #fff!important;outline:3px solid "+O+";border-radius:14px!important;padding:12px 10px!important;background:var(--uc)!important;color:#1a0e3a!important;font:800 13px/1.25 system-ui!important;box-shadow:0 6px 0 "+O+"!important;cursor:pointer;text-align:center;text-transform:none!important;transition:transform .15s;overflow:hidden}\
+.zb .kdH button:nth-child(1){--uc:#e8333a;transform:rotate(-2.5deg)}.zb .kdH button:nth-child(2){--uc:#ffc21a;transform:rotate(2deg)}.zb .kdH button:nth-child(3){--uc:#2bb24c;transform:rotate(1.5deg)}.zb .kdH button:nth-child(4){--uc:#1f6fd6;transform:rotate(-2deg)}\
+.zb .kdH button:active{transform:translateY(4px) rotate(0)!important}\
+.zb .kdH button span{position:relative;z-index:1;display:block;background:#fff;border-radius:50%/45%;padding:12px 10px;width:100%;box-shadow:inset 0 0 0 2px rgba(0,0,0,.08);transform:rotate(-8deg)}.zb .kdH button span i{display:block;font-style:normal;transform:rotate(8deg)}\
+.zb .kdH button b,.zb .kdH button s{position:absolute;z-index:2;font:900 italic 17px system-ui;color:#fff;text-decoration:none;-webkit-text-stroke:1px "+O+";text-shadow:0 2px 0 "+O+"}.zb .kdH button b{left:7px;top:3px}.zb .kdH button s{right:7px;bottom:3px;transform:rotate(180deg)}\
+.zb .kdH button.kOk{transform:translateY(-6px) scale(1.05)!important;z-index:2;outline:4px solid #ffd23f;box-shadow:0 0 0 7px rgba(255,210,63,.4),0 6px 0 "+O+"!important}.zb .kdH button.kBad{filter:grayscale(1) brightness(.7)}.zb .kdH button.kDim{opacity:.3}\
+.kdDeal{animation:kdDl .45s cubic-bezier(.3,1.4,.5,1) both}@keyframes kdDl{0%{opacity:0;transform:translateY(60px) rotate(12deg) scale(.7)}}\
+.kdA{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.kdA.k4{grid-template-columns:repeat(4,1fr)}\
+.zb .kdA button{position:relative;display:block!important;text-align:center!important;width:auto!important;margin:0!important;border:4px solid #fff!important;outline:2.5px solid "+O+";border-radius:14px!important;padding:8px 2px 10px!important;color:#fff!important;font:900 12.5px/1.15 system-ui!important;box-shadow:0 5px 0 "+O+"!important;cursor:pointer;text-transform:none!important;min-height:0!important;text-shadow:0 2px 0 rgba(0,0,0,.35)}\
+.zb .kdA button i{display:grid!important;place-items:center;width:46px;height:46px;margin:0 auto 4px;border-radius:50%;background:#fff;font-style:normal;font-size:24px;text-shadow:none}.zb .kdA button em{display:block!important;font-style:normal;font-size:20px}\
+.zb .kdA .a1{background:#e8333a!important}.zb .kdA .a2{background:#1f6fd6!important}.zb .kdA .a3{background:#2bb24c!important}.zb .kdA .a4{background:#ffc21a!important;color:#1a0e3a!important;text-shadow:none}\
+.zb .kdA button.hint{box-shadow:0 0 0 6px rgba(255,210,63,.55),0 5px 0 "+O+"!important}\
+.kdTip{margin-top:8px;text-align:center;font:800 12.5px/1.35 system-ui;color:#cfc8ff}.kdTip b{color:#ffd23f}\
+.kdPlay{animation:kdPl .4s cubic-bezier(.3,1.5,.5,1) both;transform-box:fill-box;transform-origin:center}@keyframes kdPl{0%{transform:translateY(90px) scale(.6) rotate(-20deg);opacity:0}}\
+.kdHit{animation:kdHi .4s}@keyframes kdHi{25%{transform:translateX(-7px);filter:brightness(2.4)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}\
+.kdEye{animation:kdBl 3.6s infinite;transform-box:fill-box;transform-origin:center}@keyframes kdBl{0%,93%,100%{transform:none}96%{transform:scaleY(.15)}}\
+.kdNeon{animation:kdNe 8s linear infinite}@keyframes kdNe{to{stroke-dashoffset:-240}}\
+.kdAceB{animation:kdBo 3s ease-in-out infinite}@keyframes kdBo{50%{transform:translateY(-4px)}}\
+.kdFly{animation:kdFy .5s ease-in forwards}@keyframes kdFy{to{transform:translate(var(--tx),var(--ty)) rotate(540deg);opacity:.2}}\
+.kdShield{animation:kdSh .9s ease-out forwards;transform-box:fill-box;transform-origin:center}@keyframes kdSh{0%{transform:scale(.3);opacity:0}30%{transform:scale(1.1);opacity:1}100%{transform:scale(1);opacity:0}}\
+.kdUp{animation:kdUp 1s ease-out forwards}@keyframes kdUp{to{transform:translateY(-40px);opacity:0}}\
+body.lite .kdEye,body.lite .kdNeon,body.lite .kdAceB{animation:none!important}\
+";
+var injd=0;function inj(){X.inj();if(injd)return;injd=1;var s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s)}
+
+/* ---------- гра ---------- */
+var MEHP=32,ACEHP=40;
+var INT=[["atk",7],["atk",8],["sh",6],["atk",9],["heal",6],["big",13],["atk",8],["sh",7],["atk",10],["big",14],["atk",9],["heal",7]];
+function intText(x){return x[0]=="atk"?["Наступний хід","⚔️ Удар "+x[1]]:x[0]=="big"?["Заряджає!","💥 Суперудар "+x[1]]:x[0]=="sh"?["Наступний хід","🛡 Щит "+x[1]]:["Наступний хід","💚 Лікування "+x[1]]}
+GM.card7=function(g){inj();var POOL,me,ac,turn,ok,tot,cmb,best,log,stg;
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function reset(){POOL=shf(g.rounds||[]);me={hp:MEHP,max:MEHP,sh:0};ac={hp:ACEHP,max:ACEHP,sh:0};turn=0;ok=0;tot=0;cmb=0;best=0;log=[]}
+ function pw(){return 6+Math.min(3,cmb)*2}
+
+ /* --- старт --- */
+ function intro(){reset();shell();gs9("Складна гра");
+  var art="<svg viewBox='0 0 360 160' xmlns='http://www.w3.org/2000/svg'>"+[[-24,40,"#e8333a","⚔️"],[-8,62,"#ffc21a","⏭"],[8,84,"#2bb24c","💚"],[24,106,"#1f6fd6","🛡"]].map(function(c){return "<g transform='translate("+c[1]+",150) rotate("+c[0]+")'><rect x='-25' y='-98' width='50' height='72' rx='8' fill='"+c[2]+"' stroke='#fff' stroke-width='4'/><rect x='-25' y='-98' width='50' height='72' rx='8' fill='none' stroke='"+O+"' stroke-width='2'/><ellipse cx='0' cy='-62' rx='17' ry='27' transform='rotate(25 0 -62)' fill='#fff'/><text x='0' y='-54' text-anchor='middle' font-size='20'>"+c[3]+"</text></g>"}).join("")
+   +"<text x='178' y='92' text-anchor='middle' font-size='34' font-weight='900' font-style='italic' fill='#fff' stroke='"+O+"' stroke-width='6' paint-order='stroke'>VS</text><g transform='translate(276,98) scale(.72)'>"+ace()+"</g></svg>";
+  $i("zbR").innerHTML="<div class='zbHd'><small>СКЛАДНА ГРА · ДУЕЛЬ ЗНАНЬ</small><b>Карткова дуель</b>"+art+"</div>"
+   +"<div class='zbIn'><h3>Декс не програє ніколи. Поки що.</h3><p>Декс — бот-колекціонер, у нього найбільша колекція карт-навичок на арені. Він хизується, що завжди наперед показує свій хід — і все одно виграє. Покажи, що знання сильніші за будь-яку колекцію!</p>"
+   +"<div class='zbRu'><i>🃏</i><span><b>Кожен хід — питання і 4 карти.</b> Зіграй карту з правильною відповіддю. Хибна карта згорає, а Декс б'є без перешкод.</span></div>"
+   +"<div class='zbRu'><i>🧠</i><span><b>Правильна карта — твій вибір:</b> ⚔️ удар, 🛡 блок або 💚 лікування. Дивись у бульбашку над Дексом: якщо він заряджає <b>суперудар</b>, саме час ставити блок.</span></div>"
+   +"<div class='zbRu'><i>🔥</i><span><b>Серія правильних підсилює карти:</b> ⚡6 → 8 → 10 → 12. Від серії 3 з'являється жовта карта <b>⏭ Пропуск</b> — Декс пропускає хід, але серія згорає. Помилка теж обнуляє серію. Перемога — коли в Декса 0 ❤️.</span></div>"
+   +"<button class='zbGo' id='zbGo'>На арену ▶</button></div>";
+  $i("zbGo").onclick=start}
+
+ /* --- стіл --- */
+ function start(){shell();gs9("Дуель з Дексом");
+  $i("zbR").innerHTML="<div class='kdSt'><svg id='kdS' viewBox='0 0 360 240' xmlns='http://www.w3.org/2000/svg'>"+DEFS+table()+"<g transform='translate(180,96) scale(.78)'><g class='kdAceB'><g id='kdAce'>"+ace()+"</g></g></g><g id='kdC'></g><g id='kdFx'></g></svg>"
+   +"<div class='kdMe' id='kdMe'>"+B7("idle")+"</div><div class='kdHp' style='left:2%;top:4%' id='kdHa'></div><div class='kdHp' style='left:28%;bottom:4%' id='kdHm'></div><div class='kdInt' id='kdI'></div><div class='kdCmb' id='kdCb'></div></div>"
+   +"<div id='kdW'></div><div class='zbMsg' id='zbM'></div><div id='kdN'></div>";
+  stg=$i("kdS");hud();next()}
+ function bar(x,c){return "<em><i style='width:"+Math.max(0,x.hp/x.max*100).toFixed(0)+"%;background:"+c+"'></i></em>"}
+ function hud(){$i("kdHa").innerHTML="👾 Декс "+bar(ac,"#ff5a7a")+Math.max(0,ac.hp)+(ac.sh?" <u>🛡"+ac.sh+"</u>":"");$i("kdHm").innerHTML="🤖 Ти "+bar(me,"#7ee787")+Math.max(0,me.hp)+(me.sh?" <u>🛡"+me.sh+"</u>":"");
+  $i("kdCb").textContent=cmb>=2?"🔥 Серія x"+cmb+" · ⚡"+pw():""}
+ function curInt(){return INT[turn%INT.length]}
+ function showInt(){var x=curInt(),t=intText(x),e=$i("kdI");e.className="kdInt"+(x[0]=="big"?" hv":"");e.innerHTML="<small>"+t[0]+"</small>"+t[1]}
+ function me7(e){var m=$i("kdMe");if(m)m.innerHTML=B7(e)}
+ function num(x,y,t,c){var e=document.createElementNS("http://www.w3.org/2000/svg","text");e.setAttribute("x",x);e.setAttribute("y",y);e.setAttribute("text-anchor","middle");e.setAttribute("class","zbNum");e.setAttribute("fill",c);e.textContent=t;$i("kdFx").appendChild(e);setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e)},1000)}
+ function fx(h,ms){var e=document.createElementNS("http://www.w3.org/2000/svg","g");e.innerHTML=h;$i("kdFx").appendChild(e);setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e)},ms||900)}
+ function hitAce(){var a=$i("kdAce");a.innerHTML=ace("hit");a.setAttribute("class","");void a.getBoundingClientRect();a.setAttribute("class","kdHit");setTimeout(function(){if(alive(a)){a.innerHTML=ace();a.setAttribute("class","")}},700)}
+ function hitMe(){var m=$i("kdMe");if(!m)return;m.classList.remove("kdHit");void m.offsetWidth;m.classList.add("kdHit");me7("sad")}
+ function next(){if(!alive(stg))return;if(ac.hp<=0||me.hp<=0||turn>=12)return end();
+  showInt();me7("think");var Q=POOL[turn%POOL.length];$i("zbM").innerHTML="";$i("kdN").innerHTML="";$i("kdC").innerHTML="";
+  var o=shf(Q.o.map(function(t,i){return {t:t,c:i===Q.a}}));Q._o=o;
+  $i("kdW").innerHTML="<div class='zbQ'><small>Хід "+(turn+1)+" · зіграй правильну карту</small><b>"+esc(Q.q)+"</b></div><div class='kdH' id='kdH'>"+o.map(function(x,i){return "<button class='kdDeal' style='animation-delay:"+(i*.07)+"s' data-i='"+i+"'><b>"+"АБВГ"[i]+"</b><span><i>"+esc(x.t)+"</i></span><s>"+"АБВГ"[i]+"</s></button>"}).join("")+"</div>";
+  setTimeout(function(){[].forEach.call(document.querySelectorAll("#kdH button"),function(b){b.classList.remove("kdDeal")})},700);
+  gs9("Хід "+(turn+1)+" · ✅ "+ok);
+  $i("kdH").onclick=function(e){var b=e.target.closest("button");if(!b||b.disabled)return;play(Q,+b.getAttribute("data-i"))}}
+ function play(Q,j){var c=Q._o[j].c;tot++;[].forEach.call($i("kdH").querySelectorAll("button"),function(b,i){b.disabled=true;b.className=Q._o[i].c?"kOk":(i==j?"kBad":"kDim")});
+  if(c){ok++;cmb++;best=Math.max(best,cmb);$i("kdC").innerHTML=playedCard(1,pw(),["#e8333a","#ffc21a","#2bb24c","#1f6fd6"][j]);me7("happy");vib(20);hud();
+   var x=curInt(),p=pw(),hint=x[0]=="big"?2:(x[0]=="sh"&&me.hp<me.max*.6?3:1);
+   setTimeout(function(){if(!alive(stg))return;
+    $i("kdW").innerHTML="<div class='zbQ'><small>✅ Правильно! Що робить твоя карта ⚡"+p+"?</small><b>"+esc(Q.o[Q.a])+"</b></div><div class='kdA"+(cmb>=3?" k4":"")+"' id='kdA'><button class='a1"+(hint==1?" hint":"")+"' data-a='1'><i>⚔️</i>Удар<em>"+p+"</em></button><button class='a2"+(hint==2?" hint":"")+"' data-a='2'><i>🛡️</i>Блок<em>"+p+"</em></button><button class='a3"+(hint==3?" hint":"")+"' data-a='3'><i>💚</i>Лікув.<em>"+Math.round(p*.75)+"</em></button>"+(cmb>=3?"<button class='a4' data-a='4'><i>⏭</i>Пропуск<em>ходу</em></button>":"")+"</div><div class='kdTip'>"+(x[0]=="big"?"Декс заряджає <b>суперудар "+x[1]+"</b> — блок зараз дуже доречний!":x[0]=="sh"?"Декс ставить щит — удар зараз частково згорить.":x[0]=="heal"?"Декс лікуватиметься — бий сильніше!":"Декс б'є на <b>"+x[1]+"</b>.")+"</div>";
+    $i("kdA").onclick=function(e){var b=e.target.closest("button");if(!b)return;$i("kdA").onclick=null;act(+b.getAttribute("data-a"),p,Q)}},650)}
+  else{cmb=0;log.push(Q);$i("kdC").innerHTML=playedCard(0);vib([30,40,30]);hud();
+   $i("zbM").innerHTML="🔥 Карта згоріла. Правильно: <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.85;font-weight:600'>"+esc(Q.w)+"</span>":"");
+   setTimeout(function(){if(alive(stg))aceTurn(Q)},900)}}
+ function act(a,p,Q){var m="";
+  if(a==1){var d=Math.max(0,p-ac.sh);var abs=p-d;ac.sh=Math.max(0,ac.sh-p);ac.hp-=d;
+   fx("<g class='kdFly' style='--tx:90px;--ty:-90px'><rect x='170' y='170' width='20' height='28' rx='4' fill='#ffd23f' stroke='"+O+"' stroke-width='2.5'/></g>",500);
+   setTimeout(function(){if(!alive(stg))return;hitAce();num(180,40,"-"+d,"#ffd23f");fx("<path d='M150 50 L210 110 M210 50 L150 110' stroke='#fff' stroke-width='6' stroke-linecap='round' class='zbBeam'/>",600);hud()},420);
+   m="⚔️ Удар на <b>"+d+"</b>"+(abs?" (щит Декса з'їв "+abs+")":"")}
+  if(a==2){me.sh+=p;fx("<ellipse class='kdShield' cx='46' cy='196' rx='46' ry='46' fill='rgba(88,196,255,.25)' stroke='#7ef0ff' stroke-width='4'/>",900);m="🛡 Блок <b>"+p+"</b> на наступний удар"}
+  if(a==3){var h=Math.min(me.max-me.hp,Math.round(p*.75));me.hp+=h;fx("<g class='kdUp'><text x='50' y='170' text-anchor='middle' font-size='22' font-weight='900' fill='#7ee787' stroke='"+O+"' stroke-width='3' paint-order='stroke'>+"+h+" 💚</text></g>",1000);m="💚 Лікування <b>+"+h+"</b>"}
+  if(a==4){cmb=0;m="⏭ <b>Пропуск!</b> Декс пропускає хід (серія витрачена)";fx("<g class='kdUp'><text x='180' y='70' text-anchor='middle' font-size='26' font-weight='900' fill='#ffc21a' stroke='"+O+"' stroke-width='3' paint-order='stroke'>⏭ ПРОПУСК</text></g>",1000)}
+  hud();me7(a==1?"hype":"happy");$i("kdW").innerHTML="";$i("zbM").innerHTML=m;
+  setTimeout(function(){if(!alive(stg))return;if(a==4){turn++;$i("kdN").innerHTML="<button class='zbGo' id='kdNx'>Наступний хід ▶</button>";$i("kdNx").onclick=next;return}aceTurn(Q)},1000)}
+ function aceTurn(Q){if(ac.hp<=0)return end();var x=curInt(),m="";
+  if(x[0]=="atk"||x[0]=="big"){var d=Math.max(0,x[1]-me.sh),bl=x[1]-d;me.sh=Math.max(0,me.sh-x[1]);me.hp-=d;
+   fx("<g class='kdFly' style='--tx:-120px;--ty:90px'><rect x='170' y='86' width='20' height='28' rx='4' fill='#ff5a7a' stroke='"+O+"' stroke-width='2.5'/></g><g class='kdFly' style='--tx:-110px;--ty:96px;animation-delay:.08s'><rect x='176' y='90' width='20' height='28' rx='4' fill='#fff' stroke='"+O+"' stroke-width='2.5'/></g>",600);
+   setTimeout(function(){if(!alive(stg))return;if(d){hitMe();num(50,150,"-"+d,"#ff8aa0");if(x[0]=="big")vib([40,30,40])}else{num(50,150,"БЛОК!","#7ef0ff");me7("hype")}hud()},480);
+   m=(x[0]=="big"?"💥 Суперудар Декса ":"👾 Декс б'є ")+(d?"<b style='color:#ff8aa0'>−"+d+"</b>":"")+(bl?" · блок забрав "+bl:"")}
+  else if(x[0]=="sh"){ac.sh+=x[1];m="🛡 Декс ставить щит "+x[1];fx("<ellipse class='kdShield' cx='180' cy='70' rx='52' ry='60' fill='rgba(255,90,122,.2)' stroke='#ff5a7a' stroke-width='4'/>",900)}
+  else{var h=Math.min(ac.max-ac.hp,x[1]);ac.hp+=h;m="💚 Декс лікується +"+h;fx("<g class='kdUp'><text x='180' y='60' text-anchor='middle' font-size='20' font-weight='900' fill='#7ee787' stroke='"+O+"' stroke-width='3' paint-order='stroke'>+"+h+"</text></g>",1000)}
+  setTimeout(function(){if(!alive(stg))return;hud();var prev=$i("zbM").innerHTML;$i("zbM").innerHTML=(prev?prev+"<br>":"")+m;turn++;
+   if(ac.hp<=0||me.hp<=0||turn>=12){setTimeout(end,900);return}
+   $i("kdN").innerHTML="<button class='zbGo' id='kdNx'>Наступний хід ▶</button>";$i("kdNx").onclick=next},520)}
+ function end(){if(!alive(stg))return;var win=ac.hp<=0||(turn>=12&&me.hp>0&&ac.hp/ac.max<me.hp/me.max);gs9(win?"Перемога!":"Поразка");
+  $i("kdI").className="kdInt"+(win?"":" hv");$i("kdI").innerHTML=win?"<small>Декс</small>Неможливо… 😵":"<small>Декс</small>Як завжди 😎";me7(win?"hype":"sad");$i("kdC").innerHTML="";
+  if(win)$i("kdAce").setAttribute("opacity",".45");
+  var rv=log.length?"<div class='zbRv'><h4>Розбір помилок</h4>"+log.map(function(Q){return "<div>"+esc(Q.q)+"<br>✔ <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.8'>"+esc(Q.w)+"</span>":"")+"</div>"}).join("")+"</div>":"";
+  $i("kdW").innerHTML="<div class='zbRes "+(win?"w":"l")+"'><h3>"+(win?"🏆 Декса переможено!":"Декс цього разу сильніший")+"</h3><p>Правильних карт: <b style='color:#fff'>"+ok+" з "+tot+"</b> · найдовша серія: "+best+(win?"":"<br>Слідкуй за бульбашкою Декса: блок проти суперудару рятує.")+"</p></div>"+rv
+   +"<div class='zbBtns'><button class='zbGo alt' id='zbAg'>↻ Ще раз</button><button class='zbGo' id='zbEnd'>Результат</button></div>";
+  $i("zbM").innerHTML="";$i("kdN").innerHTML="";
+  $i("zbAg").onclick=intro;var sc=ok,t=tot;$i("zbEnd").onclick=function(){fin9(sc,t)}}
+ intro()};
+try{if(window.GI7)GI7.card7=["🃏","Карткова дуель"];if(window.GI)GI.card7=["🃏","Карткова дуель"]}catch(e){}
+
+/* складні ігри 7 класу (нові) — по черзі в уроках, крім кінців тем */
+var CX=[["bot7","Збери бота"],["card7","Карткова дуель"]],k=0;
 if(window.LES)for(var n=1;n<=52;n++){var L=LES[700+n];if(!L||!L.g||!L.g.length||!L.q||!L.q.length)continue;
  var R=[];L.q.forEach(function(x){if(x&&x.a&&x.a.length>=2)R.push({q:x.q,o:x.a.slice(),a:0,w:x.e||""})});
- if(R.length>=8)L.g.push({type:"bot7",title:"Збери бота",rounds:R})}
+ if(R.length>=8){var c=CX[k++%CX.length];L.g.push({type:c[0],title:c[1],rounds:R})}}
 })();
 
 /* 7 клас «Сезон»: маскот Бот-чемпіон – хаб, брифінг уроку, реакції на відповіді в іграх і тестах, фінальний екран. ES5. */
