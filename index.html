@@ -23103,7 +23103,7 @@ var CSS="\
 .rnHud{position:absolute;left:8px;top:8px;display:flex;gap:6px;pointer-events:none}.rnHud span{background:rgba(10,5,40,.82);border:2px solid #fff;border-radius:11px;padding:3px 9px;font:900 12px system-ui;color:#fff}\
 .rnCd{position:absolute;inset:0;display:grid;place-items:center;font:900 italic 72px system-ui;color:#ffd23f;text-shadow:0 5px 0 #1a0e3a;pointer-events:none}\
 .rnO{display:grid;gap:8px;margin-top:10px}\
-.zb .rnO button{position:relative;display:flex!important;align-items:center;gap:10px;width:100%!important;margin:0!important;min-height:50px;border:3px solid "+O+"!important;border-radius:14px!important;padding:8px 12px 8px 8px!important;background:#2a1d78!important;color:#fff!important;font:800 14px/1.25 system-ui!important;box-shadow:0 4px 0 "+O+"!important;cursor:pointer;text-align:left;text-transform:none!important}\
+.zb .rnO button{position:relative;display:flex!important;align-items:center;gap:10px;width:100%!important;margin:0!important;min-height:50px;height:auto!important;max-height:none!important;white-space:normal!important;overflow:visible!important;border:3px solid "+O+"!important;border-radius:14px!important;padding:8px 12px 8px 8px!important;background:#2a1d78!important;color:#fff!important;font:800 14px/1.25 system-ui!important;box-shadow:0 4px 0 "+O+"!important;cursor:pointer;text-align:left;text-transform:none!important}\
 .zb .rnO button b{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--lc);color:#1a0e3a;font:900 italic 18px system-ui;border:2px solid "+O+"}\
 .zb .rnO button.on{background:#4a3ab8!important;box-shadow:0 0 0 3px var(--lc),0 4px 0 "+O+"!important}\
 .zb .rnO button.rOk{background:#1f9a52!important}.zb .rnO button.rBad{background:#c8264a!important}\
@@ -23139,7 +23139,7 @@ GM.run7=function(g){inj();var POOL,qi,ok,tot,log,trips,coins,stg,lane,objs,raf=0
   $i("zbR").innerHTML="<div class='zbHd' style='background:linear-gradient(120deg,#ff2e63,#7a2cff)'><small>СКЛАДНА ГРА · ВТЕЧА ПО ШОСЕ ДАНИХ</small><b>Ранер-втеча</b>"+art+"</div>"
    +"<div class='zbIn'><h3>Тікай від вірус-хвилі!</h3><p>По шосе даних котиться вірус-хвиля і з'їдає все на шляху. Бот-чемпіон тікає — а прохід відкривають лише ворота з <b style='color:#ffd23f'>правильною відповіддю</b>.</p>"
    +"<div class='zbRu'><i>🚪</i><span><b>Назустріч летять ворота А, Б, В.</b> Питання і варіанти — під сценою. Тицьни варіант — і бот перебіжить у його доріжку. Ще можна ◀ ▶, свайп чи стрілки.</span></div>"
-   +"<div class='zbRu'><i>⚡</i><span><b>Правильні ворота — ривок,</b> хвиля відстає. Збирай монетки-біти між воротами.</span></div>"
+   +"<div class='zbRu'><i>⚡</i><span><b>Правильні ворота — ривок,</b> хвиля відстає. Перед воротами котяться монетки — встигни зібрати й перебігти в правильну доріжку!</span></div>"
    +"<div class='zbRu'><i>🦠</i><span><b>Хибні ворота — спотикання</b>, хвиля ближче. Три спотикання — наздогнала. Добіжи до фінішу: 10 воріт.</span></div>"
    +"<button class='zbGo' id='zbGo'>Бігти! ▶</button></div>";
   $i("zbGo").onclick=function(){ac();try{A.resume()}catch(e){}start()}}
@@ -23164,14 +23164,14 @@ GM.run7=function(g){inj();var POOL,qi,ok,tot,log,trips,coins,stg,lane,objs,raf=0
   $i("rnW").innerHTML="<div class='zbQ'><small>Ворота "+(qi+1)+" · біжи в доріжку з правильною відповіддю</small><b>"+esc(Q.q)+"</b><div class='zbT'><i id='rnTi' style='transform:scaleX(1)'></i></div></div><div class='rnO' id='rnO'>"+curQ.o.map(function(x,i){return "<button style='--lc:"+LC[i]+"' data-l='"+i+"'><b>"+LL[i]+"</b>"+esc(x.t)+"</button>"}).join("")+"</div>";
   $i("rnO").onclick=function(e){var b=e.target.closest("button");if(b&&state=="run")setLane(+b.getAttribute("data-l"))};setLane(lane,true);
   var gs=[];for(var l=0;l<3;l++)gs.push({k:"g",l:l,p:0});objs=gs;
-  var cl=Math.floor(Math.random()*3);for(var c=0;c<3;c++)objs.push({k:"c",l:(cl+c)%3,p:-.25-c*.12,got:false});
+  var cl=Math.floor(Math.random()*3);for(var c=0;c<3;c++)objs.push({k:"c",l:(cl+c)%3,p:.3-c*.11,got:false});
   draw(true)}
  function draw(rebuild){var o=$i("rnObj");if(!o)return;
   if(rebuild){o.innerHTML=objs.map(function(ob,i){return "<g id='rnO"+i+"'>"+(ob.k=="g"?gate(ob.l,LL[ob.l]):coin())+"</g>"}).join("")}
-  objs.forEach(function(ob,i){var e=$i("rnO"+i);if(!e)return;var p=Math.max(0,Math.min(1,ob.p)),z=p*p;if(ob.p<0||ob.got){e.setAttribute("opacity","0");return}e.setAttribute("opacity",z<.02?"0":"1");
+  objs.forEach(function(ob,i){var e=$i("rnO"+i);if(!e)return;var p=Math.max(0,Math.min(1,ob.p)),z=p*p;if(ob.p<0||ob.got||ob.p>1.1){e.setAttribute("opacity","0");return}e.setAttribute("opacity",z<.02?"0":"1");
    var sc=.18+z*.82;e.setAttribute("transform","translate("+lx(ob.l,z).toFixed(1)+","+(zy(z)-(ob.k=="c"?12*sc:0)).toFixed(1)+") scale("+sc.toFixed(3)+")")})}
  function loop(ts){if(!alive(stg)){stop();return}if(state!="run"){raf=0;return}if(!last)last=ts;var dt=Math.min(50,ts-last);last=ts;
-  var hit=false;objs.forEach(function(ob){ob.p+=dt/T;if(ob.k=="c"&&!ob.got&&ob.p>=.97&&ob.p<1.05&&ob.l==lane){ob.got=true;coins++;SND.coin();hud()}});
+  var hit=false;objs.forEach(function(ob){ob.p+=dt/T;if(ob.k=="c"&&!ob.got&&ob.p>=.94&&ob.p<1.1&&ob.l==lane){ob.got=true;coins++;SND.coin();hud();var fx=$i("rnFx");if(fx){fx.innerHTML="<text x='"+lx(lane,1)+"' y='200' text-anchor='middle' font-size='18' font-weight='900' fill='#ffd23f' stroke='"+O+"' stroke-width='3' paint-order='stroke'>+1 🪙</text>";setTimeout(function(){if(fx)fx.innerHTML=""},500)}}});
   var ti=$i("rnTi");if(ti)ti.style.transform="scaleX("+Math.max(0,1-objs[0].p).toFixed(3)+")";
   draw(false);if(objs[0].p>=1)return judge();raf=requestAnimationFrame(loop)}
  function judge(){state="judge";var c=curQ.o[lane].c,Q=curQ.Q;tot++;qi++;
@@ -23231,7 +23231,7 @@ dragon:[".#..........#.",".##........##.","..##########..",".#..........#.","#..
 cat:["..#........#..","..##......##..","..#.######.#..","..#........#..",".#..........#.",".#..........#.","##..........##",".#..........#.","##..........##","..#........#..","...########...","....#....#....","...##....##...",".............."],
 slime:["..............","..............","..............","......##......","....##..##....","...#......#...","..#........#..",".#..........#.",".#..........#.","#............#","#............#","#............#","##.##.##.##.##",".#..#..#..#..#"]};
 var EY={baby:7,teen:5,dragon:5,cat:5,slime:7};
-function sprite(stage,form,mood){var p=new P(),k=stage==0?"egg":stage==1?"baby":stage==2?"teen":form;
+function sprite(stage,form,mood){var p=new P(),k=stage==0?"egg":stage==1?"baby":stage==2||!SP[form]?"teen":form;
  SP[k].forEach(function(row,y){for(var x=0;x<14;x++)if(row.charAt(x)=="#")p.on(x,y,1)});if(stage==0)return p;
  var y=EY[k],F=[];
  if(mood=="happy")F=[[3,y+1],[4,y],[5,y+1],[8,y+1],[9,y],[10,y+1],[5,y+3],[6,y+4],[7,y+4],[8,y+3]];
@@ -23316,7 +23316,7 @@ GM.tama7=function(g){inj();var POOL,qi,ok,tot,log,stage,mood,need,streak,sick,ca
   if(streak>=2&&!sick){sick=true;mood="sick";setTimeout(SND.sick,400)}
   pet();hud();$i("zbM").innerHTML=(sick?"🤒 Пікс захворів! ":"😢 Пікс засмутився. ")+"Правильно: <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.85;font-weight:600'>"+esc(Q.w)+"</span>":"");
   $i("tmN").innerHTML="<button class='zbGo' id='tmNx'>Далі ▶</button>";$i("tmNx").onclick=evoCheck}
- function evoCheck(){if(!alive(stg))return;if(qi==3||qi==6){stage++;mood="happy";$i("tmW").innerHTML="";$i("tmN").innerHTML="";evoFx();SND.evo();pet();hud();$i("zbM").innerHTML="✨ Еволюція! Пікс тепер "+(stage==2?"<b>підліток</b>":"<b>майже дорослий</b>")+"!";setTimeout(ask,1800);return}ask()}
+ function evoCheck(){if(!alive(stg))return;if(qi==3||qi==6){stage++;if(stage>=3)form=ok>=5?"dragon":ok>=3?"cat":"slime";mood="happy";$i("tmW").innerHTML="";$i("tmN").innerHTML="";evoFx();SND.evo();pet();hud();$i("zbM").innerHTML="✨ Еволюція! Пікс тепер "+(stage==2?"<b>підліток</b>":"<b>майже дорослий</b>")+"!";setTimeout(ask,1800);return}ask()}
  function finale(){clearInterval(anim);form=ok>=8?"dragon":ok>=5?"cat":"slime";stage=3;mood="happy";colSet(form);$i("tmW").innerHTML="";$i("tmN").innerHTML="";
   anim=setInterval(function(){if(!alive(stg)){clearInterval(anim);return}fr^=1;pet()},520);evoFx();SND.evo();pet();hud();gs9("Фінальна форма!");
   var F=FORMS[form],rv=log.length?"<div class='zbRv'><h4>Розбір помилок</h4>"+log.map(function(Q){return "<div>"+esc(Q.q)+"<br>✔ <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.8'>"+esc(Q.w)+"</span>":"")+"</div>"}).join("")+"</div>":"";
