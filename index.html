@@ -22262,7 +22262,8 @@ var CSS="\
 .zbPulse{animation:zbPu 1.2s ease-in-out infinite}@keyframes zbPu{50%{opacity:.55}}\
 .zbEye{animation:zbBl 4s infinite;transform-box:fill-box;transform-origin:center}@keyframes zbBl{0%,92%,100%{transform:none}95%{transform:scaleY(.15)}}\
 .zbTw{animation:zbTw 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes zbTw{50%{opacity:.2;transform:scale(.5)}}\
-.card:has(>#gb>.zb)>h2,.card:has(>#gb>.zb)>.gbn{display:none!important}\
+.card:has(>#gb>.zb)>h2{display:none!important}\
+html body #app .card .gbn.x7cmp{min-height:0!important;height:62px!important;max-height:62px!important;padding:4px 14px!important;margin-bottom:10px!important;overflow:hidden}html body #app .card .gbn.x7cmp *{font-size:inherit}html body #app .card .gbn.x7cmp{font-size:.62em!important}html body #app .card .gbn.x7cmp svg{max-height:44px!important;width:auto!important}.zbHd>b{display:none}\
 .zbRing{animation:zbSp 6s linear infinite}@keyframes zbSp{to{stroke-dashoffset:-180}}\
 .zbFlash{animation:zbFs 2.2s infinite;opacity:0}@keyframes zbFs{0%,100%{opacity:0}5%{opacity:1}12%{opacity:0}}\
 .zbGx{animation:zbGx .9s steps(2) infinite}@keyframes zbGx{0%{transform:translate(-3px,0)}50%{transform:translate(4px,-1px)}}\
@@ -22289,7 +22290,7 @@ function stats(P){var g=function(s){return P[s]||0};return {hp:30+6*(g("body")+g
 GM.bot7=function(g){inj();var POOL=shf(g.rounds||[]).slice(0,8),P,qi,ok,tot,log,stg,t0=0,me,en,turn,ultAt,un;
  function reset(){P={};qi=0;ok=0;tot=0;log=[];un=0}
  function sp(x,y,c,n){n=n||10;var h="";for(var i=0;i<n;i++){var a=Math.PI*2*i/n,d=26+Math.random()*18;h+="<circle class='zbSpk' cx='"+x+"' cy='"+y+"' r='"+(2+Math.random()*2.5).toFixed(1)+"' fill='"+c+"' style='--dx:"+(Math.cos(a)*d).toFixed(0)+"px;--dy:"+(Math.sin(a)*d).toFixed(0)+"px'/>"}var e=document.createElementNS("http://www.w3.org/2000/svg","g");e.innerHTML=h;var fx=$i("zbFx");if(!fx)return;fx.appendChild(e);setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e)},800)}
- function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
 
  /* --- старт (логіка 9 класу: історія + правила + кнопка) --- */
  function intro(){reset();shell();gs9("Складна гра");
@@ -22443,7 +22444,7 @@ var MEHP=32,ACEHP=40;
 var INT=[["atk",7],["atk",8],["sh",6],["atk",9],["heal",6],["big",13],["atk",8],["sh",7],["atk",10],["big",14],["atk",9],["heal",7]];
 function intText(x){return x[0]=="atk"?["Наступний хід","⚔️ Удар "+x[1]]:x[0]=="big"?["Заряджає!","💥 Суперудар "+x[1]]:x[0]=="sh"?["Наступний хід","🛡 Щит "+x[1]]:["Наступний хід","💚 Лікування "+x[1]]}
 GM.card7=function(g){inj();var POOL,me,ac,turn,ok,tot,cmb,best,log,stg;
- function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
  function reset(){POOL=shf(g.rounds||[]);me={hp:MEHP,max:MEHP,sh:0};ac={hp:ACEHP,max:ACEHP,sh:0};turn=0;ok=0;tot=0;cmb=0;best=0;log=[]}
  function pw(){return 6+Math.min(3,cmb)*2}
 
@@ -22523,7 +22524,7 @@ GM.card7=function(g){inj();var POOL,me,ac,turn,ok,tot,cmb,best,log,stg;
 try{if(window.GI7)GI7.card7=["🃏","Карткова дуель"];if(window.GI)GI.card7=["🃏","Карткова дуель"]}catch(e){}
 
 /* складні ігри 7 класу (нові) — по черзі в уроках, крім кінців тем */
-var CX=[["bot7","Збери бота"],["card7","Карткова дуель"],["beat7","Біт-майстер"],["alien7","Прибулець в інтернеті"],["spy7","Шифровка агента"],["tet7","Тетріс знань"],["run7","Ранер-втеча"]],k=0;
+var CX=[["bot7","Збери бота"],["card7","Карткова дуель"],["beat7","Біт-майстер"],["alien7","Прибулець в інтернеті"],["spy7","Шифровка агента"],["tet7","Тетріс знань"],["run7","Ранер-втеча"],["tama7","Тамагочі-бот"]],k=0;
 if(window.LES)for(var n=1;n<=52;n++){var L=LES[700+n];if(!L||!L.g||!L.g.length||!L.q||!L.q.length)continue;
  var R=[];L.q.forEach(function(x){if(x&&x.a&&x.a.length>=2)R.push({q:x.q,o:x.a.slice(),a:0,w:x.e||""})});
  if(R.length>=8){var c=CX[k++%CX.length];L.g.push({type:c[0],title:c[1],rounds:R})}}
@@ -22607,7 +22608,7 @@ function stage(){var s="<defs><linearGradient id='btBg' x1='0' y1='0' x2='0' y2=
 
 /* ---------- гра ---------- */
 GM.beat7=function(g){inj();var POOL,S,qi,ok,tot,log,stg,step=0,nextT=0,timer=0,t0=0,hype=0,run=false;
- function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
  function reset(){POOL=shf(g.rounds||[]);S={lv:{},st:{},bad:{}};qi=0;ok=0;tot=0;log=[];hype=0}
  function stop(){run=false;clearInterval(timer);timer=0}
  function sched(){if(!alive(stg)){stop();return}if(!A)return;while(nextT<A.currentTime+.12){var st=step,tt=nextT;play(S,st,tt);(function(st,tt){setTimeout(function(){vis(st)},Math.max(0,(tt-A.currentTime)*1000))})(st,tt);nextT+=60/100/4;step++}}
@@ -22755,7 +22756,7 @@ var injd=0;function inj(){X.inj();if(injd)return;injd=1;var s=document.createEle
 var ASK=["Блюп! Земляни, поясніть:","Мої сенсори плутаються…","На моїй планеті такого нема:","Блюп-блюп, допоможи:","Інтернет дивний. Питання:","Мамка-корабель питає:"];
 var SPAM=["🦠 Вірус.exe","🔔 Підпишись на 500 каналів!","📩 Перешли 10 друзям!","⚠️ Твій пароль: 1234?","🤖 Скачай «Безкоштовний антивірус»"];
 GM.alien7=function(g){inj();var POOL,qi,first,retry,log,debt,known,stg,t0;
- function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
  function reset(){POOL=shf(g.rounds||[]).slice(0,6);qi=0;first=0;retry=0;log=[];debt=[];known=[]}
  function mute(){MUTE=!MUTE;try{localStorage.setItem("inf7mus",MUTE?"0":"1")}catch(e){}if(M)M.gain.value=MUTE?0:.5;var b=$i("alMu");if(b)b.textContent=MUTE?"🔇":"🔊"}
  function say(t,tag){var e=$i("alSay");if(!e)return;e.innerHTML=(tag?"<i>"+tag+"</i>":"")+t;e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop");SND.talk()}
@@ -22884,7 +22885,7 @@ function room(P){var s="<defs><radialGradient id='spR' cx='.5' cy='.5' r='.5'><s
 
 /* ---------- гра ---------- */
 GM.spy7=function(g){inj();var POOL,P,qi,ok,tot,log,miss,stg,open;
- function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
  function reset(){POOL=shf(g.rounds||[]).slice(0,8);P=PH[Math.floor(Math.random()*PH.length)];qi=0;ok=0;tot=0;log=[];miss=0;open={}}
  function mute(){MUTE=!MUTE;try{localStorage.setItem("inf7mus",MUTE?"0":"1")}catch(e){}if(M)M.gain.value=MUTE?0:.45;var b=$i("spMu");if(b)b.textContent=MUTE?"🔇":"🔊"}
  function ag(e){var a=$i("spAg");if(a)a.innerHTML=B7(e)}
@@ -22942,7 +22943,7 @@ try{if(window.GI7)GI7.spy7=["🕵️","Шифровка агента"];if(window
 var X=X7,O=X.O,esc=X.esc,shf=X.shf,alive=X.alive,vib=X.vib;
 function $i(x){return document.getElementById(x)}
 function B7(e){try{return window.BOT7?BOT7(e):""}catch(x){return ""}}
-var W=8,H=14,CS=20,BX=14,BY=12,GRB="#6b717c";
+var W=8,H=14,CS=24,BX=14,BY=12,GRB="#6b717c";
 var SH={I:[[1,1,1,1]],O:[[1,1],[1,1]],T:[[1,1,1],[0,1,0]],S:[[0,1,1],[1,1,0]],Z:[[1,1,0],[0,1,1]],L:[[1,0],[1,0],[1,1]],J:[[0,1],[0,1],[1,1]]};
 var SC={I:"#3fe0ff",O:"#ffd23f",T:"#b06bff",S:"#3fd27a",Z:"#ff4f6a",L:"#ff9a2a",J:"#4f8cff"};
 var NQ=10;
@@ -22986,7 +22987,7 @@ function cell(x,y,c,cls){if(c==GRB)return "<rect"+(cls?" class='"+cls+"'":"")+" 
 function rot(m){var r=[];for(var c=0;c<m[0].length;c++){r.push([]);for(var k=m.length-1;k>=0;k--)r[c].push(m[k][c])}return r}
 
 GM.tet7=function(g){inj();var POOL,B,cur,nxt,qi,ok,tot,lines,log,stg,tm=0,phase,combo,over;
- function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
  function bag(){var k=Object.keys(SH);return k[Math.floor(Math.random()*k.length)]}
  function reset(){POOL=shf(g.rounds||[]);B=[];for(var r=0;r<H;r++){B.push([]);for(var c=0;c<W;c++)B[r].push(0)}
   for(var r2=H-3;r2<H;r2++){var hole=(r2*3+1)%W;for(var c2=0;c2<W;c2++)B[r2][c2]=(c2==hole||c2==hole+1&&r2==H-1)?0:GRB}
@@ -23008,17 +23009,17 @@ GM.tet7=function(g){inj();var POOL,B,cur,nxt,qi,ok,tot,lines,log,stg,tm=0,phase,
 
  /* --- гра --- */
  function start(){shell();
-  $i("zbR").innerHTML="<div class='ttSt'><svg id='ttS' viewBox='0 0 360 304' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ttBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#140a46'/><stop offset='1' stop-color='#2a1478'/></linearGradient></defs><rect width='360' height='304' fill='url(#ttBg)'/>"
+  $i("zbR").innerHTML="<div class='ttSt'><svg id='ttS' viewBox='0 0 360 372' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ttBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#140a46'/><stop offset='1' stop-color='#2a1478'/></linearGradient></defs><rect width='360' height='372' fill='url(#ttBg)'/>"
    +"<rect x='"+(BX-6)+"' y='"+(BY-6)+"' width='"+(W*CS+12)+"' height='"+(H*CS+12)+"' rx='10' fill='#0a0428' stroke='#ff3f8e' stroke-width='3'/><g class='ttGrid' opacity='.8'>"+(function(){var s="";for(var c=1;c<W;c++)s+="<path d='M"+(BX+c*CS)+" "+BY+" V"+(BY+H*CS)+"' stroke='#2a1d78' stroke-width='1'/>";for(var r=1;r<H;r++)s+="<path d='M"+BX+" "+(BY+r*CS)+" H"+(BX+W*CS)+"' stroke='#2a1d78' stroke-width='1'/>";return s})()+"</g>"
    +"<path d='M"+BX+" "+(BY+2*CS)+" H"+(BX+W*CS)+"' stroke='#ff4f6a' stroke-width='2' stroke-dasharray='5 5' opacity='.7'/><g id='ttB'></g><g id='ttP'></g><g id='ttFx'></g>"
-   +"<text x='200' y='40' font-size='11' font-weight='900' fill='#a99fe8'>НАСТУПНА</text><rect x='198' y='46' width='92' height='64' rx='10' fill='#0a0428' stroke='#4a3ab8' stroke-width='2'/><g id='ttN'></g>"
-   +"<text x='200' y='138' font-size='11' font-weight='900' fill='#a99fe8'>РЯДІВ</text><text id='ttL' x='200' y='166' font-size='26' font-weight='900' font-style='italic' fill='#ffd23f'>0</text>"
-   +"<text x='270' y='138' font-size='11' font-weight='900' fill='#a99fe8'>ПИТАННЯ</text><text id='ttQ' x='270' y='166' font-size='26' font-weight='900' font-style='italic' fill='#fff'>1</text>"
+   +"<text x='232' y='40' font-size='12' font-weight='900' fill='#a99fe8'>НАСТУПНА</text><rect x='230' y='46' width='112' height='72' rx='10' fill='#0a0428' stroke='#4a3ab8' stroke-width='2'/><g id='ttN'></g>"
+   +"<text x='232' y='148' font-size='12' font-weight='900' fill='#a99fe8'>РЯДІВ</text><text id='ttL' x='232' y='178' font-size='26' font-weight='900' font-style='italic' fill='#ffd23f'>0</text>"
+   +"<text x='292' y='148' font-size='12' font-weight='900' fill='#a99fe8'>ПИТАННЯ</text><text id='ttQ' x='292' y='178' font-size='26' font-weight='900' font-style='italic' fill='#fff'>1</text>"
    +"</svg><div class='ttBot' id='ttBot'>"+B7("idle")+"</div><button class='ttMu' id='ttMu'>"+(MUTE?"🔇":"🔊")+"</button></div>"
    +"<div id='ttW'></div><div class='zbMsg' id='zbM'></div><div id='ttNb'></div>";
   stg=$i("ttS");$i("ttMu").onclick=mute;draw();ask()}
  function draw(){var s="";for(var r=0;r<H;r++)for(var c=0;c<W;c++)if(B[r][c])s+=cell(BX+c*CS,BY+r*CS,B[r][c]);$i("ttB").innerHTML=s;drawP();
-  var n="",m=SH[nxt],ox=244-m[0].length*9,oy=78-m.length*9;m.forEach(function(row,r){row.forEach(function(v,c){if(v)n+="<rect x='"+(ox+c*18)+"' y='"+(oy+r*18)+"' width='17' height='17' rx='3' fill='"+SC[nxt]+"' stroke='"+O+"' stroke-width='1.5'/>"})});$i("ttN").innerHTML=n;
+  var n="",m=SH[nxt],ox=286-m[0].length*9,oy=82-m.length*9;m.forEach(function(row,r){row.forEach(function(v,c){if(v)n+="<rect x='"+(ox+c*18)+"' y='"+(oy+r*18)+"' width='17' height='17' rx='3' fill='"+SC[nxt]+"' stroke='"+O+"' stroke-width='1.5'/>"})});$i("ttN").innerHTML=n;
   $i("ttL").textContent=lines;$i("ttQ").textContent=Math.min(qi+1,NQ)}
  function drawP(){var s="";if(cur){var gy=cur.y;while(fits(cur.m,cur.x,gy+1))gy++;
    cur.m.forEach(function(row,r){row.forEach(function(v,c){if(v){s+="<rect x='"+(BX+(cur.x+c)*CS+1)+"' y='"+(BY+(gy+r)*CS+1)+"' width='"+(CS-3)+"' height='"+(CS-3)+"' rx='3' fill='none' stroke='"+SC[cur.k]+"' stroke-width='1.5' opacity='.6'/>";if(cur.y+r>=0)s+=cell(BX+(cur.x+c)*CS,BY+(cur.y+r)*CS,SC[cur.k])}})})}
@@ -23043,7 +23044,7 @@ GM.tet7=function(g){inj();var POOL,B,cur,nxt,qi,ok,tot,lines,log,stg,tm=0,phase,
   phase="p";draw();gs9("Постав фігуру");$i("zbM").innerHTML="";
   $i("ttW").innerHTML="<div class='ttC' id='ttC'><button data-a='l'>◀</button><button data-a='r2'>⟳</button><button data-a='r'>▶</button><button class='dr' data-a='d'>⬇ Кинути</button></div>";
   $i("ttC").onclick=function(e){var b=e.target.closest("button");if(b)act(b.getAttribute("data-a"))};
-  clearInterval(tm);tm=setInterval(function(){if(!alive(stg)){clearInterval(tm);return}if(phase!="p")return;if(fits(cur.m,cur.x,cur.y+1)){cur.y++;drawP()}else lock()},650)}
+  clearInterval(tm);tm=setInterval(function(){if(!alive(stg)){clearInterval(tm);return}if(phase!="p")return;if(fits(cur.m,cur.x,cur.y+1)){cur.y++;drawP()}else lock()},1000)}
  function act(a){if(phase!="p"||!cur)return;
   if(a=="l"&&fits(cur.m,cur.x-1,cur.y)){cur.x--;SND.mv()}
   if(a=="r"&&fits(cur.m,cur.x+1,cur.y)){cur.x++;SND.mv()}
@@ -23127,7 +23128,7 @@ function gate(l,txt){var c=LC[l];return "<g><rect x='-34' y='-70' width='9' heig
 function coin(){return "<g><circle r='11' fill='#ffd23f' stroke='"+O+"' stroke-width='3'/><text y='4' text-anchor='middle' font-size='11' font-weight='900' fill='"+O+"'>1</text></g>"}
 
 GM.run7=function(g){inj();var POOL,qi,ok,tot,log,trips,coins,stg,lane,objs,raf=0,last=0,state,curQ,T,wave;
- function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
  function reset(){POOL=shf(g.rounds||[]);qi=0;ok=0;tot=0;log=[];trips=0;coins=0;lane=1;objs=[];state="idle";wave=0}
  function mute(){MUTE=!MUTE;try{localStorage.setItem("inf7mus",MUTE?"0":"1")}catch(e){}if(M)M.gain.value=MUTE?0:.45;var b=$i("rnMu");if(b)b.textContent=MUTE?"🔇":"🔊"}
 
@@ -23158,7 +23159,7 @@ GM.run7=function(g){inj();var POOL,qi,ok,tot,log,trips,coins,stg,lane,objs,raf=0
  function setWave(){var w=$i("rnWave");if(w)w.setAttribute("transform","translate(0,"+[30,14,0,-16][Math.min(3,trips)]+")")}
 
  function ask(){if(!alive(stg))return;if(qi>=NQ)return finish(true);var Q=POOL[qi%POOL.length],ci=Q.a,wr=shf(Q.o.map(function(_,i){return i}).filter(function(i){return i!=ci})).slice(0,2),ord=shf([ci].concat(wr));
-  curQ={Q:Q,o:ord.map(function(i){return {t:Q.o[i],c:i==ci}})};while(curQ.o.length<3){var R2=POOL[Math.floor(Math.random()*POOL.length)],x=R2.o[R2.o.length-1];if(R2!==Q&&Q.o.indexOf(x)<0)curQ.o.splice(Math.floor(Math.random()*(curQ.o.length+1)),0,{t:x,c:false})}T=Math.max(8000,13000-qi*550);
+  curQ={Q:Q,o:ord.map(function(i){return {t:Q.o[i],c:i==ci}})};while(curQ.o.length<3){var R2=POOL[Math.floor(Math.random()*POOL.length)],x=R2.o[R2.o.length-1];if(R2!==Q&&Q.o.indexOf(x)<0)curQ.o.splice(Math.floor(Math.random()*(curQ.o.length+1)),0,{t:x,c:false})}T=Math.max(14000,20000-qi*600);
   gs9("Ворота "+(qi+1)+"/"+NQ);hud();$i("zbM").innerHTML="";$i("rnN").innerHTML="";
   $i("rnW").innerHTML="<div class='zbQ'><small>Ворота "+(qi+1)+" · біжи в доріжку з правильною відповіддю</small><b>"+esc(Q.q)+"</b><div class='zbT'><i id='rnTi' style='transform:scaleX(1)'></i></div></div><div class='rnO' id='rnO'>"+curQ.o.map(function(x,i){return "<button style='--lc:"+LC[i]+"' data-l='"+i+"'><b>"+LL[i]+"</b>"+esc(x.t)+"</button>"}).join("")+"</div>";
   $i("rnO").onclick=function(e){var b=e.target.closest("button");if(b&&state=="run")setLane(+b.getAttribute("data-l"))};setLane(lane,true);
@@ -23192,6 +23193,139 @@ GM.run7=function(g){inj();var POOL,qi,ok,tot,log,trips,coins,stg,lane,objs,raf=0
   $i("zbM").innerHTML="";$i("rnN").innerHTML="";$i("zbAg").onclick=intro;var sc=ok;$i("zbEnd").onclick=function(){fin9(sc,t)}}
  intro()};
 try{if(window.GI7)GI7.run7=["🏃","Ранер-втеча"];if(window.GI)GI.run7=["🏃","Ранер-втеча"]}catch(e){}
+})();
+
+/* ===== 7 клас · складна гра «Тамагочі-бот» =====
+   Кібер-яйце → малюк → підліток → фінальна форма. 9 питань = 9 прохань Пікса (їсти / гратися / митися).
+   Помилка — Пікс сумує, дві поспіль — хворіє (наступне питання — «ліки»). Фінальна форма залежить від турботи:
+   Кібер-дракон / Робокіт / Глюк-слиз. Колекція форм зберігається на пристрої. Звук — 8-біт (WebAudio). */
+(function(){if(!window.GM||!window.X7)return;
+var X=X7,O=X.O,esc=X.esc,shf=X.shf,alive=X.alive,vib=X.vib;
+function $i(x){return document.getElementById(x)}
+var NQ=9,PX=7,LCDC="#9bbc0f",LCDD="#0f380f",LCDM="#306230";
+var NEED=[["food","🍎","Пікс голодний!","Нагодуй — відповідай правильно"],["play","🎮","Пікс нудьгує!","Пограйся — відповідай правильно"],["bath","🧼","Пікс забруднився!","Помий — відповідай правильно"]];
+var FORMS={dragon:["🐉","Кібер-дракон","Ідеальна турбота: могутній і мудрий"],cat:["🐱","Робокіт","Добра турбота: спритний і хитрий"],slime:["🫠","Глюк-слиз","Мало турботи… але він тебе все одно любить"]};
+
+/* ---------- 8-біт звук ---------- */
+var A=null,M=null,MUTE=false;try{MUTE=localStorage.getItem("inf7mus")=="0"}catch(e){}
+function ac(){if(A)return A;var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;A=new C();M=A.createGain();M.gain.value=MUTE?0:.4;M.connect(A.destination);return A}
+function bp(f,t,len,v){if(!A)return;var o=A.createOscillator(),g=A.createGain();o.type="square";o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v||.07,t+.005);g.gain.setValueAtTime(v||.07,t+len-.01);g.gain.exponentialRampToValueAtTime(.0001,t+len);o.connect(g);g.connect(M);o.start(t);o.stop(t+len+.02)}
+function seq(n,d){if(!ac())return;var t=A.currentTime;n.forEach(function(f,i){if(f)bp(f,t+i*(d||.09),(d||.09)*.9)})}
+var SND={need:function(){seq([1318,0,1318],.07)},ok:function(){seq([784,988,1318])},bad:function(){seq([392,330,262],.12)},sick:function(){seq([220,0,208,0,196],.1)},
+ evo:function(){seq([523,659,784,1046,784,1046,1318,1568],.1)},hatch:function(){seq([262,330,392,523,659],.08)}};
+
+/* ---------- піксельні спрайти 14×14 ---------- */
+function P(){this.s={}}P.prototype.on=function(x,y,c){if(x>=0&&x<14&&y>=0&&y<14)this.s[x+","+y]=c||1};
+function ell(p,cx,cy,rx,ry,fill){for(var y=0;y<14;y++)for(var x=0;x<14;x++){var d=Math.pow((x-cx)/rx,2)+Math.pow((y-cy)/ry,2);if(d<=1&&d>=.5)p.on(x,y,1);else if(d<.5&&fill)p.on(x,y,2)}}
+function face(p,mood,y,cx){cx=cx||6.5;var l=Math.round(cx-2.5),r=Math.round(cx+1.5);
+ if(mood=="happy"){[[l,y+1],[l+1,y],[l+2,y+1],[r,y+1],[r+1,y],[r+2,y+1]].forEach(function(q){p.on(q[0],q[1],3)})}
+ else if(mood=="sick"){p.on(l+1,y,3);p.on(l,y+1,3);p.on(l+2,y+1,3);p.on(r+1,y,3);p.on(r,y+1,3);p.on(r+2,y+1,3)}
+ else if(mood=="sad"){p.on(l+1,y+1,3);p.on(r+1,y+1,3);p.on(l,y,3);p.on(r+2,y,3)}
+ else{[[l,y],[l+1,y],[l,y+1],[l+1,y+1],[r+1,y],[r+2,y],[r+1,y+1],[r+2,y+1]].forEach(function(q){p.on(q[0],q[1],3)})}
+ if(mood=="happy"){p.on(Math.round(cx)-1,y+3,3);p.on(Math.round(cx),y+4,3);p.on(Math.round(cx)+1,y+3,3)}else if(mood=="sad"||mood=="sick"){p.on(Math.round(cx)-1,y+4,3);p.on(Math.round(cx),y+3,3);p.on(Math.round(cx)+1,y+4,3)}else p.on(Math.round(cx),y+3,3)}
+var SP={
+egg:["..............",".....####.....","....#....#....","...#......#...","..#...##...#..","..#........#..",".#..#.......#.",".#.......#..#.",".#..........#.",".#...##.....#.","..#........#..","...#......#...","....######....",".............."],
+baby:["..............","..............","..............","..............",".....####.....","...##....##...","..#........#..",".#..........#.",".#..........#.",".#..........#.",".#..........#.","..#........#..","...########...",".............."],
+teen:["..#........#..","...#......#...","....######....","...#......#...","..#........#..",".#..........#.",".#..........#.",".#..........#.",".#..........#.","..#........#..","...########...","...#......#...","..##......##..",".............."],
+dragon:[".#..........#.",".##........##.","..##########..",".#..........#.","#............#","##..........##","#.#........#.#","#..#......#..#",".#.#......#.#.","...#......#...","....######...#","....#....#..##","...##....##...",".............."],
+cat:["..#........#..","..##......##..","..#.######.#..","..#........#..",".#..........#.",".#..........#.","##..........##",".#..........#.","##..........##","..#........#..","...########...","....#....#....","...##....##...",".............."],
+slime:["..............","..............","..............","......##......","....##..##....","...#......#...","..#........#..",".#..........#.",".#..........#.","#............#","#............#","#............#","##.##.##.##.##",".#..#..#..#..#"]};
+var EY={baby:7,teen:5,dragon:5,cat:5,slime:7};
+function sprite(stage,form,mood){var p=new P(),k=stage==0?"egg":stage==1?"baby":stage==2?"teen":form;
+ SP[k].forEach(function(row,y){for(var x=0;x<14;x++)if(row.charAt(x)=="#")p.on(x,y,1)});if(stage==0)return p;
+ var y=EY[k],F=[];
+ if(mood=="happy")F=[[3,y+1],[4,y],[5,y+1],[8,y+1],[9,y],[10,y+1],[5,y+3],[6,y+4],[7,y+4],[8,y+3]];
+ else if(mood=="sick")F=[[3,y],[5,y],[4,y+1],[3,y+2],[5,y+2],[8,y],[10,y],[9,y+1],[8,y+2],[10,y+2],[5,y+4],[6,y+3],[7,y+3],[8,y+4]];
+ else if(mood=="sad")F=[[3,y],[4,y+1],[5,y+1],[10,y],[9,y+1],[8,y+1],[5,y+4],[6,y+3],[7,y+3],[8,y+4]];
+ else F=[[4,y],[5,y],[4,y+1],[5,y+1],[8,y],[9,y],[8,y+1],[9,y+1],[6,y+3],[7,y+3]];
+ F.forEach(function(q){p.on(q[0],q[1],1)});return p}
+function sprSvg(p,ox,oy){var s="";Object.keys(p.s).forEach(function(k){var q=k.split(","),v=p.s[k];s+="<rect x='"+(ox+q[0]*PX)+"' y='"+(oy+q[1]*PX)+"' width='"+(PX-1)+"' height='"+(PX-1)+"' fill='"+(v==2?"#8bac0f":LCDD)+"'/>"});return s}
+
+/* ---------- корпус ---------- */
+function device(){var s="<defs><radialGradient id='tmB' cx='.35' cy='.3' r='.8'><stop offset='0' stop-color='#ffb3e0'/><stop offset='1' stop-color='#ff3f8e'/></radialGradient><linearGradient id='tmBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#2a1478'/><stop offset='1' stop-color='#140a46'/></linearGradient></defs><rect width='360' height='290' fill='url(#tmBg)'/>";
+ for(var i=0;i<16;i++)s+="<text class='tmTw' style='animation-delay:"+(i*.23).toFixed(2)+"s' x='"+((i*67)%360)+"' y='"+(14+(i*41)%270)+"' font-size='"+(8+i%3*3)+"' fill='#ffd23f' opacity='.5'>✦</text>";
+ s+="<path d='M180 14 C268 14 300 96 300 160 C300 236 248 280 180 280 C112 280 60 236 60 160 C60 96 92 14 180 14z' fill='url(#tmB)' stroke='"+O+"' stroke-width='4'/>";
+ s+="<path d='M116 50 C130 32 150 26 170 26' stroke='#fff' stroke-width='6' fill='none' stroke-linecap='round' opacity='.6'/>";
+ [[96,96],[262,104],[88,200],[270,206],[180,34]].forEach(function(q,i){s+="<text x='"+q[0]+"' y='"+q[1]+"' text-anchor='middle' font-size='14' fill='"+["#ffd23f","#fff","#3fe0ff","#ffd23f","#fff"][i]+"'>★</text>"});
+ s+="<rect x='100' y='60' width='160' height='144' rx='18' fill='#7a2cff' stroke='"+O+"' stroke-width='4'/><rect x='110' y='70' width='140' height='124' rx='8' fill='"+LCDC+"' stroke='"+O+"' stroke-width='3'/>";
+ s+="<g id='tmIc'></g><g id='tmPet'></g><g id='tmFx'></g><g id='tmBar'></g>";
+ [[136,236],[180,248],[224,236]].forEach(function(q,i){s+="<circle cx='"+q[0]+"' cy='"+q[1]+"' r='14' fill='#ffd23f' stroke='"+O+"' stroke-width='3.5'/><text x='"+q[0]+"' y='"+(q[1]+5)+"' text-anchor='middle' font-size='13' font-weight='900' fill='"+O+"'>"+"ABC"[i]+"</text>"});
+ return s}
+function icons(act){var L=[["🍎","food"],["🎮","play"],["🧼","bath"],["💊","med"]];return L.map(function(x,i){return "<text x='"+(124+i*36)+"' y='88' text-anchor='middle' font-size='15' opacity='"+(x[1]==act?1:.3)+"'>"+x[0]+"</text>"+(x[1]==act?"<rect class='tmBlink' x='"+(112+i*36)+"' y='73' width='24' height='21' rx='4' fill='none' stroke='"+LCDD+"' stroke-width='2'/>":"")}).join("")}
+
+/* ---------- стилі ---------- */
+var CSS="\
+.tmSt{position:relative;border-radius:22px;overflow:hidden;border:3px solid #fff;box-shadow:0 6px 0 rgba(0,0,0,.3)}.tmSt>svg{display:block;width:100%;height:auto}\
+.tmMu{position:absolute;right:8px;top:8px;z-index:3;width:36px!important;height:36px!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:11px!important;border:2px solid #fff!important;background:rgba(10,5,40,.85)!important;font-size:17px!important;line-height:1!important;cursor:pointer;box-shadow:none!important}\
+.tmHud{position:absolute;left:8px;top:8px;pointer-events:none}.tmHud span{display:inline-block;background:rgba(10,5,40,.82);border:2px solid #fff;border-radius:11px;padding:3px 9px;font:900 12px system-ui;color:#fff}\
+.tmO{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}\
+.zb .tmO button{position:relative;width:auto!important;margin:0!important;min-height:56px;border:3px solid "+LCDD+"!important;border-radius:12px!important;padding:9px 9px!important;background:"+LCDC+"!important;color:"+LCDD+"!important;font:800 13.5px/1.25 ui-monospace,Menlo,Consolas,monospace!important;box-shadow:0 5px 0 "+LCDD+"!important;cursor:pointer;text-align:left;text-transform:none!important}\
+.zb .tmO button:active{transform:translateY(4px);box-shadow:0 1px 0 "+LCDD+"!important}\
+.zb .tmO button.mOk{background:#d6ff7a!important}.zb .tmO button.mBad{background:#e8a0a0!important;border-color:#5a1f1f!important;color:#5a1f1f!important}.zb .tmO button.mDim{opacity:.35}\
+.tmQ{background:"+LCDD+";border-radius:16px;padding:11px 13px;color:#d6ff7a;box-shadow:0 5px 0 rgba(0,0,0,.35)}\
+.tmQ small{font:800 11px ui-monospace,Menlo,monospace;color:"+LCDC+";letter-spacing:.04em;text-transform:uppercase}.tmQ b{display:block;font:800 15px/1.35 system-ui;color:#fff;margin-top:3px}\
+.tmBlink{animation:tmBk .6s steps(2) infinite}@keyframes tmBk{50%{opacity:0}}\
+.tmTw{animation:tmTw 2.4s ease-in-out infinite}@keyframes tmTw{50%{opacity:.1}}\
+.tmEvo{animation:tmEv 1.4s steps(7)}@keyframes tmEv{0%,28%,56%,84%{opacity:0}14%,42%,70%,100%{opacity:1}}\
+.tmCol{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 2px}.tmCol div{background:rgba(0,0,0,.25);border-radius:14px;padding:8px 4px;text-align:center;font:800 11.5px/1.3 system-ui;color:#cfc8ff}.tmCol div b{display:block;font-size:26px;filter:grayscale(1) opacity(.35)}.tmCol div.got{background:#4a3ab8;color:#fff}.tmCol div.got b{filter:none}\
+body.lite .tmTw,body.lite .tmBlink{animation:none!important}\
+";
+var injd=0;function inj(){X.inj();if(injd)return;injd=1;var s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s)}
+function colGet(){try{return JSON.parse(localStorage.getItem("inf7tama"))||{}}catch(e){return {}}}
+function colSet(k){var c=colGet();c[k]=(c[k]||0)+1;try{localStorage.setItem("inf7tama",JSON.stringify(c))}catch(e){}}
+function colHtml(hl){var c=colGet();return "<div class='tmCol'>"+Object.keys(FORMS).map(function(k){return "<div class='"+(c[k]?"got":"")+"'"+(hl==k?" style='box-shadow:0 0 0 3px #ffd23f'":"")+"><b>"+FORMS[k][0]+"</b>"+FORMS[k][1]+(c[k]?" ×"+c[k]:"")+"</div>"}).join("")+"</div>"}
+
+GM.tama7=function(g){inj();var POOL,qi,ok,tot,log,stage,mood,need,streak,sick,care,stg,anim=0,fr=0,form;
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
+ function reset(){POOL=shf(g.rounds||[]);qi=0;ok=0;tot=0;log=[];stage=0;mood="idle";need=null;streak=0;sick=false;care=[3,3,3];form=null}
+ function mute(){MUTE=!MUTE;try{localStorage.setItem("inf7mus",MUTE?"0":"1")}catch(e){}if(M)M.gain.value=MUTE?0:.4;var b=$i("tmMu");if(b)b.textContent=MUTE?"🔇":"🔊"}
+
+ function intro(){reset();shell();gs9("Складна гра");
+  var art="<svg viewBox='0 0 360 150' xmlns='http://www.w3.org/2000/svg'><rect x='120' y='16' width='120' height='118' rx='16' fill='"+LCDC+"' stroke='"+O+"' stroke-width='4'/>"+sprSvg(sprite(0),131,27)+"<text x='60' y='80' font-size='34'>🥚</text><text x='272' y='80' font-size='34'>🐉</text><text x='92' y='126' font-size='16' fill='#fff'>→</text><text x='256' y='126' font-size='16' fill='#fff'>→</text></svg>";
+  $i("zbR").innerHTML="<div class='zbHd'><small>СКЛАДНА ГРА · ВИХОВАЙ ЧЕМПІОНА</small><b>Тамагочі-бот</b>"+art+"</div>"
+   +"<div class='zbIn'><h3>Тобі дісталося кібер-яйце</h3><p>У ньому Пікс — цифровий вихованець. Він вилупиться, підросте і стане тим, ким ти його виростиш. А росте він на <b style='color:#d6ff7a'>твоїх знаннях</b>.</p>"
+   +"<div class='zbRu'><i>🍎</i><span><b>Пікс просить:</b> їсти, гратися чи помитися. Кожне прохання — питання. Правильна відповідь — Пікс щасливий.</span></div>"
+   +"<div class='zbRu'><i>🤒</i><span><b>Помилка — Пікс сумує.</b> Дві поспіль — захворіє, і наступне питання — це ліки.</span></div>"
+   +"<div class='zbRu'><i>✨</i><span><b>9 питань — 3 еволюції.</b> Фінальна форма залежить від турботи: 🐉 Кібер-дракон, 🐱 Робокіт або 🫠 Глюк-слиз. Збери всіх!</span></div>"
+   +colHtml()+"<button class='zbGo' id='zbGo'>Висиджувати яйце ▶</button></div>";
+  $i("zbGo").onclick=function(){ac();try{A.resume()}catch(e){}start()}}
+
+ function start(){shell();gs9("Тамагочі");
+  $i("zbR").innerHTML="<div class='tmSt'><svg id='tmS' viewBox='0 0 360 290' xmlns='http://www.w3.org/2000/svg'>"+device()+"</svg><div class='tmHud'><span id='tmH'></span></div><button class='tmMu' id='tmMu'>"+(MUTE?"🔇":"🔊")+"</button></div>"
+   +"<div id='tmW'></div><div class='zbMsg' id='zbM'></div><div id='tmN'></div>";
+  stg=$i("tmS");$i("tmMu").onclick=mute;clearInterval(anim);anim=setInterval(function(){if(!alive(stg)){clearInterval(anim);return}fr^=1;pet()},520);
+  pet();hud();$i("zbM").innerHTML="🥚 Яйце тремтить…";SND.hatch();setTimeout(function(){if(!alive(stg))return;stage=1;mood="happy";evoFx();pet();$i("zbM").innerHTML="🐣 Пікс вилупився! Він уже чогось хоче…";setTimeout(ask,1300)},1400)}
+ function pet(){var p=sprite(stage,form,mood),dy=fr&&stage>0?-PX:0,dx=stage==0?(fr?2:-2):0;$i("tmPet").innerHTML=sprSvg(p,131+dx,96+dy+(stage==0?-4:0));
+  $i("tmIc").innerHTML=icons(sick?"med":need?need[0]:"");
+  var b="";for(var i=0;i<3;i++){b+="<text x='"+(122+i*46)+"" +"' y='188' font-size='11'>"+["🍎","🎮","🧼"][i]+"</text>";for(var k=0;k<3;k++)b+="<rect x='"+(134+i*46+k*8)+"' y='180' width='6' height='8' fill='"+(k<care[i]?LCDD:"#8bac0f")+"'/>"}
+  $i("tmBar").innerHTML=b+(sick?"<text x='236' y='118' font-size='16'>🤒</text>":"")}
+ function hud(){$i("tmH").textContent="Питання "+Math.min(qi+1,NQ)+"/"+NQ+" · ✅ "+ok+" · "+["Яйце","Малюк","Підліток","Фінал"][stage]}
+ function evoFx(){var e=$i("tmPet");e.setAttribute("class","");void e.getBoundingClientRect();e.setAttribute("class","tmEvo");var fx=$i("tmFx");fx.innerHTML="<text x='180' y='110' text-anchor='middle' font-size='20'>✨</text><text x='130' y='150' font-size='16'>✨</text><text x='222' y='140' font-size='16'>✨</text>";setTimeout(function(){if(alive(fx))fx.innerHTML=""},1400)}
+ function ask(){if(!alive(stg))return;if(qi>=NQ)return finale();var Q=POOL[qi%POOL.length];$i("tmN").innerHTML="";
+  if(sick){need=null}else{var lo=0;for(var i=1;i<3;i++)if(care[i]<care[lo])lo=i;need=NEED[(care[lo]<3?lo:qi%3)]}
+  mood=sick?"sick":"idle";pet();hud();SND.need();gs9(sick?"Пікс захворів":"Прохання Пікса");
+  var hd=sick?["💊 Пікс захворів!","Дай ліки — відповідай правильно"]:[need[2],need[3]];
+  $i("zbM").innerHTML="";var o=shf(Q.o.map(function(t,i){return {t:t,c:i===Q.a}}));Q._o=o;
+  $i("tmW").innerHTML="<div class='tmQ'><small>"+(sick?"💊":need[1])+" "+hd[0]+" · "+hd[1]+"</small><b>"+esc(Q.q)+"</b></div><div class='tmO' id='tmO'>"+o.map(function(x,i){return "<button data-i='"+i+"'>"+esc(x.t)+"</button>"}).join("")+"</div>";
+  $i("tmO").onclick=function(e){var b=e.target.closest("button");if(!b||b.disabled)return;ans(Q,+b.getAttribute("data-i"))}}
+ function ans(Q,j){var c=Q._o[j].c,ni=need?["food","play","bath"].indexOf(need[0]):-1;tot++;qi++;[].forEach.call($i("tmO").querySelectorAll("button"),function(b,i){b.disabled=true;b.className=Q._o[i].c?"mOk":(i==j?"mBad":"mDim")});
+  if(c){ok++;streak=0;if(sick){sick=false;$i("zbM").innerHTML="💊 Пікс одужав!"}else{care[ni]=3;$i("zbM").innerHTML=["🍎 Ням-ням! Пікс ситий.","🎮 Пікс у захваті від гри!","🧼 Пікс сяє чистотою!"][ni]}
+   for(var i=0;i<3;i++)if(i!=ni&&care[i]>0&&Math.random()<.5)care[i]--;
+   mood="happy";SND.ok();vib(20);pet();hud();setTimeout(evoCheck,1300);return}
+  log.push(Q);streak++;if(ni>=0)care[ni]=Math.max(0,care[ni]-2);mood="sad";SND.bad();vib([30,40,30]);
+  if(streak>=2&&!sick){sick=true;mood="sick";setTimeout(SND.sick,400)}
+  pet();hud();$i("zbM").innerHTML=(sick?"🤒 Пікс захворів! ":"😢 Пікс засмутився. ")+"Правильно: <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.85;font-weight:600'>"+esc(Q.w)+"</span>":"");
+  $i("tmN").innerHTML="<button class='zbGo' id='tmNx'>Далі ▶</button>";$i("tmNx").onclick=evoCheck}
+ function evoCheck(){if(!alive(stg))return;if(qi==3||qi==6){stage++;mood="happy";$i("tmW").innerHTML="";$i("tmN").innerHTML="";evoFx();SND.evo();pet();hud();$i("zbM").innerHTML="✨ Еволюція! Пікс тепер "+(stage==2?"<b>підліток</b>":"<b>майже дорослий</b>")+"!";setTimeout(ask,1800);return}ask()}
+ function finale(){clearInterval(anim);form=ok>=8?"dragon":ok>=5?"cat":"slime";stage=3;mood="happy";colSet(form);$i("tmW").innerHTML="";$i("tmN").innerHTML="";
+  anim=setInterval(function(){if(!alive(stg)){clearInterval(anim);return}fr^=1;pet()},520);evoFx();SND.evo();pet();hud();gs9("Фінальна форма!");
+  var F=FORMS[form],rv=log.length?"<div class='zbRv'><h4>Розбір помилок</h4>"+log.map(function(Q){return "<div>"+esc(Q.q)+"<br>✔ <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.8'>"+esc(Q.w)+"</span>":"")+"</div>"}).join("")+"</div>":"";
+  $i("zbM").innerHTML="";
+  $i("tmW").innerHTML="<div class='zbRes "+(form=="slime"?"l":"w")+"'><h3>"+F[0]+" "+F[1]+"!</h3><p>"+F[2]+"<br>Правильних: <b style='color:#fff'>"+ok+" з "+tot+"</b></p></div><div class='zbRv'><h4>Твоя колекція</h4>"+colHtml(form)+"</div>"+rv
+   +"<div class='zbBtns'><button class='zbGo alt' id='zbAg'>↻ Ще раз</button><button class='zbGo' id='zbEnd'>Результат</button></div>";
+  $i("zbAg").onclick=function(){clearInterval(anim);intro()};var sc=ok,t=tot;$i("zbEnd").onclick=function(){clearInterval(anim);fin9(sc,t)}}
+ intro()};
+try{if(window.GI7)GI7.tama7=["🥚","Тамагочі-бот"];if(window.GI)GI.tama7=["🥚","Тамагочі-бот"]}catch(e){}
 })();
 
 /* 7 клас «Сезон»: маскот Бот-чемпіон – хаб, брифінг уроку, реакції на відповіді в іграх і тестах, фінальний екран. ES5. */
