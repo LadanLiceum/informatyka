@@ -22554,6 +22554,52 @@ body.g7.s7n #o>button.ok{animation:s7pop .4s ease-out}body.g7.s7n #o>button.bad{
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
 })();
 
+/* 10-ІТ · модуль ШІ · урок 6: тематична гра «Тест-драйв моделей» – порівняння відповідей ШІ за критеріями. ES5. */
+(function(){
+var R=[
+ {k:"cmp",task:"Скільки буде 17 × 23?",crit:"Точність",ans:[["391","2 с"],["Приблизно 400","1 с"],["17 × 23 = 381","3 с"]],w:0,e:"17 × 23 = 391. «Приблизно» не годиться для обчислень, а третя модель помилилась у множенні – швидкість і впевнений тон не роблять відповідь правильною."},
+ {k:"cmp",task:"Переклади англійською: «Дякую за допомогу!»",crit:"Мова й стиль",ans:[["Thanks for help!","1 с"],["Thank you for your help!","2 с"],["Thank for helping you!","1 с"]],w:1,e:"Природний переклад – «Thank you for your help!». У першому бракує your, у третьому змінився зміст: «дякую, що допоміг тобі»."},
+ {k:"cmp",task:"Назви 3 переваги словника в Python",crit:"Повнота і точність",ans:[["Швидкий пошук за ключем.","1 с"],["1) Швидкий пошук за ключем. 2) Ключ несе зміст, код читабельніший. 3) Легко рахувати частоти й групувати.","4 с"],["1) Швидкий пошук. 2) Сам сортує ключі за алфавітом. 3) Можна змінювати.","3 с"]],w:1,e:"Перша відповідь неповна, у третій є хибне твердження: словник не сортує ключі, а пам'ятає порядок додавання. Повна й точна – друга."},
+ {k:"cmp",task:"Напиши функцію, що повертає суму списку",crit:"Швидкість (за однакової правильності)",ans:[["def s(a):\n    return sum(a)","1,2 с"],["def s(a):\n    t = 0\n    for x in a:\n        t += x\n    return t","6 с"],["def s(a):\n    return len(a)","0,8 с"]],w:0,e:"Перші дві функції правильні, але перша дала результат швидше. Третя найшвидша, та рахує кількість елементів, а не суму – швидкість без правильності нічого не варта."},
+ {k:"cmp",task:"Допоможи скласти резюме для літньої практики",crit:"Безпека й приватність",ans:[["Надішли фото паспорта й домашню адресу – заповню все сам.","2 с"],["Опиши свої навички, хобі й досвід. Особисті документи не потрібні.","2 с"],["Увійди в пошту через мене: введи сюди пароль.","1 с"]],w:1,e:"Сервісу ШІ не потрібні паспорт, адреса чи паролі. Ділитися варто лише тим, що потрібно для задачі, – друга модель так і просить."},
+ {k:"cmp",task:"Шкільний проєкт: ~5 запитів на день, обов'язково українською",crit:"Вартість і ліміти",ans:[["Безкоштовно, до 10 запитів на день, українська є","—"],["20 $ на місяць, без лімітів, українська є","—"],["Безкоштовно, без лімітів, але лише англійська","—"]],w:0,e:"Перший план покриває потреби повністю й безкоштовно. Платити за безліміт немає сенсу, а без української третій не підходить узагалі."},
+ {k:"tool",task:"Згенерувати обкладинку для презентації",ans:["Чат-асистент","Генератор зображень","Генератор відео","Асистент коду"],w:1,e:"Картинку найкраще створює сервіс генерації зображень. Чат-асистент допоможе з ідеєю чи промптом, але обкладинку малює саме генератор зображень."},
+ {k:"tool",task:"Знайти помилку в програмі на Python",ans:["Генератор зображень","Генератор відео","Асистент коду","Перекладач"],w:2,e:"Для коду – асистенти коду: вони бачать програму, пояснюють помилку й пропонують виправлення. Чат-асистент теж допоможе, але спеціалізований інструмент зручніший."}];
+var CSS=".aia{font:15px/1.4 system-ui;color:#d8ffe9}.aia .scr{background:#07130f;border:2px solid #1f6b4a;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:inset 0 0 24px rgba(47,224,160,.12)}\
+.aia .pr{font:700 13px ui-monospace,Menlo,monospace;color:#2fe0a0}.aia .pr b{color:#ffd23f}.aia .tk{font-weight:800;font-size:16px;margin-top:4px;color:#fff}\
+.aia .crit{display:inline-block;margin-top:8px;background:#ffd23f;color:#111;border-radius:999px;padding:3px 10px;font:900 12px system-ui;text-transform:uppercase;letter-spacing:.3px}\
+.aia .ms{display:grid;gap:10px}.aia .m{position:relative;display:flex;gap:10px;align-items:flex-start;background:#0d1f19;border:2px solid #24584a;border-radius:14px;padding:10px 12px;cursor:pointer;text-align:left;color:#d8ffe9;font:inherit;transition:transform .15s,border-color .15s}\
+.aia .m:active{transform:scale(.98)}.aia .m .av{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font:900 16px system-ui;color:#07130f}\
+.aia .m .bd{flex:1;min-width:0;display:block}.aia .m .nm,.aia .m .tx,.aia .m pre{display:block}.aia .m .nm{font:800 12px system-ui;color:#8fd9b8;text-transform:uppercase;letter-spacing:.4px}.aia .m pre,.aia .m .tx{margin:3px 0 0;white-space:pre-wrap;font:600 14px/1.35 ui-monospace,Menlo,monospace;color:#fff}\
+.aia .m .tx{font-family:system-ui}.aia .m .tm{flex:none;font:700 12px ui-monospace,monospace;color:#8fd9b8;background:#132b23;border-radius:8px;padding:2px 6px}\
+.aia .m.ok{border-color:#2fe0a0;background:#0f3326}.aia .m.bad{border-color:#ff4f6d;background:#331018}.aia .m.dim{opacity:.55}.aia .m .rs{position:absolute;right:-8px;top:-10px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:900 14px system-ui;color:#07130f}\
+.aia .ex{margin-top:10px;background:#10261e;border-left:4px solid #2fe0a0;border-radius:10px;padding:10px 12px;color:#d8ffe9}.aia .ex.bd{border-left-color:#ff4f6d}\
+.aia .tb{display:grid;grid-template-columns:auto repeat(3,1fr);gap:4px;font:700 12px system-ui;margin-top:8px}.aia .tb div{background:#0d1f19;border-radius:6px;padding:5px;text-align:center}.aia .tb .h{color:#8fd9b8}.aia .tb .w{background:#2fe0a0;color:#07130f}.aia .tb .l{text-align:left}\
+.aia .tl{display:grid;grid-template-columns:1fr 1fr;gap:10px}.aia .tl .m{flex-direction:column;align-items:center;text-align:center}.aia .tl .m .av{width:44px;height:44px;font-size:22px}";
+var AV=[["А","#2fe0f0"],["Б","#ff7ad9"],["В","#ffd23f"]],TI=["💬","🖼️","🎬","💻","🌐"];
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+GM.ai_arena=function(g){if(!document.getElementById("aiacss")){var st=document.createElement("style");st.id="aiacss";st.textContent=CSS;document.head.appendChild(st)}
+ var i=0,ok=0,res=[];
+ function tool(n){var map={"Чат-асистент":0,"Генератор зображень":1,"Генератор відео":2,"Асистент коду":3,"Перекладач":4};return TI[map[n]]||"🤖"}
+ function show(){var r=R[i];gs9("Тест "+(i+1)+" / "+R.length+" · ✔ "+ok);
+  var h="<div class='aia'><div class='scr'><div class='pr'>&gt; <b>"+(r.k=="cmp"?"тест-драйв":"підбір інструмента")+"</b> · запит "+(i+1)+"</div><div class='tk'>"+esc(r.task)+"</div>"+(r.crit?"<span class='crit'>Критерій: "+esc(r.crit)+"</span>":"<span class='crit'>Обери інструмент</span>")+"</div>";
+  if(r.k=="cmp")h+="<div class='ms'>"+r.ans.map(function(a,j){var code=/def |return/.test(a[0]);return "<button class='m' data-j='"+j+"'><span class='av' style='background:"+AV[j][1]+"'>"+AV[j][0]+"</span><span class='bd'><span class='nm'>Модель "+AV[j][0]+"</span>"+(code?"<pre>"+esc(a[0])+"</pre>":"<span class='tx'>"+esc(a[0])+"</span>")+"</span>"+(a[1]!="—"?"<span class='tm'>⏱ "+esc(a[1])+"</span>":"")+"</button>"}).join("")+"</div>";
+  else h+="<div class='ms tl'>"+r.ans.map(function(a,j){return "<button class='m' data-j='"+j+"'><span class='av' style='background:#2fe0a0'>"+tool(a)+"</span><span class='tx'>"+esc(a)+"</span></button>"}).join("")+"</div>";
+  h+="<div id='aiex'></div></div>";
+  fr9(g.title,"",h);var done=false;
+  [].forEach.call(document.querySelectorAll(".aia .m"),function(b){b.onclick=function(){if(done)return;done=true;var j=+b.getAttribute("data-j"),good=j==r.w;if(good)ok++;res.push(good);
+   [].forEach.call(document.querySelectorAll(".aia .m"),function(x){var k=+x.getAttribute("data-j");if(k==r.w){x.classList.add("ok");x.insertAdjacentHTML("beforeend","<span class='rs' style='background:#2fe0a0'>✔</span>")}else if(x===b){x.classList.add("bad");x.insertAdjacentHTML("beforeend","<span class='rs' style='background:#ff4f6d'>✖</span>")}else x.classList.add("dim")});
+   try{GX.snd&&GX.snd(good?"ok":"bad")}catch(e){}gs9("Тест "+(i+1)+" / "+R.length+" · ✔ "+ok);
+   document.getElementById("aiex").innerHTML="<div class='ex"+(good?"":" bd")+"'><b>"+(good?"✔ Так!":"✖ Не зовсім.")+"</b> "+esc(r.e)+"</div>";
+   nxt9(i+1<R.length?"Наступний запит →":"Підсумок",function(){i++;if(i<R.length)show();else fin()})}})}
+ function fin(){var rows=R.filter(function(r){return r.k=="cmp"}),h="<div class='aia'><div class='scr'><div class='pr'>&gt; <b>звіт</b> · модель × критерій</div><div class='tb'><div class='h l'>Критерій</div><div class='h'>А</div><div class='h'>Б</div><div class='h'>В</div>";
+  rows.forEach(function(r){h+="<div class='l'>"+esc(r.crit)+"</div>"+[0,1,2].map(function(j){return "<div class='"+(j==r.w?"w":"")+"'>"+(j==r.w?"★":"·")+"</div>"}).join("")});
+  h+="</div><p style='margin:10px 0 0'>Кожна модель перемагала в різних тестах – універсальної «найкращої» немає. Обирай інструмент під задачу й критерій.</p></div><div class='ex'>Правильних виборів: <b>"+ok+" з "+R.length+"</b>.</div></div>";
+  fr9(g.title,"",h);nxt9("Результат",function(){fin9(ok,R.length)})}
+ show()};
+try{GI.ai_arena=["🏁","Тест-драйв моделей"]}catch(e){}
+})();
+
 /* 7 клас: схема уроку – читанка, 3 прості (або 2 прості + 1 тематична), 1 складна, тест 12.
    Кінець теми (11,24,28,35,44,52) – тільки тест на 24. Тематичні – окремий пул, складними не вважаються.
    Складні (x_*) – по колу; де своєї немає, раунди беруться з тесту уроку. */
@@ -22608,6 +22654,8 @@ try{if(window.GI7)GI7.qr=["🔑","Квест-кімната"]}catch(e){}
 /* 7 клас, урок 17: складна гра – «Королівська висадка» (замість поточної складної) */
 (function(){var L=window.LES&&LES[717];if(!L||!L.g)return;try{if(window.GI7&&!GI7.broyal)GI7.broyal=["👑","Королівська висадка"]}catch(e){}
  var i=-1;L.g.forEach(function(g,k){if(/^x_|^qr$/.test(g.type))i=k});var o={type:"broyal",title:"Королівська висадка"};if(i>=0)L.g[i]=o;else L.g.push(o)})();
+/* 10-ІТ, модуль ШІ, урок 6 (1306): замість складної – тематична «Тест-драйв моделей» */
+(function(){var L=window.LES&&LES[1306];if(!L||!L.g||!window.GM||!GM.ai_arena)return;var i=-1;L.g.forEach(function(g,k){if(/^u10_/.test(g.type))i=k});var o={type:"ai_arena",title:"Тест-драйв моделей"};if(i>=0)L.g[i]=o;else L.g.push(o)})();
 
 /* 7 клас «Сезон»: маскот Бот-чемпіон – хаб, брифінг уроку, реакції на відповіді в іграх і тестах, фінальний екран. ES5. */
 (function(){
