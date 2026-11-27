@@ -2,7 +2,7 @@
 // потім: Розгорнути → Керувати розгортаннями → олівець → Версія: Нова версія → Розгорнути (посилання не зміниться).
 var KEY = "inf-x7k29";
 // Ключ вчителя для екрана «Мій клас» в застосунку. Вигадайте довгий пароль (лише латиниця/цифри). Порожньо = екран вимкнено, дані нікому не віддаються.
-var TEACHER_KEY = "";
+var TEACHER_KEY = "7410923";
 
 var SHEETS = {
   K1: {name: "5 кл: Тема 1", head: ["Клас", "Учень", "Тест", "Ігри", "Читалка", "Гра 2", "Гра 3", "Оновлено"]},
@@ -33,12 +33,24 @@ function doPost(e) {
   lock.waitLock(20000);
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var det = [], tms = [];
+    var det = [], tms = [], WP = allWipes(ss), sts = {};
+    for (var i = 1; i < lines.length; i++) { var q0 = lines[i].trim().split("|"); if (q0[0] === "INF5" && q0[1] === "S") sts[q0[2] + "|" + nn(q0[3])] = +q0[5] || 0; }
     for (var i = 1; i < lines.length; i++) {
       var l = lines[i].trim();
       if (l.indexOf("INF5|") !== 0) continue;
       var p = l.split("|");
-      if (p[1] === "S") { if (p.length >= 7) saveState(ss, p[2], p[3], p[4], p[6]); continue; }
+      var wk = p[2] + "|" + nn(p[3]), wl = WP[wk];
+      if (wl && (wk in sts)) { // учень має видалення: старі дані (надіслані до видалення) не повертаємо
+        var bts = sts[wk] || 0, all = false, les = {};
+        wl.forEach(function (w) { if (w[1] > bts) { if (w[0] === "*") all = true; else les[w[0]] = 1; } });
+        if (all) continue;
+        if (Object.keys(les).length) {
+          if (/^K/.test(p[1])) continue;
+          if ((p[1] === "D" || p[1] === "T") && les[String(parseInt(p[4], 10))]) continue;
+          if (/^L/.test(p[1])) Object.keys(les).forEach(function (x) { var j = 4 + (+x) - 1; if (p[j] !== undefined) p[j] = "0"; });
+        }
+      }
+      if (p[1] === "S") { if (p.length >= 7) saveState(ss, p[2], p[3], p[4], p[6], +p[5] || 0); continue; }
       if (p[1] === "D") { if (p.length >= 16) det.push(p); continue; }
       if (p[1] === "T") { if (p.length >= 11) tms.push(p); continue; }
       var cfg = SHEETS[p[1]];
@@ -76,6 +88,7 @@ function doGet_(e) {
     e.parameter.cb = qp[0];
     if (qp[1] === "st") { e.parameter.st = "1"; e.parameter.c = qp[2] || ""; e.parameter.n = qp[3] || ""; e.parameter.h = qp[4] || ""; }
     else if (qp[1] === "tk") { e.parameter.tk = qp[2] || ""; }
+    else if (qp[1] === "del") { e.parameter.del = "1"; e.parameter.tk = qp[2] || ""; e.parameter.c = qp[3] || ""; e.parameter.n = qp[4] || ""; e.parameter.l = qp[5] || ""; }
   }
   var dbg = e && e.parameter && e.parameter.dbg;
   if (dbg === "1") return ContentService.createTextOutput("V3-plain");
@@ -87,6 +100,10 @@ function doGet_(e) {
   }
   var tk = e && e.parameter && e.parameter.tk;
   if (!TEACHER_KEY || tk !== TEACHER_KEY) return reply(e, "ok");
+  if (e.parameter.del) {
+    var lk = LockService.getScriptLock(); lk.waitLock(20000);
+    try { return reply(e, delGrade(String(e.parameter.c || ""), String(e.parameter.n || ""), String(e.parameter.l || ""))); } finally { lk.releaseLock(); }
+  }
   var ss = SpreadsheetApp.getActiveSpreadsheet(), rows = [], det = [];
   ["K5", "K6", "K7", "K8", "K10", "K10B", "K11"].forEach(function (k) {
     var sh = ss.getSheetByName(SHEETS[k].name);
@@ -99,7 +116,11 @@ function doGet_(e) {
   if (ds && ds.getLastRow() > 1) {
     det = ds.getRange(2, 1, ds.getLastRow() - 1, DET_HEAD.length).getValues();
   }
-  return reply(e, { rows: rows, det: det });
+  var tm = [], ts = ss.getSheetByName(TM_NAME);
+  if (ts && ts.getLastRow() > 1) {
+    tm = ts.getRange(2, 1, ts.getLastRow() - 1, 9).getValues();
+  }
+  return reply(e, { rows: rows, det: det, tm: tm });
 }
 
 function save(ss, cfg, kind, cls, name, vals) {
@@ -221,8 +242,8 @@ function lookupState(cls, name, h) {
   for (i = 0; i < rows.length; i++) if (String(rows[i][0]) === cls && nn(rows[i][1]) === key) { ex = i; break; }
   if (ex >= 0) {
     var pin = String(rows[ex][2]);
-    if (pin === "" ) { R.sh.getRange(ex + 2, 3).setValue(h); return { s: "ok", p: String(rows[ex][3]) }; }
-    if (pin === h) return { s: "ok", p: String(rows[ex][3]) };
+    if (pin === "" ) { R.sh.getRange(ex + 2, 3).setValue(h); return { s: "ok", p: String(rows[ex][3]), w: wipesFor(cls, name) }; }
+    if (pin === h) return { s: "ok", p: String(rows[ex][3]), w: wipesFor(cls, name) };
     var sg = findSimilar(rows, cls, key, h, ex);
     if (sg >= 0) return { s: "sug", n: String(rows[sg][1]) };
     return { s: "bad" };
@@ -247,7 +268,7 @@ function dmerge(a, b) {
   }
   return b;
 }
-function saveState(ss, cls, name, h, enc) {
+function saveState(ss, cls, name, h, enc, ts) {
   var sh = ss.getSheetByName(STATE_NAME);
   if (!sh) { sh = ss.insertSheet(STATE_NAME); sh.getRange(1, 1, 1, 5).setValues([["Клас", "Ім'я", "PIN", "Дані", "Оновлено"]]).setFontWeight("bold"); }
   var inc; try { inc = JSON.parse(decodeURIComponent(enc)); } catch (e) { return; }
@@ -261,10 +282,86 @@ function saveState(ss, cls, name, h, enc) {
     if (pin !== "" && pin !== h) return;
     try { merged = dmerge(JSON.parse(decodeURIComponent(String(sh.getRange(row, 4).getValue()))), inc); } catch (e) { merged = inc; }
   } else { row = sh.getLastRow() + 1; name = String(name).trim(); }
+  (wipesFor(cls, name) || []).forEach(function (w) { if (w[1] > (ts || 0) && w[0] !== "*") stripLesson(merged, skey(cls, +w[0])); });
   var out = encodeURIComponent(JSON.stringify(merged));
   if (out.length > 49000) out = encodeURIComponent(JSON.stringify(inc));
   if (out.length > 49000) return;
   if (pin === "" && sh.getRange(row, 2).getValue() !== "") sh.getRange(row, 3, 1, 3).setValues([[h, out, new Date()]]);
   else if (pin === "" ) sh.getRange(row, 1, 1, 5).setValues([[cls, name, h, out, new Date()]]);
   else sh.getRange(row, 4, 1, 2).setValues([[out, new Date()]]);
+}
+
+
+// ---- Видалення оцінок з екрана «Мій клас» ----
+// Лист «Видалення»: що й коли вчитель видалив. Застосунок учня побачить запис і зітре це й у себе на телефоні.
+var WIPE_NAME = "Видалення";
+var STORES = ["inf5l", "inf6l", "inf7l", "inf8", "inf9", "inf10", "inf10g", "inf11l"];
+function skey(cls, x) {
+  cls = String(cls);
+  if (/^10-ІТ/.test(cls)) return 1000 + x;
+  if (/^10-/.test(cls)) return 1200 + x;
+  if (/^11/.test(cls)) return 1100 + x;
+  var d = parseInt(cls, 10);
+  return d === 9 ? x : d * 100 + x;
+}
+function lsheet(cls) {
+  cls = String(cls);
+  if (/^10-ІТ/.test(cls)) return "L10";
+  if (/^10-/.test(cls)) return "L10B";
+  if (/^11/.test(cls)) return "L11";
+  return "L" + parseInt(cls, 10);
+}
+function ksheet(cls) { var l = lsheet(cls); return l === "L9" ? null : "K" + l.slice(1); }
+function stripLesson(st, key) {
+  if (!st) return;
+  STORES.forEach(function (s) { var b = st[s]; if (b && typeof b === "object") ["l", "rd", "sc"].forEach(function (f) { if (b[f]) delete b[f][key]; }); });
+}
+function wipeSheet(ss) {
+  var sh = ss.getSheetByName(WIPE_NAME);
+  if (!sh) { sh = ss.insertSheet(WIPE_NAME); sh.getRange(1, 1, 1, 5).setValues([["Клас", "Учень", "Урок (* = усе)", "Мітка", "Коли"]]).setFontWeight("bold"); sh.setFrozenRows(1); }
+  return sh;
+}
+function allWipes(ss) {
+  var sh = ss.getSheetByName(WIPE_NAME), o = {};
+  if (!sh || sh.getLastRow() < 2) return o;
+  sh.getRange(2, 1, sh.getLastRow() - 1, 4).getValues().forEach(function (r) { var k = r[0] + "|" + nn(r[1]); (o[k] = o[k] || []).push([String(r[2]), +r[3] || 0]); });
+  return o;
+}
+function wipesFor(cls, name) { return allWipes(SpreadsheetApp.getActiveSpreadsheet())[cls + "|" + nn(name)] || []; }
+function delRows(sh, test) {
+  if (!sh || sh.getLastRow() < 2) return 0;
+  var v = sh.getRange(2, 1, sh.getLastRow() - 1, Math.max(3, sh.getLastColumn())).getValues(), n = 0;
+  for (var i = v.length - 1; i >= 0; i--) if (test(v[i])) { sh.deleteRow(i + 2); n++; }
+  return n;
+}
+function delGrade(cls, name, les) {
+  if (!cls || !name || !les) return { s: "err", m: "мало даних" };
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), all = les === "*", x = parseInt(les, 10), now = Date.now();
+  if (!all && !(x > 0)) return { s: "err", m: "невірний урок" };
+  var me = function (r) { return String(r[0]) === cls && String(r[1]) === name; };
+  delRows(ss.getSheetByName(DET_NAME), function (r) { return me(r) && (all || +r[2] === x); });
+  delRows(ss.getSheetByName(TM_NAME), function (r) { return me(r) && (all || +r[2] === x); });
+  if (all) {
+    Object.keys(SHEETS).forEach(function (k) { delRows(ss.getSheetByName(SHEETS[k].name), me); });
+  } else {
+    var L = SHEETS[lsheet(cls)], ls = L && ss.getSheetByName(L.name);
+    if (ls && ls.getLastRow() > 1) {
+      var v = ls.getRange(2, 1, ls.getLastRow() - 1, 2).getValues();
+      for (var i = 0; i < v.length; i++) if (me(v[i]) && 2 + x < ls.getLastColumn()) ls.getRange(i + 2, 2 + x).setValue(0);
+    }
+    var kk = ksheet(cls), K = kk && SHEETS[kk], ks = K && ss.getSheetByName(K.name);
+    if (ks && ks.getLastRow() > 1) { // підсумок перерахує застосунок учня
+      var w = ks.getRange(2, 1, ks.getLastRow() - 1, 2).getValues();
+      for (var j = 0; j < w.length; j++) if (me(w[j])) ks.getRange(j + 2, 3, 1, 2).setValues([[0, 0]]);
+    }
+  }
+  var R = stateRows(), key = nn(name);
+  for (var r = 0; r < R.rows.length; r++) {
+    if (String(R.rows[r][0]) !== cls || nn(R.rows[r][1]) !== key) continue;
+    var st = {};
+    if (!all) { try { st = JSON.parse(decodeURIComponent(String(R.rows[r][3]))); } catch (e) { st = {}; } stripLesson(st, skey(cls, x)); }
+    R.sh.getRange(r + 2, 4, 1, 2).setValues([[encodeURIComponent(JSON.stringify(st)), new Date()]]);
+  }
+  wipeSheet(ss).appendRow([cls, name, all ? "*" : String(x), now, new Date()]);
+  return { s: "ok" };
 }

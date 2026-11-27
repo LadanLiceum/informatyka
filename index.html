@@ -16741,6 +16741,7 @@ window.uxTch=function(){var k="";try{k=localStorage.getItem("inftk")||""}catch(e
  var go=function(){var v=document.getElementById("tk").value.trim(),r=document.getElementById("tkr");if(!v)return;try{localStorage.setItem("inftk",v)}catch(e){}r.textContent="Завантаження…";
   jget("tk",[v],function(d,err){if(!d||typeof d!=="object"){r.textContent=err?"Немає зв’язку. Спробуй пізніше.":"Не вдалося: невірний ключ або TEACHER_KEY не задано в скрипті (чи скрипт не оновлено).";return}tchView(d)})};
  document.getElementById("tkb").onclick=go;if(k)go()};
+function dbtn(c,n,l,t,sm){return "<button class='tkdel"+(sm?" sm1":"")+"' data-c='"+esc(c)+"' data-n='"+esc(n)+"' data-l='"+esc(l)+"' data-t='"+esc(t)+"'>"+t+"</button>"}
 function tchView(d){var rows=d.rows||[],det=d.det||[],r=document.getElementById("tkr"),cl={},i,names={};
  det.forEach(function(x){(cl[x[0]]=cl[x[0]]||{})[x[1]]=1});rows.forEach(function(x){cl[x.c]=cl[x.c]||{}});
  var cs=Object.keys(cl).sort();
@@ -16766,15 +16767,23 @@ function tchView(d){var rows=d.rows||[],det=d.det||[],r=document.getElementById(
     var A=by[nm].sort(function(a,b){return tm(b)-tm(a)||(+b[2])-(+a[2])}),ts=A.map(tot).filter(function(v){return v!==""}),avg=ts.length?ts.reduce(function(a,b){return a+b},0)/ts.length:"";
     var inner=A.map(function(x){var tt=String(x[14]||"").split("; "),cells="",k,t2=tot(x),wq=acWarn(d.tm,x[0],x[1],x[2]);
      for(k=3;k<=11;k++){if(x[k]===""||x[k]==="-")continue;var lbl=hn[k];if(k>=4&&k<=9){var m=tt.filter(function(z){return z.indexOf((k-3)+" – ")===0})[0];if(m)lbl=m.replace(/^\d+ – /,"")}cells+="<div class='tkg'><span>"+esc(lbl)+"</span>"+col(x[k]).replace(/^<td/,"<b").replace("</td>","</b>")+"</div>"}
-     return "<details class='tkl'><summary><b>Урок "+esc(x[2])+"</b>"+(wq?"<span class='acw' title='"+esc(wq)+"'>⚠ перевір</span>":"")+"<span class='tkz'>"+(tv(x[10])?"Тест <b>"+tv(x[10])+"</b> · ":"")+(tv(x[11])?"Вел. <b>"+tv(x[11])+"</b> · ":"")+(t2===""?"":"Заг. <b>"+(Math.round(t2*10)/10)+"</b>")+"</span><span class='tkd2'>"+fd(x[13])+"</span></summary>"+(wq?"<p class='acwp'>⚠ "+esc(wq)+"</p>":"")+"<div class='tkgs'>"+cells+"</div></details>"}).join("");
-    var wn=A.filter(function(x){return acWarn(d.tm,x[0],x[1],x[2])}).length;return "<details class='tks'"+(st?" open":"")+"><summary><b>"+esc(nm)+"</b>"+(wn?"<span class='acw'>⚠ "+wn+"</span>":"")+"<span class='tkz'>"+A.length+" ур."+(avg===""?"":" · сер. "+(Math.round(avg*10)/10))+"</span></summary>"+inner+"</details>"}).join("");
+     return "<details class='tkl'><summary><b>Урок "+esc(x[2])+"</b>"+(wq?"<span class='acw' title='"+esc(wq)+"'>⚠ перевір</span>":"")+"<span class='tkz'>"+(tv(x[10])?"Тест <b>"+tv(x[10])+"</b> · ":"")+(tv(x[11])?"Вел. <b>"+tv(x[11])+"</b> · ":"")+(t2===""?"":"Заг. <b>"+(Math.round(t2*10)/10)+"</b>")+"</span><span class='tkd2'>"+fd(x[13])+"</span></summary>"+(wq?"<p class='acwp'>⚠ "+esc(wq)+"</p>":"")+"<div class='tkgs'>"+cells+"</div>"+dbtn(x[0],x[1],x[2],"🗑 Видалити оцінку за урок "+x[2])+"</details>"}).join("");
+    var wn=A.filter(function(x){return acWarn(d.tm,x[0],x[1],x[2])}).length;return "<details class='tks'"+(st?" open":"")+"><summary><b>"+esc(nm)+"</b>"+(wn?"<span class='acw'>⚠ "+wn+"</span>":"")+"<span class='tkz'>"+A.length+" ур."+(avg===""?"":" · сер. "+(Math.round(avg*10)/10))+"</span></summary>"+inner+dbtn(c,nm,"*","🗑 Видалити учня повністю")+"</details>"}).join("");
    t.innerHTML=h+"<p class='mut'>Нові уроки зверху. Натисни на учня чи урок, щоб розгорнути. Бали за 12-бальною шкалою, найкращий результат; читалка в середній бал не входить. Колір: червоний до 6, жовтий 6–9, зелений від 10.</p>"}
   else{
    var R=rows.filter(function(x){return x.c===c&&(!st||x.n===st)}).sort(function(a,b){return String(a.n).localeCompare(String(b.n),"uk")});
-   h="<table style='width:100%;border-collapse:collapse;margin-top:8px;font-size:14px'><tr><th align=left>Учень</th><th>Уроків</th><th>Сер. бал</th><th>Був</th></tr>";
+   h="<table style='width:100%;border-collapse:collapse;margin-top:8px;font-size:14px'><tr><th align=left>Учень</th><th>Уроків</th><th>Сер. бал</th><th>Був</th><th></th></tr>";
    R.forEach(function(x){var days=x.u?Math.floor((now-new Date(x.u).getTime())/864e5):null,warn=(+x.a<50&&+x.d>0)||(days!==null&&days>=14);
-    h+="<tr style='border-top:1px solid rgba(128,128,128,.3)"+(warn?";background:rgba(255,120,80,.18)":"")+"'><td>"+esc(x.n)+"</td><td align=center>"+esc(x.d)+"</td><td align=center>"+Math.round(+x.a)+"%</td><td align=center>"+(days===null?"–":days===0?"сьогодні":days+" дн.")+"</td></tr>"});
+    h+="<tr style='border-top:1px solid rgba(128,128,128,.3)"+(warn?";background:rgba(255,120,80,.18)":"")+"'><td>"+esc(x.n)+"</td><td align=center>"+esc(x.d)+"</td><td align=center>"+Math.round(+x.a)+"%</td><td align=center>"+(days===null?"–":days===0?"сьогодні":days+" дн.")+"</td><td>"+dbtn(x.c,x.n,"*","🗑",1)+"</td></tr>"});
    t.innerHTML=h+"</table><p class='mut'>Підсвічено: середній бал нижче 50% або не заходив 14+ днів.</p>"}}
+ document.getElementById("tkt").onclick=function(ev){var b=ev.target.closest&&ev.target.closest(".tkdel");if(!b||b.disabled)return;ev.preventDefault();ev.stopPropagation();
+  var c=b.getAttribute("data-c"),n=b.getAttribute("data-n"),l=b.getAttribute("data-l"),all=l==="*";
+  if(!b.classList.contains("arm")){b.classList.add("arm");b.textContent=all?"Точно стерти все в «"+n+"»? Тисни ще раз":"Точно стерти урок "+l+"? Тисни ще раз";setTimeout(function(){if(b.classList.contains("arm")){b.classList.remove("arm");b.textContent=b.getAttribute("data-t")}},4000);return}
+  b.classList.remove("arm");b.disabled=true;b.textContent="Видаляю…";var k="";try{k=localStorage.getItem("inftk")||""}catch(e){}
+  jget("del",[k,c,n,l],function(res,err){if(!res||res.s!=="ok"){b.disabled=false;b.textContent=err?"Немає зв’язку – спробуй ще":"Не вийшло: "+((res&&res.m)||"онови скрипт у таблиці");return}
+   if(all){det=d.det=det.filter(function(x){return !(x[0]===c&&x[1]===n)});rows=d.rows=rows.filter(function(x){return !(x.c===c&&x.n===n)});if(cl[c])delete cl[c][n];document.getElementById("tks").value="";fill()}
+   else{det=d.det=det.filter(function(x){return !(x[0]===c&&x[1]===n&&String(x[2])===String(l))})}
+   var op={},tt=document.getElementById("tkt");[].forEach.call(tt.querySelectorAll("details.tks[open]>summary>b"),function(x){op[x.textContent]=1});draw();[].forEach.call(tt.querySelectorAll("details.tks>summary>b"),function(x){if(op[x.textContent])x.parentNode.parentNode.open=true})})};
  document.getElementById("tkc").onchange=function(){fill();draw()};document.getElementById("tks").onchange=draw;
  document.getElementById("tkv1").onclick=function(){view=1;draw()};document.getElementById("tkv2").onclick=function(){view=2;draw()};
  fill();draw()}
@@ -16805,7 +16814,7 @@ var _who=who;who=function(){var r=_who.apply(this,arguments);try{var a=document.
 /* --- випадкова затримка відправки, щоб розтягти пік навантаження на таблицю --- */
 var _fl=flush;flush=function(){if(ENDING)return _fl();return new Promise(function(res){setTimeout(function(){_fl().then(res,function(){res([false])})},Math.floor(Math.random()*4000))})};
 /* --- стилі --- */
-var css=".tks{margin-top:8px;border:2px solid rgba(128,128,128,.35);border-radius:12px;overflow:hidden}.tks>summary{padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;background:rgba(128,128,128,.12);font-size:14px}.tkl{border-top:1px solid rgba(128,128,128,.3)}.tkl>summary{padding:8px 12px 8px 20px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:13px}.tkz{margin-left:auto;opacity:.8;font-size:12px}.tkd2{opacity:.55;font-size:11px;white-space:nowrap}.tkgs{padding:4px 12px 10px 20px;display:grid;gap:4px}.tkg{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px}.tkg b{min-width:34px;text-align:center;padding:2px 6px;border-radius:8px}"+
+var css=".tkdel{display:block;width:auto;margin:6px 12px 10px 20px;padding:6px 12px;font-size:13px;border-radius:10px;border:2px solid rgba(240,80,80,.6)!important;background:rgba(240,80,80,.12)!important;color:inherit;cursor:pointer;box-shadow:none!important}.tkdel.sm1{margin:0;padding:2px 6px}.tkdel.arm{background:#e0314f!important;color:#fff!important;border-color:#e0314f!important}"+".tks{margin-top:8px;border:2px solid rgba(128,128,128,.35);border-radius:12px;overflow:hidden}.tks>summary{padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;background:rgba(128,128,128,.12);font-size:14px}.tkl{border-top:1px solid rgba(128,128,128,.3)}.tkl>summary{padding:8px 12px 8px 20px;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:13px}.tkz{margin-left:auto;opacity:.8;font-size:12px}.tkd2{opacity:.55;font-size:11px;white-space:nowrap}.tkgs{padding:4px 12px 10px 20px;display:grid;gap:4px}.tkg{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px}.tkg b{min-width:34px;text-align:center;padding:2px 6px;border-radius:8px}"+
 ".tkd td,.tkd th{padding:4px 3px}.tkd th{font-size:11px}"+
 ".uxtl{text-align:center;margin:26px 0 8px}.uxtl button{background:none!important;border:0!important;box-shadow:none!important;color:inherit;opacity:.45;font-size:13px;text-decoration:underline;padding:6px 10px;width:auto;cursor:pointer}.uxtl button:hover{opacity:.8}"+
 ".uxp{margin:10px 0;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);display:flex;flex-direction:column;gap:8px;font-size:15px}"+
@@ -16860,6 +16869,16 @@ function apply(R){var ch=0,L=snap(0);
   if(k==="infux"){var u=rj("infux")||{};u[pk()]=m;localStorage.setItem("infux",JSON.stringify(u))}
   else if(k==="inf5ant"){var a=rj("inf5ant")||{};Object.keys(m).forEach(function(q){if(!(q in a)){a[q]=m[q];ch=1}});localStorage.setItem("inf5ant",JSON.stringify(a))}
   else localStorage.setItem(k,js)});return ch}
+/* видалення вчителем: стираємо урок (або все) і на цьому пристрої */
+function skey(c,x){c=String(c);if(/^10-ІТ/.test(c))return 1000+x;if(/^10-/.test(c))return 1200+x;if(/^11/.test(c))return 1100+x;var d=parseInt(c,10);return d==9?x:d*100+x}
+var BST=["inf5l","inf6l","inf7l","inf8","inf9","inf10","inf10g","inf11l"];
+function wipe(W){if(!W||!W.length)return 0;var lg=rj("infwp")||{},lt=+lg[pk()]||0,mx=lt,n=0;
+ W.forEach(function(w){var ts=+w[1]||0;if(ts<=lt)return;mx=Math.max(mx,ts);n++;
+  if(w[0]==="*"){SK.forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});var u=rj("infux")||{};delete u[pk()];try{localStorage.setItem("infux",JSON.stringify(u))}catch(e){}
+   var a=rj("inf5ant")||{},pre=pk()+"|";Object.keys(a).forEach(function(q){if(q.indexOf(pre)===0)delete a[q]});try{localStorage.setItem("inf5ant",JSON.stringify(a))}catch(e){}}
+  else{var key=skey(ME.c,+w[0]);BST.forEach(function(s){var b=rj(s);if(!b||typeof b!=="object")return;["l","rd","sc"].forEach(function(f){if(b[f])delete b[f][key]});try{localStorage.setItem(s,JSON.stringify(b))}catch(e){}})}});
+ if(!n)return 0;lg[pk()]=mx;try{localStorage.setItem("infwp",JSON.stringify(lg));localStorage.setItem("infwpush","1")}catch(e){}
+ var q=qget();delete q[pk()];qset(q);return 1}
 var done={},DIAG="";
 function dlg(h){var o=document.createElement("div");o.className="sess-ov";o.innerHTML="<div class='sess-b' role='dialog'>"+h+"</div>";document.body.appendChild(o);return o}
 function rm(o){if(o&&o.parentNode)o.parentNode.removeChild(o)}
@@ -16872,6 +16891,7 @@ function check(cb,login){fetchSt().then(function(d){
  if(d.s==="bad"){cb(false,"PIN не підходить до цього імені. Перевір PIN і написання імені. Забув PIN – попроси вчителя скинути.");return}
  if(d.s==="sug"){ask("Це ти?","Схоже, ти вже входив(ла) як <b>"+esc(d.n)+"</b>. Продовжити з цим іменем?","Так, це я","Ні, я інший",function(y){if(!y){cb(false,"Тоді зміни PIN або ім’я.");return}ME.n=d.n;check(cb,login)});return}
  if(d.s==="new"&&login){ask("Новий профіль","Ти входиш уперше як <b>"+esc(ME.n)+"</b>. Усе написано правильно? Запам’ятай свій PIN.","Так, усе вірно","Виправити",function(y){cb(y)});return}
+ if(d.s==="ok"&&wipe(d.w)){var R0=null;try{R0=JSON.parse(decodeURIComponent(d.p))}catch(e){}if(R0)apply(R0);sv("inf5me",JSON.stringify(ME));try{sessionStorage.setItem("infpl:"+ME.c+"|"+ME.n,"1")}catch(e){}try{note("Вчитель оновив твої оцінки")}catch(e){}setTimeout(function(){location.reload()},400);return}
  if(d.s==="ok"&&d.p){var R=null;try{R=JSON.parse(decodeURIComponent(d.p))}catch(e){}
   if(R){sv("inf5me",JSON.stringify(ME));var rk="infrl:"+ME.c+"|"+ME.n,was=0;try{was=sessionStorage.getItem(rk)}catch(e){}if(apply(R)&&!was){try{sessionStorage.setItem(rk,"1");sessionStorage.setItem("infpl:"+ME.c+"|"+ME.n,"1")}catch(e){}try{note("Відновлено прогрес ✔")}catch(e){}setTimeout(function(){location.reload()},400);return}}}
  cb(true)})}
@@ -16879,6 +16899,7 @@ window.loginCheck=function(cb){check(function(ok,msg){if(ok){try{sessionStorage.
 function pull(){if(!ME||ME.t)return;if(!ME.p){return}if(!on())return;var key=pk();if(done[key])return;done[key]=1;
  var flag="infpl:"+key;try{if(sessionStorage.getItem(flag)){SYNCBLOCK=false;return}}catch(e){}
  check(function(ok,msg){if(!ok){ME=null;try{localStorage.removeItem("inf5me")}catch(e){}who();return}try{sessionStorage.setItem(flag,"1")}catch(e){}SYNCBLOCK=false;later()},0)}
+setTimeout(function(){try{if(localStorage.getItem("infwpush")&&ME&&!ME.t&&on()){localStorage.removeItem("infwpush");push()}}catch(e){}},6000);
 var _tp=topics;topics=function(){if(ME&&!ME.t&&!ME.p&&CK[ME.c]){var m=ME;ME=null;who();var nm=document.getElementById("nm"),cl=document.getElementById("cl");if(nm)nm.value=m.n;if(cl)cl.value=m.c;var e=document.getElementById("er");if(e)e.textContent="Додай PIN (4 цифри) – він повертає твій прогрес на інших пристроях.";return}var r=_tp.apply(this,arguments);try{pull()}catch(e){}return r};
 })();
 /* Посилання з QR: ?c=8-А&k=КОД – підставляє клас і код у форму входу (потім адресу очищено) */
