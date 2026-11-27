@@ -22524,7 +22524,7 @@ GM.card7=function(g){inj();var POOL,me,ac,turn,ok,tot,cmb,best,log,stg;
 try{if(window.GI7)GI7.card7=["🃏","Карткова дуель"];if(window.GI)GI.card7=["🃏","Карткова дуель"]}catch(e){}
 
 /* складні ігри 7 класу (нові) — по черзі в уроках, крім кінців тем */
-var CX=[["bot7","Збери бота"],["card7","Карткова дуель"],["beat7","Біт-майстер"],["alien7","Прибулець в інтернеті"],["spy7","Шифровка агента"],["tet7","Тетріс знань"],["run7","Ранер-втеча"],["tama7","Тамагочі-бот"],["kart7","Картинг-гран-прі"]],k=0;
+var CX=[["bot7","Збери бота"],["card7","Карткова дуель"],["beat7","Біт-майстер"],["alien7","Прибулець в інтернеті"],["spy7","Шифровка агента"],["tet7","Тетріс знань"],["run7","Ранер-втеча"],["tama7","Тамагочі-бот"],["kart7","Картинг-гран-прі"],["stream7","Стрім-модератор"]],k=0;
 if(window.LES)for(var n=1;n<=52;n++){var L=LES[700+n];if(!L||!L.g||!L.g.length||!L.q||!L.q.length)continue;
  var R=[];L.q.forEach(function(x){if(x&&x.a&&x.a.length>=2)R.push({q:x.q,o:x.a.slice(),a:0,w:x.e||""})});
  if(R.length>=8){var c=CX[k++%CX.length];L.g.push({type:c[0],title:c[1],rounds:R})}}
@@ -23440,6 +23440,124 @@ GM.kart7=function(g){inj();var POOL,qi,ok,tot,log,stg,P,L,K,raf=0,last=0,phase,d
  document.addEventListener("visibilitychange",function(){if(!A)return;try{document.hidden?A.suspend():A.resume()}catch(e){}});
  intro()};
 try{if(window.GI7)GI7.kart7=["🏎","Картинг-гран-прі"];if(window.GI)GI.kart7=["🏎","Картинг-гран-прі"]}catch(e){}
+})();
+
+/* ===== 7 клас · складна гра «Стрім-модератор» =====
+   Ти модеруєш стрім Бота-чемпіона. Раунд = хвиля чату (бань шкідливе 🚫, не чіпай нормальне) + питання від глядача.
+   Оцінка — за правильні відповіді на питання. Модерація впливає на глядачів і рейтинг стріму. Звук — WebAudio. */
+(function(){if(!window.GM||!window.X7)return;
+var X=X7,O=X.O,esc=X.esc,shf=X.shf,alive=X.alive,vib=X.vib;
+function $i(x){return document.getElementById(x)}
+function B7(e){try{return window.BOT7?BOT7(e):""}catch(x){return ""}}
+var NR=8;
+var NICK=["kit","ola_07","max.exe","ліна","dan4ik","sofi","tima","yarik","nastya","bohdan_pro","iryna","zhenya","marta","vlad"];
+var NC=["#ff8ab0","#7ee787","#58c4ff","#ffd23f","#c58bff","#ff9a2a"];
+var GOOD=["Привіт усім! 👋","🔥🔥🔥","Круто виходить!","GG 😎","А коли наступний стрім?","лол 😂","Бот, ти топ!","Я з 7-Б, всім привіт","Дякую за пояснення!","👍👍","Хто тут з уроку?","Можна ще раз?"];
+var BAD=[["БЕЗКОШТОВНИЙ АЙФОН ➜ bit.ly/fr33-ph0ne","спам-посилання"],["Скиньте код із SMS, я перевірю 😉","шахрайство"],["ти нуб, вимикай стрім","образа"],["моя адреса вул. Шкільна 5, кв 12","особисті дані"],["перешли пароль від акаунта, бро","фішинг"],["ВСІ СЮДИ ➜ free-skins.xyz","спам-посилання"],["хто не підпишеться — лох","образа"],["мій телефон 097 123 45 67 пишіть","особисті дані"],["Безкоштовні гроші! Введи дані картки","шахрайство"]];
+
+/* ---------- звук ---------- */
+var A=null,M=null,MUTE=false;try{MUTE=localStorage.getItem("inf7mus")=="0"}catch(e){}
+function ac(){if(A)return A;var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;A=new C();M=A.createGain();M.gain.value=MUTE?0:.45;M.connect(A.destination);return A}
+function bp(f,t,len,type,v,f2){if(!A)return;var o=A.createOscillator(),g=A.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+len);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v||.1,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+len);o.connect(g);g.connect(M);o.start(t);o.stop(t+len+.02)}
+var SND={msg:function(){if(ac())bp(1200,A.currentTime,.05,"sine",.05)},ban:function(){if(ac()){bp(180,A.currentTime,.15,"square",.12,90);bp(660,A.currentTime+.05,.1,"triangle",.1)}},
+ oops:function(){if(ac())bp(300,A.currentTime,.3,"sawtooth",.08,120)},leak:function(){if(!ac())return;var t=A.currentTime;bp(520,t,.12,"square",.07);bp(390,t+.12,.2,"square",.07)},
+ like:function(){if(!ac())return;var t=A.currentTime;[784,988,1318].forEach(function(f,i){bp(f,t+i*.07,.16,"triangle",.12)})},
+ live:function(){if(!ac())return;var t=A.currentTime;[523,659,784].forEach(function(f,i){bp(f,t+i*.12,.2,"square",.07)})}};
+
+/* ---------- стилі ---------- */
+var CSS="\
+.smV{position:relative;border-radius:20px;overflow:hidden;border:3px solid #fff;box-shadow:0 6px 0 rgba(0,0,0,.3)}.smV>svg{display:block;width:100%;height:auto}\
+.smBot{position:absolute;left:36%;bottom:4%;width:28%;pointer-events:none}.smBot svg{width:100%;height:auto}\
+.smLive{position:absolute;left:8px;top:8px;display:flex;gap:6px;pointer-events:none}.smLive span{border-radius:8px;padding:3px 8px;font:900 12px system-ui;color:#fff;background:rgba(10,5,40,.82)}.smLive span.r{background:#e0314f}.smLive span.r:before{content:'● ';animation:smBk 1s steps(2) infinite}@keyframes smBk{50%{opacity:0}}\
+.smMu{position:absolute;right:8px;top:8px;z-index:3;width:34px!important;height:34px!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:10px!important;border:2px solid #fff!important;background:rgba(10,5,40,.85)!important;font-size:16px!important;line-height:1!important;cursor:pointer;box-shadow:none!important}\
+.smAl{position:absolute;left:50%;top:22%;transform:translateX(-50%);white-space:nowrap;background:#ffd23f;color:#1a0e3a;border:3px solid "+O+";border-radius:14px;padding:5px 12px;font:900 italic 15px system-ui;box-shadow:0 4px 0 rgba(0,0,0,.3);animation:smAl 1.4s ease-out forwards;pointer-events:none}.smAl.bad{background:#ff5a7a;color:#fff}@keyframes smAl{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}15%{opacity:1;transform:translate(-50%,0) scale(1.05)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-14px)}}\
+.smLk{position:absolute;bottom:8%;font-size:22px;animation:smLk 1.4s ease-out forwards;pointer-events:none}@keyframes smLk{to{transform:translateY(-120px) scale(1.4);opacity:0}}\
+.smC{margin-top:10px;background:#120838;border:2px solid #3a2a9c;border-radius:16px;padding:24px 8px 8px;height:224px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;position:relative}\
+.smC:before{content:'💬 ЧАТ СТРІМУ';position:absolute;left:10px;top:6px;font:900 10px system-ui;color:#6b5fc7;letter-spacing:.06em}\
+.smM{display:flex;align-items:center;gap:8px;background:#22165e;border-radius:10px;padding:6px 6px 6px 10px;font:600 13px/1.3 system-ui;color:#e6e1ff;animation:smIn .25s ease-out}@keyframes smIn{from{opacity:0;transform:translateY(12px)}}\
+.smM span{flex:1;min-width:0}.smM b{font-weight:900;margin-right:4px}\
+.zb .smM button{flex:none;width:40px!important;height:34px!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:9px!important;border:2px solid "+O+"!important;background:#ff5a7a!important;font-size:16px!important;line-height:1!important;cursor:pointer;box-shadow:0 3px 0 "+O+"!important}\
+.zb .smM button:active{transform:translateY(2px);box-shadow:0 1px 0 "+O+"!important}\
+.smM.ban{background:#1f6f3a;text-decoration:line-through;opacity:.7}.smM.ban button,.smM.leak button,.smM.oops button,.smM.ok button{visibility:hidden}\
+.smM.leak{background:#7a1f2e;animation:smSh .4s}@keyframes smSh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}\
+.smM.oops{background:#5a4a1f}.smM.ok{opacity:.55}\
+.smM i{display:block;font-style:normal;font:800 10px system-ui;color:#ffd23f;margin-top:2px}\
+.smPin{border:3px solid #ffd23f;background:#2a1d78;border-radius:16px;padding:10px 12px;color:#fff;margin-top:10px}\
+.smPin small{font:900 11px system-ui;color:#ffd23f;letter-spacing:.04em;text-transform:uppercase}.smPin b{display:block;font:800 15px/1.35 system-ui;margin-top:3px}\
+.smO{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}\
+.zb .smO button{position:relative;width:auto!important;margin:0!important;min-height:54px;border:3px solid "+O+"!important;border-radius:16px 16px 16px 4px!important;padding:9px 10px!important;background:#fff!important;color:#1a0e3a!important;font:800 13.5px/1.25 system-ui!important;box-shadow:0 4px 0 "+O+"!important;cursor:pointer;text-align:left;text-transform:none!important}\
+.zb .smO button:active{transform:translateY(3px);box-shadow:0 1px 0 "+O+"!important}\
+.zb .smO button.sOk{background:#a8ffb8!important}.zb .smO button.sBad{background:#ffb3c4!important}.zb .smO button.sDim{opacity:.35}\
+.smTip{margin-top:6px;text-align:center;font:800 12px system-ui;color:#a99fe8}\
+body.lite .smLive span.r:before{animation:none!important}\
+";
+var injd=0;function inj(){X.inj();if(injd)return;injd=1;var s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s)}
+
+function studio(){var s="<defs><linearGradient id='smBg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#2a1478'/><stop offset='1' stop-color='#7a2cff'/></linearGradient><radialGradient id='smRg' cx='.5' cy='.5' r='.5'><stop offset='0' stop-color='#ff3f8e' stop-opacity='.7'/><stop offset='1' stop-color='#ff3f8e' stop-opacity='0'/></radialGradient></defs><rect width='360' height='200' fill='url(#smBg)'/>";
+ s+="<circle cx='180' cy='92' r='78' fill='url(#smRg)'/>";
+ for(var i=0;i<6;i++)s+="<rect x='"+(14+i*58)+"' y='14' width='44' height='30' rx='6' fill='#140a46' opacity='.5'/>";
+ s+="<rect x='24' y='60' width='70' height='46' rx='8' fill='#140a46' stroke='#58c4ff' stroke-width='3'/><text x='59' y='90' text-anchor='middle' font-size='20'>🎮</text>";
+ s+="<rect x='262' y='56' width='80' height='54' rx='8' fill='#140a46' stroke='#ffd23f' stroke-width='3'/><text x='302' y='78' text-anchor='middle' font-size='8' font-weight='900' fill='#ffd23f'>ПІДПИСНИКИ</text><text id='smSub' x='302' y='100' text-anchor='middle' font-size='16' font-weight='900' fill='#fff'>0</text>";
+ s+="<path d='M0 170 Q180 150 360 170 V200 H0z' fill='#140a46'/><rect x='70' y='160' width='220' height='14' rx='6' fill='#3a2a9c' stroke='"+O+"' stroke-width='3'/>";
+ s+="<g transform='translate(250,128)'><rect x='-3' y='0' width='6' height='34' fill='#222'/><rect x='-8' y='-16' width='16' height='22' rx='8' fill='#555' stroke='"+O+"' stroke-width='2.5'/></g>";
+ s+="<text x='180' y='192' text-anchor='middle' font-size='10' font-weight='900' fill='#a99fe8'>КІБЕРСЕЗОН LIVE · СТРІМ БОТА-ЧЕМПІОНА</text>";
+ return s}
+
+GM.stream7=function(g){inj();var POOL,ri,ok,tot,log,view,subs,bans,leaks,oops,stg,tmrs=[],active=0,phase;
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){if(h.tagName=="H2")h.style.display="none";else h.classList.add("x7cmp")})}catch(e){}}
+ function reset(){POOL=shf(g.rounds||[]);ri=0;ok=0;tot=0;log=[];view=120;subs=0;bans=0;leaks=0;oops=0;clear()}
+ function clear(){tmrs.forEach(clearTimeout);tmrs=[]}
+ function later(f,ms){tmrs.push(setTimeout(function(){if(alive(stg))f()},ms))}
+ function mute(){MUTE=!MUTE;try{localStorage.setItem("inf7mus",MUTE?"0":"1")}catch(e){}if(M)M.gain.value=MUTE?0:.45;var b=$i("smMu");if(b)b.textContent=MUTE?"🔇":"🔊"}
+ function bot(e){var b=$i("smBot");if(b)b.innerHTML=B7(e)}
+ function hud(){$i("smVw").textContent="👁 "+Math.max(0,view);$i("smRd").textContent="Раунд "+Math.min(ri+1,NR)+"/"+NR;var s=$i("smSub");if(s)s.textContent=subs}
+ function alert(t,bad){var v=$i("smVv");if(!v)return;var e=document.createElement("div");e.className="smAl"+(bad?" bad":"");e.textContent=t;v.appendChild(e);later(function(){if(e.parentNode)e.parentNode.removeChild(e)},1400)}
+ function likes(n,ch){var v=$i("smVv");for(var i=0;i<n;i++)(function(i){later(function(){var e=document.createElement("div");e.className="smLk";e.style.left=(55+Math.random()*35)+"%";e.textContent=ch||["❤️","⭐","👍","🔥"][i%4];v.appendChild(e);later(function(){if(e.parentNode)e.parentNode.removeChild(e)},1400)},i*120)})(i)}
+
+ function intro(){reset();shell();gs9("Складна гра");
+  var art="<svg viewBox='0 0 360 150' xmlns='http://www.w3.org/2000/svg'><rect x='20' y='14' width='190' height='120' rx='12' fill='#140a46' stroke='#fff' stroke-width='3'/><rect x='30' y='24' width='44' height='16' rx='4' fill='#e0314f'/><text x='52' y='36' text-anchor='middle' font-size='10' font-weight='900' fill='#fff'>● LIVE</text><text x='115' y='92' text-anchor='middle' font-size='44'>🤖</text>";
+  [["@kit: Привіт! 👋","#7ee787"],["@xx: ФРІ СКІНИ ➜","#ff8ab0"],["@ola: 🔥🔥🔥","#58c4ff"]].forEach(function(m,i){art+="<rect x='220' y='"+(18+i*40)+"' width='126' height='32' rx='8' fill='#22165e'/><text x='228' y='"+(38+i*40)+"' font-size='10' font-weight='800' fill='"+m[1]+"'>"+m[0]+"</text>"+(i==1?"<text x='328' y='"+(39+i*40)+"' font-size='14'>🚫</text>":"")});
+  art+="</svg>";
+  $i("zbR").innerHTML="<div class='zbHd' style='background:linear-gradient(120deg,#e0314f,#7a2cff)'><small>СКЛАДНА ГРА · КІБЕРСЕЗОН LIVE</small>"+art+"</div>"
+   +"<div class='zbIn'><h3>Ти — модератор стріму</h3><p>Бот-чемпіон веде прямий ефір, а в чат налітають і друзі, і тролі, і шахраї. Захисти глядачів — і відповідай на їхні питання. Від тебе залежить, чи виросте стрім!</p>"
+   +"<div class='zbRu'><i>🚫</i><span><b>Хвиля чату:</b> бань спам, шахраїв, образи й чужі особисті дані — поки повідомлення не проскочило. <b>Нормальних глядачів не чіпай!</b></span></div>"
+   +"<div class='zbRu'><i>❓</i><span><b>Питання від глядача:</b> обери правильну відповідь — глядачі в захваті, підписки ростуть.</span></div>"
+   +"<div class='zbRu'><i>📈</i><span><b>8 раундів.</b> Оцінка — за відповіді на питання. А модерація вирішує рейтинг стріму: ⭐⭐⭐.</span></div>"
+   +"<button class='zbGo' id='zbGo'>Вийти в ефір ▶</button></div>";
+  $i("zbGo").onclick=function(){ac();try{A.resume()}catch(e){}start()}}
+
+ function start(){shell();gs9("В ефірі");
+  $i("zbR").innerHTML="<div class='smV' id='smVv'><svg id='smS' viewBox='0 0 360 200' xmlns='http://www.w3.org/2000/svg'>"+studio()+"</svg><div class='smBot' id='smBot'>"+B7("hype")+"</div><div class='smLive'><span class='r'>LIVE</span><span id='smVw'></span><span id='smRd'></span></div><button class='smMu' id='smMu'>"+(MUTE?"🔇":"🔊")+"</button></div>"
+   +"<div class='smC' id='smC'></div><div id='smW'></div><div class='zbMsg' id='zbM'></div><div id='smN'></div>";
+  stg=$i("smS");$i("smMu").onclick=mute;hud();SND.live();alert("🔴 ЕФІР ПОЧАВСЯ!");
+  $i("smC").onclick=function(e){var b=e.target.closest("button");if(!b)return;var m=b.closest(".smM");if(m&&m._ban)m._ban()};
+  later(round,1200)}
+ function round(){if(ri>=NR)return end();phase="chat";hud();gs9("Модеруй чат!");bot("idle");$i("smW").innerHTML="<div class='smTip'>👀 Слідкуй за чатом: 🚫 — лише для шкідливого!</div>";$i("zbM").innerHTML="";$i("smN").innerHTML="";
+  var n=5,bad=1+(ri>2?1:0)+(ri>5?1:0),seq=shf([0,0,0,0,0].map(function(_,i){return i<bad}));active=n;
+  seq.forEach(function(isBad,i){later(function(){msg(isBad)},400+i*(1300-ri*40))})}
+ function msg(isBad){var c=$i("smC");if(!c)return;var nick=NICK[Math.floor(Math.random()*NICK.length)],col=NC[Math.floor(Math.random()*NC.length)],B=isBad?BAD[Math.floor(Math.random()*BAD.length)]:null,txt=isBad?B[0]:GOOD[Math.floor(Math.random()*GOOD.length)];
+  var e=document.createElement("div");e.className="smM";e.innerHTML="<span><b style='color:"+col+"'>@"+esc(nick)+":</b>"+esc(txt)+"<i></i></span><button title='Забанити'>🚫</button>";c.appendChild(e);SND.msg();
+  while(c.children.length>5)c.removeChild(c.firstChild);
+  var done=false,life=4800-ri*150;
+  function fin(){if(done)return;done=true;active--;hud();if(active<=0)later(ask,700)}
+  e._ban=function(){if(done)return;if(isBad){bans++;view+=6;e.className="smM ban";e.querySelector("i").textContent="🛡 забанено: "+B[1];SND.ban();vib(15);alert("🛡 +6 глядачів")}else{oops++;view-=8;e.className="smM oops";e.querySelector("i").textContent="😬 це був нормальний глядач!";SND.oops();vib([30,30]);alert("😬 −8 глядачів",1);bot("sad")}fin()};
+  later(function(){if(done)return;if(isBad){leaks++;view-=10;e.className="smM leak";e.querySelector("i").textContent="⚠️ проскочило: "+B[1];SND.leak();vib([40,30,40]);alert("⚠️ −10 глядачів",1);bot("sad")}else e.className="smM ok";fin()},life)}
+ function ask(){if(!alive(stg)||phase=="q")return;phase="q";var Q=POOL[ri%POOL.length],nick=NICK[Math.floor(Math.random()*NICK.length)];gs9("Питання глядача");bot("think");
+  var o=shf(Q.o.map(function(t,i){return {t:t,c:i===Q.a}}));Q._o=o;
+  $i("smW").innerHTML="<div class='smPin'><small>📌 @"+esc(nick)+" питає в чаті</small><b>"+esc(Q.q)+"</b></div><div class='smO' id='smO'>"+o.map(function(x,i){return "<button data-i='"+i+"'>"+esc(x.t)+"</button>"}).join("")+"</div>";
+  $i("smO").onclick=function(e){var b=e.target.closest("button");if(!b||b.disabled)return;ans(Q,+b.getAttribute("data-i"))}}
+ function ans(Q,j){var c=Q._o[j].c;tot++;ri++;[].forEach.call($i("smO").querySelectorAll("button"),function(b,i){b.disabled=true;b.className=Q._o[i].c?"sOk":(i==j?"sBad":"sDim")});
+  if(c){ok++;view+=15;subs+=3;SND.like();vib(20);bot("hype");likes(8);alert("❤️ +15 глядачів · +3 підписки");$i("zbM").innerHTML="✅ Чат у захваті!";hud();later(round,1700);return}
+  log.push(Q);view-=8;SND.oops();bot("sad");likes(4,"👎");alert("👎 −8 глядачів",1);hud();
+  $i("zbM").innerHTML="Правильно: <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.85;font-weight:600'>"+esc(Q.w)+"</span>":"");
+  $i("smN").innerHTML="<button class='zbGo' id='smNx'>Далі ▶</button>";$i("smNx").onclick=round}
+ function end(){clear();phase="end";var st=view>=230?3:view>=170?2:view>=110?1:0;gs9("Ефір завершено");bot(st>=2?"hype":"happy");likes(st*4);SND.like();
+  var rv=log.length?"<div class='zbRv'><h4>Розбір помилок</h4>"+log.map(function(Q){return "<div>"+esc(Q.q)+"<br>✔ <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.8'>"+esc(Q.w)+"</span>":"")+"</div>"}).join("")+"</div>":"";
+  $i("smW").innerHTML="<div class='zbRes "+(st>=2?"w":"l")+"'><h3>"+["Стрім провалився","📺 Нормальний ефір","🔥 Крутий стрім!","🏆 Стрім року!"][st]+"</h3><p>"+"⭐".repeat(st)+"☆".repeat(3-st)+"<br>Відповіді: <b style='color:#fff'>"+ok+" з "+tot+"</b> · глядачів: "+Math.max(0,view)+" · підписок: "+subs+"<br>🛡 забанено: "+bans+" · ⚠️ проскочило: "+leaks+" · 😬 помилкових банів: "+oops+"</p></div>"+rv
+   +"<div class='zbBtns'><button class='zbGo alt' id='zbAg'>↻ Ще раз</button><button class='zbGo' id='zbEnd'>Результат</button></div>";
+  $i("zbM").innerHTML="";$i("smN").innerHTML="";$i("zbAg").onclick=intro;var sc=ok,t=Math.max(tot,1);$i("zbEnd").onclick=function(){fin9(sc,t)}}
+ intro()};
+try{if(window.GI7)GI7.stream7=["🎥","Стрім-модератор"];if(window.GI)GI.stream7=["🎥","Стрім-модератор"]}catch(e){}
 })();
 
 /* 7 клас «Сезон»: маскот Бот-чемпіон – хаб, брифінг уроку, реакції на відповіді в іграх і тестах, фінальний екран. ES5. */
