@@ -22523,7 +22523,7 @@ GM.card7=function(g){inj();var POOL,me,ac,turn,ok,tot,cmb,best,log,stg;
 try{if(window.GI7)GI7.card7=["🃏","Карткова дуель"];if(window.GI)GI.card7=["🃏","Карткова дуель"]}catch(e){}
 
 /* складні ігри 7 класу (нові) — по черзі в уроках, крім кінців тем */
-var CX=[["bot7","Збери бота"],["card7","Карткова дуель"],["beat7","Біт-майстер"]],k=0;
+var CX=[["bot7","Збери бота"],["card7","Карткова дуель"],["beat7","Біт-майстер"],["alien7","Прибулець в інтернеті"]],k=0;
 if(window.LES)for(var n=1;n<=52;n++){var L=LES[700+n];if(!L||!L.g||!L.g.length||!L.q||!L.q.length)continue;
  var R=[];L.q.forEach(function(x){if(x&&x.a&&x.a.length>=2)R.push({q:x.q,o:x.a.slice(),a:0,w:x.e||""})});
  if(R.length>=8){var c=CX[k++%CX.length];L.g.push({type:c[0],title:c[1],rounds:R})}}
@@ -22672,6 +22672,157 @@ GM.beat7=function(g){inj();var POOL,S,qi,ok,tot,log,stg,step=0,nextT=0,timer=0,t
  document.addEventListener("visibilitychange",function(){if(!A)return;try{document.hidden?A.suspend():(run&&A.resume())}catch(e){}});
  intro()};
 try{if(window.GI7)GI7.beat7=["🎵","Біт-майстер"];if(window.GI)GI.beat7=["🎵","Біт-майстер"]}catch(e){}
+})();
+
+/* ===== 7 клас · складна гра «Прибулець в інтернеті» =====
+   1) Навчання: Блюп питає — ти пояснюєш. Правильно → кристал знань. Хибно → вірус-глюк і питання йде «в борг».
+   2) Іспит на кораблі: Блюп сам відповідає на вивчене, а там, де ти помилився, шепоче «підкажи!» — друга спроба.
+   Бали: перша спроба 2, друга 1 (з 12). Звук — WebAudio, кнопка 🔊. */
+(function(){if(!window.GM||!window.X7)return;
+var X=X7,O=X.O,esc=X.esc,shf=X.shf,alive=X.alive,vib=X.vib;
+function $i(x){return document.getElementById(x)}
+
+/* ---------- звук ---------- */
+var A=null,M=null,MUTE=false;try{MUTE=localStorage.getItem("inf7mus")=="0"}catch(e){}
+function ac(){if(A)return A;var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;A=new C();M=A.createGain();M.gain.value=MUTE?0:.5;M.connect(A.destination);return A}
+function bp(f,t,len,type,v,f2){if(!A)return;var o=A.createOscillator(),g=A.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+len);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v||.2,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+len);o.connect(g);g.connect(M);o.start(t);o.stop(t+len+.02)}
+var SND={talk:function(){if(!ac())return;var t=A.currentTime;for(var i=0;i<6;i++)bp(500+Math.random()*700,t+i*.07,.06,"square",.06)},
+ ok:function(){if(!ac())return;var t=A.currentTime;[660,880,1320].forEach(function(f,i){bp(f,t+i*.08,.18,"triangle",.18)})},
+ bad:function(){if(!ac())return;var t=A.currentTime;bp(220,t,.35,"sawtooth",.12,70);for(var i=0;i<5;i++)bp(100+Math.random()*900,t+.05+i*.05,.04,"square",.05)},
+ beam:function(){if(!ac())return;bp(300,A.currentTime,.6,"sine",.12,1200)},
+ yes:function(){if(!ac())return;bp(1046,A.currentTime,.12,"sine",.15)},
+ win:function(){if(!ac())return;var t=A.currentTime;[523,659,784,1046,1318].forEach(function(f,i){bp(f,t+i*.11,.3,"triangle",.16)})}};
+
+/* ---------- Блюп ---------- */
+function blup(mood){var S="stroke='"+O+"' stroke-width='3.5' stroke-linejoin='round'",gl=mood=="glitch",c=gl?"#a8ff3e":"#7ee787",c2=gl?"#5fbf1f":"#3fbf6a";
+ var eyes=mood=="happy"?"<path d='M-16 -30 q6 -8 12 0 M4 -30 q6 -8 12 0' stroke='"+O+"' stroke-width='4' fill='none' stroke-linecap='round'/>":mood=="sad"?"<ellipse cx='-10' cy='-28' rx='7' ry='9' fill='"+O+"'/><ellipse cx='10' cy='-28' rx='7' ry='9' fill='"+O+"'/><path d='M-18 -37 l10 -5 M18 -37 l-10 -5' stroke='"+O+"' stroke-width='3' stroke-linecap='round'/>":gl?"<text x='-10' y='-22' text-anchor='middle' font-size='16' font-weight='900' fill='#ff2e63'>×</text><text x='10' y='-22' text-anchor='middle' font-size='16' font-weight='900' fill='#ff2e63'>×</text>":"<ellipse class='alEye' cx='-10' cy='-28' rx='8' ry='11' fill='"+O+"'/><ellipse class='alEye' cx='10' cy='-28' rx='8' ry='11' fill='"+O+"'/><circle cx='-7' cy='-32' r='3' fill='#fff'/><circle cx='13' cy='-32' r='3' fill='#fff'/>";
+ var mouth=mood=="happy"?"<path d='M-8 -10 q8 10 16 0' fill='#ff6b9a' "+S+"/>":mood=="sad"||gl?"<path d='M-7 -8 q7 -6 14 0' fill='none' "+S+"/>":"<ellipse cx='0' cy='-10' rx='4' ry='3' fill='"+O+"'/>";
+ return "<g class='alB"+(gl?" alGl":"")+"'><path d='M-8 -58 Q-14 -76 -22 -80' fill='none' "+S+"/><path d='M8 -58 Q14 -76 22 -80' fill='none' "+S+"/><circle class='alAnt' cx='-22' cy='-82' r='6' fill='#ffd23f' "+S+"/><circle class='alAnt' cx='22' cy='-82' r='6' fill='#ffd23f' "+S+"/>"
+  +"<path d='M-20 6 Q-24 40 -14 44 H14 Q24 40 20 6z' fill='"+c2+"' "+S+"/><path d='M-20 14 Q-34 20 -36 30' fill='none' "+S+" stroke-linecap='round'/><path d='M20 14 Q34 18 38 6' fill='none' "+S+" stroke-linecap='round'/>"
+  +"<ellipse cx='0' cy='-26' rx='34' ry='32' fill='"+c+"' "+S+"/>"+eyes+mouth+"<ellipse cx='-22' cy='-14' rx='5' ry='3' fill='#ff8ab0' opacity='.6'/><ellipse cx='22' cy='-14' rx='5' ry='3' fill='#ff8ab0' opacity='.6'/>"
+  +"<rect x='26' y='-6' width='20' height='30' rx='5' fill='#1a0e3a' "+S+" transform='rotate(18 36 9)'/><rect x='29' y='-2' width='14' height='20' rx='3' fill='#58c4ff' transform='rotate(18 36 9)'/></g>"}
+function saucer(inner){return "<g><ellipse cx='0' cy='30' rx='92' ry='26' fill='#8f96c8' stroke='"+O+"' stroke-width='3.5'/><ellipse cx='0' cy='24' rx='92' ry='18' fill='#b9bfe8' stroke='"+O+"' stroke-width='3'/>"
+ +"<path d='M-52 22 A52 56 0 0 1 52 22z' fill='rgba(160,230,255,.35)' stroke='"+O+"' stroke-width='3.5'/>"+inner
+ +[-60,-30,0,30,60].map(function(x,i){return "<circle class='alLt' style='animation-delay:"+(i*.2)+"s' cx='"+x+"' cy='"+(38-Math.abs(x)/6)+"' r='5' fill='#ffd23f' stroke='"+O+"' stroke-width='2'/>"}).join("")
+ +"<path d='M-36 8 A40 30 0 0 1 -6 -24' stroke='#fff' stroke-width='5' fill='none' opacity='.5' stroke-linecap='round'/></g>"}
+
+/* ---------- сцени ---------- */
+function city(){var s="<defs><linearGradient id='alSky' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#0b0530'/><stop offset='1' stop-color='#3a1d8f'/></linearGradient><linearGradient id='alBm' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#a8ff3e' stop-opacity='.5'/><stop offset='1' stop-color='#a8ff3e' stop-opacity='0'/></linearGradient></defs><rect width='360' height='260' fill='url(#alSky)'/>";
+ for(var i=0;i<26;i++)s+="<circle cx='"+((i*61)%360)+"' cy='"+((i*37)%120)+"' r='"+(i%4?1:1.8)+"' fill='#fff' opacity='.7'/>";
+ s+="<circle cx='310' cy='40' r='18' fill='#fff6c9' opacity='.9'/><circle cx='303' cy='35' r='4' fill='#e8dca0'/>";
+ s+="<polygon id='alBeam' points='150,120 210,120 270,260 90,260' fill='url(#alBm)' opacity='0'/>";
+ var B=[[0,70,46],[50,110,40],[96,60,34],[136,130,30],[172,80,44],[222,120,36],[264,70,42],[312,100,48]];
+ B.forEach(function(b,i){var x=b[0],h=b[1],w=b[2];s+="<rect x='"+x+"' y='"+(260-h)+"' width='"+w+"' height='"+h+"' fill='#1a0e4a' stroke='#2e1f78' stroke-width='2'/>";
+  for(var y=260-h+10;y<250;y+=14)for(var k=x+7;k<x+w-8;k+=12)s+="<rect x='"+k+"' y='"+y+"' width='6' height='7' fill='"+(((k+y+i)%5)?"#2e1f78":"#ffd23f")+"' opacity='.85'/>"});
+ [[40,170,"#58c4ff"],[300,150,"#ff3f8e"],[120,190,"#ffd23f"]].forEach(function(w,i){s+="<g class='alWf' style='animation-delay:"+(i*.6)+"s' transform='translate("+w[0]+","+w[1]+")' stroke='"+w[2]+"' stroke-width='3' fill='none' stroke-linecap='round'><path d='M-12 0 A17 17 0 0 1 12 0'/><path d='M-7 5 A10 10 0 0 1 7 5'/><circle cx='0' cy='10' r='2' fill='"+w[2]+"'/></g>"});
+ return s}
+function ship(){var s="<defs><radialGradient id='alIn' cx='.5' cy='.4' r='.8'><stop offset='0' stop-color='#4a2bb8'/><stop offset='1' stop-color='#120838'/></radialGradient></defs><rect width='360' height='260' fill='url(#alIn)'/>";
+ s+="<circle cx='180' cy='70' r='52' fill='#05021a' stroke='#8f96c8' stroke-width='6'/><circle cx='196' cy='86' r='26' fill='#1f6fff'/><path d='M180 76 q10 -8 20 2 q6 10 -4 16 q-10 2 -16 -8z' fill='#2bb24c'/>";
+ for(var i=0;i<10;i++)s+="<circle cx='"+(140+(i*17)%80)+"' cy='"+(30+(i*23)%70)+"' r='1.2' fill='#fff'/>";
+ s+="<path d='M0 200 H360 V260 H0z' fill='#1a0e4a'/><path d='M0 200 H360' stroke='#a8ff3e' stroke-width='3' opacity='.6'/>";
+ [[60,"#ff9ad5"],[300,"#9ad5ff"],[180,"#ffd23f"]].forEach(function(j,i){var x=j[0],big=i==2;if(big)return;s+="<rect x='"+(x-34)+"' y='150' width='68' height='50' rx='8' fill='#2a1d78' stroke='"+O+"' stroke-width='3'/><g transform='translate("+x+",132) scale(.7)'><ellipse cx='0' cy='-20' rx='30' ry='28' fill='"+j[1]+"' stroke='"+O+"' stroke-width='3.5'/><ellipse cx='-9' cy='-22' rx='6' ry='8' fill='"+O+"'/><ellipse cx='9' cy='-22' rx='6' ry='8' fill='"+O+"'/><path d='M-8 -4 h16' stroke='"+O+"' stroke-width='3'/></g><circle id='alJ"+i+"' cx='"+x+"' cy='176' r='13' fill='#2a1d78' stroke='#fff' stroke-width='2.5'/>"});
+ return s}
+
+/* ---------- стилі ---------- */
+var CSS="\
+.alSt{position:relative;border-radius:22px;overflow:hidden;border:3px solid #fff;box-shadow:0 6px 0 rgba(0,0,0,.3)}.alSt>svg{display:block;width:100%;height:auto}\
+.alSay{position:absolute;left:4%;top:5%;max-width:52%;background:#fff;color:#1a0e3a;border:3px solid "+O+";border-radius:16px;padding:7px 10px;font:800 12.5px/1.3 system-ui;box-shadow:0 4px 0 rgba(0,0,0,.3)}\
+.alSay:after{content:'';position:absolute;right:-12px;top:18px;border:9px solid transparent;border-left-color:"+O+"}\
+.alSay i{display:block;font-style:normal;font:900 10px system-ui;color:#3fbf6a;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}\
+.alSay.pop{animation:alPop .3s cubic-bezier(.3,1.6,.5,1)}@keyframes alPop{0%{transform:scale(.6);opacity:0}}\
+.alHud{position:absolute;left:8px;right:52px;bottom:8px;display:flex;gap:4px;pointer-events:none}\
+.alHud b{flex:1;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,.35);background:rgba(10,5,40,.7);display:grid;place-items:center;font-size:12px}\
+.alHud b.k{background:#3fbf6a;border-color:#a8ff3e}.alHud b.v{background:#5a1f3a;border-color:#ff2e63}.alHud b.r{background:#3fbf6a;border-color:#ffd23f}\
+.alMu{position:absolute;right:8px;bottom:6px;z-index:3;width:38px!important;height:38px!important;min-height:0!important;margin:0!important;padding:0!important;border-radius:12px!important;border:2px solid #fff!important;background:rgba(10,5,40,.85)!important;font-size:18px!important;line-height:1!important;cursor:pointer;box-shadow:none!important}\
+.alO{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}\
+.zb .alO button{position:relative;width:auto!important;margin:0!important;min-height:60px;border:3px solid "+O+"!important;border-radius:18px 18px 18px 6px!important;padding:10px 10px!important;background:#fff!important;color:#1a0e3a!important;font:800 13.5px/1.25 system-ui!important;box-shadow:0 5px 0 "+O+"!important;cursor:pointer;text-align:left;text-transform:none!important}\
+.zb .alO button:before{content:'🧑‍🚀';position:absolute;right:6px;top:-12px;font-size:16px}\
+.zb .alO button:active{transform:translateY(4px);box-shadow:0 1px 0 "+O+"!important}\
+.zb .alO button.aOk{background:#a8ff3e!important}.zb .alO button.aBad{background:#ffb3c4!important}.zb .alO button.aDim{opacity:.35}\
+.alB{transform-box:fill-box}.alFl{animation:alFl 3s ease-in-out infinite}@keyframes alFl{50%{transform:translateY(-6px)}}\
+.alGl{animation:alGl .25s steps(2) infinite}@keyframes alGl{0%{transform:translate(-3px,1px)}50%{transform:translate(3px,-1px)}}\
+.alHap{animation:alHp .5s ease-out 2}@keyframes alHp{40%{transform:translateY(-14px) rotate(-6deg)}}\
+.alEye{animation:alBl 3.2s infinite;transform-box:fill-box;transform-origin:center}@keyframes alBl{0%,92%,100%{transform:none}95%{transform:scaleY(.1)}}\
+.alLt{animation:alLt 1.2s infinite}@keyframes alLt{50%{fill:#ff3f8e}}\
+.alAnt{animation:alAn 1.6s infinite}@keyframes alAn{50%{fill:#fff}}\
+.alWf{animation:alWf 2.4s ease-in-out infinite}@keyframes alWf{50%{opacity:.25}}\
+.alBeamOn{animation:alBm 1s ease-out}@keyframes alBm{0%,100%{opacity:0}30%{opacity:1}}\
+.alSpam{position:absolute;z-index:4;background:#fff;border:3px solid #ff2e63;border-radius:10px;padding:5px 8px;font:900 11px system-ui;color:#ff2e63;box-shadow:0 4px 0 rgba(0,0,0,.35);animation:alSp .25s cubic-bezier(.3,1.6,.5,1) both;pointer-events:none}@keyframes alSp{0%{transform:scale(.3)}}\
+body.lite .alFl,body.lite .alEye,body.lite .alLt,body.lite .alAnt,body.lite .alWf{animation:none!important}\
+";
+var injd=0;function inj(){X.inj();if(injd)return;injd=1;var s=document.createElement("style");s.textContent=CSS;document.head.appendChild(s)}
+
+var ASK=["Блюп! Земляни, поясніть:","Мої сенсори плутаються…","На моїй планеті такого нема:","Блюп-блюп, допоможи:","Інтернет дивний. Питання:","Мамка-корабель питає:"];
+var SPAM=["🦠 Вірус.exe","🔔 Підпишись на 500 каналів!","📩 Перешли 10 друзям!","⚠️ Твій пароль: 1234?","🤖 Скачай «Безкоштовний антивірус»"];
+GM.alien7=function(g){inj();var POOL,qi,first,retry,log,debt,known,stg,t0;
+ function shell(){fr9(g.title,"","<div class='zb' id='zbR'></div>");try{[].forEach.call($i("zbR").parentNode.parentNode.querySelectorAll(":scope>h2,:scope>.gbn"),function(h){h.style.display="none"})}catch(e){}}
+ function reset(){POOL=shf(g.rounds||[]).slice(0,6);qi=0;first=0;retry=0;log=[];debt=[];known=[]}
+ function mute(){MUTE=!MUTE;try{localStorage.setItem("inf7mus",MUTE?"0":"1")}catch(e){}if(M)M.gain.value=MUTE?0:.5;var b=$i("alMu");if(b)b.textContent=MUTE?"🔇":"🔊"}
+ function say(t,tag){var e=$i("alSay");if(!e)return;e.innerHTML=(tag?"<i>"+tag+"</i>":"")+t;e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop");SND.talk()}
+ function setB(m,cls){var b=$i("alBp");if(b)b.innerHTML=blup(m);var w=$i("alBw");if(w){w.setAttribute("class","");void w.getBoundingClientRect();w.setAttribute("class",cls||"alFl")}}
+ function hud(){var h="";for(var i=0;i<6;i++){var st=i<qi?(debt.indexOf(i)>=0?"v":"k"):"";h+="<b class='"+st+"'>"+(st=="k"?"💎":st=="v"?"🦠":"")+"</b>"}$i("alHd").innerHTML=h}
+
+ /* --- старт --- */
+ function intro(){reset();shell();gs9("Складна гра");
+  var art="<svg viewBox='0 0 360 170' xmlns='http://www.w3.org/2000/svg'><g transform='translate(180,86) scale(.95)'>"+saucer("<g transform='translate(0,8) scale(.7)'>"+blup("happy")+"</g>")+"</g><polygon points='140,118 220,118 250,170 110,170' fill='#a8ff3e' opacity='.25'/><text x='38' y='60' font-size='26'>📶</text><text x='300' y='140' font-size='24'>🌍</text></svg>";
+  $i("zbR").innerHTML="<div class='zbHd'><small>СКЛАДНА ГРА · КОСМІЧНИЙ СТУДЕНТ</small><b>Прибулець в інтернеті</b>"+art+"</div>"
+   +"<div class='zbIn'><h3>Блюп уперше в мережі</h3><p>Прибулець Блюп прилетів вивчати земний інтернет. Він вірить <b style='color:#a8ff3e'>кожному твоєму слову</b> — і завтра складає іспит перед екіпажем материнського корабля. Чого навчиш, те й скаже!</p>"
+   +"<div class='zbRu'><i>💎</i><span><b>6 питань від Блюпа.</b> Правильне пояснення — кристал знань у його колекцію.</span></div>"
+   +"<div class='zbRu'><i>🦠</i><span><b>Помилка — Блюп ловить вірус</b> і творить дичину. Це питання він запам'ятає неправильно.</span></div>"
+   +"<div class='zbRu'><i>🛸</i><span><b>Іспит на кораблі.</b> Вивчене Блюп відповість сам. А там, де ти помилився, він шепне <b>«підкажи!»</b> — це твій другий шанс виправитись.</span></div>"
+   +"<button class='zbGo' id='zbGo'>Зустріти Блюпа ▶</button></div>";
+  $i("zbGo").onclick=function(){ac();try{A.resume()}catch(e){}learn()}}
+
+ /* --- навчання над містом --- */
+ function learn(){shell();gs9("Навчання · 1/6");
+  $i("zbR").innerHTML="<div class='alSt'><svg id='alS' viewBox='0 0 360 260' xmlns='http://www.w3.org/2000/svg'>"+city()+"<g transform='translate(250,92)'><g id='alBw' class='alFl'>"+saucer("<g transform='translate(0,8) scale(.7)'><g id='alBp'>"+blup()+"</g></g>")+"</g></g></svg>"
+   +"<div class='alSay' id='alSay'></div><div class='alHud' id='alHd'></div><button class='alMu' id='alMu'>"+(MUTE?"🔇":"🔊")+"</button><div id='alSpm'></div></div>"
+   +"<div id='alW'></div><div class='zbMsg' id='zbM'></div><div id='alN'></div>";
+  stg=$i("alS");$i("alMu").onclick=mute;hud();askL()}
+ function opts(Q,id){var o=shf(Q.o.map(function(t,i){return {t:t,c:i===Q.a}}));Q._o=o;return "<div class='alO' id='"+id+"'>"+o.map(function(x,i){return "<button data-i='"+i+"'>"+esc(x.t)+"</button>"}).join("")+"</div>"}
+ function mark(id,Q,j){[].forEach.call($i(id).querySelectorAll("button"),function(b,i){b.disabled=true;b.className=Q._o[i].c?"aOk":(i==j?"aBad":"aDim")})}
+ function askL(){if(!alive(stg))return;if(qi>=6)return toShip();var Q=POOL[qi];setB();$i("alSpm").innerHTML="";$i("zbM").innerHTML="";$i("alN").innerHTML="";
+  say(esc(Q.q),ASK[qi%ASK.length]);gs9("Навчання · "+(qi+1)+"/6");
+  $i("alW").innerHTML="<div class='zbQ'><small>Що ти скажеш Блюпу?</small><b>"+esc(Q.q)+"</b></div>"+opts(Q,"alO");
+  $i("alO").onclick=function(e){var b=e.target.closest("button");if(!b||b.disabled)return;ansL(Q,+b.getAttribute("data-i"))}}
+ function ansL(Q,j){var c=Q._o[j].c;mark("alO",Q,j);
+  if(c){first++;known.push(qi);setB("happy","alHap");SND.ok();vib(20);var bm=$i("alBeam");bm.setAttribute("class","");void bm.getBoundingClientRect();bm.setAttribute("class","alBeamOn");setTimeout(SND.beam,120);
+   say(["Блюп! Записав у мозок 🧠","Ого, земляни розумні!","Кристал знань отримано 💎","Тепер я майже землянин!"][qi%4],"Блюп");qi++;hud();
+   setTimeout(function(){if(alive(stg))askL()},1700);return}
+  log.push(Q);debt.push(qi);setB("glitch","alGl");SND.bad();vib([30,40,30]);
+  var sp="";for(var k=0;k<3;k++)sp+="<div class='alSpam' style='left:"+(8+k*28)+"%;top:"+(40+k*12)+"%;animation-delay:"+(k*.15)+"s'>"+SPAM[(qi+k)%SPAM.length]+"</div>";$i("alSpm").innerHTML=sp;
+  say("Б-б-блюп… "+esc(Q._o[j].t)+"?! Щось мене глючить 🦠","Вірус!");qi++;hud();
+  $i("zbM").innerHTML="Правильно: <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.85;font-weight:600'>"+esc(Q.w)+"</span>":"")+"<br><span style='color:#ff8aa0'>Блюп запам'ятав неправильно — на іспиті доведеться підказати.</span>";
+  $i("alN").innerHTML="<button class='zbGo' id='alNx'>"+(qi>=6?"Летимо на іспит 🛸":"Далі ▶")+"</button>";$i("alNx").onclick=askL}
+
+ /* --- іспит на кораблі --- */
+ var ex,jx;
+ function toShip(){shell();gs9("Іспит на кораблі");ex=0;jx=0;
+  $i("zbR").innerHTML="<div class='alSt'><svg id='alS' viewBox='0 0 360 260' xmlns='http://www.w3.org/2000/svg'>"+ship()+"<g transform='translate(180,206) scale(.95)'><g id='alBw' class='alFl'><g id='alBp'>"+blup()+"</g></g></g></svg>"
+   +"<div class='alSay' id='alSay' style='left:3%;top:4%;max-width:38%'></div><div class='alHud' id='alHd'></div><button class='alMu' id='alMu'>"+(MUTE?"🔇":"🔊")+"</button></div>"
+   +"<div id='alW'></div><div class='zbMsg' id='zbM'></div><div id='alN'></div>";
+  stg=$i("alS");$i("alMu").onclick=mute;exHud();
+  say("Шановна комісіє! Я вивчив земний інтернет. Питайте!","Блюп");
+  $i("alN").innerHTML="<button class='zbGo' id='alNx'>Почати іспит ▶</button>";$i("alNx").onclick=exStep}
+ function exHud(){var h="";for(var i=0;i<6;i++){var st=i<ex?(debt.indexOf(i)>=0?(EXR[i]?"r":"v"):"k"):"";h+="<b class='"+st+"'>"+(st=="k"||st=="r"?"✅":st=="v"?"❌":"")+"</b>"}$i("alHd").innerHTML=h}
+ var EXR={};
+ function judge(ok){var j=$i("alJ"+(jx++%2));if(j){j.setAttribute("fill",ok?"#3fbf6a":"#ff2e63");setTimeout(function(){if(alive(j))j.setAttribute("fill","#2a1d78")},900)}ok?SND.yes():SND.bad()}
+ function exStep(){if(!alive(stg))return;$i("alN").innerHTML="";$i("zbM").innerHTML="";if(ex>=6)return verdict();var Q=POOL[ex],i=ex;
+  if(debt.indexOf(i)<0){setB("happy","alHap");say("«"+esc(Q.q)+"» — це <b>"+esc(Q.o[Q.a])+"</b>! 😎","Блюп відповідає");judge(true);ex++;exHud();
+   $i("alW").innerHTML="";setTimeout(function(){if(alive(stg))exStep()},1900);return}
+  setB("sad");say("Пс-с… це я вивчив криво. <b>Підкажи!</b> 🙏","Блюп шепоче");
+  $i("alW").innerHTML="<div class='zbQ'><small>Друга спроба · підкажи Блюпу</small><b>"+esc(Q.q)+"</b></div>"+opts(Q,"alO2");
+  $i("alO2").onclick=function(e){var b=e.target.closest("button");if(!b||b.disabled)return;var j=+b.getAttribute("data-i"),c=Q._o[j].c;mark("alO2",Q,j);
+   if(c){retry++;EXR[i]=1;setB("happy","alHap");say("Ой, точно! Це <b>"+esc(Q.o[Q.a])+"</b>!","Блюп");judge(true)}else{setB("glitch","alGl");say("Б-блюп… комісія незадоволена 😵","Блюп");judge(false)}
+   ex++;exHud();$i("alN").innerHTML="<button class='zbGo' id='alNx'>"+(ex>=6?"Вердикт комісії ▶":"Далі ▶")+"</button>";$i("alNx").onclick=exStep}}
+ function verdict(){var pts=first*2+retry,win=pts>=8;gs9(win?"Іспит складено!":"Іспит не складено");setB(win?"happy":"sad",win?"alHap":"alFl");win?SND.win():SND.bad();
+  say(win?"Зараховано до Кібершколи! 🎓":"Ще семестр на Землі 😅","Вердикт комісії");
+  var rv=log.length?"<div class='zbRv'><h4>Розбір помилок</h4>"+log.map(function(Q){return "<div>"+esc(Q.q)+"<br>✔ <b>"+esc(Q.o[Q.a])+"</b>"+(Q.w?"<br><span style='opacity:.8'>"+esc(Q.w)+"</span>":"")+"</div>"}).join("")+"</div>":"";
+  $i("alW").innerHTML="<div class='zbRes "+(win?"w":"l")+"'><h3>"+(win?"🎓 Блюп склав іспит!":"Блюп на дорешку")+"</h3><p>З першого разу: <b style='color:#fff'>"+first+" з 6</b> · виправлено на іспиті: "+retry+"<br>Бали: "+pts+" з 12</p></div>"+rv
+   +"<div class='zbBtns'><button class='zbGo alt' id='zbAg'>↻ Ще раз</button><button class='zbGo' id='zbEnd'>Результат</button></div>";
+  $i("alN").innerHTML="";$i("zbAg").onclick=function(){EXR={};intro()};$i("zbEnd").onclick=function(){fin9(pts,12)}}
+ intro()};
+try{if(window.GI7)GI7.alien7=["👽","Прибулець в інтернеті"];if(window.GI)GI.alien7=["👽","Прибулець в інтернеті"]}catch(e){}
 })();
 
 /* 7 клас «Сезон»: маскот Бот-чемпіон – хаб, брифінг уроку, реакції на відповіді в іграх і тестах, фінальний екран. ES5. */
