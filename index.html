@@ -17788,7 +17788,7 @@ M8.reg("x_rhythm",{cls:"rhythm",nolives:true,hint:"Лови правильну �
  init:function(c){var S=c.S,W=S.clientWidth,eq="";for(var k=0;k<26;k++)eq+="<i style='animation-delay:-"+(Math.random()).toFixed(2)+"s;animation-duration:"+(.6+Math.random()*.7).toFixed(2)+"s'></i>";
   S.insertAdjacentHTML("beforeend","<div class='m8grid'></div><div class='m8eq'>"+eq+"</div><div class='m8line' style='left:"+W*.2+"px'></div>");c.perf=0;c.tot=0;c.combo=0},
  hud:function(c){return ["🎯 Ідеально "+c.perf+"/"+c.tot,"🔥 Комбо ×"+c.combo]},
- round:function(c,r){var S=c.S;S.querySelectorAll(".m8chip,.m8lane").forEach(function(x){x.remove()});var W=S.clientWidth,Hh=S.clientHeight,k=r.o.length,lh=(Hh-70)/k,T=c.g.t||10,ch=Math.min(lh-8,54),cw=Math.min(W*.6,270),ord=shuffle(r.o.map(function(x,q){return q})),line=W*.2,chips=[];
+ round:function(c,r){var S=c.S;S.querySelectorAll(".m8chip,.m8lane").forEach(function(x){x.remove()});var W=S.clientWidth,Hh=S.clientHeight,k=r.o.length,lh=(Hh-70)/k,T=(c.g.t||10)*1.6,ch=Math.min(lh-8,54),cw=Math.min(W*.6,270),ord=shuffle(r.o.map(function(x,q){return q})),line=W*.2,chips=[];
   ord.forEach(function(q,p){var y=44+p*lh+(lh-ch)/2,ln=document.createElement("div");ln.className="m8lane";ln.style.top=(44+p*lh)+"px";S.appendChild(ln);var el=document.createElement("div");el.className="m8chip";el.style.cssText="top:"+y+"px;height:"+ch+"px;width:"+cw+"px;left:0;color:"+COL[p%4]+";background:linear-gradient("+COL[p%4]+",#150a33 190%)";el.innerHTML="<u>"+pa(p)+"</u><span style='color:#fff'>"+r.o[q]+"</span>";if(q===r.a)el.setAttribute("data-ok","1");S.appendChild(el);
    var sp=T+(Math.random()*1.6-.6),an=el.animate([{transform:"translateX("+W+"px)"},{transform:"translateX("+(-cw)+"px)"}],{duration:sp*1000,easing:"linear",fill:"forwards"});
    an.onfinish=function(){if(q===r.a&&!c.isDone()){fx.red(S);c.tot++;c.combo=0;c.res(false,{msg:"Ти пропустив правильну відповідь!"})}};
@@ -22734,6 +22734,52 @@ document.addEventListener("click",function(e){if(!on())return;var b=e.target.clo
 var mo=new MutationObserver(function(){if(on())addHero()});
 function start(){var a=document.getElementById("app");if(a)mo.observe(a,{childList:true,subtree:true})}
 if(document.readyState=="loading")document.addEventListener("DOMContentLoaded",start);else start();
+})();
+
+/* «Ритм-різ» (7 клас): музика (WebAudio, синтез, 100 BPM), біт-пульс лінії, сцена з прожекторами й колонками, кнопка звуку. ES5. */
+(function(){
+var AC=null,G=null,timer=null,step=0,next=0,BPM=100,SPB=60/BPM/4,on=false,watch=null;
+function muted(){try{return localStorage.getItem("inf7mus")=="0"}catch(e){return false}}
+function ctx(){if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();G=AC.createGain();G.gain.value=.16;G.connect(AC.destination)}if(AC.state=="suspended")AC.resume();return AC}
+function tone(t,f,d,type,v){var o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(G);o.start(t);o.stop(t+d+.02)}
+function kick(t){var o=AC.createOscillator(),g=AC.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(45,t+.18);g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.001,t+.22);o.connect(g);g.connect(G);o.start(t);o.stop(t+.25)}
+var NB=null;function noise(t,d,v,hp){if(!NB){NB=AC.createBuffer(1,AC.sampleRate*.3,AC.sampleRate);var a=NB.getChannelData(0);for(var i=0;i<a.length;i++)a[i]=Math.random()*2-1}
+ var s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();s.buffer=NB;f.type="highpass";f.frequency.value=hp;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);s.connect(f);f.connect(g);g.connect(G);s.start(t);s.stop(t+d+.02)}
+/* Am – F – C – G */
+var BASS=[110,87.31,130.81,98],ARP=[[440,523.25,659.25,523.25],[349.23,440,523.25,440],[392,523.25,659.25,523.25],[392,493.88,587.33,493.88]],MEL=[659.25,0,587.33,523.25,0,523.25,587.33,0,659.25,0,783.99,659.25,0,587.33,523.25,0];
+function sched(){if(!AC)return;while(next<AC.currentTime+.12){var t=next,s=step%16,bar=Math.floor(step/16)%4;
+ if(s%4==0)kick(t);if(s==4||s==12)noise(t,.14,.35,1500);if(s%2==1)noise(t,.04,.12,7000);
+ if(s%4==0||s==6||s==14)tone(t,BASS[bar],.22,"triangle",.5);
+ if(s%2==0)tone(t,ARP[bar][(s/2)%4]*2,.12,"square",.05);
+ var m=MEL[s];if(m&&Math.floor(step/64)%2==1)tone(t,m,.2,"sine",.18);
+ if(s%4==0)beat(t);step++;next+=SPB}}
+function beat(t){setTimeout(function(){var l=document.querySelector(".m8-rhythm .m8line"),st=document.querySelector(".m8-rhythm");if(l){l.classList.remove("bt");void l.offsetWidth;l.classList.add("bt")}if(st){st.classList.remove("bt");void st.offsetWidth;st.classList.add("bt")}},Math.max(0,(t-AC.currentTime)*1000))}
+function start(){if(on||muted())return;if(!ctx())return;on=true;step=0;next=AC.currentTime+.08;timer=setInterval(sched,40)}
+function stop(){on=false;if(timer){clearInterval(timer);timer=null}}
+function decor(S){if(S.querySelector(".r7spk"))return;
+ S.insertAdjacentHTML("afterbegin","<div class='r7bg'></div><div class='r7sp r7sp1'></div><div class='r7sp r7sp2'></div>");
+ S.insertAdjacentHTML("beforeend","<div class='r7spk r7l'><i></i><b></b></div><div class='r7spk r7r'><i></i><b></b></div><div class='r7notes'><span>♪</span><span>♫</span><span>♪</span><span>♬</span></div><button class='r7mute' title='Музика'>"+(muted()?"🔇":"🔊")+"</button>");
+ S.querySelector(".r7mute").onclick=function(e){e.stopPropagation();var m=!muted();try{localStorage.setItem("inf7mus",m?"0":"1")}catch(x){}this.textContent=m?"🔇":"🔊";if(m)stop();else start()}}
+function check(){var S=document.querySelector(".m8s.m8-rhythm");if(S){decor(S);start()}else stop()}
+var css=".m8-rhythm .r7bg{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 110%,#ff3f8e55,transparent 60%),radial-gradient(80% 60% at 50% -10%,#4a33c855,transparent 70%);pointer-events:none}\
+.m8-rhythm .r7sp{position:absolute;top:-10%;width:38%;height:120%;background:linear-gradient(#fff6b066,transparent 80%);clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);mix-blend-mode:screen;pointer-events:none;transform-origin:50% 0;animation:r7sw 5s ease-in-out infinite}\
+.m8-rhythm .r7sp1{left:8%}.m8-rhythm .r7sp2{right:8%;animation-delay:-2.5s;background:linear-gradient(#3ff5d266,transparent 80%)}@keyframes r7sw{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}\
+.m8-rhythm .r7spk{position:absolute;bottom:6px;width:13%;max-width:52px;aspect-ratio:3/5;background:linear-gradient(#2a1d78,#140c30);border:3px solid #140c30;border-radius:8px;z-index:4;pointer-events:none;box-shadow:0 0 0 2px #7a5cff inset}\
+.m8-rhythm .r7l{left:24%}.m8-rhythm .r7r{right:4px}.m8-rhythm .r7spk i,.m8-rhythm .r7spk b{position:absolute;left:50%;border-radius:50%;background:radial-gradient(#140c30 30%,#3a2a9c 32%,#140c30 70%);border:2px solid #7a5cff;transform:translateX(-50%)}\
+.m8-rhythm .r7spk i{top:8%;width:46%;aspect-ratio:1}.m8-rhythm .r7spk b{bottom:8%;width:74%;aspect-ratio:1}.m8-rhythm.bt .r7spk b{animation:r7cone .18s ease-out}@keyframes r7cone{50%{transform:translateX(-50%) scale(1.12)}}\
+.m8-rhythm .m8line.bt{animation:r7pulse .3s ease-out}@keyframes r7pulse{0%{box-shadow:0 0 30px 16px #ffd23f,0 0 60px 26px var(--ac);transform:scaleX(1.8)}100%{}}\
+.m8-rhythm .m8line::before{content:'';position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid #fff;opacity:.5}\
+.m8-rhythm.bt .m8eq{animation:r7eq .2s ease-out}@keyframes r7eq{50%{opacity:.85}}\
+.m8-rhythm .r7notes{position:absolute;inset:0;pointer-events:none;z-index:3}.m8-rhythm .r7notes span{position:absolute;bottom:10%;font:900 22px system-ui;color:#ffd23f;opacity:0;animation:r7n 4s linear infinite;text-shadow:0 0 10px #ff4f9a}\
+.m8-rhythm .r7notes span:nth-child(1){left:30%}.m8-rhythm .r7notes span:nth-child(2){left:52%;animation-delay:1s;color:#3ff5d2}.m8-rhythm .r7notes span:nth-child(3){left:70%;animation-delay:2s}.m8-rhythm .r7notes span:nth-child(4){left:86%;animation-delay:3s;color:#ff7ad9}\
+@keyframes r7n{0%{transform:translateY(0) rotate(-10deg);opacity:0}15%{opacity:.9}100%{transform:translateY(-220px) rotate(14deg);opacity:0}}\
+.m8-rhythm .m8chip{border-radius:999px!important;box-shadow:0 0 18px currentColor,0 0 0 3px #140c30,inset 0 -5px 0 rgba(0,0,0,.25)!important}\
+.m8-rhythm .r7mute{position:absolute!important;right:10px!important;top:10px!important;left:auto!important;z-index:30;width:36px!important;height:36px!important;min-height:0!important;padding:0!important;margin:0!important;border-radius:50%!important;border:2px solid #fff!important;background:#140c30!important;color:#fff!important;font-size:17px!important;line-height:1!important;box-shadow:0 0 10px #ff4f9a!important;cursor:pointer}";
+var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
+var mo=new MutationObserver(function(){check()});
+function init(){var a=document.getElementById("app");if(a)mo.observe(a,{childList:true,subtree:true})}
+if(document.readyState=="loading")document.addEventListener("DOMContentLoaded",init);else init();
+document.addEventListener("visibilitychange",function(){if(document.hidden)stop();else check()});
 })();
 
 /* Академічна доброчесність:
