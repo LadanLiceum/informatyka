@@ -12716,7 +12716,7 @@ mk2("t8_adv","Пригоди: Кур'єр коду","🏃","Кур'єр несе
       if(!last)setTimeout(function(){fin(A,true,tried?"Пройшов, але з втратами":"Чисто!",0)},1400);else boss()},900)}
     else{tried=true;b.disabled=true;b.classList.add("bad");ADV.hp--;sh();st.classList.add("arshk");setTimeout(function(){st.classList.remove("arshk")},350);
      if(ADV.hp<=0){resolved=true;A.locked=1;cr.style.transform="rotate(90deg)";cr.style.bottom="30px";qd.lastChild.textContent="💀 Кур'єр без сил… Правильно: "+q.a[0];fin(A,false,"Правильно: "+q.a[0],1300)}}}})},2500);
- function boss(){if(over())return;st.classList.remove("walk");qd.firstChild.textContent="👹 Мініьос: Страж шлюзу";qd.firstChild.textContent="👹 Міні-бос: Страж шлюзу";bx.innerHTML="";
+ function boss(){if(over())return;st.classList.remove("walk");qd.firstChild.textContent="👹 Мініьос: Страж шлюзу";qd.firstChild.textContent="👹 Міні-бос: Страж шлюзу";bx.innerHTML="";[].forEach.call(st.querySelectorAll(".advo"),function(e){e.remove()});
   var B=document.createElement("div");B.className="advo";B.style.cssText="left:110%;transition:left 1.6s;width:140px";B.innerHTML="<div class='arbob'>"+en(S,140)+"</div>";st.appendChild(B);setTimeout(function(){B.style.left="52%"},60);
   var g=gearOf();qd.lastChild.textContent="Спорядження: "+GN[g]+" · сердець: "+ADV.hp+". Чим краще спорядження, тим більше шансів!";
   var go=document.createElement("button");go.className="blk";go.textContent="⚔️ У БІЙ!";bx.appendChild(go);
