@@ -111,6 +111,27 @@ var rcss="html body.g7.s7n #app .card .bar{height:12px!important;padding:0!impor
 +".rw7g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:42vh;overflow:auto;padding:4px}.rw7i{background:#2f2275;border:2px solid #150a33;border-radius:14px;padding:9px 3px;font:800 11px system-ui;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px}"
 +".rw7i.eq{border-color:#ffd23f;box-shadow:0 0 0 2px #ffd23f}.rw7i.lk{opacity:.45;cursor:default}.rw7i small{color:#b9adf0;font-size:10px}.rw7n{font-size:12px!important;margin:12px 0 0!important}.rw7big .s7ic{font-size:56px;margin:4px 0}.rw7big .s7ic b{transform:scale(2);margin:14px}";
 var rst=document.createElement("style");rst.textContent=rcss;document.head.appendChild(rst);
+
+/* ---- РОБОТА НАД ПОМИЛКАМИ: розбір як читалка (оцінки не змінює) ---- */
+function rdSent(k){var L=LES[k]||{},o=[];(function w(v){if(v==null)return;if(typeof v=="string"){String(v).replace(/<[^>]*>/g," ").replace(/&[a-z]+;/g," ").split(/(?<=[.!?])\s+/).forEach(function(s){s=s.replace(/\s+/g," ").trim();if(s.length>25&&s.length<320)o.push(s)});return}if(typeof v=="object")for(var z in v)w(v[z])})(L.r);return o}
+function stems(s){return (String(s).toLowerCase().match(/[а-яіїєґa-z0-9’']{4,}/g)||[]).map(function(w){return w.slice(0,5)})}
+function rdExpl(k,q){var S=rdSent(k),A=stems(q.a[0]),Q=stems(q.q),best="",bs=0;S.forEach(function(s,i){var st=stems(s),m={};st.forEach(function(w){m[w]=1});var sc=0;A.forEach(function(w){if(m[w])sc+=2});Q.forEach(function(w){if(m[w])sc+=1});if(sc>bs){bs=sc;best=s}});return bs>=3?best:""}
+window.__rdx=rdExpl;window.rv7=function(k,i){var L=uxMisList(k),n=k-700;i=i||0;CUR9=0;window.scrollTo(0,0);
+ if(!L.length){try{if(window.ach7chk)ach7chk(n)}catch(e){}$.innerHTML="<div class='s7sub'><button class='s7back' onclick='lesson7("+n+")'>← МІСІЯ "+n+"</button></div><div class='card rv7'><div class='rv7ok'>🎉</div><h2>Усі помилки розібрано!</h2><p class='rv7e'>Тепер ти знаєш, чому правильно саме так. Список помилок уроку порожній.</p><button class='pri' onclick='lesson7("+n+")'>Повернутися до місії</button></div>";return}
+ if(i>=L.length)i=L.length-1;var x=L[i],q=x.q,ok=String(q.a[0]),wr=q.a.slice(1).filter(function(a){return String(a)!==ok});
+ var h="<div class='s7sub'><button class='s7back' onclick='lesson7("+n+")'>← МІСІЯ "+n+"</button><small>РОБОТА НАД ПОМИЛКАМИ · "+(i+1)+" / "+L.length+"</small></div>"
+ +"<div class='card rv7'><div class='rv7tg'>ПИТАННЯ, ДЕ БУЛА ПОМИЛКА</div><h2>"+E(x.t)+"</h2>"
+ +"<div class='rv7a'><span>✅ Правильна відповідь</span><b>"+E(ok)+"</b></div>"
+ +(function(){var ex=q.e?String(q.e).replace(/<[^>]*>/g,""):"",fr=ex?"":rdExpl(k,q);return ex?"<div class='rv7w'><span>💡 Чому саме так</span><p>"+E(ex)+"</p></div>":fr?"<div class='rv7w'><span>📖 Що про це в читалці</span><p>"+E(fr)+"</p></div>":""})()
+ +(wr.length?"<div class='rv7x'><span>❌ Не так</span>"+wr.map(function(a){return "<s>"+E(a)+"</s>"}).join("")+"</div>":"")
+ +"<div class='rv7n'>"+(i>0?"<button onclick='rv7("+k+","+(i-1)+")'>← Назад</button>":"")+"<button class='pri' onclick='uxMisDel("+k+","+JSON.stringify(x.t).replace(/'/g,"&#39;")+");rv7("+k+","+i+")'>Зрозумів ✓</button></div>"
+ +"<p class='rv7h'>«Зрозумів» прибирає питання зі списку. Оцінки за гру й тест від цього не змінюються.</p></div>";
+ $.innerHTML=h};
+var rvcss=".rv7 h2{font-size:20px!important;line-height:1.2!important;margin:6px 0 12px!important}.rv7tg{display:inline-block;background:#ff3f5a;color:#fff;border-radius:9px;padding:4px 10px;font:900 italic 11px system-ui}"
++".rv7a,.rv7w,.rv7x{border-radius:14px;padding:10px 12px;margin:0 0 10px}.rv7a span,.rv7w span,.rv7x span{display:block;font:900 11px system-ui;letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;opacity:.9}"
++".rv7a{background:#1f8a5c;color:#fff}.rv7a b{font-size:16px;line-height:1.3}.rv7w{background:#fff8d6!important;color:#3b3200!important}.rv7w span,.rv7w p{color:#3b3200!important;text-shadow:none!important}.rv7w p{margin:0;font-weight:600;line-height:1.45;font-size:14.5px}"
++".rv7x{background:rgba(0,0,0,.25);color:#e4dcff}.rv7x s{display:block;opacity:.8;font-weight:700;margin:2px 0}.rv7n{display:flex;gap:8px}.rv7n button{flex:1;margin:0!important}.rv7h{font-size:12px;opacity:.75;margin:10px 0 0}.rv7ok{font-size:56px;text-align:center}.rv7e{line-height:1.4}";
+var rvst=document.createElement("style");rvst.textContent=rvcss;document.head.appendChild(rvst);
 /* ---- МІСІЇ РОЗДІЛУ ---- */
 section7=function(k){k=k||1;CUR9=0;useB7();b7s();pg7();document.body.classList.add("s7n");var t=TP7[k-1];acc7(k-1);
  var h="<div class='s7sub'><button class='s7back' onclick='topics()'>← ХАБ</button><small>СЕЗОН "+k+" · "+E(SN[k-1]).toUpperCase()+"</small></div><div class='s7big'>"+E(title(t.t)).toUpperCase()+"</div><div class='s7ms'>";
@@ -120,7 +141,7 @@ section7=function(k){k=k||1;CUR9=0;useB7();b7s();pg7();document.body.classList.a
  $.innerHTML=h+"</div>";pg7("l7pg");window.scrollTo(0,0)};
 /* ---- урок: шапка місії ---- */
 var _l7=lesson7;lesson7=function(n){var r=_l7.apply(this,arguments);try{document.body.classList.add("s7n");var tp=document.querySelector("#app>.top button.sm");if(tp)tp.textContent="← СЕЗОН "+(tp7(n)+1);
- var f0=document.querySelector("#app>.mb");if(f0&&!document.querySelector("#app>.k-rv")&&typeof uxMisN=="function"){var nm=uxMisN(700+n);f0.insertAdjacentHTML("beforebegin","<button class='mb k-rv"+(nm?"":" k-rv0")+"'"+(nm?" onclick='uxRev("+(700+n)+")'":"")+"><span class='ic'>🎯</span><span class='tx'><b>Робота над помилками</b><br><span class='sub'>"+(nm?nm+" "+(nm==1?"питання":nm<5?"питання":"питань")+" з тестів та ігор уроку, де була помилка":"помилок поки немає, так тримати")+"</span></span>"+(nm?"<span class='s7rvn'>"+nm+"</span>":"")+"</button>")}
+ var f0=document.querySelector("#app>.mb");if(f0&&!document.querySelector("#app>.k-rv")&&typeof uxMisN=="function"){var nm=uxMisN(700+n);f0.insertAdjacentHTML("beforebegin","<button class='mb k-rv"+(nm?"":" k-rv0")+"'"+(nm?" onclick='rv7("+(700+n)+")'":"")+"><span class='ic'>🎯</span><span class='tx'><b>Робота над помилками</b><br><span class='sub'>"+(nm?nm+" "+(nm==1?"питання":nm<5?"питання":"питань")+" з помилкою · розбери, чому правильно саме так":"помилок поки немає, так тримати")+"</span></span>"+(nm?"<span class='s7rvn'>"+nm+"</span>":"")+"</button>")}
  document.querySelectorAll("#app>.mb:not(.k-rv)").forEach(function(b){var o=b.getAttribute("onclick")||"",m=/playG\((\d+),(\d+)\)/.exec(o),k="ts";if(/openR/.test(o))k="rd";else if(m){var g=(LES[+m[1]].g||[])[+m[2]];k=g&&g.v!==undefined&&/7$/.test(g.type)?"cx":"gm"}b.classList.add("k-"+k);if(k=="cx"&&!b.querySelector(".s7cx")){var tb=b.querySelector(".tx b");if(tb)tb.insertAdjacentHTML("beforebegin","<span class='s7cx'>★ СКЛАДНА ГРА</span>")}});
  var c=document.querySelector("#app>.card");if(c){c.classList.add("s7les");var s=c.querySelector(".s7");if(s)s.outerHTML="<div class='s7tag'>МІСІЯ "+n+"</div>"}}catch(e){}return r};
 /* ---- стилі ---- */
