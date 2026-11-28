@@ -13006,10 +13006,11 @@ var mo=new MutationObserver(function(ms){try{if(!ME||ME.t)return;var o=document.
  else if(!bad&&k){m.mis=m.mis.filter(function(x){return !(x.k===k&&x.q===t)});usv()}}catch(e){}});
 function startObs(){try{mo.observe(document.getElementById("app"),{subtree:true,childList:true,attributes:true,attributeFilter:["class"]})}catch(e){}}
 /* --- режим повтору помилок --- */
-window.uxRev=function(){if(!ME)return;var m=me(),qs=[],map={};m.mis.slice().reverse().some(function(x){var q=findQ(x.k,x.q);if(q&&!map[x.q]){map[x.q]=x.k;qs.push(q)}return qs.length>=10});
- if(!qs.length){m.mis=[];usv();return topics()}
- m.revk=map;usv();REV=1;CUR9=0;CURK=null;LAST9=function(){uxRev()};
- quizG(qs,function(){},"uxRev","topics")};
+window.uxMisN=function(k){try{if(!ME)return 0;var s={};me().mis.forEach(function(x){if(x.k===k&&findQ(x.k,x.q))s[x.q]=1});return Object.keys(s).length}catch(e){return 0}};
+window.uxRev=function(onlyK){if(!ME)return;var m=me(),qs=[],map={};if(onlyK){window.__revBack=function(){var n=onlyK%100;if(typeof lesson7=="function"&&onlyK>700&&onlyK<800)lesson7(n);else lesson9(onlyK)}}m.mis.slice().reverse().some(function(x){if(onlyK&&x.k!==onlyK)return false;var q=findQ(x.k,x.q);if(q&&!map[x.q]){map[x.q]=x.k;qs.push(q)}return qs.length>=10});
+ if(!qs.length){if(onlyK)return window.__revBack();m.mis=[];usv();return topics()}
+ m.revk=map;usv();REV=1;CUR9=0;CURK=null;LAST9=function(){uxRev(onlyK)};
+ quizG(qs,function(){},"uxRev",onlyK?"__revBack":"topics")};
 /* --- панель на головному екрані --- */
 var _tp=topics;topics=function(){REV=0;var r=_tp.apply(this,arguments);try{panel()}catch(e){}return r};
 window.uxTch=function(){var k="";try{k=localStorage.getItem("inftk")||""}catch(e){}
