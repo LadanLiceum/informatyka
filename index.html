@@ -9225,7 +9225,7 @@ function earned(n){var L=LES[BASE+n],o=(Bq().sc||{})[BASE+n]||{},r={},ks=[],i,k;
  if(G7){var ci=cxi(n);if(ci>=0&&o["g"+ci]>=70)r.cx=1;if((((Bq().ach||{})[n]||{}).rv))r.rv=1;else if(ks.length&&ks.every(function(k){return o[k]!==undefined})&&(!K||o[K]!==undefined)&&typeof uxMisN=="function"&&uxMisN(BASE+n)==0)r.rv=1}
  var need=ks.concat(K?[K]:[]);
  if(need.length&&need.every(function(k){return o[k]>=100}))r.perf=1;
- if(LA(n).slice(0,LA(n).length-1).every(function(a){return r[a[0]]||a[0]=="cx"||a[0]=="rd2"||a[0]=="rv"}))r.king=1;
+ if(LA(n).slice(0,LA(n).length-1).every(function(a){return r[a[0]]||(!G7&&(a[0]=="cx"||a[0]=="rv"))}))r.king=1;if(G7&&(((Bq().ach||{})[n]||{}).king))r.king=1;
  return r}
 function base(n){try{var b=Bq();b.ach=b.ach||{};if(!b.ach[n]){b.ach[n]=earned(n);saveB()}}catch(e){}}
 function LA(n){var A=n==1?AD.filter(function(a){return a[0]!='imp'}):AD;if(!G7)return A.filter(function(a){return a[0]!="cx"&&a[0]!="rd2"&&a[0]!="rv"});var ci=cxi(n),L=LES[BASE+n];
