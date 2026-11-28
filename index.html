@@ -4427,7 +4427,7 @@ function arena(g,cf){var N=cf.n||6,qs=GQ(CUR9,N);if(qs.length<2)return fin9(0,1)
 var SH=[["m_c4","Ринок","wave","free","forest"]];
 var UQ={5:[["u5_1","Зомбі-орда","fall","shoot","cave",["junk"]],["u5_2","Крипер-тайм","pop","tap","cave",["fuse"]],["u5_3","Шахтарський кошик","fall","lane","cave",["junk"]],["u5_4","Лавові потоки","sweep","stop","nether"],["u5_5","Рибалка","wave","lane","ocean",["blink"]],["u5_6","Портал Далекого краю","orbit","hold","end",["fog"]],["u5_7","Вівці-втікачки","flee","free","forest"],["u5_8","Підземний ліфт","rise","tap","cave",["shrink"]],["u5_9","Нічне полювання","bounce","shoot","nether",["fog"]]],
 6:[["u6_1","Вагонетки: перехрестя","sweep","tap","cave",["junk"]],["u6_2","Скелет-лучник","pop","shoot","cave",["blink"]],["u6_3","Золота лихоманка","fall","free","cave",["junk"]],["u6_4","Підводний храм","rise","swipe","ocean",["shrink"]],["u6_5","Вогняний світ","wave","shoot","nether",["fog"]],["u6_6","Перлини Далекого краю","bounce","tap","end",["blink"]],["u6_7","Селянин-торговець","flee","free","forest",["junk"]],["u6_8","Дракон над Краєм","orbit","shoot","end",["shrink"]],["u6_9","Шахта обвалу","fall","stop","cave",["junk"]]],
-8:[["u8_1","Кометний кошик","fall","lane","space",["magnet"]],["u8_2","Чорна діра","orbit","free","space",["magnet"]],["u8_3","Сигнал із глибин","pop","tap","space",["fog"]],["u8_4","Метеоритний шторм","fall","shoot","space",["junk"]],["u8_5","Гіперсмуга","sweep","stop","space",["blink"]],["u8_6","Кільця Сатурна","orbit","tap","space",["shrink"]],["u8_7","Невагомість","bounce","free","space",["fog"]],["u8_8","Телепорт-лазер","sweep","swipe","space",["junk"]],["u8_9","Втеча від НЛО","flee","free","space",["junk"]],["u8_10","Реактор під тиском","rise","tap","space",["fuse"]]],
+8:[],/* космічні аркади 8 класу видалено */
 10:[["u10_1","Матриця: ловець","fall","lane","matrix",["junk"]],["u10_2","Брутфорс","pop","tap","matrix",["fuse"]],["u10_3","Ін’єкція","fall","shoot","matrix",["blink"]],["u10_4","Сканер портів","sweep","stop","matrix",["fog"]],["u10_5","Перехоплення пакета","bounce","tap","matrix",["shrink"]],["u10_6","Root-доступ","orbit","hold","matrix",["junk"]],["u10_7","Бекдор","rise","swipe","matrix",["blink"]]],
 11:[["u11_1","Піпетка-кошик","fall","lane","design",["junk"]],["u11_2","Кисть-ловець","wave","free","design",["blink"]],["u11_3","Ретуш","pop","tap","design",["fog"]],["u11_4","Шар за шаром","rise","tap","design",["shrink"]],["u11_5","Палітра-орбіта","orbit","hold","design"]]};
 var ICN={fall:"⬇️",rise:"⬆️",wave:"🌊",orbit:"🪐",bounce:"🏀",sweep:"➡️",pop:"💥",flee:"🏃"};
@@ -8621,9 +8621,6 @@ Object.keys(CL).forEach(function(c){c=+c;var u=UNIQ[c]||{s:[],m:[]},LS=spread(SI
   var cx=L.g.filter(function(x){return !ALLSM[x.type]&&x.type!="mine"});
   if(cx.length>1){var bs=cx.filter(function(x){return x.type=="boss"});cx=[bs.length?bs[0]:cx[0]]}
   L.g=a[0].concat(b[0],cx)})});
-/* 10 складних ігор 8 класу: по 2 на урок за колом */
-var CX8=[["sf_mine","Темна станція: дата-ядра"],["sf_nether","Втеча з планети"],["sf_farm","Оборона модуля"],["sf_craft","Складальник пристроїв"],["sf_dragon","Бос: ШІ-ядро"],["sf_redstone","Логічна схема"],["sf_rails","Сортувальний конвеєр"],["sf_build","Верф: креслення корабля"],["sf_archer","Орбітальна гармата"],["sf_dungeon","Станція на трьох палубах"]];
-Object.keys(LES).forEach(function(k){k=+k;if(k<=800||k>=900)return;var L=LES[k];if(!L||!L.g||L.cx8)return;L.cx8=1;var b=(k-801)%10;[0].forEach(function(j){var c=CX8[(b+j)%10];L.g.push({type:c[0],title:c[1]})})});
 var CX6=[["mc_mine","Шахта у темряві","⛏️"],["mc_nether","Вогняний світ: біг над лавою","🔥"],["mc_farm","Нічна оборона ферми","🧟"],["mc_craft","Верстак: збери предмет","🔨"],["mc_dragon","Бос: Дракон Далекого краю","🐉"],["mc_redstone","Червона схема","🔴"],["mc_rails","Вагонетки: стрілочник","🚃"],["mc_build","Будівельник: за кресленням","🧱"],["mc_archer","Лучник: захист башти","🏹"],["mc_dungeon","Підземелля на трьох рівнях","🗝️"]];
 var CXOLD={dig:1,mcart:1,def:1,chick:1,adv:1,bow:1,bld:1,boss:1,whack:1};
 CX6.forEach(function(c){GI[c[0]]=GI5[c[0]]=[c[2],c[1]]});
@@ -8631,8 +8628,6 @@ Object.keys(LES).forEach(function(k){k=+k;if(k<=600||k>=700)return;var L=LES[k];
 /* нейтральні назви ігор для 8 класу */
 var GI8={},i;for(i in GI5)GI8[i]=GI5[i];for(i in GI)if(!GI8[i])GI8[i]=GI[i];
 GI8.t8_boss2=["👾","Бос: Мегазіп"];GI8.t8_boss3=["👾","Бос: Термобот"];GI8.t8_adv=["🏃","Пригоди: Кур'єр коду"];GI8.t8_pac=["👾","Пакмен: Лабіринт даних"];GI8.t8_race=["🏎️","Гонка: Ніч-траса"];GI8.t8_term=["🛡️","Термінал: Захист міста"];GI8.t8_sort=["📦","Сортувальна станція"];GI8.t8_det=["🕵️","Детектив: Справа №1"];GI8.t8_boss=["👾","Бос: Криптобот"];GI8.t8_bin=["🚪","Двійкові двері"];GI8.t8_1=["📻","Шифр-радист"];GI8.t8_2=["🖨️","Принтер кодів"];GI8.t8_3=["🎨","Піксель-художник"];GI8.t8_5=["🏗️","Контейнерний порт"];GI8.t8_6=["💬","Лічильник повідомлень"];GI8.t8_7=["🗜️","Стискач"];GI8.t8_8=["💾","Резервна копія"];GI8.t8_9=["📦","Архіватор-автомат"];GI8.t8_11=["⚙️","Тюнінг процесора"];GI8.t8_12=["🗄️","Склад пам'яті"];GI8.t8_15=["🏭","Друк-цех"];GI8.t8_17=["🛒","Збірка на бюджет"];GI8.t8_18=["🩺","Лікар ПК"];GI8.t8_19=["⏳","Машина часу"];GI8.dock=["🛰️","Стикування"];GI8.radar=["📡","Радар"];GI8.grav=["🪐","Гравітаційна гармата"];GI8.belt=["📦","Конвеєр"];GI8.boss8=["🛸","Бій із ШІ"];GI8.sim=["⚛️","Реактор"];GI8.ast=["☄️","Астероїди"];GI8.adv=["🌌","Пригода"];GI8.pac=["👾","Pac-Man"];GI8.inv=["🚀","Захисник"];
-GI8.sf_mine=["🛰️","Темна станція: дата-ядра"];GI8.sf_nether=["🌀","Втеча з планети"];GI8.sf_farm=["👾","Оборона модуля"];GI8.sf_craft=["🔧","Складальник пристроїв"];GI8.sf_dragon=["🤖","Бос: ШІ-ядро"];GI8.sf_redstone=["💡","Логічна схема"];GI8.sf_rails=["📦","Сортувальний конвеєр"];GI8.sf_build=["🚀","Верф: креслення корабля"];GI8.sf_archer=["🎯","Орбітальна гармата"];GI8.sf_dungeon=["🛸","Станція на трьох палубах"];
-["sf_mine","sf_nether","sf_farm","sf_craft","sf_dragon","sf_redstone","sf_rails","sf_build","sf_archer","sf_dungeon"].forEach(function(t){GI[t]=GI5[t]=GI8[t]});
 GI8.pairs=["🔗","З’єднай пари"];GI8.seq=["🛰️","Склади порядок"];GI8.sort=["📡","Розсортуй"];GI8.tf=["✅","Правда чи ні"];GI8.cloze=["✍️","Заповни пропуск"];
 var _li5=lessonItems5;lessonItems5=function(k){if(k>800&&k<900){var G0=GI;GI=GI8;try{return lessonItems(k)}finally{GI=G0}}return _li5(k)};
 /* візуальні мітки: читалка / гра / тест */
@@ -8684,7 +8679,7 @@ ast:'<path d="M6 7l5-3 6 3 3 6-3 6-7 2-6-4-1-6z"/><circle cx="10" cy="11" r="1.5
 def:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
 pad:'<rect x="3" y="8" width="18" height="10" rx="5"/><path d="M8 11v4M6 13h4M16 12h.01M18 14h.01"/>'};
 var AL={s_sw:'tf',s_duel:'swp',s_elim:'odd',s_streak:'speed',s_bet:'blitz',s_words:'build',s_type:'term',s_hang:'gaps',s_ghost:'race',s_vault:'lock',s_slider:'ladder',s_flash:'radar',s_liar:'quest',s_bridge:'pairs',s_audit:'pick',s_toggles:'pick',s_wheel:'dock',s_scratch:'hunt',s_express:'speed',s_tower:'brk'};for(var ak in AL)IC[ak]=IC[AL[ak]];
-AL.mc_mine='adv';AL.mc_nether='race';AL.mc_farm='def';AL.mc_craft='build';AL.mc_dragon='boss8';AL.mc_redstone='lock';AL.mc_rails='belt';AL.mc_build='parsons';AL.mc_archer='inv';AL.mc_dungeon='hck';AL.sf_mine='adv';AL.sf_nether='race';AL.sf_farm='def';AL.sf_craft='build';AL.sf_dragon='boss8';AL.sf_redstone='lock';AL.sf_rails='belt';AL.sf_build='parsons';AL.sf_archer='inv';AL.sf_dungeon='hck';var ABH={fall:'brk',rise:'flap',wave:'frog',orbit:'grav',bounce:'brk',sweep:'race',pop:'radar',flee:'pac'};Object.keys(ARENA_ICON).forEach(function(k){AL[k]=ABH[ARENA_ICON[k]]});for(var ak2 in AL)IC[ak2]=IC[AL[ak2]];
+AL.mc_mine='adv';AL.mc_nether='race';AL.mc_farm='def';AL.mc_craft='build';AL.mc_dragon='boss8';AL.mc_redstone='lock';AL.mc_rails='belt';AL.mc_build='parsons';AL.mc_archer='inv';AL.mc_dungeon='hck';var ABH={fall:'brk',rise:'flap',wave:'frog',orbit:'grav',bounce:'brk',sweep:'race',pop:'radar',flee:'pac'};Object.keys(ARENA_ICON).forEach(function(k){AL[k]=ABH[ARENA_ICON[k]]});for(var ak2 in AL)IC[ak2]=IC[AL[ak2]];
 function sv(k){return "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'>"+(IC[k]||IC.pad)+"</svg>"}
 
 var _li=lessonItems;
@@ -14074,8 +14069,8 @@ s.textContent=o;document.head.appendChild(s)
 if(!window.LES)return;
 var CL=function(k){return k>=500&&k<600?5:k>=600&&k<700?6:k>=700&&k<800?7:k>=800&&k<900?8:k<100?9:(k>=1000&&k<1100||k>=1200&&k<1400)?10:k>=1100&&k<1200?11:0};
 function seq(p,n){var a=[];for(var i=1;i<=n;i++)a.push(p+i);return a}
-var CX={5:/^(boss|dig|def|bld|adv|mcart|m_c4|ender)$/,6:/^(mc_(?!archer).*|ender|mcart|m_c4)$/,7:/^x_/,8:/^u8_/,10:/^u10_/,11:/^u11_/};
-var POOL={5:["boss","dig","def","bld","adv"],8:seq("u8_",10),10:seq("u10_",7),11:seq("u11_",5)};
+var CX={5:/^(boss|dig|def|bld|adv|mcart|m_c4|ender)$/,6:/^(mc_(?!archer).*|ender|mcart|m_c4)$/,7:/^x_/,10:/^u10_/,11:/^u11_/};
+var POOL={5:["boss","dig","def","bld","adv"],10:seq("u10_",7),11:seq("u11_",5)};
 var pi={};
 function ttl(t){var l=(window.GI&&GI[t])||(window.GI5&&GI5[t]);return l&&l[1]?l[1]:t}
 for(var k in LES){var c=CL(+k),L=LES[k];if(!c||!L||!L.g||!CX[c])continue;
