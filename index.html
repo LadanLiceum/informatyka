@@ -17875,12 +17875,12 @@ GM.tet7=function(g){TTV=(g.v||0)%3;var K8=!!g.k8;inj();var POOL,B,cur,nxt,qi,ok,
 
  /* --- гра --- */
  function start(){shell();
-  $i("zbR").innerHTML="<div class='ttSt'><svg id='ttS' viewBox='0 0 330 444' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ttBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#140a46'/><stop offset='1' stop-color='#2a1478'/></linearGradient></defs><rect width='330' height='444' fill='url(#ttBg)'/>"
-   +"<rect x='"+(BX-6)+"' y='"+(BY-6)+"' width='"+(W*CS+12)+"' height='"+(H*CS+12)+"' rx='10' fill='#0a0428' stroke='"+["#ff3f8e","#3fe0ff","#7ee787"][TTV]+"' stroke-width='3'/><g class='ttGrid' opacity='.8'>"+(function(){var s="";for(var c=1;c<W;c++)s+="<path d='M"+(BX+c*CS)+" "+BY+" V"+(BY+H*CS)+"' stroke='#2a1d78' stroke-width='1'/>";for(var r=1;r<H;r++)s+="<path d='M"+BX+" "+(BY+r*CS)+" H"+(BX+W*CS)+"' stroke='#2a1d78' stroke-width='1'/>";return s})()+"</g>"
+  $i("zbR").innerHTML="<div class='ttSt'><svg id='ttS' viewBox='0 0 330 444' xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='ttBg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='"+(K8?"#f6f1e7":"#140a46")+"'/><stop offset='1' stop-color='"+(K8?"#efe4cc":"#2a1478")+"'/></linearGradient><pattern id='ttHt' width='8' height='8' patternUnits='userSpaceOnUse'><circle cx='4' cy='4' r='1.3' fill='#0d0d14' opacity='.14'/></pattern></defs><rect width='330' height='444' fill='url(#ttBg)'/>"+(K8?"<rect width='330' height='444' fill='url(#ttHt)'/>":"")
+   +"<rect x='"+(BX-6)+"' y='"+(BY-6)+"' width='"+(W*CS+12)+"' height='"+(H*CS+12)+"' rx='"+(K8?0:10)+"' fill='"+(K8?"#fff":"#0a0428")+"' stroke='"+(K8?"#0d0d14":["#ff3f8e","#3fe0ff","#7ee787"][TTV])+"' stroke-width='"+(K8?4:3)+"'/>"+(K8?"<rect x='"+(BX+W*CS+6)+"' y='"+(BY)+"' width='6' height='"+(H*CS+12)+"' fill='#0d0d14'/><rect x='"+(BX)+"' y='"+(BY+H*CS+6)+"' width='"+(W*CS+12)+"' height='6' fill='#0d0d14'/>":"")+"<g class='ttGrid' opacity='.8'>"+(function(){var s="";for(var c=1;c<W;c++)s+="<path d='M"+(BX+c*CS)+" "+BY+" V"+(BY+H*CS)+"' stroke='"+(K8?"#e8e0cf":"#2a1d78")+"' stroke-width='1'/>";for(var r=1;r<H;r++)s+="<path d='M"+BX+" "+(BY+r*CS)+" H"+(BX+W*CS)+"' stroke='"+(K8?"#e8e0cf":"#2a1d78")+"' stroke-width='1'/>";return s})()+"</g>"
    +"<path d='M"+BX+" "+(BY+2*CS)+" H"+(BX+W*CS)+"' stroke='#ff4f6a' stroke-width='2' stroke-dasharray='5 5' opacity='.7'/><g id='ttB'></g><g id='ttP'></g><g id='ttFx'></g>"
-   +"<text x='290' y='60' text-anchor='middle' font-size='10' font-weight='900' fill='#a99fe8'>ДАЛІ</text><rect x='258' y='66' width='64' height='64' rx='10' fill='#0a0428' stroke='#4a3ab8' stroke-width='2'/><g id='ttN'></g>"
-   +"<text x='290' y='162' text-anchor='middle' font-size='10' font-weight='900' fill='#a99fe8'>РЯДІВ</text><text id='ttL' text-anchor='middle' x='290' y='192' font-size='26' font-weight='900' font-style='italic' fill='#ffd23f'>0</text>"
-   +"<text x='290' y='228' text-anchor='middle' font-size='10' font-weight='900' fill='#a99fe8'>ПИТАННЯ</text><text id='ttQ' text-anchor='middle' x='290' y='258' font-size='26' font-weight='900' font-style='italic' fill='#fff'>1</text>"
+   +"<text x='290' y='60' text-anchor='middle' font-size='10' font-weight='900' fill='"+(K8?"#0d0d14":"#a99fe8")+"'>ДАЛІ</text><rect x='258' y='66' width='64' height='64' rx='"+(K8?0:10)+"' fill='"+(K8?"#fff":"#0a0428")+"' stroke='"+(K8?"#0d0d14":"#4a3ab8")+"' stroke-width='"+(K8?3:2)+"'/><g id='ttN'></g>"
+   +"<text x='290' y='162' text-anchor='middle' font-size='10' font-weight='900' fill='"+(K8?"#0d0d14":"#a99fe8")+"'>РЯДІВ</text><text id='ttL' text-anchor='middle' x='290' y='192' font-size='26' font-weight='900' font-style='italic' fill='"+(K8?"#ff3f8e":"#ffd23f")+"'>0</text>"
+   +"<text x='290' y='228' text-anchor='middle' font-size='10' font-weight='900' fill='"+(K8?"#0d0d14":"#a99fe8")+"'>ПИТАННЯ</text><text id='ttQ' text-anchor='middle' x='290' y='258' font-size='26' font-weight='900' font-style='italic' fill='"+(K8?"#0d0d14":"#fff")+"'>1</text>"
    +"</svg><div class='ttBot' id='ttBot'>"+B7("idle")+"</div><button class='ttMu' id='ttMu'>"+(MUTE?"🔇":"🔊")+"</button></div>"
    +"<div id='ttW'></div><div class='zbMsg' id='zbM'></div><div id='ttNb'></div>";
   stg=$i("ttS");$i("ttMu").onclick=mute;draw();ask()}
@@ -18248,6 +18248,10 @@ var css=S+".zbHd{border-radius:0!important;border:4px solid "+K+";box-shadow:6px
 +S+".zb .zbGo.alt{background:#18c0ff!important}"
 +S+".tmSt,"+S+".zbSt{border-radius:0!important;border:4px solid "+K+"!important;box-shadow:6px 6px 0 "+K+"!important}"
 +S+".tmQ{border-radius:0!important;border:4px solid "+K+";box-shadow:5px 5px 0 "+K+"!important}"
++S+".ttSt{border-radius:0!important;border:4px solid "+K+"!important;box-shadow:6px 6px 0 "+K+"!important}"
++S+".ttC button{border-radius:0!important;border:3px solid "+K+"!important;background:#fff!important;color:"+K+"!important;box-shadow:4px 4px 0 "+K+"!important}"
++S+".ttC button.dr{background:#ffd23f!important}"+S+".ttO button{border-radius:0!important;box-shadow:4px 4px 0 "+K+"!important}"
++S+".ttMu{border-radius:0!important;border:3px solid "+K+"!important;background:#fff!important}"
 +S+".zb button:not(.zbGo){border-radius:0!important}"+S+".zbRes{border-radius:0!important;border:4px solid "+K+";box-shadow:6px 6px 0 "+K+"!important}"+S+".zbHd{background:linear-gradient(120deg,#ff3f8e,#7a2cff)!important}";
 var st=document.createElement("style");st.textContent=css;document.head.appendChild(st);
 })();
